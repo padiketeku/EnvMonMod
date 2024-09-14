@@ -116,7 +116,16 @@ The result should be as shown in the figure below.
 
 3, [Mosaicking](https://en.wikipedia.org/wiki/Image_mosaic)
 
-Although the image collection displays as a single image it is not. Rather, there are 8 individual images in the collection. Image collection cannot be an input for a classifier; **a classification analysis requires an image**. To this end, the image collection is turned into a single image by mosaicking the individual images together. 
+Although the image collection displays as a single image it is not. Rather, there are 8 individual images in the collection. Image collection cannot be an input for a classifier; **a classification analysis requires an image**. To this end, the image collection is turned into a single image by mosaicking the individual images together.
+
+```JavaScript
+
+//mosaic the collection to make an image as this is required for classification 
+var imgCol2img = landsatCol.mosaic()
+
+//print the mosaick to the Console
+print(imgCol2img, 'Mosaicked image')
+```
 
 
 ## Assessment
