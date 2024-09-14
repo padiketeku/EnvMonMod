@@ -89,6 +89,13 @@ Map.addLayer(dalyNT.style(symbology), {}, 'Daly River Catchment');
 
 The result should be as shown in the figure below.
 
+
+
+![image](https://github.com/user-attachments/assets/9ec666cf-e8ff-4181-a457-ad5770139d18)
+
+
+
+
 ## Assessment
 
 
