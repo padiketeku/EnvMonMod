@@ -32,8 +32,31 @@ Usually, at the start of EE, the base map is centered on the US. If your study l
 
 ```JavaScript
 //let the computer display the base map to location of interest (i.e., Daly River)
-Map.setCenter(130.6884, -13.694,10)
+Map.setCenter(130.6884, -13.694,9)
 ```
+
+You would want to display the boundary of the study area to be sure this is properly uploaded to the EE.
+
+```JavaScript
+//create a symoblogy that makes the study boundary transparent and display this  
+var symbology = {color: 'red', fillColor: '00000000'};
+
+//apply the symbology to visualise the boundary of the study area
+Map.addLayer(dalyNT.style(symbology), {}, 'Daly River Catchment');
+```
+Zoom out a wee bit to see the enire size of the boundary layer. Your result should be similar to the figure below.
+
+
+
+![image](https://github.com/user-attachments/assets/409533fe-17ca-4f02-b9e4-03964091f3e2)
+
+
+
+
+Happy with the boundary layer? If so, you would like to find the Landsat 8 images in the database relevant for the given task.
+
+
+
 
 ## Assessment
 
