@@ -74,6 +74,7 @@ var landsatCol = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
 
 //print the image collection to the Console
 print(landsatCol , 'landsatCol ')
+```
 
 Question:
 
@@ -92,7 +93,7 @@ Explore the "landsatCol" in the Console and when you drop-down "features" the Pa
 106/070
 
 
-
+```JavaScript
 //visualise the collection
 Map.addLayer(landsatCol, {bands:["SR_B4", "SR_B3", "SR_B2"], min:6000, max:12000})
 ```
