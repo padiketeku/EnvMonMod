@@ -76,9 +76,12 @@ var landsatCol = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
 print(landsatCol , 'landsatCol ')
 ```
 
+Explore the result in the Console, always inspect the image properties taking note of cloud coverage. You may observe that there are images with cloud and cloud shadow pixels.
+
+
 Question:
 
-How many images in the collection? Correct, 8 image scenes required to have data for the entire study area.
+How many images are in the collection? Correct, 8 image scenes required to have data for the entire study area.
 
 List down the Path and Row IDs for each image. Read more about Path and Row here: [The Landsat Worldwide Reference System](https://landsat.gsfc.nasa.gov/about/the-worldwide-reference-system/)
 (accessed on 14/9/2024).
@@ -113,8 +116,28 @@ The result should be as shown in the figure below.
 ![image](https://github.com/user-attachments/assets/a5570d30-6ce5-4e98-a5c9-d1e2facaf74d)
 
 
+3, Remove cloud and cloud shadow pixels
 
-3, [Mosaicking](https://en.wikipedia.org/wiki/Image_mosaic)
+```JavaScript
+
+// define a function to mask cloud and shadow pixels.
+function fmask(img) {
+  var cloudShadowBitMask = 1 << 3;
+  var cloudsBitMask = 1 << 5;
+  var qa = img.select('QA_PIXEL');
+  var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
+    .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
+  return img.updateMask(mask);
+}
+
+//apply the function to mask the cloud and shadow pixels
+
+var landsatCol = landsatCol.map(fmask)
+```
+
+
+
+4, [Mosaicking](https://en.wikipedia.org/wiki/Image_mosaic)
 
 Although the image collection displays as a single image it is not. Rather, there are 8 individual images in the collection. Image collection cannot be an input for a classifier; **a classification analysis requires an image**. To this end, the image collection is turned into a single image by mosaicking the individual images together.
 
@@ -128,7 +151,7 @@ print(imgCol2img, 'Mosaicked image')
 ```
 
 In the Console, you may observe that you have just one image with 19 bands. The bands include reflective, thermal and quality assessment bands.
-The reflective bands are "SR_B1", "SR_B2", "SR_B3", "SR_B4","SR_B5", "SR_B6", "SR_B7". The SR is surface reflectance. **Look it up** : List the light the bands represent?
+The reflective bands are "SR_B1", "SR_B2", "SR_B3", "SR_B4","SR_B5", "SR_B6", "SR_B7". The SR is surface reflectance. **Look it up** : List the light the bands represent.
 
 
 ## Assessment
