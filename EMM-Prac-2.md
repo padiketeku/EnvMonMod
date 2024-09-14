@@ -56,6 +56,29 @@ Zoom out a wee bit to see the entire size of the boundary layer. Your result sho
 Happy with the boundary layer? If so, you would like to find the Landsat 8 images in the database relevant for the given task.
 
 
+2, Image Collection
+
+The script below retrieves a collection of Landsat 8 images from the database and filters the collection by date and the polygon of the study area to ensure images were acquired in the dry season to minimise cloud cover while spanning the whole study area. 
+
+
+```JavaScript
+
+//get Landsat 8 collection; this is a surface reflectance product 
+var landsatCol = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
+
+//filter by date
+.filterDate('2013-07-11','2013-07-31')
+
+//filter by study area
+.filterBounds(dalyNT)
+
+//print the image collection to the Console
+print(landsatCol , 'landsatCol ')
+
+
+//visualise the collection
+Map.addLayer(landsatCol, {bands:["SR_B4", "SR_B3", "SR_B2"], min:6000, max:12000})
+```
 
 
 ## Assessment
