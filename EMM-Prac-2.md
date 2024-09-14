@@ -128,7 +128,7 @@ print(imgCol2img, 'Mosaicked image')
 ```
 
 In the Console, you may observe that you have just one image with 19 bands. The bands include reflective, thermal and quality assessment bands.
-The reflective bands are "SR_B1", "SR_B1", "SR_B2", "SR_B3", "SR_B4","SR_B5", "SR_B6", "SR_B7". The SR is surface reflectance. **Look it up** : List the light the bands represent?
+The reflective bands are "SR_B1", "SR_B2", "SR_B3", "SR_B4","SR_B5", "SR_B6", "SR_B7". The SR is surface reflectance. **Look it up** : List the light the bands represent?
 
 
 ## Assessment
