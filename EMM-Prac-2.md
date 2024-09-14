@@ -79,7 +79,7 @@ Question:
 
 How many images in the collection? Correct, 8 image scenes required to have data for the entire study area.
 
-List down the Path and Row IDs for each image. Read mmore about Path and Row here: !["https://landsat.gsfc.nasa.gov/about/the-worldwide-reference-system/"]
+List down the Path and Row IDs for each image. Read mmore about Path and Row here: (The Landsat Worldwide Reference System)[https://landsat.gsfc.nasa.gov/about/the-worldwide-reference-system/]
 
 Explore the "landsatCol" in the Console and when you drop-down "features" the Path/Row ID is found in the image filename. The Path/Row IDs are:
 104/069
