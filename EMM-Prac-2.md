@@ -44,7 +44,7 @@ var symbology = {color: 'red', fillColor: '00000000'};
 //apply the symbology to visualise the boundary of the study area
 Map.addLayer(dalyNT.style(symbology), {}, 'Daly River Catchment');
 ```
-Zoom out a wee bit to see the enire size of the boundary layer. Your result should be similar to the figure below.
+Zoom out a wee bit to see the entire size of the boundary layer. Your result should be similar to the figure below.
 
 
 
