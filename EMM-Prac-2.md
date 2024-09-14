@@ -84,7 +84,7 @@ List down the Path and Row IDs for each image. Read more about Path and Row here
 (accessed on 14/9/2024).
 
 
-Explore the "landsatCol" in the Console and when you drop-down "features" the Path/Row ID is found in the image filename. The Path/Row IDs are:
+Explore the "landsatCol" in the Console, when you drop-down "features" the Path/Row ID would be in the image filename. The Path/Row IDs are:
 104/069
 104/070
 104/071
