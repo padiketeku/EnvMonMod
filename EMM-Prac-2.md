@@ -35,7 +35,7 @@ Usually, at the start of EE, the base map is centered on the US. If your study l
 Map.setCenter(130.6884, -13.694,9)
 ```
 
-You would want to display the boundary of the study area to be sure this is properly uploaded to the EE.
+You would want to display the boundary of the study area to be sure this is properly uploaded.
 
 ```JavaScript
 //create a symoblogy that makes the study boundary transparent and display this  
@@ -80,6 +80,14 @@ print(landsatCol , 'landsatCol ')
 Map.addLayer(landsatCol, {bands:["SR_B4", "SR_B3", "SR_B2"], min:6000, max:12000})
 ```
 
+You may observe that the image collection is displayed without an overlay of the study area polygon. To correct this, turn the polygon on as shown via the code below.
+
+```JavaScript
+//turn on the boundary of the study area again to overlay the collection
+Map.addLayer(dalyNT.style(symbology), {}, 'Daly River Catchment');
+```
+
+The result should be as shown in the figure below.
 
 ## Assessment
 
