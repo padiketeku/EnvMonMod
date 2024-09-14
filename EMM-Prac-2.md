@@ -28,6 +28,12 @@ Environmental monitoring is a process in which time is an important phenomenon. 
 var dalyNT = ee.FeatureCollection("projects/ee-niiazucrabbe/assets/DalyCatchment")
 ```
 
+At the start of EE, the base map is centered on the US. If your study location is different you would have to re-set the base map to your region of interest. In our case, we would re-set the base map to the Daly River.
+
+```JavaScript
+//let the computer display the base map to location of interest (i.e., Daly River)
+Map.setCenter(130.6884, -13.694,10)
+```
 
 ## Assessment
 
