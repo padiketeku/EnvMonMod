@@ -75,6 +75,23 @@ var landsatCol = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
 //print the image collection to the Console
 print(landsatCol , 'landsatCol ')
 
+Question:
+
+How many images in the collection? Correct, 8 image scenes required to have data for the entire study area.
+
+List down the Path and Row IDs for each image. Read mmore about Path and Row here: !["https://landsat.gsfc.nasa.gov/about/the-worldwide-reference-system/"]
+
+Explore the "landsatCol" in the Console and when you drop-down "features" the Path/Row ID is found in the image filename. The Path/Row IDs are:
+104/069
+104/070
+104/071
+105/069
+105/070
+105/071
+106/069
+106/070
+
+
 
 //visualise the collection
 Map.addLayer(landsatCol, {bands:["SR_B4", "SR_B3", "SR_B2"], min:6000, max:12000})
