@@ -114,6 +114,9 @@ The result should be as shown in the figure below.
 
 
 
+3, [Mosaicking](https://en.wikipedia.org/wiki/Image_mosaic)
+
+Although the image collection displays as a single image it is not. Rather, there are 8 individual images in the collection. Image collection cannot be classified, a classification analysis requires an image. To this end, the image collection is turned into a single image by mosaicking the individual images together. 
 
 
 ## Assessment
