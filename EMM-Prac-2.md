@@ -218,7 +218,7 @@ Merge feature collections
 var reference = infrastructure.merge(agriculture).merge(forest).merge(wetland).merge(bareland)
 ```
 
-Sample trainin areas for the model
+Sample training areas for the model
 
 Next,  the analyst needs to gather a sample of reference spectral profiles for the cover classes. This is useful for the model training process.
 
@@ -271,6 +271,8 @@ var finalClassification = image2classify.classify(rfClassification);
 
 Display the classified image
 
+The colours used to the cover types are purple(infrastructure), green(agriculture), yellow(forest), cyan(wetland), brown(bareland). This forms the legend of the classified image.
+
 ```JavaScript
 // set the visualisaion parameter
 var viz = {min: 0, max: 4, palette: ['purple', 'green', 'yellow', 'cyan', 'brown']};
@@ -279,6 +281,11 @@ var viz = {min: 0, max: 4, palette: ['purple', 'green', 'yellow', 'cyan', 'brown
 ```JavaScript
 Map.addLayer(finalClassification, viz, 'Habitat Mapping Using Random Forest Classification ');
 ```
+
+The classification image is shown below.
+
+![image](https://github.com/user-attachments/assets/38f3410d-b95b-4c60-b6fe-8509633f597c)
+
 
 ## Evaluate the RF classifier
 
