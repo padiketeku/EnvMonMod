@@ -344,7 +344,7 @@ var habitat_all = ee.Image.pixelArea().addBands(finalClassification).divide(1e6)
 print(habitat_all, 'habitat_all')
 ```
 
-The results should be as shown below. Note you may need to click on the drop-down to see the results.
+The results should be as shown below. The unit is square kilometers. Note you may need to click on the drop-down to see the results.
 
 
 
