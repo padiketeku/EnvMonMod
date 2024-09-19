@@ -208,7 +208,8 @@ print (image2classify, 'image2classify');
 Field visits to collect reference data for the classes are ideal and important for classification tasks. However, sometimes for many reasons, it is not possible to have ground reference to validate image classification. Other methods can be used to obtain reference data for the classification. One of such methods is using higher resolution images. This approach is explored here as the reference classes would be obtained from high resolution Google satellite imagery.  
 
 Creating Reference Classes
-pp
+
+[To be able to do this go to this page](https://github.com/padiketeku/EarthObservation101-Practicals/blob/main/Activity-07-Characterizing%20the%20Spectral%20Profiles%20of%20Surface%20Types.md#feature-collection--create-polygons-for-surface-types) 
 
 Merge feature collections
 
