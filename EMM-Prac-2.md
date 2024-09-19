@@ -356,7 +356,178 @@ Export.image.toDrive({
 });
 ```
 
+## The Entire Code
+
+Note, all feature data required for the project must be available for the code to run successfully.
+
+```JavaScript
+
+//region of interest is the Daly River catchment of the Northern Territory, Australia
+var dalyNT = ee.FeatureCollection("projects/ee-niiazucrabbe/assets/DalyCatchment")
+
+//let the computer display the base map to location of interest (i.e., Daly River)
+Map.setCenter(130.6884, -13.694,9)
+
+//create a symoblogy that makes the study boundary transparent and display this  
+var symbology = {color: 'red', fillColor: '00000000'};
+
+//apply the symbology to visualise the boundary of the study area
+Map.addLayer(dalyNT.style(symbology), {}, 'Daly River Catchment');
+
+//get Landsat 8 collection; this is a surface reflectance product 
+var landsatCol = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
+
+//filter by date '2013-07-11','2013-07-31'
+.filterDate('2013-04-01','2013-04-27')
+
+//filter by study area
+.filterBounds(dalyNT)
+
+//print the image collection to the Console
+print(landsatCol , 'landsatCol ')
+
+
+//visualise the collection
+Map.addLayer(landsatCol, {bands:["SR_B4", "SR_B3", "SR_B2"], min:6000, max:12000})
+
+//turn on the boundary of the study area again to overlay on the collection
+Map.addLayer(dalyNT.style(symbology), {}, 'Daly River Catchment');
+
+
+//eliminate pixels that represent cloud and cloud shadow
+// First, define the function to mask cloud and shadow pixels.
+function fmask(img) {
+  var cloudShadowBitMask = 1 << 3;
+  var cloudsBitMask = 1 << 5;
+  var qa = img.select('QA_PIXEL');
+  var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
+    .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
+  return img.updateMask(mask);
+}
+
+//apply the function to mask the cloud and shadow pixels
+
+var landsatCol = landsatCol.map(fmask)
+Map.addLayer(landsatCol, {bands:["SR_B4", "SR_B3", "SR_B2"], min:6000, max:12000}, 'cloudMasked')
+
+//mosaic the collection to make an image as this is required for classification 
+var imgCol2img = landsatCol.mosaic()
+
+//print the mosaick to the Console
+print(imgCol2img, 'Mosaicked image')
+
+//visualise the mosaicked image
+Map.addLayer(imgCol2img.clip(dalyNT), {bands:["SR_B4", "SR_B3", "SR_B2"], min:6000, max:12000}, 'Mosaicked')
+
+//select the relevant bands, 2. trim the image to the study area, 3. print result to console
+var select_bands = imgCol2img.select("SR_B2", "SR_B3", "SR_B4", "SR_B5","SR_B6","SR_B7").clip(dalyNT)
+print (select_bands, 'select_bands')
+
+
+// a function that computes vegetation indices  
+var vegetation_indices = function(image) {
+  var blue = image.select('SR_B2'); // selects the blue band only
+  var green = image.select('SR_B3'); // selects the green band
+  var red = image.select('SR_B4');  // selects the red band
+  var nir = image.select('SR_B5'); //selects the near infrared band
+  var ndvi = nir.subtract(red).divide(nir.add(red)).rename('NDVI');
+  var ndwi = green.subtract(nir).divide(green.add(nir)).rename('NDWI');
+  var savi = nir.subtract(red).divide(nir.add(red).add(0.5)).multiply(1.5).rename('SAVI'); 
+  
+  //add the output of a vegetation index as a band to the original bands of the image and return an image with more bands
+  return image.addBands(ndvi).addBands(ndwi).addBands(savi);
+ 
+};
+
+// apply the vegetation indices function
+var image2classify = vegetation_indices(select_bands);
+print (image2classify, 'image2classify');
+
+// create reference classes
+//Use the link below to complete this bit 
+//https://github.com/padiketeku/EarthObservation101-Practicals/blob/main/Activity-07-Characterizing%20the%20Spectral%20Profiles%20of%20Surface%20Types.md#feature-collection--create-polygons-for-surface-types
+
+//Merge feature collection
+var reference = infrastructure.merge(agriculture).merge(forest).merge(wetland).merge(bareland)
+
+// sample training areas
+var sample_reference = image2classify.sampleRegions({
+  collection: reference,
+  properties: ['label'],
+  scale: 30
+  //tileScale: 16
+});
+print(sample_reference.size(), 'sample_reference')
+
+// partition training areas into training and test sets: apply 80-20 rule
+var sample_reference2 = sample_reference.randomColumn()
+var trainingSample = sample_reference2.filter('random <= 0.8') //80% of the data would be for model training
+var testSample = sample_reference2.filter('random > 0.8')  //20% of data for model testing
+
+
+// parameterise a Random Forest classification algorithm
+var rfClassification= ee.Classifier.smileRandomForest({
+  numberOfTrees: 10,
+  bagFraction: 0.6
+}).train({
+  features: trainingSample,  
+  classProperty: 'label',
+  inputProperties: image2classify.bandNames()
+});
+
+
+// apply the model to classify the image
+var finalClassification = image2classify.classify(rfClassification);
+
+
+// display the classified image
+// set the visualisaion parameter
+var viz = {min: 0, max: 4, palette: ['purple', 'green', 'yellow', 'cyan', 'brown']};
+Map.addLayer(finalClassification, viz, 'Habitat Mapping Using Random Forest Classification '); // just to reiterate that 0 = low infestation 1=high inffestation
+
+
+// assesss performance of the RF model 
+var accuracy2 = testSample
+      .classify(rfClassification)
+      .errorMatrix('label', 'classification')
+
+
+//Print the user's accuracy to the console
+print('Validation Overall accuracy: ', accuracy2.accuracy())
+print('Validation Consumer accuracy: ', accuracy2.consumersAccuracy())
+print('Validation Producer accuracy: ', accuracy2.producersAccuracy())
+//print('Validation Kappa: ', accuracy2.kappa())
+print('Validation fscore: ', accuracy2.fscore(1))
+
+
+//compute spatial extent for each class
+var habitat_all = ee.Image.pixelArea().addBands(finalClassification).divide(1e6)
+                  .reduceRegion({
+                    reducer: ee.Reducer.sum().group(1),
+                    geometry: dalyNT,
+                    scale:30,
+                    bestEffort: true
+                  })
+
+print(habitat_all)
+
+
+
+//export classification image to google drive
+
+Export.image.toDrive({
+    image: finalClassification.visualize(viz),
+    description: 'Classification-Map-DalyCatchment',
+    scale: 5000,
+    crs: 'EPSG:4326',
+    maxPixels: 1e13
+});
+
+
+```
+
+
 ## Conclusion
 
 We have created baseline habitat map for the Daly River Catchment. In the next activity, this baseline data will be used to mointor change in habits.
-If you have all the files, including
+
