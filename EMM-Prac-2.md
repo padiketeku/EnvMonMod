@@ -285,6 +285,9 @@ Map.addLayer(finalClassification, viz, 'Habitat Mapping Using Random Forest Clas
 The classification image is shown below.
 
 ![image](https://github.com/user-attachments/assets/38f3410d-b95b-4c60-b6fe-8509633f597c)
+|:--:|
+| *Random forest classification image with infrastructure in purple, agriculture in green, forest in yellow, wetland in cyan, and bareland in brown .*|
+
 
 
 ## Evaluate the RF classifier
