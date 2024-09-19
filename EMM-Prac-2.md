@@ -285,15 +285,18 @@ Map.addLayer(finalClassification, viz, 'Habitat Mapping Using Random Forest Clas
 The classification image is shown below.
 
 ![image](https://github.com/user-attachments/assets/38f3410d-b95b-4c60-b6fe-8509633f597c)
-
 |:--:|
 | *A Random Forest classification image with infrastructure in purple, agriculture in green, forest in yellow, wetland in cyan, and bareland in brown .*|
 
 
+Display the unclassified/original image and use this to visually assess the performance. Do you reckon the Random Forest did a good job? Where are the problem areas? What do you reckon can be done to make the results more believable?
 
-## Evaluate the RF classifier
+What you have done so far is a qualitative assessment of the RF model. A qualitative assessment of the model is really useful, particularly if you are familiar with the suurface types in the study area. It is, however, also useful to quantatively evalaute the perfromance of the classifier.
 
-The RF classifier si assessed using error matrix, resulting in accuracy metrics such as overall accuracy, consumer accuracy, producer accuracy and F-score.
+
+## Quantitative evaluation of the RF classifier
+
+The RF classifier is assessed using error matrix, resulting in accuracy metrics such as overall accuracy, consumer accuracy, producer accuracy and F-score.
 Further details on these accuracies can be found here: 
 
 
@@ -314,5 +317,25 @@ print('Validation Producer accuracy: ', accuracy2.producersAccuracy())
 print('Validation fscore: ', accuracy2.fscore(1))
 ```
 
+The results appear in the Console. You may click on the drop-down to see the results as shown below:
 
+![image](https://github.com/user-attachments/assets/2dbed6d9-c9a5-40fa-ba38-14e2e627e435)
+
+
+The overall accuracy is 98%, but that can  be misleading if you are interested in just a cover type. The other metrics have accuracy value for each class, making it more useful for those interested in a specific class. If you are after wetlands, the consumer and prodcuer accuracy are about 98% and of course the average of producer and consumer accuracies (i.e., the fscore) is same. Interpret the remaining classes. Critique the results.
+
+Compute class area
+
+```JavaScript
+//compute area for each class
+var habitat_all = ee.Image.pixelArea().addBands(finalClassification).divide(1e6)
+                  .reduceRegion({
+                    reducer: ee.Reducer.sum().group(1),
+                    geometry: dalyNT,
+                    scale:30,
+                    bestEffort: true
+                  })
+
+print(habitat_all)
+```
 ## Conclusion
