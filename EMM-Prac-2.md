@@ -359,3 +359,4 @@ Export.image.toDrive({
 ## Conclusion
 
 We have created baseline habitat map for the Daly River Catchment. In the next activity, this baseline data will be used to mointor change in habits.
+If you have all the files, including
