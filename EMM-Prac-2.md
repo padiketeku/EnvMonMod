@@ -338,4 +338,24 @@ var habitat_all = ee.Image.pixelArea().addBands(finalClassification).divide(1e6)
 
 print(habitat_all)
 ```
+
+Export classification image to Google Drive
+
+Finally, you would like to export the classification image to your Google Drive to bring it down to your desktop for further use, such adding map properties and adding this to a report.
+Note that image classified image is a very large file, so if you do not have enough space in your drive the export may not work for you.
+
+```JavaScript
+//export classification image to google drive
+
+Export.image.toDrive({
+    image: finalClassification.visualize(viz),
+    description: 'Classification-Map-DalyCatchment',
+    scale: 5000, // so the file can be saved to your drive, if your drive is limited in space this may not work. you might have to increase the scale to have a smaller file size.
+    crs: 'EPSG:4326',
+    maxPixels: 1e13
+});
+``
+
 ## Conclusion
+
+We have created baseline habitat map for the Daly River Catchment. In the next activity, this baseline data will be used to mointor change in habits.
