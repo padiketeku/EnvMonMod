@@ -67,7 +67,7 @@ The script below retrieves a collection of Landsat 8 images from the database an
 var landsatCol = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
 
 //filter by date
-.filterDate('2013-07-11','2013-07-31')
+.filterDate('2013-04-1','2013-04-27')
 
 //filter by study area
 .filterBounds(dalyNT)
@@ -209,7 +209,7 @@ Field visits to collect reference data for the classes are ideal and important f
 
 Creating Reference Classes
 
-[To be able to do this, go to this page: Feature collection- create polygons for surface types](https://github.com/padiketeku/EarthObservation101-Practicals/blob/main/Activity-07-Characterizing%20the%20Spectral%20Profiles%20of%20Surface%20Types.md#feature-collection--create-polygons-for-surface-types) 
+[To be able to do this, go to this page: **Feature collection- create polygons for surface types**](https://github.com/padiketeku/EarthObservation101-Practicals/blob/main/Activity-07-Characterizing%20the%20Spectral%20Profiles%20of%20Surface%20Types.md#feature-collection--create-polygons-for-surface-types) 
 
 Merge feature collections
 
@@ -218,8 +218,90 @@ Merge feature collections
 var reference = infrastructure.merge(agriculture).merge(forest).merge(wetland).merge(bareland)
 ```
 
-## Assessment
+Sample trainin areas for the model
 
+Next,  the analyst needs to gather a sample of reference spectral profiles for the cover classes. This is useful for the model training process.
+
+```JavaScript
+
+// sample training areas
+var sample_reference = image2classify.sampleRegions({
+  collection: reference,
+  properties: ['label'],
+  scale: 30
+  //tileScale: 16
+});
+
+```
+Data partitioning
+
+The reference data must be partitioned into training and test sets. The data points for the training set should be significantly larger thann the test set as the more training points the better you are able to teach the model to be conversant with all possible cases, so the model is more likely to perform well on unknown data (i.e., test data). The data split is based on the the size of the reference data, but the 80-20 rule is often used. This means 80% of the reference data is used to teach the model while the 20% is kept away from the model and later used to evaluate the predictability of the model. We would explore this ratio in the task.
+
+```JavaScript
+
+// partition training areas into training and test sets: apply 80-20 rule
+var sample_reference2 = sample_reference.randomColumn()
+var trainingSample = sample_reference2.filter('random <= 0.8') //80% of the data would be for model training
+var testSample = sample_reference2.filter('random > 0.8')  //20% of data for model testing
+
+```
+
+Since we now have the image to classify and training and test data, the next thing to do is to training a Random Forest classification model. Random Forest is a widely used machine learning algorithm in remote sensing classification tasks as it is less sensitive to over prediction [(Belgiu and Drăguţ, 2016)] (https://doi.org/10.1016/j.isprsjprs.2016.01.011)
+
+
+```JavaScript
+// parameterise a Random Forest classification algorithm
+var rfClassification= ee.Classifier.smileRandomForest({
+  numberOfTrees: 10,
+  bagFraction: 0.6
+}).train({
+  features: trainingSample,  
+  classProperty: 'label',
+  inputProperties: image2classify.bandNames()
+});
+
+```
+
+Apply the trained RF algorithm
+
+```JavaScript
+// apply the model to classify the image
+var finalClassification = image2classify.classify(rfClassification);
+```
+
+Display the classified image
+
+```JavaScript
+// set the visualisaion parameter
+var viz = {min: 0, max: 4, palette: ['purple', 'green', 'yellow', 'cyan', 'brown']};
+```
+
+```JavaScript
+Map.addLayer(finalClassification, viz, 'Habitat Mapping Using Random Forest Classification ');
+```
+
+## Evaluate the RF classifier
+
+The RF classifier si assessed using error matrix, resulting in accuracy metrics such as overall accuracy, consumer accuracy, producer accuracy and F-score.
+Further details on these accuracies can be found here: 
+
+
+```JavaScript
+
+// assesss performance of the RF model 
+var accuracy2 = testSample
+      .classify(rfClassification)
+      .errorMatrix('label', 'classification')
+```
+
+
+```JavaScript
+//Print the user's accuracy to the console
+print('Validation Overall accuracy: ', accuracy2.accuracy())
+print('Validation Consumer accuracy: ', accuracy2.consumersAccuracy())
+print('Validation Producer accuracy: ', accuracy2.producersAccuracy())
+print('Validation fscore: ', accuracy2.fscore(1))
+```
 
 
 ## Conclusion
