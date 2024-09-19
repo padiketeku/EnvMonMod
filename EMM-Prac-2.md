@@ -170,6 +170,39 @@ print (select_bands, 'select_bands')
 
 There are different habitats within the Daly Catchments, which have to mapped for effective monitoring. In this task, the habitats would be catgeorised into broad themes: *infrastructure, agriculture, forest, wetlands and bareland*.
 
+6, Predictor variables
+For any modelling, variables that are known to be sensitive to the target are required. These are referred to as predictor variables. We have selected 6 bands to be the hpredictor variables. While it is OK to use these variables for the classification, it is perhaps best to create other variables out these bands to increase the number of predictor variables. Ideally, the additional variables created from the bands should be informed by existing literature. In this task, three vegetation indices that are commonly used to explain variation in such cover types would be created using the function below. 
+
+```JavaScript
+
+// a function that computes vegetation indices  
+var vegetation_indices = function(image) {
+  var blue = image.select('SR_B2'); // selects the blue band only
+  var green = image.select('SR_B3'); // selects the green band
+  var red = image.select('SR_B4');  // selects the red band
+  var nir = image.select('SR_B5'); //selects the near infrared band
+  var ndvi = nir.subtract(red).divide(nir.add(red)).rename('NDVI');
+  var ndwi = green.subtract(nir).divide(green.add(nir)).rename('NDWI');
+  var savi = nir.subtract(red).divide(nir.add(red).add(0.5)).multiply(1.5).rename('SAVI'); 
+  
+  //add the output of a vegetation index as a band to the original bands and return an image with more bands
+  return image.addBands(ndvi).addBands(ndwi).addBands(savi);
+ 
+};
+
+```
+
+Now, the function would be called to create an image with mmore predictor variables
+
+
+```JavaScript
+
+// apply the vegetation indices function
+var image2classify = vegetation_indices(select_bands);
+print (image2classify, 'image2classify');
+```
+
+
 ### Training Data
 
 Field visits to collect reference data for the classes are ideal and important for classification tasks. However, sometimes for many reasons, it is not possible to have ground reference to validate image classification. Other methods can be used to obtain reference data for the classification. One of such methods is using higher resolution images. This approach is explored here as the reference classes would be obtained from high resolution Google satellite imagery.  
@@ -179,6 +212,10 @@ pp
 
 Merge feature collections
 
+```JavaScript
+//Merge feature collection
+var reference = infrastructure.merge(agriculture).merge(forest).merge(wetland).merge(bareland)
+```
 
 ## Assessment
 
