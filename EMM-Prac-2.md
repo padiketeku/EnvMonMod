@@ -202,6 +202,8 @@ var image2classify = vegetation_indices(select_bands);
 print (image2classify, 'image2classify');
 ```
 
+Normalise data
+Data normalisation is maing the data values to be in a range, e.g., 0-1. Ideally in machine learning, the data to be classified must be normalised, especially if the data variables are different units of measurement/dimension. If the data is not normalised it may affect the classification/prediction results. Given the image file is large it is not possible to normalise this data as you may run out of server space for this. Because of this the data is not normalised.
 
 ### Training Data
 
@@ -210,6 +212,9 @@ Field visits to collect reference data for the classes are ideal and important f
 Creating Reference Classes
 
 [To be able to do this, go to this page: **Feature collection- create polygons for surface types**](https://github.com/padiketeku/EarthObservation101-Practicals/blob/main/Activity-07-Characterizing%20the%20Spectral%20Profiles%20of%20Surface%20Types.md#feature-collection--create-polygons-for-surface-types) 
+
+
+For machine learning algorithms, it is ideal to have the same number of reference pixels for each cover class. Even though this is not done in this practical, you can get around this issue by using point geometry instead of the polygon used here to define samples for the classes. Using polygon geometry saves time, though.
 
 Merge feature collections
 
