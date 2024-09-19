@@ -153,6 +153,32 @@ print(imgCol2img, 'Mosaicked image')
 In the Console, you may observe that you have just one image with 19 bands. The bands include reflective, thermal and quality assessment bands.
 The reflective bands are "SR_B1", "SR_B2", "SR_B3", "SR_B4","SR_B5", "SR_B6", "SR_B7". The SR is surface reflectance. **Look it up** : List the light the bands represent.
 
+5, Trim the image
+
+Since not all bands are required for this and the image size is larger than the study area, it is prudent to trim the data. Trimming the data means you minimise the chance of running into EE computation issues. Thus, let's select the relevant bands and clip the image to the study area to lower the file size
+
+```JavaScript
+
+//select the relevant bands, 2. trim the image to the study area, 3. print result to Console
+var select_bands = imgCol2img.select("SR_B2", "SR_B3", "SR_B4", "SR_B5","SR_B6","SR_B7").clip(dalyNT)
+print (select_bands, 'select_bands')
+
+```
+
+
+## Classification
+
+There are different habitats within the Daly Catchments, which have to mapped for effective monitoring. In this task, the habitats would be catgeorised into broad themes: *infrastructure, agriculture, forest, wetlands and bareland*.
+
+### Training Data
+
+Field visits to collect reference data for the classes are ideal and important for classification tasks. However, sometimes for many reasons, it is not possible to have ground reference to validate image classification. Other methods can be used to obtain reference data for the classification. One of such methods is using higher resolution images. This approach is explored here as the reference classes would be obtained from high resolution Google satellite imagery.  
+
+Creating Reference Classes
+pp
+
+Merge feature collections
+
 
 ## Assessment
 
