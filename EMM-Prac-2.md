@@ -356,7 +356,12 @@ Export.image.toDrive({
 });
 ```
 
-## The Entire Code
+
+## Conclusion
+
+We have created baseline habitat map for the Daly River Catchment. In the next activity, this baseline data will be used to mointor change in habits.
+
+## Code
 
 Note, all feature data required for the project must be available for the code to run successfully.
 
@@ -526,8 +531,4 @@ Export.image.toDrive({
 
 ```
 
-
-## Conclusion
-
-We have created baseline habitat map for the Daly River Catchment. In the next activity, this baseline data will be used to mointor change in habits.
 
