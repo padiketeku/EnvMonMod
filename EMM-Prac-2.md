@@ -341,8 +341,16 @@ var habitat_all = ee.Image.pixelArea().addBands(finalClassification).divide(1e6)
                     bestEffort: true
                   })
 
-print(habitat_all)
+print(habitat_all, 'habitat_all')
 ```
+
+The results should be as shown below. Note you may need to click on the drop-down to see the results.
+
+
+
+![image](https://github.com/user-attachments/assets/ba668e36-cdb2-4602-a36c-82844fa5b975)
+
+
 
 Export classification image to Google Drive
 
@@ -521,7 +529,7 @@ var habitat_all = ee.Image.pixelArea().addBands(finalClassification).divide(1e6)
                     bestEffort: true
                   })
 
-print(habitat_all)
+print(habitat_all, 'habitat_all')
 
 
 
