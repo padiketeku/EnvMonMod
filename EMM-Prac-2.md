@@ -322,7 +322,7 @@ The results appear in the Console. You may click on the drop-down to see the res
 ![image](https://github.com/user-attachments/assets/2dbed6d9-c9a5-40fa-ba38-14e2e627e435)
 
 
-The overall accuracy is 98%, but that can  be misleading if you are interested in just a cover type. The other metrics have accuracy value for each class, making it more useful for those interested in a specific class. If you are after wetlands, the consumer and prodcuer accuracy are about 98% and of course the average of producer and consumer accuracies (i.e., the fscore) is same. Interpret the remaining classes. Critique the results.
+The overall accuracy is 98%, but that can  be misleading if you are interested in just a cover type. The other metrics have accuracy value for each class, making it more useful for those interested in a specific class. If you are after wetlands, the consumer and prodcuer accuracy are about 98% and of course the average of producer and consumer accuracies (i.e., the fscore) is also 98%. Interpret the remaining classes. Critique the results.
 
 Compute class area
 
