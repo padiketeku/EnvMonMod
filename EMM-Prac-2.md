@@ -384,7 +384,7 @@ Map.addLayer(dalyNT.style(symbology), {}, 'Daly River Catchment');
 //get Landsat 8 collection; this is a surface reflectance product 
 var landsatCol = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
 
-//filter by date '2013-07-11','2013-07-31'
+//filter by date 
 .filterDate('2013-04-01','2013-04-27')
 
 //filter by study area
@@ -490,7 +490,7 @@ var finalClassification = image2classify.classify(rfClassification);
 // display the classified image
 // set the visualisaion parameter
 var viz = {min: 0, max: 4, palette: ['purple', 'green', 'yellow', 'cyan', 'brown']};
-Map.addLayer(finalClassification, viz, 'Habitat Mapping Using Random Forest Classification '); // just to reiterate that 0 = low infestation 1=high inffestation
+Map.addLayer(finalClassification, viz, 'Habitat Mapping Using Random Forest Classification '); 
 
 
 // assesss performance of the RF model 
