@@ -90,7 +90,7 @@ Map.addLayer(finalClassification2024, viz, 'Habitat Mapping 2024');
 
 
 
-Quantify change
+- *Quantify change
 
 ```JavaScript
 
