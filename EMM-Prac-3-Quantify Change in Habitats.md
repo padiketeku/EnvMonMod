@@ -102,6 +102,90 @@ print(habitat_all_2024,'habitat_all_2024')
 ```
 
 
+Simply, you can compare these estimates against baseline (see figures below) to observe increase or decrease in spatial extent for cover classes
+
 
 ![image](https://github.com/user-attachments/assets/7c140820-1376-431f-b12e-d3018e0ea9e3) ![image](https://github.com/user-attachments/assets/5149f934-047c-4333-a3bf-ca65359e4c83)
 
+
+Changes between cover types (from-to change analysis)
+
+The results above show changes in the spatial extent of a habitat. However, we would step up this analysis to observe changes between classes inclduing the spatial extent of the change.
+For instance if woodland pixels changed to other cover, what cover was that and what was the spatial extent for this change. 
+
+Relabel the classification images
+
+To perform the change matrix analysis, we must ensure the labels start from 1. This is not the case for the two classification images, so we would have to relabel.
+
+```JavaScript
+var imageBaseline = finalClassification.remap([0,1,2,3,4,5], [1,2,3,4,5,6])
+var image2024 = finalClassification2024.remap([0,1,2,3,4,5], [1,2,3,4,5,6])
+```
+
+Image differencing
+
+This is subtracting one image from another to assess the residual for change and no-change. No-change pixels would have a value of zero. In this task,  we are only interested in change, so pixels with value of zero must be sidelined.
+
+```JavaScript
+var changedAreas = image2024.subtract(imageBaseline).neq(0) // changed pixels would be assigned 1
+```
+
+Change Matrix
+
+A pixel of class 1 (e.g., water) in 2013 may change to class 2 (e.g., infrastructure) in a recent year, the matrix would capture this as 12. Alternatively, class 4 (woodland) may change to class 5 (agriculture) and this would appear on the matrix as 45. We would use this logic to transform the two classification images for a change matrix.
+
+```JavaScript
+
+//between-class changes; a cover change to a different cover
+
+var change_FromTo =imageBaseline.multiply(10).add(image2024).rename('FromToChange')
+
+```
+
+Well, at this you might be keen to know the number of pixels for each matrix. Also, you may like to  see the matrix. To do this, we would use the frequency histogram tool.
+
+```JavaScript
+var changeMatrix_sum_pixels = change_FromTo.reduceRegion({
+  reducer:ee.Reducer.frequencyHistogram(),
+  scale:30,
+  geometry:dalyNT,
+  bestEffort: true
+
+})
+
+//print the result to Console
+print( changeMatrix_sum_pixels.get('FromToChange'), ' ChangeMatrix Total Pixels')
+```
+
+You are expected to have an object with 66 items. Your resultt may be as shown below.
+
+
+
+![image](https://github.com/user-attachments/assets/486aee69-5062-4bd2-8a61-db23a46ae9cd)
+
+
+
+You should be able to interpret the result. Water to baresoil (16) has 158 pixels while over 298,000 pixels recorded for woodland to agriculture.
+
+Similarly, we can compute the extent of change between cover classes. 
+
+```
+var changeMatrixSqKm = ee.Image.pixelArea().addBands(change_FromTo).divide(1e6)
+                  .reduceRegion({
+                    reducer: ee.Reducer.sum().group(1),
+                    geometry: dalyNT,
+                    scale:30,
+                    bestEffort: true
+                  })
+                  
+
+print(changeMatrixSqKm, 'changeMatrixSqKm')
+```
+
+Your result should be an object with 36 elements in the Console. Make sure you drop-down to see the size for each between-class change. The first ten results are shown below.
+
+
+![image](https://github.com/user-attachments/assets/c8de4761-9f7c-4af2-9bdb-8b265fea4474)
+
+
+The first change element (12), water to infrastructure, was 1.4 km<sup>2</sup>
