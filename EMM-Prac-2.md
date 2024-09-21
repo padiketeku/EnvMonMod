@@ -67,7 +67,7 @@ The script below retrieves a collection of Landsat 8 images from the database an
 var landsatCol = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
 
 //filter by date
-.filterDate('2013-04-1','2013-04-27')
+.filterDate('2013-07-11','2013-07-31')
 
 //filter by study area
 .filterBounds(dalyNT)
@@ -168,7 +168,7 @@ print (select_bands, 'select_bands')
 
 ## Classification
 
-There are different habitats within the Daly Catchments, which have to mapped for effective monitoring. In this task, the habitats would be catgeorised into broad themes: *infrastructure, agriculture, forest, wetlands and bareland*.
+There are different habitats within the Daly Catchments, which have to mapped for effective monitoring. In this task, the habitats would be catgeorised into broad themes: *water,infrastructure, woodland, agriculture, and baresoil*. Given fire is an important management tool in this area, fire scar is common in this catchment, hence, fire scar would detected as another cover class. Thus, six cover classes would be mapped in this task.
 
 6, Predictor variables
 For any modelling, variables that are known to be sensitive to the target are required. These are referred to as predictor variables. We have selected 6 bands to be the hpredictor variables. While it is OK to use these variables for the classification, it is perhaps best to create other variables out these bands to increase the number of predictor variables. Ideally, the additional variables created from the bands should be informed by existing literature. In this task, three vegetation indices that are commonly used to explain variation in such cover types would be created using the function below. [See this paper for further information on the vegetation indices](https://www.tandfonline.com/doi/pdf/10.1080/15324982.2016.1170076). 
@@ -181,12 +181,16 @@ var vegetation_indices = function(image) {
   var green = image.select('SR_B3'); // selects the green band
   var red = image.select('SR_B4');  // selects the red band
   var nir = image.select('SR_B5'); //selects the near infrared band
+  var swir1 =image.select('SR_B6'); //selects shorter wavelength swir
+  var swir2 =image.select('SR_B7'); //selects longer wavelength swir
   var ndvi = nir.subtract(red).divide(nir.add(red)).rename('NDVI');
   var ndwi = green.subtract(nir).divide(green.add(nir)).rename('NDWI');
-  var savi = nir.subtract(red).divide(nir.add(red).add(0.5)).multiply(1.5).rename('SAVI'); 
+  var savi = nir.subtract(red).divide(nir.add(red).add(0.5)).multiply(1.5).rename('SAVI');
+  var nbr = nir.subtract(swir2).divide(nir.add(swir2)).rename('NBR')
+  var mirbi = (swir1.multiply(10)).subtract (swir2.multiply(9.8)).add(2).rename('MIRBI')
   
-  //add the output of a vegetation index as a band to the original bands and return an image with more bands
-  return image.addBands(ndvi).addBands(ndwi).addBands(savi);
+  //add the output of a vegetation index as a band to the original bands of the image and return an image with more bands
+  return image.addBands(ndvi).addBands(ndwi).addBands(savi).addBands(nbr).addBands(mirbi);
  
 };
 
@@ -203,7 +207,7 @@ print (image2classify, 'image2classify');
 ```
 
 Normalise data
-Data normalisation is maing the data values to be in a range, e.g., 0-1. Ideally in machine learning, the data to be classified must be normalised, especially if the data variables are different units of measurement/dimension. If the data is not normalised it may affect the classification/prediction results. Given the image file is large it is not possible to normalise this data as you may run out of server space for this. Because of this the data is not normalised.
+Data normalisation is maing the data values to be in a range, e.g., 0-1. Ideally in machine learning, the data to be classified must be normalised, especially if the data variables are different units of measurement/dimension. If the data is not normalised it may affect the classification/prediction results. Given the image file is large it is not possible to normalise this data within EE as you may run out of server space. Thus, the data is not normalised.
 
 ### Training Data
 
@@ -214,13 +218,13 @@ Creating Reference Classes
 [To be able to do this, go to this page: **Feature collection- create polygons for surface types**](https://github.com/padiketeku/EarthObservation101-Practicals/blob/main/Activity-07-Characterizing%20the%20Spectral%20Profiles%20of%20Surface%20Types.md#feature-collection--create-polygons-for-surface-types) 
 
 
-For machine learning algorithms, it is ideal to have the same number of reference pixels for each cover class. Even though this is not done in this practical, you can get around this issue by using point geometry instead of the polygon used here to define samples for the classes. Using polygon geometry saves time, though.
+For machine learning algorithms, it is best to have the same number of reference pixels for each cover class. 
 
 Merge feature collections
 
 ```JavaScript
 //Merge feature collection
-var reference = infrastructure.merge(agriculture).merge(forest).merge(wetland).merge(bareland)
+var reference = infrastructure.merge(agriculture).merge(woodland).merge(water).merge(baresoil).merge(firescar)
 ```
 
 Sample training areas for the model
@@ -257,8 +261,8 @@ Since we now have the image to classify and training and test data, the next thi
 ```JavaScript
 // parameterise a Random Forest classification algorithm
 var rfClassification= ee.Classifier.smileRandomForest({
-  numberOfTrees: 10,
-  bagFraction: 0.6
+  numberOfTrees: 40,
+  bagFraction: 0.4
 }).train({
   features: trainingSample,  
   classProperty: 'label',
@@ -276,11 +280,11 @@ var finalClassification = image2classify.classify(rfClassification);
 
 Display the classified image
 
-The colours used to the cover types are purple(infrastructure), green(agriculture), yellow(forest), cyan(wetland), brown(bareland). This forms the legend of the classified image.
+The colours used to represent the cover classes are blue(water), cyan(infrastructure), black(firescar), darkgreen(woodland), lightgreen(agriculture), brown(baresoil). This forms the legend of the classified image.
 
 ```JavaScript
 // set the visualisaion parameter
-var viz = {min: 0, max: 4, palette: ['purple', 'green', 'yellow', 'cyan', 'brown']};
+var viz = {min: 0, max: 5, palette: ['purple', 'green', 'yellow', 'cyan', 'brown']};
 ```
 
 ```JavaScript
