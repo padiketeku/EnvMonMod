@@ -186,8 +186,8 @@ var vegetation_indices = function(image) {
   var ndvi = nir.subtract(red).divide(nir.add(red)).rename('NDVI');
   var ndwi = green.subtract(nir).divide(green.add(nir)).rename('NDWI');
   var savi = nir.subtract(red).divide(nir.add(red).add(0.5)).multiply(1.5).rename('SAVI');
-  var nbr = nir.subtract(swir2).divide(nir.add(swir2)).rename('NBR')
-  var mirbi = (swir1.multiply(10)).subtract (swir2.multiply(9.8)).add(2).rename('MIRBI')
+  var nbr = nir.subtract(swir2).divide(nir.add(swir2)).rename('NBR') //sensitive to firescar
+  var mirbi = (swir1.multiply(10)).subtract (swir2.multiply(9.8)).add(2).rename('MIRBI')//sensitive to firescar
   
   //add the output of a vegetation index as a band to the original bands of the image and return an image with more bands
   return image.addBands(ndvi).addBands(ndwi).addBands(savi).addBands(nbr).addBands(mirbi);
@@ -284,29 +284,30 @@ The colours used to represent the cover classes are blue(water), cyan(infrastruc
 
 ```JavaScript
 // set the visualisaion parameter
-var viz = {min: 0, max: 5, palette: ['purple', 'green', 'yellow', 'cyan', 'brown']};
+var viz = {min: 0, max: 5, palette: ['blue', 'cyan', 'black', 'darkgreen', 'lightgreen', 'brown']};
 ```
 
 ```JavaScript
+//display the classified image
 Map.addLayer(finalClassification, viz, 'Habitat Mapping Using Random Forest Classification ');
 ```
 
 The classification image is shown below.
 
-![image](https://github.com/user-attachments/assets/38f3410d-b95b-4c60-b6fe-8509633f597c)
+![image](https://github.com/user-attachments/assets/aa5d38c9-fda3-49a9-b230-1973256c2002)
 |:--:|
-| *A Random Forest classification image with infrastructure in purple, agriculture in green, forest in yellow, wetland in cyan, and bareland in brown .*|
+| *A Random Forest classification image with blue pixels representing water, cyan (infrastructure), black (firescar), darkgreen (woodland), lightgreen (agriculture), brown (baresoil) .*|
 
 
 Display the unclassified/original image and use this to visually assess the performance. Do you reckon the Random Forest did a good job? Where are the problem areas? What do you reckon can be done to make the results more believable?
 
-What you have done so far is a qualitative assessment of the RF model. A qualitative assessment of the model is really useful, particularly if you are familiar with the suurface types in the study area. It is, however, also useful to quantatively evalaute the perfromance of the classifier.
+What you have done so far is a qualitative assessment of the RF model. A qualitative assessment of the model is really useful, particularly if you are familiar with the suurface types in the study area. It is, however, also useful to quantatively evalaute the performance of the classifier.
 
 
 ## Quantitative evaluation of the RF classifier
 
-The RF classifier is assessed using error matrix, resulting in accuracy metrics such as overall accuracy, consumer accuracy, producer accuracy and F-score.
-Further details on these accuracies can be found here: 
+The RF classifier is assessed using error matrix, resulting in accuracy metrics such as overall accuracy, consumer accuracy, producer accuracy and F1-score.
+Further details on these accuracies can be found here: [Hurskainen et al. 2019](https://doi.org/10.1016/j.rse.2019.111354)
 
 
 ```JavaScript
@@ -328,12 +329,13 @@ print('Validation fscore: ', accuracy2.fscore(1))
 
 The results appear in the Console. You may click on the drop-down to see the results as shown below:
 
-![image](https://github.com/user-attachments/assets/2dbed6d9-c9a5-40fa-ba38-14e2e627e435)
+![image](https://github.com/user-attachments/assets/9bcc8929-a962-4f86-b4cf-c45d0f236a0e)
+
 
 
 The overall accuracy is 98%, but that can  be misleading if you are interested in just a cover type. The other metrics have accuracy value for each class, making it more useful for those interested in a specific class. If you are after wetlands, the consumer and prodcuer accuracy are about 98% and of course the average of producer and consumer accuracies (i.e., the fscore) is also 98%. Interpret the remaining classes. Critique the results.
 
-Compute class area
+Compute the spatial extent of cover classes in square kilometer 
 
 ```JavaScript
 //compute area for each class
@@ -352,7 +354,8 @@ The results should be as shown below. The unit is square kilometers. Note you ma
 
 
 
-![image](https://github.com/user-attachments/assets/ba668e36-cdb2-4602-a36c-82844fa5b975)
+![image](https://github.com/user-attachments/assets/7d297e8b-0b5b-4f8d-8740-e5f562f808d7)
+
 
 
 
@@ -376,7 +379,7 @@ Export.image.toDrive({
 
 ## Conclusion
 
-We have created baseline habitat map for the Daly River Catchment. In the next activity, this baseline data will be used to mointor change in habits.
+We have created baseline habitat map for the Daly River Catchment. In the next activity, this baseline data will be used to mointor change in habitats.
 
 ## The End
 
@@ -385,7 +388,6 @@ See below for the complete code.
 Note, all feature data required for the project must be available for the code to run successfully.
 
 ```JavaScript
-
 //region of interest is the Daly River catchment of the Northern Territory, Australia
 var dalyNT = ee.FeatureCollection("projects/ee-niiazucrabbe/assets/DalyCatchment")
 
@@ -398,11 +400,12 @@ var symbology = {color: 'red', fillColor: '00000000'};
 //apply the symbology to visualise the boundary of the study area
 Map.addLayer(dalyNT.style(symbology), {}, 'Daly River Catchment');
 
+
 //get Landsat 8 collection; this is a surface reflectance product 
 var landsatCol = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
 
 //filter by date 
-.filterDate('2013-04-01','2013-04-27')
+.filterDate('2013-07-11','2013-07-31')
 
 //filter by study area
 .filterBounds(dalyNT)
@@ -441,7 +444,8 @@ var imgCol2img = landsatCol.mosaic()
 print(imgCol2img, 'Mosaicked image')
 
 //visualise the mosaicked image
-Map.addLayer(imgCol2img.clip(dalyNT), {bands:["SR_B4", "SR_B3", "SR_B2"], min:6000, max:12000}, 'Mosaicked')
+Map.addLayer(imgCol2img.clip(dalyNT), {bands:["SR_B4", "SR_B3", "SR_B2"], min:7000, max:13000}, 'Mosaicked')
+Map.addLayer(imgCol2img.clip(dalyNT), {bands:["SR_B7", "SR_B5", "SR_B6"], min:7000, max:13000}, 'Mosaicked-FCC')
 
 //select the relevant bands, 2. trim the image to the study area, 3. print result to console
 var select_bands = imgCol2img.select("SR_B2", "SR_B3", "SR_B4", "SR_B5","SR_B6","SR_B7").clip(dalyNT)
@@ -454,12 +458,16 @@ var vegetation_indices = function(image) {
   var green = image.select('SR_B3'); // selects the green band
   var red = image.select('SR_B4');  // selects the red band
   var nir = image.select('SR_B5'); //selects the near infrared band
+  var swir1 =image.select('SR_B6'); //selects shorter wavelength swir
+  var swir2 =image.select('SR_B7'); //selects longer wavelength swir
   var ndvi = nir.subtract(red).divide(nir.add(red)).rename('NDVI');
   var ndwi = green.subtract(nir).divide(green.add(nir)).rename('NDWI');
-  var savi = nir.subtract(red).divide(nir.add(red).add(0.5)).multiply(1.5).rename('SAVI'); 
+  var savi = nir.subtract(red).divide(nir.add(red).add(0.5)).multiply(1.5).rename('SAVI');
+  var nbr = nir.subtract(swir2).divide(nir.add(swir2)).rename('NBR')
+  var mirbi = (swir1.multiply(10)).subtract (swir2.multiply(9.8)).add(2).rename('MIRBI')
   
   //add the output of a vegetation index as a band to the original bands of the image and return an image with more bands
-  return image.addBands(ndvi).addBands(ndwi).addBands(savi);
+  return image.addBands(ndvi).addBands(ndwi).addBands(savi).addBands(nbr).addBands(mirbi);
  
 };
 
@@ -472,7 +480,7 @@ print (image2classify, 'image2classify');
 //https://github.com/padiketeku/EarthObservation101-Practicals/blob/main/Activity-07-Characterizing%20the%20Spectral%20Profiles%20of%20Surface%20Types.md#feature-collection--create-polygons-for-surface-types
 
 //Merge feature collection
-var reference = infrastructure.merge(agriculture).merge(forest).merge(wetland).merge(bareland)
+var reference = infrastructure.merge(agriculture).merge(woodland).merge(water).merge(baresoil).merge(firescar)
 
 // sample training areas
 var sample_reference = image2classify.sampleRegions({
@@ -491,8 +499,8 @@ var testSample = sample_reference2.filter('random > 0.8')  //20% of data for mod
 
 // parameterise a Random Forest classification algorithm
 var rfClassification= ee.Classifier.smileRandomForest({
-  numberOfTrees: 10,
-  bagFraction: 0.6
+  numberOfTrees: 40,
+  bagFraction: 0.4
 }).train({
   features: trainingSample,  
   classProperty: 'label',
@@ -506,7 +514,7 @@ var finalClassification = image2classify.classify(rfClassification);
 
 // display the classified image
 // set the visualisaion parameter
-var viz = {min: 0, max: 4, palette: ['purple', 'green', 'yellow', 'cyan', 'brown']};
+var viz = {min: 0, max: 5, palette: ['blue', 'cyan', 'black', 'darkgreen', 'lightgreen', 'brown']};
 Map.addLayer(finalClassification, viz, 'Habitat Mapping Using Random Forest Classification '); 
 
 
@@ -524,7 +532,7 @@ print('Validation Producer accuracy: ', accuracy2.producersAccuracy())
 print('Validation fscore: ', accuracy2.fscore(1))
 
 
-//compute spatial extent for each class
+//compute spatial extent for each class in square kilometer
 var habitat_all = ee.Image.pixelArea().addBands(finalClassification).divide(1e6)
                   .reduceRegion({
                     reducer: ee.Reducer.sum().group(1),
@@ -546,7 +554,6 @@ Export.image.toDrive({
     crs: 'EPSG:4326',
     maxPixels: 1e13
 });
-
 
 ```
 
