@@ -188,4 +188,112 @@ Your result should be an object with 36 elements in the Console. Make sure you d
 ![image](https://github.com/user-attachments/assets/c8de4761-9f7c-4af2-9bdb-8b265fea4474)
 
 
-The first change element (12), water to infrastructure, was 1.4 km<sup>2</sup>
+From the figure above, the spatial extent of the first change element (12): water to infrastructure, was 1.4 km<sup>2</sup>
+
+
+
+# Conclusion
+
+The practical shows the techniques involved in performing bi-temporal image differencing to estimate change.
+
+# Code
+
+```JavaScript
+//get recent Landsat 8 collection 
+var landsatCol2 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
+
+//filter by date 
+.filterDate('2024-07-11','2024-07-30') 
+
+//filter by study area
+.filterBounds(dalyNT)
+//print the image collection to the Console
+print(landsatCol2 , 'landsatCol2 ')
+
+
+//visualise the collection
+//Map.addLayer(landsatCol2, {bands:["SR_B4", "SR_B3", "SR_B2"], min:6000, max:12000})
+
+//turn on the boundary of the study area again to overlay on the collection
+//Map.addLayer(dalyNT.style(symbology), {}, 'Daly River Catchment');
+
+
+//mask cloud and shadow pixels
+
+var landsatCol2 = landsatCol2.map(fmask)
+
+
+//mosaic the collection to make an image as this is required for classification 
+var imgCol2img_2 = landsatCol2.mosaic()
+
+
+//select the relevant bands, 2. trim the image to the study area, 3. print result to Console
+var select_bands_2 = imgCol2img_2.select("SR_B2", "SR_B3", "SR_B4", "SR_B5","SR_B6","SR_B7").clip(dalyNT)
+//print (select_bands_2, 'select_bands')
+
+
+// apply the vegetation indices function
+var image2classify_2024 = vegetation_indices(select_bands_2);
+//print (image2classify_2024, 'image2classify 2024');
+
+//visualise the image to be classified
+//Map.addLayer(image2classify_2024, {bands:["SR_B4", "SR_B3", "SR_B2"], min:6000, max:12000}, 'Mosaicked-2')
+
+// apply the model to classify the image
+var finalClassification2024 = image2classify_2024.classify(rfClassification);
+
+//visualise the classified image 2024
+//Map.addLayer(finalClassification2024, viz, 'Habitat Mapping 2024');
+
+//compute area for each class
+var habitat_all_2024 = ee.Image.pixelArea().addBands(finalClassification2024).divide(1e6)
+                  .reduceRegion({
+                    reducer: ee.Reducer.sum().group(1),
+                    geometry: dalyNT,
+                    scale:30,
+                    bestEffort: true
+                  })
+
+print(habitat_all_2024,'habitat_all_2024')
+
+//image differencing
+
+//now subtract the baseline image from the current image to observe changed areas, thus, zero must be masked as it means no-change
+var changedAreas = image2024.subtract(imageBaseline).neq(0) // changed pixels would be assigned 1
+//Map.addLayer(changedAreas, {min:0, max:1, palette:['gray', 'red']}, 'Changed Areas')
+
+//let's find the between-class changes; a cover change to a different cover
+var change_FromTo =imageBaseline.multiply(10).add(image2024).rename('FromToChange')
+print(change_FromTo, 'change_FromTo')
+
+//how many pixels in each change matrix? let's compute this using the frequency histogram
+
+var changeMatrix_sum_pixels = change_FromTo.reduceRegion({
+  reducer:ee.Reducer.frequencyHistogram(),
+  scale:30,
+  geometry:dalyNT,
+  bestEffort: true
+
+})
+
+//print the result to Console
+
+print( changeMatrix_sum_pixels.get('FromToChange'), ' ChangeMatrix Total Pixels')
+
+
+//compute spatial extent in square kilometer for each class
+
+var changeMatrixSqKm = ee.Image.pixelArea().addBands(change_FromTo).divide(1e6)
+                  .reduceRegion({
+                    reducer: ee.Reducer.sum().group(1),
+                    geometry: dalyNT,
+                    scale:30,
+                    bestEffort: true
+                  })
+                  
+
+print(changeMatrixSqKm, 'changeMatrixSqKm')
+
+```
+
+The End
