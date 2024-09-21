@@ -20,7 +20,7 @@ Collect the recent Landsat imagery (this should be surface reflectance product) 
 - description of the results obtained
 - discuss the results you agree and/or disagree (and why)
 - discuss how you think the results can be improved
-- provide a conclusion on the task
+- conclusion 
 
 # Workflow
 
