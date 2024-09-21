@@ -97,3 +97,8 @@ var habitat_all_2024 = ee.Image.pixelArea().addBands(finalClassification2024).di
 print(habitat_all_2024,'habitat_all_2024')
 
 ```
+
+
+
+![image](https://github.com/user-attachments/assets/7c140820-1376-431f-b12e-d3018e0ea9e3) ![image](https://github.com/user-attachments/assets/5149f934-047c-4333-a3bf-ca65359e4c83)
+
