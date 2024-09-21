@@ -113,7 +113,8 @@ Map.addLayer(dalyNT.style(symbology), {}, 'Daly River Catchment');
 The result should be as shown in the figure below.
 
 
-![image](https://github.com/user-attachments/assets/a5570d30-6ce5-4e98-a5c9-d1e2facaf74d)
+![Uploading image.png…]()
+
 
 
 3, Remove cloud and cloud shadow pixels
