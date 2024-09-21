@@ -24,7 +24,7 @@ Collect the recent Landsat imagery (this should be surface reflectance product) 
 
 # Workflow
 
-- Collect the relevant images for the given task
+- **Collect the relevant images for the given task**
 
 
 ```JavaScript
@@ -73,7 +73,7 @@ Map.addLayer(image2classify_2024, {bands:["SR_B4", "SR_B3", "SR_B2"], min:6000, 
 ![image](https://github.com/user-attachments/assets/048326c2-5c0e-46df-aec7-ef14b09a5d2b)
 
 
-- Apply trained classification model
+- **Apply trained classification model**
 
   
 ```JavaScript
@@ -90,11 +90,13 @@ Map.addLayer(finalClassification2024, viz, 'Habitat Mapping 2024');
 
 
 
-- *Quantify change
+## Quantify change
 
+
+- **Compute area for each class**
+  
 ```JavaScript
 
-//compute area for each class
 var habitat_all_2024 = ee.Image.pixelArea().addBands(finalClassification2024).divide(1e6)
                   .reduceRegion({
                     reducer: ee.Reducer.sum().group(1),
@@ -114,7 +116,7 @@ Simply, you can compare these estimates against baseline (see figures below) to 
 ![image](https://github.com/user-attachments/assets/7c140820-1376-431f-b12e-d3018e0ea9e3) ![image](https://github.com/user-attachments/assets/5149f934-047c-4333-a3bf-ca65359e4c83)
 
 
-Changes between cover types (from-to change analysis)
+- **Changes between cover types (from-to change analysis)**
 
 The results above show changes in the spatial extent of a habitat. However, we would step up this analysis to observe changes between classes inclduing the spatial extent of the change.
 For instance if woodland pixels changed to other cover, what cover was that and what was the spatial extent for this change. 
@@ -128,7 +130,7 @@ var imageBaseline = finalClassification.remap([0,1,2,3,4,5], [1,2,3,4,5,6])
 var image2024 = finalClassification2024.remap([0,1,2,3,4,5], [1,2,3,4,5,6])
 ```
 
-Image differencing
+- **Image differencing**
 
 This is subtracting one image from another to assess the residual for change and no-change. No-change pixels would have a value of zero. In this task,  we are only interested in change, so pixels with value of zero must be sidelined.
 
@@ -145,10 +147,7 @@ The image below shows changed areas in red. The grey pixels are no-change areas.
 
 
 
-
-
-
-Change Matrix
+- **Change matrix**
 
 A pixel of class 1 (e.g., water) in 2013 may change to class 2 (e.g., infrastructure) in a recent year, the matrix would capture this as 12. Alternatively, class 4 (woodland) may change to class 5 (agriculture) and this would appear on the change matrix as 45. We would use this logic to transform the two classification images for a change matrix.
 
