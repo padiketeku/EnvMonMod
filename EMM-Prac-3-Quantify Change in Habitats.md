@@ -6,6 +6,8 @@ This activity is building on practical 2 in that the output from that activity i
 
 - Replicate existing techniques to prepare data for classification
 - Apply existing trained Random Forest classification model to new data
+- Reclassify classification images
+- Transition between cover classes
 - Estimate changes in habitats using a baseline data
 
 # Task
