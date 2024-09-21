@@ -16,7 +16,7 @@ In this practical, you would apply Random Forest to classify an image with the o
 ## Task
 
 
-Environmental monitoring is a process in which time is an important phenomenon. The condition of an habitat 30 years ago may not be same as today. The Daly River Catchments in the Northern Terriotory of Australia is an important ecosystem for several reasons. The catchment is a habitat for many native plants, birds, reptiles, and mammals. The condition of the catchment is not the same ten years ago, but to understand the recent state of the catchment it is worth going back into time to have a baseline information. In this practical, your task is to classify the cardinal land cover types of the Daly River Catchment, ten years ago, using Landsat 8 imagery.
+Environmental monitoring is a process in which time is an important phenomenon. For instance, the condition of an habitat 30 years ago may not be same as today. The Daly River Catchments in the Northern Terriotory of Australia is an important ecosystem for several reasons. The catchment is a habitat for many native plants, birds, reptiles, and mammals. The condition of the catchment is reported to have changed over the years, to understand the recent ecological state of the catchment it is worth going back into time to have a baseline information. In this practical, your task is to classify the cardinal land cover types of the Daly River Catchment, in 2013, using Landsat 8 imagery, to obtain a baseline data for further assessment.
 
 
 ### Workflow
