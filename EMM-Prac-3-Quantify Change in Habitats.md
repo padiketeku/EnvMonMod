@@ -128,11 +128,23 @@ This is subtracting one image from another to assess the residual for change and
 
 ```JavaScript
 var changedAreas = image2024.subtract(imageBaseline).neq(0) // changed pixels would be assigned 1
+Map.addLayer(changedAreas, {min:0, max:1, palette:['gray', 'red']}, 'Changed Areas')
 ```
+
+The image below shows changed areas in red. The grey pixels are no-change areas.
+
+
+![image](https://github.com/user-attachments/assets/e986f936-8d9a-4d63-b75f-fd7db657b2ca)
+
+
+
+
+
+
 
 Change Matrix
 
-A pixel of class 1 (e.g., water) in 2013 may change to class 2 (e.g., infrastructure) in a recent year, the matrix would capture this as 12. Alternatively, class 4 (woodland) may change to class 5 (agriculture) and this would appear on the matrix as 45. We would use this logic to transform the two classification images for a change matrix.
+A pixel of class 1 (e.g., water) in 2013 may change to class 2 (e.g., infrastructure) in a recent year, the matrix would capture this as 12. Alternatively, class 4 (woodland) may change to class 5 (agriculture) and this would appear on the change matrix as 45. We would use this logic to transform the two classification images for a change matrix.
 
 ```JavaScript
 
@@ -142,7 +154,7 @@ var change_FromTo =imageBaseline.multiply(10).add(image2024).rename('FromToChang
 
 ```
 
-Well, at this you might be keen to know the number of pixels for each matrix. Also, you may like to  see the matrix. To do this, we would use the frequency histogram tool.
+Well, at this point you might be keen to know the number of pixels for each matrix. Also, you may like to  see the matrix. To do this, we would use the frequency histogram tool.
 
 ```JavaScript
 var changeMatrix_sum_pixels = change_FromTo.reduceRegion({
@@ -207,15 +219,16 @@ var landsatCol2 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
 
 //filter by study area
 .filterBounds(dalyNT)
+
 //print the image collection to the Console
 print(landsatCol2 , 'landsatCol2 ')
 
 
 //visualise the collection
-//Map.addLayer(landsatCol2, {bands:["SR_B4", "SR_B3", "SR_B2"], min:6000, max:12000})
+Map.addLayer(landsatCol2, {bands:["SR_B4", "SR_B3", "SR_B2"], min:6000, max:12000})
 
 //turn on the boundary of the study area again to overlay on the collection
-//Map.addLayer(dalyNT.style(symbology), {}, 'Daly River Catchment');
+Map.addLayer(dalyNT.style(symbology), {}, 'Daly River Catchment');
 
 
 //mask cloud and shadow pixels
@@ -229,21 +242,18 @@ var imgCol2img_2 = landsatCol2.mosaic()
 
 //select the relevant bands, 2. trim the image to the study area, 3. print result to Console
 var select_bands_2 = imgCol2img_2.select("SR_B2", "SR_B3", "SR_B4", "SR_B5","SR_B6","SR_B7").clip(dalyNT)
-//print (select_bands_2, 'select_bands')
-
 
 // apply the vegetation indices function
 var image2classify_2024 = vegetation_indices(select_bands_2);
-//print (image2classify_2024, 'image2classify 2024');
 
 //visualise the image to be classified
-//Map.addLayer(image2classify_2024, {bands:["SR_B4", "SR_B3", "SR_B2"], min:6000, max:12000}, 'Mosaicked-2')
+Map.addLayer(image2classify_2024, {bands:["SR_B4", "SR_B3", "SR_B2"], min:6000, max:12000}, 'Mosaicked-2')
 
 // apply the model to classify the image
 var finalClassification2024 = image2classify_2024.classify(rfClassification);
 
 //visualise the classified image 2024
-//Map.addLayer(finalClassification2024, viz, 'Habitat Mapping 2024');
+Map.addLayer(finalClassification2024, viz, 'Habitat Mapping 2024');
 
 //compute area for each class
 var habitat_all_2024 = ee.Image.pixelArea().addBands(finalClassification2024).divide(1e6)
@@ -260,7 +270,8 @@ print(habitat_all_2024,'habitat_all_2024')
 
 //now subtract the baseline image from the current image to observe changed areas, thus, zero must be masked as it means no-change
 var changedAreas = image2024.subtract(imageBaseline).neq(0) // changed pixels would be assigned 1
-//Map.addLayer(changedAreas, {min:0, max:1, palette:['gray', 'red']}, 'Changed Areas')
+
+Map.addLayer(changedAreas, {min:0, max:1, palette:['gray', 'red']}, 'Changed Areas')
 
 //let's find the between-class changes; a cover change to a different cover
 var change_FromTo =imageBaseline.multiply(10).add(image2024).rename('FromToChange')
@@ -277,7 +288,6 @@ var changeMatrix_sum_pixels = change_FromTo.reduceRegion({
 })
 
 //print the result to Console
-
 print( changeMatrix_sum_pixels.get('FromToChange'), ' ChangeMatrix Total Pixels')
 
 
