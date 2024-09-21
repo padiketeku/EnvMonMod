@@ -22,11 +22,12 @@ Collect the recent Landsat imagery (this should be surface reflectance product) 
 # Workflow
 
 ```JavaScript
+
 //get recent Landsat 8 collection 
 var landsatCol2 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
 
-//filter by date '2013-07-11','2013-07-31'
-.filterDate('2024-07-11','2024-07-30') //'2024-05-11','2024-05-27'//2024-06-17','2024-06-30//use this: 2024-07-11','2024-07-30
+//filter by date 
+.filterDate('2024-07-11','2024-07-30') //for consistency with baseline
 
 //filter by study area
 .filterBounds(dalyNT)
@@ -51,10 +52,8 @@ var landsatCol2 = landsatCol2.map(fmask)
 var imgCol2img_2 = landsatCol2.mosaic()
 
 
-//select the relevant bands, 2. trim the image to the study area, 3. print result to Console
+//1.select the relevant bands, 2. trim the image to the study area, 3. print result to Console
 var select_bands_2 = imgCol2img_2.select("SR_B2", "SR_B3", "SR_B4", "SR_B5","SR_B6","SR_B7").clip(dalyNT)
-//print (select_bands_2, 'select_bands')
-
 
 // apply the vegetation indices function
 var image2classify_2024 = vegetation_indices(select_bands_2);
@@ -63,15 +62,26 @@ print (image2classify_2024, 'image2classify 2024');
 //visualise the image to be classified
 Map.addLayer(image2classify_2024, {bands:["SR_B4", "SR_B3", "SR_B2"], min:6000, max:12000}, 'Mosaicked-2')
 
+```
+
+![image](https://github.com/user-attachments/assets/048326c2-5c0e-46df-aec7-ef14b09a5d2b)
+
+
+```JavaScript
+
 // apply the model to classify the image
 var finalClassification2024 = image2classify_2024.classify(rfClassification);
 
 //visualise the classified image 2024
 Map.addLayer(finalClassification2024, viz, 'Habitat Mapping 2024');
-
 ```
 
+![image](https://github.com/user-attachments/assets/6f5aa783-629b-4395-ab8e-ac60ed216901)
 
+
+
+
+Quantify change
 
 ```JavaScript
 
