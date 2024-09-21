@@ -24,6 +24,9 @@ Collect the recent Landsat imagery (this should be surface reflectance product) 
 
 # Workflow
 
+- Collect the relevant images for the given task
+
+
 ```JavaScript
 
 //get recent Landsat 8 collection 
@@ -70,6 +73,9 @@ Map.addLayer(image2classify_2024, {bands:["SR_B4", "SR_B3", "SR_B2"], min:6000, 
 ![image](https://github.com/user-attachments/assets/048326c2-5c0e-46df-aec7-ef14b09a5d2b)
 
 
+- Apply trained classification model
+
+  
 ```JavaScript
 
 // apply the model to classify the image
