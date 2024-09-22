@@ -69,6 +69,10 @@ print (fireData, 'fireData')
 ```
 
 The collection has 240 images (as of 2024). Drop-down "features" to see the list of images (fgure below). Explore the image properties and take note of "system: index:" for the product date. 
+
+
+
+
 ![image](https://github.com/user-attachments/assets/ad05ed08-696a-4a02-8180-5f982a989566)
 
 
