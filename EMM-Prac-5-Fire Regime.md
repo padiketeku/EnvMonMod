@@ -195,6 +195,18 @@ Map.addLayer(fireCNT, visCnt, 'Fire frequency', true, 0.8);
 
 ```
 
+
+The fire frequency image may be like the one below:
+
+
+
+![image](https://github.com/user-attachments/assets/2d1609bd-dfda-40ae-945a-167074043efc)
+
+
+
+
+
+
 Fire seasonality (most frequently burnt day of the year)
 
 
@@ -212,7 +224,18 @@ var visDOY = {
 Map.addLayer(fireMask.mode(), visDOY, 'Most frequently burnt DOY', true, 0.8);
 ```
 
+
+![image](https://github.com/user-attachments/assets/a488415f-0c35-441c-9a96-c6fa55faa0f1)
+
+
+
+
+
+Plot the results
+
+
 In addition to the spatial distribution, we can prouce plots to support the observations.
+
 
 1, Fire frequency- monthly step
 
@@ -238,6 +261,11 @@ In addition to the spatial distribution, we can prouce plots to support the obse
 ```
 
 
+![image](https://github.com/user-attachments/assets/a8e5c18b-01ce-47ad-8995-e7f0ba3bc4fc)
+
+
+
+
 2, Annual fire frequencies
 
 ```JavaScript
@@ -261,3 +289,6 @@ var opt_fireYr = {
      .setOptions(opt_fireYr);
  print(fireYr_chart, 'Annual fire frequencies per region');
 ```
+
+
+![image](https://github.com/user-attachments/assets/9e9501be-6465-4083-8e45-262d071f055e)
