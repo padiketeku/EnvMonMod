@@ -162,7 +162,7 @@ var fireDOY = ee.ImageCollection.fromImages(years.map(function(year) {
 
 //fire seasonality
 
-var fireDOY = fireMask.mode(), visDOY, 'Most frequently burnt DOY', true, 0.8);
+var fireDOY = (fireMask.mode(), visDOY, 'Most frequently burnt DOY', true, 0.8);
 ```
 
 
