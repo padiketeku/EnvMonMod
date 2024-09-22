@@ -296,3 +296,20 @@ Your chart may be similar to the one below.
 
 
 ![image](https://github.com/user-attachments/assets/9e9501be-6465-4083-8e45-262d071f055e)
+
+
+
+Intepret the two charts. Critique the observations.
+
+
+# Conclusion
+
+MODIS fire product, which is a global data of 250 resolution, was used to characterise the fire regime of the Daly River Catchment. Both spatial and non-spatial outputs were created, the number of fires were highest in 2002, 2004 and 2006.
+Similar analysis with higher resolution imagery, such as Sentinel-2, may improve the accuracy of the observations.
+
+
+# Code
+
+
+
+**The End**
