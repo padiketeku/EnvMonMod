@@ -142,6 +142,11 @@ var fireCNT = ee.ImageCollection.fromImages(years.map(function(year) {
     .select('BurnDate').reduce(ee.Reducer.countDistinct()) // Reduce image collection by counting distinct day of the year
     .set('year', year);
 }));
+
+
+// fire frequency
+var fireCNT = fireCNT.sum()
+
 ```
 
 Count the number of fires in a month, the output is an image collection. 
@@ -155,9 +160,104 @@ var fireDOY = ee.ImageCollection.fromImages(years.map(function(year) {
     .set('year', year);
 }));
 
+//fire seasonality
+
+var fireDOY = fireMask.mode(), visDOY, 'Most frequently burnt DOY', true, 0.8);
 ```
 
 
 - **Visualisation**
 
 
+
+```JavaScript
+
+// set map center to ensure the images would display to the study area
+
+Map.centerObject(dalyNT, 10);
+
+```
+
+Fire frequency
+
+Light colours are areas that burn less frequently, dark colours are areas that burn often
+
+```JavaScript
+
+var visCnt = {
+    min:2, max:12, 
+    palette:['eef5b7','99f74f','4ff7b0','4fc2f7','3940db',
+            '7239db','db39db','db395c','7c1229']};
+
+// Calculate overall fire frequencies "on-the-fly" and add to map
+
+Map.addLayer(fireCNT, visCnt, 'Fire frequency', true, 0.8);
+
+```
+
+Fire seasonality (most frequently burnt day of the year)
+
+
+Here, the mode function would be used.
+
+
+```JavaScript
+
+var visDOY = {
+    min:1, max:366, 
+    palette:['008000','00b050','92d050','c9ee12','ffd966','bf8f00',
+    'bf8f00','ffd966','c9ee12','92d050','00b050','008000']}; // light colours represent early fires, dark colours are late fires
+
+//visualise the result
+Map.addLayer(fireMask.mode(), visDOY, 'Most frequently burnt DOY', true, 0.8);
+```
+
+In addition to the spatial distribution, we can prouce plots to support the observations.
+
+1, Fire frequency- monthly step
+
+
+```JavaScript
+// Monthly fire frequencies per year for the whole area
+ var opt_cntFireMonth = {
+   title: 'Monthly fire frequencies: Daly River Catchment, 2001 to 2023',
+   pointSize: 3,
+   hAxis: {title: 'Year Month'},
+   vAxis: {title: 'Number of fires'},
+ };
+
+// Plot day count of monthly fires (Line chart the number of days a fire occured from 2001 to 2023)
+ var cntFireMonth_chart = ui.Chart.image.series({ 
+   imageCollection: fireMask.select('BurnDate'), 
+   xProperty: 'yrmnth',
+   region: dalyNT,
+   reducer: ee.Reducer.countDistinct(),
+   scale: 250 
+ }).setOptions(opt_cntFireMonth).setChartType('LineChart');
+ print(cntFireMonth_chart, 'day count of monthly fires');
+```
+
+
+2, Annual fire frequencies
+
+```JavaScript
+var opt_fireYr = {
+   title: 'Count number of Fires per year',
+   hAxis: {title: 'Time'},
+   vAxis: {title: 'Fire Frequency'},
+   colors: ['1d6b99', '39a8a7', '0f8755', '76b349']
+ };
+
+// create a chart with a reducer
+ var fireYr_chart = ui.Chart.image.seriesByRegion({
+   imageCollection: fireCNT, 
+   regions: dalyNT, 
+   reducer: ee.Reducer.sum(), 
+   band: 'BurnDate_count', 
+   scale: 250, 
+   xProperty: 'year', 
+   seriesProperty: 'region'})
+     .setChartType('ColumnChart')
+     .setOptions(opt_fireYr);
+ print(fireYr_chart, 'Annual fire frequencies per region');
+```
