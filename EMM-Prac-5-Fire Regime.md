@@ -36,6 +36,18 @@ Once you click on the data filename : **FireCCI51: MODIS Fire_cci Burned Area Pi
 The "DESCRIPTION" gives users insight into the data. This is a monthly global fire data and the spatial resolution is approximately 250m. The dataset is available from 2001 to date.
 When you click the "BANDS" tab, you may notice that the collection has four bands, including BurnDate, ConfidenceLevel,  LandCover and ObservedFlag. See the band description, and take note of the Min and Max values for BurnDate and ConfidenceLevel as these are the two bands relevant for this project.
 
+2, Import dataset
+It is possible to use the **IMPORT** to get the dataset into Code Editor. However, we would not use this approach. Rather, copy the **Collection Snippet** and then create a variable for the image collection. Your snippet should be as shown below.
+
+```JavaScript
+var fireData = ee.ImageCollection("ESA/CCI/FireCCI/5_1")
+```
+
+3, Filter dataset
+
+
+
+
 
 
 
