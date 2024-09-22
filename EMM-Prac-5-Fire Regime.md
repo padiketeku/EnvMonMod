@@ -28,7 +28,7 @@ The search result is as shown below, the data of interest highlighted in red pol
 ![image](https://github.com/user-attachments/assets/d0b6dfaf-0016-4b70-a30b-2660e00680ac)
 
 
-Once you click on the data filename : **FireCCI51: MODIS Fire_cci Burned Area Pixel Product, Version 5.1** a figure like the one shown below may pop up.
+Once you click on the data filename : **FireCCI51: MODIS Fire_cci Burned Area Pixel Product, Version 5.1** , a figure like the one shown below may pop up.
 
 ![image](https://github.com/user-attachments/assets/40068c6a-f739-48fa-94a8-c83fe30136e9)
 
