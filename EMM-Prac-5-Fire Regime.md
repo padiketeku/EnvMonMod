@@ -144,10 +144,10 @@ var fireCNT = ee.ImageCollection.fromImages(years.map(function(year) {
 }));
 
 
-// fire frequency
-var fireCNT = fireCNT.sum()
-
 ```
+
+
+
 
 Count the number of fires in a month, the output is an image collection. 
 
