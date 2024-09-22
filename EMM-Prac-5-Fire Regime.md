@@ -15,7 +15,7 @@ Fire can start naturally or through human activities; the intensity can be high 
 
 # Task
 
-You have been recently employed by the NTG as Senior Rangeland Monitoring Officer – Remote Sensing and one of your KPIs is to produce and share information on the fire frequency of the Daly River Catchment. 
+You have been employed by the Northern Territor Government as *Senior Rangeland Monitoring Officer – Remote Sensing* and one of your KPIs is to produce and share information on the fire frequency of the Daly River Catchment. 
 Because of consistency with existing data, you were tasked to use MODIS FireCC151, a data product developed as part of the European Space Agency (ESA) Climate Change Initiative (CCI) Programme. For a thorough analysis, you were asked to explore every image collected over the region of interest.
 
 # Workflow
