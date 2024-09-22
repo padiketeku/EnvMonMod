@@ -291,4 +291,8 @@ var opt_fireYr = {
 ```
 
 
+Your chart may be similar to the one below.
+
+
+
 ![image](https://github.com/user-attachments/assets/9e9501be-6465-4083-8e45-262d071f055e)
