@@ -346,7 +346,7 @@ var habitat_all = ee.Image.pixelArea().addBands(finalClassification).divide(1e6)
                     reducer: ee.Reducer.sum().group(1),
                     geometry: dalyNT,
                     scale:30,
-                    bestEffort: true
+                    bestEffort: true //without this computation may time out
                   })
 
 print(habitat_all, 'habitat_all')
@@ -540,7 +540,7 @@ var habitat_all = ee.Image.pixelArea().addBands(finalClassification).divide(1e6)
                     reducer: ee.Reducer.sum().group(1),
                     geometry: dalyNT,
                     scale:30,
-                    bestEffort: true
+                    bestEffort: true //without this computation may time out
                   })
 
 print(habitat_all, 'habitat_all')
