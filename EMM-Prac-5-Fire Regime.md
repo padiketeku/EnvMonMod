@@ -12,7 +12,7 @@
 
 # Workflow
 
-## Dataset
+## MODIS Fire Data
 
 1, Type into the search bar "MODIS fire" as shown below.
 
