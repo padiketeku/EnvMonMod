@@ -68,27 +68,86 @@ var fireData = fireData
 print (fireData, 'fireData')
 ```
 
-The collection has 240 images (as of 2024). Drop-down "features" to see the list of images. Explore the image properties and take note of "system: index:" for the product date. In the next step, would add two more items to the properties- 'year'and 'yrmnth'- for the purposes of producing monthly distibution of fire in the study area.
-
-
+The collection has 240 images (as of 2024). Drop-down "features" to see the list of images (fgure below). Explore the image properties and take note of "system: index:" for the product date. 
 ![image](https://github.com/user-attachments/assets/ad05ed08-696a-4a02-8180-5f982a989566)
 
 
-In addition, we would want to further trim the data to the study area; given the dataset is an image collection, every image in the collection must be trimmed to the study. A user-defined function would be used to do this. In this function, additional properties, i.e., 'year' and 'year_month', would be created as the project aims to analyse fires in monthly time step.
+
+
+In the next step, would add two more items to the properties- 'year'and 'yrmnth'- for the purposes of producing monthly distibution of fire in the study area.
+
+
+We would want to further trim the data to the study area; given the dataset is an image collection, every image in the collection must be trimmed to the study. A user-defined function would be used to do this. In this function, the additional image properties would be created.
 
 ```JavaScript
-function(img){
-return img.clip(dalyNT)
+var fire = fireData.map(function(img) { 
+      var date = ee.Date(img.get('system:time_start'));
+      var year = date.get('year');
+      var yrmnth = date.format('YYYY_MM');
+      return img
+              .clip(dalyNT) //trims image to study area
+              .set('year', year) //sets a new property called 'year'
+              .set('yrmnth', yrmnth); //sets a new property 'yrmnth'
+    });  
+```
 
-//add 'year'as a property to image
-.set('year', ee.Image(img).date().get('year'))
+Note that the function has been applied to the image collection , **fireData** , and this achieved through the **.map** . Now, print the variable to see if the image properties have two additional items (year and yrmnth).
 
-//add year and month ('yrmnth') as a property to image
-.set('yrmnth',ee.Date.parse('YYYY_MM_DD', (img.get('system:index'))).format('YYYY_MM'));
-}
+```JavaScript
+print (fire, 'fire')
+```
+
+The properties of the first image in the collection is shown below. The new properties are highlighted using a red polgyon.
+
+
+![image](https://github.com/user-attachments/assets/8b30f7da-db79-4718-9163-271c0dbcc216)
+
+
+
+Optical imagery can be made less useful by cloud cover and thus it is important to ensure 'bad' pixels (or data) is excluded from the analysis. Low quality data can skew results so for a robust study you must select the data with high ocnfidence level. We would filter the data again selecting fire pixels with confidence level no less than 95% (a standard for ecological studies).
+
+```JavaScript
+
+var fireMask = fire.map(function(img) {
+  var conf = img.select('ConfidenceLevel');
+  var level = conf.gte(95);
+  return img
+      .updateMask(level)
+      .select('BurnDate') //return only 'BurnDate' 
+      .set('year', ee.Image(img).date().get('year'))
+      .set('yrmnth', ee.Image(img).get('yrmnth'));
+});
 ```
 
 
+4, Data analysis
+
+This is the time to analyse the data to determine number of fires in a month, year, and the spatial distibution of the frequency. 
+
+Count the number of fires in a year, the output is an image collection. 
+
+```JavaScript
+
+var fireCNT = ee.ImageCollection.fromImages(years.map(function(year) {
+  return fireMask
+    .filterMetadata('year', 'equals', year) // Filter image collection by year
+    .select('BurnDate').reduce(ee.Reducer.countDistinct()) // Reduce image collection by counting distinct day of the year
+    .set('year', year);
+}));
+```
+
+Count the number of fires in a month, the output is an image collection. 
+
+```JavaScript
+
+var fireDOY = ee.ImageCollection.fromImages(years.map(function(year) {
+  return fireMask
+    .filterMetadata('year', 'equals', year) 
+    .select('BurnDate').reduce(ee.Reducer.firstNonNull()) //returns the first of the non-null observation in BurnDate
+    .set('year', year);
+}));
+
+```
 
 
 
