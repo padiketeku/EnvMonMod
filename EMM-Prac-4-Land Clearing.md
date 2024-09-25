@@ -269,7 +269,7 @@ We would use mean and standard deviation to detect pixels that were cleared. Bef
 var deltaNDVIcol = ee.ImageCollection.fromImages([deltaNDVI2014_2015, deltaNDVI2015_2016, deltaNDVI2016_2017, deltaNDVI2017_2018, deltaNDVI2014_2018])
 ```
 
-To detect land clearing we would use a method in this paper.
+To detect land clearing we would use a method in this [paper](https://doi.org/10.3832/IFOR0909-007).
 It is a threshold methods in which land clearing pixels is defined by subtracting 1.5 standard deviation (SD) from mean: mean-(1.5xSD). Corollary, the threshold for growth or regrowth (regrwoth is when an identified cleared pixel recovers post-clearing) is mean+(1.5xSD). To satify this threshold, we would have to compute the mean and SD for the deltaNDVI images.
 
 ```JavaScript
