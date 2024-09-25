@@ -344,6 +344,124 @@ var imgLC_2014_2018=deltaNDVI2014_2018 .updateMask(mask5_LC)
 Map.addLayer( imgLC_2014_2018,{}, 'Land Clearing 2014-2018')
 ```
 
+You have five layers in the layer manager, the figure below is the the layer showing land clearing over the 5 years. Given the change observed was significantly small, you must zoom in on the pixels as shown below. The change pixels are the dark pixels.
+Explore the other change images for the interannual clearing. Which years did you observe land clearing?
+
+
+
+![image](https://github.com/user-attachments/assets/e444aeb0-d66e-4176-9865-e0d57fd7284e)
+
+
+### Detect growth 
+
+Out of curiosity and also to have a complete story you would want to know any growth or regrowth pattern in the catchment. The code below detect grwoth in the study area.
+
+```JavaScript
+
+//growth thresholds
+var thresh1_G = -0.0016+(1.5*0.1844) //2014-15
+var thresh2_G = -0.0544+(1.5*5.7151) //2015-16
+var thresh3_G = 0.0523+(1.5*4.2287) //2016-17
+var thresh4_G = 0.0095+(1.5*0.3937) //2017-18
+var thresh5_G = 0.01809+(1.5*0.3487) //2014-18
+
+//detect growth
+var mask1_G= deltaNDVI2014_2015.gt(thresh1_G)
+var imgG_2014_2015=deltaNDVI2014_2015.updateMask(mask1_G)
+Map.addLayer(imgG_2014_2015,{}, 'Growth 2014-2015')
+print(imgG_2014_2015, 'imgG_2014_2015')
+
+var mask2_G= deltaNDVI2015_2016.gt(thresh2_G)
+var imgG_2015_2016=deltaNDVI2015_2016.updateMask(mask2_G)
+Map.addLayer( imgG_2015_2016,{}, 'Growth 2015-2016')
+
+var mask3_G= deltaNDVI2016_2017.gt(thresh3_G)
+var imgG_2016_2017=deltaNDVI2016_2017.updateMask(mask3_G)
+Map.addLayer( imgG_2016_2017,{}, 'Growth 2016-2017')
+
+var mask4_G= deltaNDVI2017_2018.gt(thresh4_G)
+var imgG_2017_2018=deltaNDVI2017_2018.updateMask(mask4_G)
+Map.addLayer( imgG_2017_2018,{}, 'Growth 2017-2018')
+
+var mask5_G= deltaNDVI2014_2018.gt(thresh5_G)
+var imgG_2014_2018=deltaNDVI2014_2018 .updateMask(mask5_G)
+Map.addLayer( imgG_2014_2018,{}, 'Growth 2014-2018')
+
+```
+
+### Visualisation clearing and growth
+
+In the Layer Manager, you have all the land clearing and growth images that can be displayed separately. However, it is best to visualise land clearing and growth (and of course no-change) at the same time. To achieve this, we would explore the deltaNDVI images using conditional statements. The task demonstrates the long-term (2014-2018) change only.
+
+```JavaScript
+
+//firest set up the colour palette
+var palette = ['white', 'red', 'green']; //white = no change; red = clearing, green = regrowth
+
+var classes = deltaNDVI2014_2018.expression(
+
+    "(b(0) > 0.54114) ? 2" + //Regrowth
+
+      ": (b(0) < -0.50496) ? 1" + // LAND CLEARING
+
+        ": 0" //NO CHANGE
+
+);
+```
+
+Now, visualise the change classes using the code below
+
+```JavaScript
+Map.addLayer(classes.clip(dalyNT),
+
+             {min: 0, max: 2, palette: palette},
+
+             'Clearing,Growth,NoChange 2014-2018');
+```
+
+You may quickly observe land clearing and growth pixels are hardly visible as there number of pixels was very small. You must explore your change image to find red and green pixels, this means you must zoom in on these pixels. A mixture of land clearing and growth may be found near Edith.
+
+
+![image](https://github.com/user-attachments/assets/9047b49a-6f97-4421-a578-ab75320fb06b)
+
+
+## Spatial extent of change
+
+What is the extent of land clearing and growth? At this point we know by the spatial information that land clearing and growth for 2014-2018 was small. However, we need to quantify this
+
+```JavaScript
+//size of land cleared between 2014-2018 (in hectares)
+var select_landClearing =  classes.select('constant').eq(1)
+var area_landClearing_ha =  select_landClearing.multiply(ee.Image.pixelArea()).divide(1e4);
+var total_area_cleared = area_landClearing_ha.reduceRegion({
+  reducer: ee.Reducer.sum(),
+  geometry: dalyNT.geometry(),
+  scale: 30,
+  maxPixels: 1e12
+});
+print(total_area_cleared, 'Total Area Cleared, 2014-2018')
+
+//size of growth between 2014-2018 (in hectares)
+var select_growth =  classes.select('constant').eq(2)
+var area_growth_ha =  select_growth.multiply(ee.Image.pixelArea()).divide(1e4);
+var total_area_growth = area_growth_ha.reduceRegion({
+  reducer: ee.Reducer.sum(),
+  geometry: dalyNT.geometry(),
+  scale: 30,
+  maxPixels: 1e12
+});
+print(total_area_growth, 'Total Growth, 2014-2018')
+
+```
+
+
+Your result in the Console may be as the figure shown below.
+
+![image](https://github.com/user-attachments/assets/1648e359-274d-4835-8e49-6b0368d39515)
+
+
+
+The extent of land clearing and growth was approximately 65ha and 4ha, respectively.
 
 
 # Conclusion
