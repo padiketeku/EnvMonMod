@@ -270,7 +270,7 @@ var deltaNDVIcol = ee.ImageCollection.fromImages([deltaNDVI2014_2015, deltaNDVI2
 ```
 
 To detect land clearing we would use a method in this [paper](https://doi.org/10.3832/IFOR0909-007).
-It is a threshold methods in which land clearing pixels is defined by subtracting 1.5 standard deviation (SD) from mean: mean-(1.5xSD). Corollary, the threshold for growth or regrowth (regrwoth is when an identified cleared pixel recovers post-clearing) is mean+(1.5xSD). To satify this threshold, we would have to compute the mean and SD for the deltaNDVI images.
+It is a threshold method in which land clearing pixels are defined by subtracting 1.5 standard deviation (SD) from mean: mean-(1.5xSD). Corollary, the threshold for growth or regrowth (regrowth is when an identified cleared pixel recovers post-clearing) is mean+(1.5xSD). To satify this threshold, we would have to compute the mean and SD for the deltaNDVI images.
 
 ```JavaScript
 //function to comupte mean and standard deviation of deltaNDVI
@@ -297,7 +297,7 @@ var mean_stdev = deltaNDVIcol.map(meanSD);
 print( mean_stdev, 'statistics');
 ```
 
-In the Console, expand the image properties to view the meand and SD values. Your screen may be as shown below. 
+In the Console, expand the image properties to view the mean and SD values. Your screen may be as shown below. 
 
 ![image](https://github.com/user-attachments/assets/03f5f3b2-9077-47be-b7fc-aa64099edf0c)
 
@@ -344,7 +344,7 @@ var imgLC_2014_2018=deltaNDVI2014_2018 .updateMask(mask5_LC)
 Map.addLayer( imgLC_2014_2018,{}, 'Land Clearing 2014-2018')
 ```
 
-You have five layers in the layer manager, the figure below is the the layer showing land clearing over the 5 years. Given the change observed was significantly small, you must zoom in on the pixels as shown below. The change pixels are the dark pixels.
+You have five layers in the Layer Manager, the figure below is the the layer showing land clearing over the 5 years. Given the change observed was significantly small, you must zoom in on the pixels as shown below. The change pixels are the dark pixels.
 Explore the other change images for the interannual clearing. Which years did you observe land clearing?
 
 
