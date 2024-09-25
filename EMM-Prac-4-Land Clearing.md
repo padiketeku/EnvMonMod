@@ -799,6 +799,6 @@ Make a report of 1000 words that answer the following: <br>
 2, Produce maps for the inter-annual and long-term clearing and growth. Only include maps that show significant changes <br>
 3, Produce a table showing the extent of clearing and growth for the inter-annual analysis <br>
 4, Interpret your maps and tables <br>
-5, Critical evaluate the task, include what you have learned, the challenges encountered (solved or pending), and how the results can be improved
+5, Critically evaluate the task, include what you have learned, the challenges encountered (solved or pending), and how the results can be improved
 
 **The End**
