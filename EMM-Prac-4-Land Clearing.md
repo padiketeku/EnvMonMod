@@ -466,11 +466,327 @@ The extent of land clearing and growth was approximately 65ha and 4ha, respectiv
 
 # Conclusion
 
-
+This activity has explored Landsat 8 data for the detection of land clearing and regrowth in the Daly River Catchment, NT. Only 2014-2018 changes were investigated and the long-term change showed that the extent of land clearing and regrowth was small.
 
 
 # Code
 
+```JavaScript
+//get Landsat 8 collection for 2014
+var landsatCol2014 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
+
+//filter by date 
+.filterDate('2014-06-01','2014-06-17') 
+//filter by dry season
+.filter(ee.Filter.calendarRange(6, 6, 'month'))
+
+//filter by study area
+.filterBounds(dalyNT)
+
+print(landsatCol2014 , 'landsatCol2014 ')
+
+//get Landsat 8 collection for 2015
+var landsatCol2015 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
+
+//filter by date 
+.filterDate('2015-06-01','2015-06-17') 
+//filter by dry season
+.filter(ee.Filter.calendarRange(6, 6, 'month'))
+
+//filter by study area
+.filterBounds(dalyNT)
+
+print(landsatCol2015 , 'landsatCol2015 ')
+
+//get Landsat 8 collection for 2016
+var landsatCol2016 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
+
+//filter by date 
+.filterDate('2016-06-01','2016-06-17')
+//filter by dry season
+.filter(ee.Filter.calendarRange(6, 6, 'month'))
+
+//filter by study area
+.filterBounds(dalyNT)
+
+print(landsatCol2016 , 'landsatCol2016 ')
+
+//get Landsat 8 collection for 2017
+var landsatCol2017 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
+
+//filter by date
+.filterDate('2017-06-01','2017-06-17')
+//filter by dry season
+.filter(ee.Filter.calendarRange(6, 6, 'month'))
+
+//filter by study area
+.filterBounds(dalyNT)
+
+print(landsatCol2017 , 'landsatCol2017 ')
+
+//get Landsat 8 collection for 2018
+var landsatCol2018 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
+
+//filter by date 
+.filterDate('2018-06-01','2018-06-17')
+//filter by dry season
+.filter(ee.Filter.calendarRange(6, 6, 'month'))
+
+//filter by study area
+.filterBounds(dalyNT)
+
+print(landsatCol2018 , 'landsatCol2018 ')
+
+
+//cloud cover present in images, especially the 2017 collection
+//mask cloud and cloud shadow; and select relevant bands
+var landsatCol2014 =landsatCol2014.map(fmask).select(['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7'])
+var landsatCol2015 =landsatCol2015.map(fmask).select(['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7'])
+var landsatCol2016 =landsatCol2016.map(fmask).select(['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7'])
+var landsatCol2017 =landsatCol2017.map(fmask).select(['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7'])
+var landsatCol2018 =landsatCol2018.map(fmask).select(['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7'])
+
+
+//mosaic images in the collection
+var img2014 = landsatCol2014.mosaic()
+var img2015 = landsatCol2015.mosaic()
+var img2016 = landsatCol2016.mosaic()
+var img2017 = landsatCol2017.mosaic()
+var img2018 = landsatCol2018.mosaic()
+
+
+//mask non vegetation and burnt pixels-we would use NDVI 
+// a function that computes vegetation indices  
+var vegetation_indices = function(image) {
+  var blue = image.select('SR_B2').multiply(0.0000275).add(-0.2); // selects band and re-scales it
+  var green = image.select('SR_B3').multiply(0.0000275).add(-0.2); // 
+  var red = image.select('SR_B4').multiply(0.0000275).add(-0.2);  // 
+  var nir = image.select('SR_B5').multiply(0.0000275).add(-0.2); //
+  var swir1 =image.select('SR_B6').multiply(0.0000275).add(-0.2); //
+  var swir2 =image.select('SR_B7').multiply(0.0000275).add(-0.2); //
+  var ndvi = nir.subtract(red).divide(nir.add(red)).rename('NDVI');
+  
+  //adds NDVI as band to existing six bands 
+  return image.addBands(ndvi);
+ 
+};
+
+//apply the vegetation indices function to the images
+var img2014 =vegetation_indices(img2014)
+var img2015 =vegetation_indices(img2015)
+var img2016 =vegetation_indices(img2016)
+var img2017 =vegetation_indices(img2017)
+var img2018 =vegetation_indices(img2018)
+
+
+//mask non-vegetation pixels
+
+//20214
+var img2014_veg = img2014.select('NDVI').gte(0.4) //mask layer
+var img2014_veg = img2014.updateMask(img2014_veg) //apply mask 
+
+//visualise the layer with only vegetation pixels; these are the white pixels you see
+Map.addLayer(img2014_veg, { min:0.3, max:0.7}, 'img2014_veg')
+
+
+//2015
+var img2015_veg = img2015.select('NDVI').gte(0.4) //mask layer
+var img2015_veg = img2015.updateMask(img2015_veg) //apply mask 
+
+
+//2016
+var img2016_veg = img2016.select('NDVI').gte(0.4) //mask layer
+var img2016_veg = img2016.updateMask(img2016_veg) //apply mask
+
+
+//2017
+var img2017_veg = img2017.select('NDVI').gte(0.4) //mask layer
+var img2017_veg = img2017.updateMask(img2017_veg) //apply mask 
+
+
+//2018
+var img2018_veg = img2018.select('NDVI').gte(0.4) //mask layer
+var img2018_veg = img2018.updateMask(img2018_veg) //apply mask 
+print(img2018_veg, 'img2018_veg')
+
+
+//delta NDVI
+// difference in NDVI between two successive years, rename band and clip to study area
+var deltaNDVI2014_2015 = img2014_veg.select('NDVI').subtract(img2015_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
+print(deltaNDVI2014_2015, 'deltaNDVI2014')
+Map.addLayer(deltaNDVI2014_2015, {},'deltaNDVI2014')
+
+var deltaNDVI2015_2016 = img2015_veg.select('NDVI').subtract(img2016_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
+var deltaNDVI2016_2017 = img2016_veg.select('NDVI').subtract(img2017_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
+var deltaNDVI2017_2018 = img2017_veg.select('NDVI').subtract(img2018_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
+var deltaNDVI2014_2018 = img2014_veg.select('NDVI').subtract(img2018_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT) //five year change
+
+//visualise the long-term change n vegetation
+Map.addLayer(deltaNDVI2014_2018, {},'deltaNDVI2014_2018')
+
+//histogram for the 2014-2018 change
+var histogram_deltaNDVI2014_2018=
+    ui.Chart.image.histogram({
+      image: deltaNDVI2014_2018,
+      region: dalyNT.geometry(), 
+      scale: 5000,
+      minBucketWidth: 0.0001
+      //maxPixels:1e12
+      //maxBuckets: 2
+    })
+        .setOptions({
+          title: 'A histogram for the 2014-2018 change ',
+          hAxis: {
+            //title: 'histogram',
+            titleTextStyle: {italic: false, bold: true},
+          },
+          vAxis:
+              {title: 'Count', titleTextStyle: {italic: false, bold: true}},
+          colors: ['cf513e', '1d6b99', 'f0af07']
+        });
+print(histogram_deltaNDVI2014_2018, 'histogram_deltaNDVI2014_2018');
+
+//analysis to determine land clearing and growth
+//first, put the images together as a collection
+
+//collection of deltaNDVI images
+var deltaNDVIcol = ee.ImageCollection.fromImages([deltaNDVI2014_2015, deltaNDVI2015_2016, deltaNDVI2016_2017, deltaNDVI2017_2018, deltaNDVI2014_2018])
+
+
+//now that we have the daltaNDVI we can use a threshold method again considering the mean and standard deviation
+//values. we would follow this method to specify thresholds: mean+1.5SD for regrowth and mean-1.5SD for clearing, else no-change
+
+//function to comupte mean and standard deviation of deltaNDVI
+var meanSD = function(image) {
+  
+  var reducers = ee.Reducer.mean().combine({
+  reducer2: ee.Reducer.stdDev(),
+  sharedInputs: true
+  });
+
+  var stats1 = ee.Image(image).reduceRegion({
+    reducer: reducers,
+    geometry: dalyNT.geometry(),
+    scale: 30,
+    bestEffort: true
+  });
+  
+  return ee.Image(image).set(stats1);
+
+};
+
+var mean_stdev = deltaNDVIcol.map(meanSD);
+
+print( mean_stdev, 'statistics');
+
+//define thresholds to determine clearing and regrowth
+
+//land clearing thresholds
+var thresh1_LC = -0.0016-(1.5*0.1844) //2014-15
+var thresh2_LC = -0.0544-(1.5*5.7151) //2015-16
+var thresh3_LC = 0.0523-(1.5*4.2287) //2016-17
+var thresh4_LC = 0.0095-(1.5*0.3937) //2017-18
+var thresh5_LC = 0.01809-(1.5*0.3487) //2014-18
+
+
+//detect land clearing
+var mask1_LC= deltaNDVI2014_2015.lt(thresh1_LC)
+var imgLC_2014_2015=deltaNDVI2014_2015.updateMask(mask1_LC)
+Map.addLayer(imgLC_2014_2015,{}, 'Land Clearing 2014-2015')
+print(imgLC_2014_2015, 'imgLC_2014_2015')
+
+var mask2_LC= deltaNDVI2015_2016.lt(thresh2_LC)
+var imgLC_2015_2016=deltaNDVI2015_2016.updateMask(mask2_LC)
+Map.addLayer( imgLC_2015_2016,{}, 'Land Clearing 2015-2016')
+
+var mask3_LC= deltaNDVI2016_2017.lt(thresh3_LC)
+var imgLC_2016_2017=deltaNDVI2016_2017.updateMask(mask3_LC)
+Map.addLayer( imgLC_2016_2017,{}, 'Land Clearing 2016-2017')
+
+var mask4_LC= deltaNDVI2017_2018.lt(thresh4_LC)
+var imgLC_2017_2018=deltaNDVI2017_2018.updateMask(mask4_LC)
+Map.addLayer( imgLC_2017_2018,{}, 'Land Clearing 2017-2018')
+
+var mask5_LC= deltaNDVI2014_2018.lt(thresh5_LC)
+var imgLC_2014_2018=deltaNDVI2014_2018 .updateMask(mask5_LC)
+Map.addLayer( imgLC_2014_2018,{color:'red'}, 'Land Clearing 2014-2018')
+
+// detect growth
+//growth thresholds
+var thresh1_G = -0.0016+(1.5*0.1844) //2014-15
+var thresh2_G = -0.0544+(1.5*5.7151) //2015-16
+var thresh3_G = 0.0523+(1.5*4.2287) //2016-17
+var thresh4_G = 0.0095+(1.5*0.3937) //2017-18
+var thresh5_G = 0.01809+(1.5*0.3487) //2014-18
+
+//detect growth
+var mask1_G= deltaNDVI2014_2015.gt(thresh1_G)
+var imgG_2014_2015=deltaNDVI2014_2015.updateMask(mask1_G)
+Map.addLayer(imgG_2014_2015,{}, 'Growth 2014-2015')
+print(imgG_2014_2015, 'imgG_2014_2015')
+
+var mask2_G= deltaNDVI2015_2016.gt(thresh2_G)
+var imgG_2015_2016=deltaNDVI2015_2016.updateMask(mask2_G)
+Map.addLayer( imgG_2015_2016,{}, 'Growth 2015-2016')
+
+var mask3_G= deltaNDVI2016_2017.gt(thresh3_G)
+var imgG_2016_2017=deltaNDVI2016_2017.updateMask(mask3_G)
+Map.addLayer( imgG_2016_2017,{}, 'Growth 2016-2017')
+
+var mask4_G= deltaNDVI2017_2018.gt(thresh4_G)
+var imgG_2017_2018=deltaNDVI2017_2018.updateMask(mask4_G)
+Map.addLayer( imgG_2017_2018,{}, 'Growth 2017-2018')
+
+var mask5_G= deltaNDVI2014_2018.gt(thresh5_G)
+var imgG_2014_2018=deltaNDVI2014_2018 .updateMask(mask5_G)
+Map.addLayer( imgG_2014_2018,{}, 'Growth 2014-2018')
+//print(imgG_2014_2018, 'imgG_2014_2018')
+
+//clearing and growth
+var palette = ['white', 'red', 'green']; //white = no change; red = clearing, green = regrowth
+
+var classes = deltaNDVI2014_2018.expression(
+
+    "(b(0) > 0.54114) ? 2" + //Regrowth
+
+      ": (b(0) < -0.50496) ? 1" + // LAND CLEARING
+
+        ": 0" //NO CHANGE
+
+);
+
+print(classes, '3-classes')
+
+Map.addLayer(classes.clip(dalyNT),
+
+             {min: 0, max: 2, palette: palette},
+
+             'Clearing,Growth,NoChange 2014-2018');
+			 
+
+//size of land cleared between 2014-2018 (in hectares)
+var select_landClearing =  classes.select('constant').eq(1)
+var area_landClearing_ha =  select_landClearing.multiply(ee.Image.pixelArea()).divide(1e4);
+var total_area_cleared = area_landClearing_ha.reduceRegion({
+  reducer: ee.Reducer.sum(),
+  geometry: dalyNT.geometry(),
+  scale: 30,
+  maxPixels: 1e12
+});
+print(total_area_cleared, 'Total Area Cleared, 2014-2018')
+
+//size of growth between 2014-2018 (in hectares)
+var select_growth =  classes.select('constant').eq(2)
+var area_growth_ha =  select_growth.multiply(ee.Image.pixelArea()).divide(1e4);
+var total_area_growth = area_growth_ha.reduceRegion({
+  reducer: ee.Reducer.sum(),
+  geometry: dalyNT.geometry(),
+  scale: 30,
+  maxPixels: 1e12
+});
+print(total_area_growth, 'Total Growth, 2014-2018')
+
+```
 
 
 
