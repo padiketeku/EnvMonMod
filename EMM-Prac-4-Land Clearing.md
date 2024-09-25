@@ -132,7 +132,7 @@ var img2018 = landsatCol2018.mosaic()
 
 ## Remove non-vegetation surfaces
 
-Land clearing is the removal of vegetation, so vegetation pixels must be retrieved to investigate land clearing. There are many approaches to detect vegetation pixels, but the NDVI method would be used. A function to compute NDVI is given below. Before the NDVI, the bands were transformed to have surface reflectance values normalised between 0-1. [The scale factor and offest values are in the metadata file](https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2)
+Land clearing is the removal of vegetation, so vegetation pixels must be retrieved to investigate land clearing. There are many approaches to detect vegetation pixels, but the NDVI method would be used. A function to compute NDVI is given below. Before the NDVI, the bands were transformed to have surface reflectance values normalised between 0-1. [The scale factor and offest values are in this metadata file](https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2)
 
 ```JavaScript
 // a function that computes vegetation indices  
@@ -196,6 +196,154 @@ var img2018_veg = img2018.updateMask(img2018_veg) //apply mask
 print(img2018_veg, 'img2018_veg')
 
 ```
+
+## Image differencing
+
+A simple approach to detect change is subtract two layers. In this task, the difference (i.e. change) in NDVI (i.e., vegetation) between two successive years would be computed for inter-annual and long-term changes. 
+The change is limited to the study area.
+
+```JavaScript
+var deltaNDVI2014_2015 = img2014_veg.select('NDVI').subtract(img2015_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
+var deltaNDVI2015_2016 = img2015_veg.select('NDVI').subtract(img2016_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
+var deltaNDVI2016_2017 = img2016_veg.select('NDVI').subtract(img2017_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
+var deltaNDVI2017_2018 = img2017_veg.select('NDVI').subtract(img2018_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
+var deltaNDVI2014_2018 = img2014_veg.select('NDVI').subtract(img2018_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT) //five year change
+```
+
+
+Visualise the change in vegetation between years, the 5 year change is displayed below. The black pixels are where vegetation change is observed.
+
+```JavaScript
+//visualise the long-term change n vegetation
+Map.addLayer(deltaNDVI2014_2018, {},'deltaNDVI2014_2018')
+```
+
+![image](https://github.com/user-attachments/assets/b94e21ad-f0fe-4f21-b53c-7a02938521f6)
+
+
+### Image histogram
+
+Aside from the spatial distribution of change, you may also want to chart the frequency distirbution using a histogram.
+
+```JavaScript
+//visualise the long-term change n vegetation
+Map.addLayer(deltaNDVI2014_2018, {},'deltaNDVI2014_2018')
+
+//histogram for the 2014-2018 change
+var histogram_deltaNDVI2014_2018=
+    ui.Chart.image.histogram({
+      image: deltaNDVI2014_2018,
+      region: dalyNT.geometry(), 
+      scale: 5000,
+      minBucketWidth: 0.0001
+      //maxPixels:1e12
+      //maxBuckets: 2
+    })
+        .setOptions({
+          title: 'A histogram for the 2014-2018 change ',
+          hAxis: {
+            //title: 'histogram',
+            titleTextStyle: {italic: false, bold: true},
+          },
+          vAxis:
+              {title: 'Count', titleTextStyle: {italic: false, bold: true}},
+          colors: ['cf513e', '1d6b99', 'f0af07']
+        });
+print(histogram_deltaNDVI2014_2018, 'histogram_deltaNDVI2014_2018');
+
+```
+
+
+![image](https://github.com/user-attachments/assets/5776886a-d085-4a66-85ed-edb6e5c6f21c)
+
+
+If you explore the histogram, the deltaNDVI values -0.032 to 0.042 are dominant (i.e., largest frequency/count).
+
+
+## Detect land clearing
+
+We would use mean and standard deviation to detect pixels that were cleared. Before this, let's combine the deltaNDVI images into one collection.
+
+```JavaScript
+//collection of deltaNDVI images
+var deltaNDVIcol = ee.ImageCollection.fromImages([deltaNDVI2014_2015, deltaNDVI2015_2016, deltaNDVI2016_2017, deltaNDVI2017_2018, deltaNDVI2014_2018])
+```
+
+To detect land clearing we would use a method in this paper.
+It is a threshold methods in which land clearing pixels is defined by subtracting 1.5 standard deviation (SD) from mean: mean-(1.5xSD). Corollary, the threshold for growth or regrowth (regrwoth is when an identified cleared pixel recovers post-clearing) is mean+(1.5xSD). To satify this threshold, we would have to compute the mean and SD for the deltaNDVI images.
+
+```JavaScript
+//function to comupte mean and standard deviation of deltaNDVI
+var meanSD = function(image) {
+  
+  var reducers = ee.Reducer.mean().combine({
+  reducer2: ee.Reducer.stdDev(),
+  sharedInputs: true
+  });
+
+  var stats1 = ee.Image(image).reduceRegion({
+    reducer: reducers,
+    geometry: dalyNT.geometry(),
+    scale: 30,
+    bestEffort: true
+  });
+  
+  return ee.Image(image).set(stats1);
+
+};
+
+var mean_stdev = deltaNDVIcol.map(meanSD);
+
+print( mean_stdev, 'statistics');
+```
+
+In the Console, expand the image properties to view the meand and SD values. Your screen may be as shown below. 
+
+![image](https://github.com/user-attachments/assets/03f5f3b2-9077-47be-b7fc-aa64099edf0c)
+
+
+
+### Land clearing thresholds
+
+Use the image statistics to define the thresholds based off the method described above.
+
+
+```JavaScript
+//land clearing thresholds
+var thresh1_LC = -0.0016-(1.5*0.1844) //2014-15
+var thresh2_LC = -0.0544-(1.5*5.7151) //2015-16
+var thresh3_LC = 0.0523-(1.5*4.2287) //2016-17
+var thresh4_LC = 0.0095-(1.5*0.3937) //2017-18
+var thresh5_LC = 0.01809-(1.5*0.3487) //2014-18
+
+```
+
+### Detect land clearing
+
+```JavaScript
+//detect land clearing
+var mask1_LC= deltaNDVI2014_2015.lt(thresh1_LC)
+var imgLC_2014_2015=deltaNDVI2014_2015.updateMask(mask1_LC)
+Map.addLayer(imgLC_2014_2015,{}, 'Land Clearing 2014-2015')
+print(imgLC_2014_2015, 'imgLC_2014_2015')
+
+var mask2_LC= deltaNDVI2015_2016.lt(thresh2_LC)
+var imgLC_2015_2016=deltaNDVI2015_2016.updateMask(mask2_LC)
+Map.addLayer( imgLC_2015_2016,{}, 'Land Clearing 2015-2016')
+
+var mask3_LC= deltaNDVI2016_2017.lt(thresh3_LC)
+var imgLC_2016_2017=deltaNDVI2016_2017.updateMask(mask3_LC)
+Map.addLayer( imgLC_2016_2017,{}, 'Land Clearing 2016-2017')
+
+var mask4_LC= deltaNDVI2017_2018.lt(thresh4_LC)
+var imgLC_2017_2018=deltaNDVI2017_2018.updateMask(mask4_LC)
+Map.addLayer( imgLC_2017_2018,{}, 'Land Clearing 2017-2018')
+
+var mask5_LC= deltaNDVI2014_2018.lt(thresh5_LC)
+var imgLC_2014_2018=deltaNDVI2014_2018 .updateMask(mask5_LC)
+Map.addLayer( imgLC_2014_2018,{}, 'Land Clearing 2014-2018')
+```
+
 
 
 # Conclusion
