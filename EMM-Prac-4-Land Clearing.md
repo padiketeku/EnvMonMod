@@ -344,7 +344,7 @@ var imgLC_2014_2018=deltaNDVI2014_2018 .updateMask(mask5_LC)
 Map.addLayer( imgLC_2014_2018,{}, 'Land Clearing 2014-2018')
 ```
 
-You have five layers in the Layer Manager, the figure below is the the layer showing land clearing over the 5 years. Given the change observed was significantly small, you must zoom in on the pixels as shown below. The change pixels are the dark pixels.
+You have five layers in the Layer Manager, the figure below is the the layer showing land clearing for 2014-2018. Given the change observed was significantly small, you must zoom in on the pixels as shown below. The change pixels are the dark pixels.
 Explore the other change images for the interannual clearing. Which years did you observe land clearing?
 
 
@@ -354,7 +354,9 @@ Explore the other change images for the interannual clearing. Which years did yo
 
 ### Detect growth 
 
-Out of curiosity and also to have a complete story you would want to know any growth or regrowth pattern in the catchment. The code below detect grwoth in the study area.
+Out of curiosity and also to have a complete story you would want to know any growth or regrowth pattern in the catchment. The best approach to detect regrowth is firstly to identify land clearing areas and monitor these pixels post-clearing. This approach is not directly implemented in this task as it is beyond the scope of the activity.
+
+The code below detect growth in the study area. 
 
 ```JavaScript
 
