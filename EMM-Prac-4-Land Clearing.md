@@ -389,7 +389,7 @@ Map.addLayer( imgG_2014_2018,{}, 'Growth 2014-2018')
 
 ```
 
-### Visualisation clearing and growth
+### Visualise land clearing and growth
 
 In the Layer Manager, you have all the land clearing and growth images that can be displayed separately. However, it is best to visualise land clearing and growth (and of course no-change) at the same time. To achieve this, we would explore the deltaNDVI images using conditional statements. The task demonstrates the long-term (2014-2018) change only.
 
