@@ -789,6 +789,14 @@ print(total_area_growth, 'Total Growth, 2014-2018')
 ```
 
 
+# Assignment
 
+Modify the scripts to produce inter-annual and long term (2014-2023) changes in spatial extent of land clearing and growth in the Daly River Catchment.
+Make a report of 500 words that i
+1, How did you detect land clearing and growth, include justification of the methods used
+2, Produce maps for the inter-annual and long-term clearing and growth. Only include maps that show significant changes.
+3, Produce a table showing the extent of clearing and growth for the inter-annual analysis
+4, Interpret your maps and tables
+5, Evaluate the task (or results), include what you have learned from the task, the challenges encountered and not cleared, and how the methodology can be improved
 
 **The End**
