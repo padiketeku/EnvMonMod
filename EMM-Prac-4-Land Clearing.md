@@ -225,24 +225,19 @@ Map.addLayer(c16, {},'deltaNDVI_2016')
 
 ### Image histogram
 
-Aside from the spatial distribution of change, you may also want to chart the frequency distirbution using a histogram.
+Aside from the spatial distribution of change, you may also want to chart the frequency distirbution using a histogram. Although a histogram for each year can be produced, only the one for 2016 is shown using the code below. You may modify this code to get the histograms for the other years.
 
 ```JavaScript
-//visualise the long-term change n vegetation
-Map.addLayer(deltaNDVI2014_2018, {},'deltaNDVI2014_2018')
-
-//histogram for the 2014-2018 change
-var histogram_deltaNDVI2014_2018=
+//histogram for the 2016 change
+var histogram_deltaNDVI2016=
     ui.Chart.image.histogram({
-      image: deltaNDVI2014_2018,
+      image: c16,
       region: dalyNT.geometry(), 
       scale: 5000,
       minBucketWidth: 0.0001
-      //maxPixels:1e12
-      //maxBuckets: 2
     })
         .setOptions({
-          title: 'A histogram for the 2014-2018 change ',
+          title: 'A histogram for change in 2016 ',
           hAxis: {
             //title: 'histogram',
             titleTextStyle: {italic: false, bold: true},
@@ -251,15 +246,17 @@ var histogram_deltaNDVI2014_2018=
               {title: 'Count', titleTextStyle: {italic: false, bold: true}},
           colors: ['cf513e', '1d6b99', 'f0af07']
         });
-print(histogram_deltaNDVI2014_2018, 'histogram_deltaNDVI2014_2018');
-
+print(histogram_deltaNDVI2016, 'histogram_deltaNDVI2016');
 ```
 
+The histogram pops up in the Console, but you may have to click the expander for the figure to open in a new window. Your result may be as the figure below.
 
-![image](https://github.com/user-attachments/assets/5776886a-d085-4a66-85ed-edb6e5c6f21c)
+
+![image](https://github.com/user-attachments/assets/defd5265-bfa3-4e2e-9710-62fb284eb607)
 
 
-If you explore the histogram, the deltaNDVI values -0.032 to 0.042 are dominant (i.e., largest frequency/count).
+
+The x-axis is the deltaNDVI, while the y-axis is the number of pixels (i.e., count) for a deltaNDVI. Majority of the pixels fall between -0.1 and 0.1.
 
 
 ## Detect land clearing
@@ -268,14 +265,20 @@ We would use mean and standard deviation to detect pixels that were cleared. Bef
 
 ```JavaScript
 //collection of deltaNDVI images
-var deltaNDVIcol = ee.ImageCollection.fromImages([deltaNDVI2014_2015, deltaNDVI2015_2016, deltaNDVI2016_2017, deltaNDVI2017_2018, deltaNDVI2014_2018])
+var deltaNDVIcol = ee.ImageCollection.fromImages([c15,c16,c17,c18,c19,c20,c21,c22,c23])
 ```
 
+ A change analysis based off long observations is more robust. Because of this, the long-term (2015-2023) average of the deltaNDVI is required.
+
+```JavaScript
+//average the images in the collection
+var mean_deltaNDVIcol =ee.ImageCollection(deltaNDVIcol.mean())
+```
+ 
 To detect land clearing we would use a method in this [paper](https://doi.org/10.3832/IFOR0909-007).
 It is a threshold method in which land clearing pixels are defined by subtracting 1.5 standard deviation (SD) from mean: mean-(1.5xSD). Corollary, the threshold for growth or regrowth (regrowth is when an identified cleared pixel recovers post-clearing) is mean+(1.5xSD). To satify this threshold, we would have to compute the mean and SD for the deltaNDVI images.
 
 ```JavaScript
-//function to comupte mean and standard deviation of deltaNDVI
 var meanSD = function(image) {
   
   var reducers = ee.Reducer.mean().combine({
@@ -294,31 +297,33 @@ var meanSD = function(image) {
 
 };
 
-var mean_stdev = deltaNDVIcol.map(meanSD);
+var mean_stdev = mean_deltaNDVIcol.map(meanSD);
 
 print( mean_stdev, 'statistics');
 ```
 
 In the Console, expand the image properties to view the mean and SD values. Your screen may be as shown below. 
 
-![image](https://github.com/user-attachments/assets/03f5f3b2-9077-47be-b7fc-aa64099edf0c)
+
+![image](https://github.com/user-attachments/assets/0456f5f0-e6cb-4dd1-b86c-5a44d9f20490)
 
 
 
-### Land clearing thresholds
+
+### Land clearing and regrowth thresholds
 
 Use the image statistics to define the thresholds based off the method described above.
 
 
 ```JavaScript
-//land clearing thresholds
-var thresh1_LC = -0.0016-(1.5*0.1844) //2014-15
-var thresh2_LC = -0.0544-(1.5*5.7151) //2015-16
-var thresh3_LC = 0.0523-(1.5*4.2287) //2016-17
-var thresh4_LC = 0.0095-(1.5*0.3937) //2017-18
-var thresh5_LC = 0.01809-(1.5*0.3487) //2014-18
-
+var clearing = -0.00189-(1.5*0.97020) // = 
+var regrowth = -0.00189+(1.5*0.97020) 
+print(clearing, regrowth)
 ```
+
+What is the threshold for clearing and regrowth? 
+
+
 
 ### Detect land clearing
 
