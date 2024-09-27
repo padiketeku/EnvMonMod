@@ -916,7 +916,7 @@ print(total_area_growth, 'Total Growth, 2014-2018')
 ```
 
 
-The extent of clearing and regrowth
+The extent of clearing and regrowth.
 
 |Year| Clearing (ha) | Regrowth (ha)
 |----|---------------|-------------|
