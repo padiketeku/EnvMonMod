@@ -799,6 +799,14 @@ print(total_area_growth, 'Total Growth, 2014-2018')
 ```
 
 
+|Year| Clearing (ha) | Regrowth (ha)
+|----|---------------|-------------|
+|2015|222222222222222|222222222222 |
+|2016|               |             |
+|2017|               |             |
+|2018|               |             |
+|2019|               |             |
+
 # Assignment
 
 Modify the scripts to produce inter-annual and long term (2014-2023) changes in spatial extent of land clearing and growth in the Daly River Catchment.
