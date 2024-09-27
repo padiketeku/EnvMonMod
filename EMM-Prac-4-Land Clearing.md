@@ -34,7 +34,7 @@ You are required to use Landsat 8 acquired over the Daly River Catchment to dete
 
 ## Study area and cloud masking code
 
-This code is used in previous practical activities and relevant for this project, hence carried across.
+This code is used in previous practical activities and relevant for this project, hence carried across. You may not need this.
 
 ```JavaScript
 //region of interest is the Daly River catchment of the Northern Territory, Australia
