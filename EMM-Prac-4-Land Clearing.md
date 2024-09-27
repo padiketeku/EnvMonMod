@@ -32,7 +32,7 @@ You are required to use Landsat 8 acquired over the Daly River Catchment to dete
 # Workflow
 
 
-## Pre-analysis code
+## Study area and cloud masking code
 
 This code is used in previous practical activities and relevant for this project, hence carried across.
 
