@@ -102,6 +102,73 @@ var landsatCol2018 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
 .filterBounds(dalyNT)
 
 print(landsatCol2018 , 'landsatCol2018 ')
+
+//get Landsat 8 collection for 2019
+var landsatCol2019 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
+
+//filter by date 
+.filterDate('2019-06-01','2019-06-17')
+//filter by dry season
+.filter(ee.Filter.calendarRange(6, 6, 'month'))
+
+//filter by study area
+.filterBounds(dalyNT)
+print(landsatCol2019 , 'landsatCol2019 ')
+
+//get Landsat 8 collection for 2020
+var landsatCol2020 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
+
+//filter by date 
+.filterDate('2020-06-01','2020-06-17')
+//filter by dry season
+.filter(ee.Filter.calendarRange(6, 6, 'month'))
+
+//filter by study area
+.filterBounds(dalyNT)
+//print the image collection to the Console
+print(landsatCol2020 , 'landsatCol2020 ')
+
+//get Landsat 8 collection for 2021
+var landsatCol2021 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
+
+//filter by date 
+.filterDate('2021-06-01','2021-06-17')
+//filter by dry season
+.filter(ee.Filter.calendarRange(6, 6, 'month'))
+
+//filter by study area
+.filterBounds(dalyNT)
+
+//print the image collection to the Console
+print(landsatCol2021 , 'landsatCol2021 ')
+
+
+//get Landsat 8 collection for 2022
+var landsatCol2022 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
+
+//filter by date 
+//.filterDate('2018-01-01','2019-01-01') 
+.filterDate('2022-06-01','2022-06-17')
+//filter by dry season
+.filter(ee.Filter.calendarRange(6, 6, 'month'))
+
+//filter by study area
+.filterBounds(dalyNT)
+//print the image collection to the Console
+print(landsatCol2022 , 'landsatCol2022 ')
+
+//get Landsat 8 collection for 2023
+var landsatCol2023 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
+
+//filter by date 
+.filterDate('2023-06-01','2023-06-17')
+//filter by dry season
+.filter(ee.Filter.calendarRange(6, 6, 'month'))
+
+//filter by study area
+.filterBounds(dalyNT)
+//print the image collection to the Console
+print(landsatCol2023 , 'landsatCol2023 ')
 ```
 
 ## Mask cloud cover and select bands
@@ -116,6 +183,11 @@ var landsatCol2015 =landsatCol2015.map(fmask).select(['SR_B2', 'SR_B3', 'SR_B4',
 var landsatCol2016 =landsatCol2016.map(fmask).select(['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7'])
 var landsatCol2017 =landsatCol2017.map(fmask).select(['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7'])
 var landsatCol2018 =landsatCol2018.map(fmask).select(['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7'])
+var landsatCol2019 =landsatCol2019.map(fmask).select(['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7'])
+var landsatCol2020 =landsatCol2020.map(fmask).select(['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7'])
+var landsatCol2021 =landsatCol2021.map(fmask).select(['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7'])
+var landsatCol2022 =landsatCol2022.map(fmask).select(['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7'])
+var landsatCol2023 =landsatCol2023.map(fmask).select(['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7'])
 ```
 
 ## Mosaic images
@@ -129,6 +201,11 @@ var img2015 = landsatCol2015.mosaic()
 var img2016 = landsatCol2016.mosaic()
 var img2017 = landsatCol2017.mosaic()
 var img2018 = landsatCol2018.mosaic()
+var img2019 = landsatCol2019.mosaic()
+var img2020 = landsatCol2020.mosaic()
+var img2021 = landsatCol2021.mosaic()
+var img2022 = landsatCol2022.mosaic()
+var img2023 = landsatCol2023.mosaic()
 ```
 
 ## Remove non-vegetation surfaces
@@ -161,6 +238,11 @@ var img2015 =vegetation_indices(img2015)
 var img2016 =vegetation_indices(img2016)
 var img2017 =vegetation_indices(img2017)
 var img2018 =vegetation_indices(img2018)
+var img2019 =vegetation_indices(img2019)
+var img2020 =vegetation_indices(img2020)
+var img2021 =vegetation_indices(img2021)
+var img2022 =vegetation_indices(img2022)
+var img2023 =vegetation_indices(img2023)
 ```
 
 Now that we have the NDVI layer we would use this to identify the vegetation pixels. A subjective NDVI threshold value of 0.4 was used with the hope that only woodland and shrubs would be available for the investigation.
@@ -170,7 +252,6 @@ Ideally, you must explore literature to find the best threshold as this can be s
 ```JavaScript
 //mask non-vegetation pixels
 
-//20214
 var img2014_veg = img2014.select('NDVI').gte(0.4) //mask layer
 var img2014_veg = img2014.updateMask(img2014_veg) //apply mask 
 
@@ -198,6 +279,30 @@ var img2018_veg = img2018.select('NDVI').gte(0.4) //mask layer
 var img2018_veg = img2018.updateMask(img2018_veg) //apply mask 
 print(img2018_veg, 'img2018_veg')
 
+//2019
+var img2019_veg = img2019.select('NDVI').gte(0.4) //mask layer
+var img2019_veg = img2019.updateMask(img2019_veg) //apply mask 
+
+
+//2020
+var img2020_veg = img2020.select('NDVI').gte(0.4) //mask layer
+var img2020_veg = img2020.updateMask(img2020_veg) //apply mask 
+
+
+//2021
+var img2021_veg = img2021.select('NDVI').gte(0.4) //mask layer
+var img2021_veg = img2021.updateMask(img2021_veg) //apply mask
+
+
+//2022
+var img2022_veg = img2022.select('NDVI').gte(0.4) //mask layer
+var img2022_veg = img2022.updateMask(img2022_veg) //apply mask 
+
+
+//2023
+var img2023_veg = img2023.select('NDVI').gte(0.4) //mask layer
+var img2023_veg = img2023.updateMask(img2023_veg) //apply mask 
+
 ```
 
 ## Image differencing
@@ -211,6 +316,10 @@ var c16 = img2014_veg.select('NDVI').subtract(img2016_veg.select('NDVI')).rename
 var c17 = img2014_veg.select('NDVI').subtract(img2017_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
 var c18 = img2014_veg.select('NDVI').subtract(img2018_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
 var c19 = img2014_veg.select('NDVI').subtract(img2019_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT) 
+var c20 = img2014_veg.select('NDVI').subtract(img2020_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
+var c21 = img2014_veg.select('NDVI').subtract(img2021_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
+var c22 = img2014_veg.select('NDVI').subtract(img2022_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
+var c23 = img2014_veg.select('NDVI').subtract(img2023_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
 ```
 
 
@@ -263,7 +372,15 @@ The x-axis is the deltaNDVI, while the y-axis is the number of pixels (i.e., cou
 
 ## Detect land clearing
 
+Land clearing and regrowth for the first 5 years (2015-2019) is presented here. However, you are required to analyse the whole 9 years (2015-2023) to the complete assessment.
+
+
+
+### The 2015-2019 Analysis
+
+
 We would use mean and standard deviation to detect pixels that were cleared. Before this, let's combine the deltaNDVI images into one collection.
+
 
 ```JavaScript
 //collection of deltaNDVI images
