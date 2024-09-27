@@ -799,11 +799,13 @@ print(total_area_growth, 'Total Growth, 2014-2018')
 ```
 
 
+The extent of clearing and regrowth
+
 |Year| Clearing (ha) | Regrowth (ha)
 |----|---------------|-------------|
 |2015|222222222222222|222222222222 |
-|2016|               |             |
-|2017|               |             |
+|2016| 4342          |0.35          |
+|2017|            |             |
 |2018|               |             |
 |2019|               |             |
 
