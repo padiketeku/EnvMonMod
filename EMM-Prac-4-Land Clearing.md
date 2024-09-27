@@ -2,6 +2,8 @@
 
 Land clearing can be broadly defined but in the context of this project it is the removal of native vegetation. Land clearing in the Daly River Catchment has often been in the news. Agricultural expansion is regarded as a main driver of clearing in the catchment. The importance of agricultural production cannot be esimated, however, rampant clearing of woody vegetation and shrubs may exacerbate drought, loss of biodiversity, and other ecological problems. Information on the extent of clearing is required for effective management of this problem. The use of free satellite imagery for the monitoring of land clearing can be more cost-efficient. The goal of this project is to explore Landsat imagery for the detection of land clearing in the Daly River Catchment. 
 
+It is assumed that previous practical sessions have been completed prior to taking this project. 
+
 
 # Learning Outcomes
 
@@ -114,7 +116,6 @@ var landsatCol2015 =landsatCol2015.map(fmask).select(['SR_B2', 'SR_B3', 'SR_B4',
 var landsatCol2016 =landsatCol2016.map(fmask).select(['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7'])
 var landsatCol2017 =landsatCol2017.map(fmask).select(['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7'])
 var landsatCol2018 =landsatCol2018.map(fmask).select(['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7'])
-
 ```
 
 ## Mosaic images
@@ -150,6 +151,7 @@ var vegetation_indices = function(image) {
  
 };
 ```
+
 Apply the function to images.
 
 ```JavaScript
@@ -256,7 +258,7 @@ The histogram pops up in the Console, but you may have to click the expander for
 
 
 
-The x-axis is the deltaNDVI, while the y-axis is the number of pixels (i.e., count) for a deltaNDVI. Majority of the pixels fall between -0.1 and 0.1.
+The x-axis is the deltaNDVI, while the y-axis is the number of pixels (i.e., count) for a deltaNDVI. Majority of the change pixels fall between -0.1 and 0.1.
 
 
 ## Detect land clearing
@@ -265,7 +267,7 @@ We would use mean and standard deviation to detect pixels that were cleared. Bef
 
 ```JavaScript
 //collection of deltaNDVI images
-var deltaNDVIcol = ee.ImageCollection.fromImages([c15,c16,c17,c18,c19,c20,c21,c22,c23])
+var deltaNDVIcol = ee.ImageCollection.fromImages([c15,c16,c17,c18,c19])
 ```
 
  A change analysis based off long observations is more robust. Because of this, the long-term (2015-2023) average of the deltaNDVI is required.
@@ -305,8 +307,7 @@ print( mean_stdev, 'statistics');
 In the Console, expand the image properties to view the mean and SD values. Your screen may be as shown below. 
 
 
-![image](https://github.com/user-attachments/assets/0456f5f0-e6cb-4dd1-b86c-5a44d9f20490)
-
+![image](https://github.com/user-attachments/assets/4141c713-6bc7-4b12-9a5a-5aa0d75dd09e)
 
 
 
@@ -316,12 +317,12 @@ Use the image statistics to define the thresholds based off the method described
 
 
 ```JavaScript
-var clearing = -0.00189-(1.5*0.97020) // = 
-var regrowth = -0.00189+(1.5*0.97020) 
+var clearing = -0.00509-(1.5*1.45876)  
+var regrowth = -0.00509+(1.5*1.45876)  
 print(clearing, regrowth)
 ```
 
-What is the threshold for clearing and regrowth? 
+What is the threshold for clearing and regrowth? You are right, clearing = -2.1932 and regrowth = 2.1831
 
 
 
@@ -329,34 +330,33 @@ What is the threshold for clearing and regrowth?
 
 ```JavaScript
 //detect land clearing
-var mask1_LC= deltaNDVI2014_2015.lt(thresh1_LC)
-var imgLC_2014_2015=deltaNDVI2014_2015.updateMask(mask1_LC)
-Map.addLayer(imgLC_2014_2015,{}, 'Land Clearing 2014-2015')
-print(imgLC_2014_2015, 'imgLC_2014_2015')
+var mask1_LC= c15.lt( clearing)
+var imgLC_2015=c15.updateMask(mask1_LC)
+Map.addLayer(imgLC_2015,{}, 'Clearing2015')
 
-var mask2_LC= deltaNDVI2015_2016.lt(thresh2_LC)
-var imgLC_2015_2016=deltaNDVI2015_2016.updateMask(mask2_LC)
-Map.addLayer( imgLC_2015_2016,{}, 'Land Clearing 2015-2016')
+var mask2_LC= c16.lt( clearing)
+var imgLC_2016=c16.updateMask(mask2_LC)
+Map.addLayer( imgLC_2016,{}, 'Clearing2016')
 
-var mask3_LC= deltaNDVI2016_2017.lt(thresh3_LC)
-var imgLC_2016_2017=deltaNDVI2016_2017.updateMask(mask3_LC)
-Map.addLayer( imgLC_2016_2017,{}, 'Land Clearing 2016-2017')
+var mask3_LC= c17.lt( clearing)
+var imgLC_2017=c17.updateMask(mask3_LC)
+Map.addLayer( imgLC_2017,{}, 'Clearing2017')
 
-var mask4_LC= deltaNDVI2017_2018.lt(thresh4_LC)
-var imgLC_2017_2018=deltaNDVI2017_2018.updateMask(mask4_LC)
-Map.addLayer( imgLC_2017_2018,{}, 'Land Clearing 2017-2018')
+var mask4_LC= c18.lt( clearing)
+var imgLC_2018=c18.updateMask(mask4_LC)
+Map.addLayer( imgLC_2018,{}, 'Clearing2018')
 
-var mask5_LC= deltaNDVI2014_2018.lt(thresh5_LC)
-var imgLC_2014_2018=deltaNDVI2014_2018 .updateMask(mask5_LC)
-Map.addLayer( imgLC_2014_2018,{}, 'Land Clearing 2014-2018')
+var mask5_LC= c19.lt( clearing)
+var imgLC_2019=c19.updateMask(mask5_LC)
+Map.addLayer( imgLC_2019,{}, 'Clearing2019')
 ```
 
-You have five layers in the Layer Manager, the figure below is the the layer showing land clearing for 2014-2018. Given the change observed was significantly small, you must zoom in on the pixels as shown below. The change pixels are the dark pixels.
-Explore the other change images for the interannual clearing. Which years did you observe land clearing?
+You have five layers in the Layer Manager, the figure below is the the layer showing land clearing for 2016. Zoom in on the change detection pixels (red pixels). 
 
 
 
-![image](https://github.com/user-attachments/assets/e444aeb0-d66e-4176-9865-e0d57fd7284e)
+![image](https://github.com/user-attachments/assets/0e315a63-44d9-447c-8ffb-7d5ac3e9e2dd)
+
 
 
 ### Detect growth 
@@ -367,76 +367,72 @@ The code below detect growth in the study area.
 
 ```JavaScript
 
-//growth thresholds
-var thresh1_G = -0.0016+(1.5*0.1844) //2014-15
-var thresh2_G = -0.0544+(1.5*5.7151) //2015-16
-var thresh3_G = 0.0523+(1.5*4.2287) //2016-17
-var thresh4_G = 0.0095+(1.5*0.3937) //2017-18
-var thresh5_G = 0.01809+(1.5*0.3487) //2014-18
-
 //detect growth
-var mask1_G= deltaNDVI2014_2015.gt(thresh1_G)
-var imgG_2014_2015=deltaNDVI2014_2015.updateMask(mask1_G)
-Map.addLayer(imgG_2014_2015,{}, 'Growth 2014-2015')
-print(imgG_2014_2015, 'imgG_2014_2015')
+var mask1_G= c15.gt(regrowth)
+var imgG_2015=c15.updateMask(mask1_G)
+Map.addLayer(imgG_2015,{}, 'Growth2015')
 
-var mask2_G= deltaNDVI2015_2016.gt(thresh2_G)
-var imgG_2015_2016=deltaNDVI2015_2016.updateMask(mask2_G)
-Map.addLayer( imgG_2015_2016,{}, 'Growth 2015-2016')
+var mask2_G= c16.gt(regrowth)
+var imgG_2016=c16.updateMask(mask1_G)
+Map.addLayer(imgG_2016,{}, 'Growth2016')
 
-var mask3_G= deltaNDVI2016_2017.gt(thresh3_G)
-var imgG_2016_2017=deltaNDVI2016_2017.updateMask(mask3_G)
-Map.addLayer( imgG_2016_2017,{}, 'Growth 2016-2017')
+var mask3_G= c17.gt(regrowth)
+var imgG_2017=c17.updateMask(mask3_G)
+Map.addLayer(imgG_2017,{}, 'Growth2017')
 
-var mask4_G= deltaNDVI2017_2018.gt(thresh4_G)
-var imgG_2017_2018=deltaNDVI2017_2018.updateMask(mask4_G)
-Map.addLayer( imgG_2017_2018,{}, 'Growth 2017-2018')
+var mask4_G= c18.gt(regrowth)
+var imgG_2018=c18.updateMask(mask4_G)
+Map.addLayer(imgG_2018,{}, 'Growth2018')
 
-var mask5_G= deltaNDVI2014_2018.gt(thresh5_G)
-var imgG_2014_2018=deltaNDVI2014_2018 .updateMask(mask5_G)
-Map.addLayer( imgG_2014_2018,{}, 'Growth 2014-2018')
-
+var mask5_G= c19.gt(regrowth)
+var imgG_2019=c19.updateMask(mask5_G)
+Map.addLayer(imgG_2019,{}, 'Growth2019')
 ```
 
 ### Visualise land clearing and growth
 
-In the Layer Manager, you have all the land clearing and growth images that can be displayed separately. However, it is best to visualise land clearing and growth (and of course no-change) at the same time. To achieve this, we would explore the deltaNDVI images using conditional statements. The task demonstrates the long-term (2014-2018) change only.
+In the Layer Manager, you have all the land clearing and growth images that can be displayed separately. However, it is best to visualise land clearing and growth (and of course no-change) at the same time. To achieve this, we would explore the deltaNDVI images using conditional statements. The task demonstrates 2016 change only.
 
 ```JavaScript
 
-//firest set up the colour palette
-var palette = ['white', 'red', 'green']; //white = no change; red = clearing, green = regrowth
+//first set up the colour palette
+var palette = ['yellow', 'red', 'green']; //white = no change; red = clearing, green = regrowth
 
-var classes = deltaNDVI2014_2018.expression(
+var classes = c16.expression(
 
-    "(b(0) > 0.54114) ? 2" + //Regrowth
+    "(b(0) > 2.1831) ? 2" + //Regrowth
 
-      ": (b(0) < -0.50496) ? 1" + // LAND CLEARING
+      ": (b(0) < -2.1932) ? 1" + // LAND CLEARING
 
         ": 0" //NO CHANGE
 
 );
-```
 
-Now, visualise the change classes using the code below
+print(classes, '3-classes')
 
-```JavaScript
 Map.addLayer(classes.clip(dalyNT),
 
              {min: 0, max: 2, palette: palette},
 
-             'Clearing,Growth,NoChange 2014-2018');
+             'Clearing,Regrowth,NoChange2016');
+
 ```
 
-You may quickly observe land clearing and growth pixels are hardly visible as there number of pixels was very small. You must explore your change image to find red and green pixels, this means you must zoom in on these pixels. A mixture of land clearing and growth may be found near Edith.
+The land clearing, regrowth and no-change map for 2016 may look like the one below. 
 
 
-![image](https://github.com/user-attachments/assets/9047b49a-6f97-4421-a578-ab75320fb06b)
+
+![image](https://github.com/user-attachments/assets/18aebc57-4091-44f5-8819-caba472a8847)
+
+
+
+You may observe that land clearing (red pixels) was more dominant than regrowth in 2016. The clearing is concentrated in the highland areas (north-east). 
+
 
 
 ## Spatial extent of change
 
-What is the extent of land clearing and growth? At this point we know by the spatial information that land clearing and growth for 2014-2018 was small. However, we need to quantify this
+What is the extent of land clearing and growth? At this point we know by the spatial information that there was more land clearing than regrowth in 2016. However, we need to quantify this. 
 
 ```JavaScript
 //size of land cleared between 2014-2018 (in hectares)
@@ -448,7 +444,7 @@ var total_area_cleared = area_landClearing_ha.reduceRegion({
   scale: 30,
   maxPixels: 1e12
 });
-print(total_area_cleared, 'Total Area Cleared, 2014-2018')
+print(total_area_cleared, 'Potential Total Area Cleared, 2016')
 
 //size of growth between 2014-2018 (in hectares)
 var select_growth =  classes.select('constant').eq(2)
@@ -459,23 +455,28 @@ var total_area_growth = area_growth_ha.reduceRegion({
   scale: 30,
   maxPixels: 1e12
 });
-print(total_area_growth, 'Total Growth, 2014-2018')
+print(total_area_growth, 'Potential Total Regrowth, 2016')
 
 ```
 
 
 Your result in the Console may be as the figure shown below.
 
-![image](https://github.com/user-attachments/assets/1648e359-274d-4835-8e49-6b0368d39515)
+
+![image](https://github.com/user-attachments/assets/1d8568e8-79f6-4c27-81fc-5d053b3ce1ec)
+
 
 
 
 The extent of land clearing and growth was approximately 65ha and 4ha, respectively.
 
+To determine the total land clearing and regrowth for 2015-2023 you must add values up.
+
+
 
 # Conclusion
 
-This activity has explored Landsat 8 data for the detection of land clearing and regrowth in the Daly River Catchment, NT. Only 2014-2018 changes were investigated and the long-term change showed that the extent of land clearing and regrowth was small.
+This activity has explored Landsat 8 data for the detection of land clearing and regrowth in the Daly River Catchment, NT. 
 
 
 # Code
