@@ -132,7 +132,7 @@ var img2018 = landsatCol2018.mosaic()
 
 ## Remove non-vegetation surfaces
 
-Land clearing is the removal of vegetation, so vegetation pixels must be retrieved to investigate land clearing. There are many approaches to detect vegetation pixels, but the NDVI method would be used. A function to compute NDVI is given below. Before the NDVI, the bands were transformed to have surface reflectance values normalised between 0-1. [The scale factor and offest values are in this metadata file](https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2)
+Land clearing is the removal of vegetation, so vegetation pixels must be identified to investigate land clearing. There are many approaches to detect vegetation pixels, but the NDVI method would be used. A function to compute NDVI is given below. Before the NDVI was computed, the bands were transformed to have surface reflectance values normalised. [The scale factor and offest values are in this metadata file](https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2)
 
 ```JavaScript
 // a function that computes vegetation indices  
@@ -161,7 +161,8 @@ var img2017 =vegetation_indices(img2017)
 var img2018 =vegetation_indices(img2018)
 ```
 
-Now that we have the NDVI layer we would use this to retrieve the vegetation pixels. A subjective NDVI threshold value of 0.4 was used with the hope that only woodland and shrubs would be available for investigation.
+Now that we have the NDVI layer we would use this to identify the vegetation pixels. A subjective NDVI threshold value of 0.4 was used with the hope that only woodland and shrubs would be available for the investigation.
+
 Ideally, you must explore literature to find the best threshold as this can be site specific.
 
 ```JavaScript
@@ -199,26 +200,27 @@ print(img2018_veg, 'img2018_veg')
 
 ## Image differencing
 
-A simple approach to detect change is subtract two layers. In this task, the difference (i.e. change) in NDVI (i.e., vegetation) between two successive years would be computed for inter-annual and long-term changes. 
+A simple approach to detect change is to subtract two layers. In this task, the difference (i.e. change) in NDVI (i.e., vegetation) between a baseline (2014) and target years would be computed. 
 The change is limited to the study area.
 
 ```JavaScript
-var deltaNDVI2014_2015 = img2014_veg.select('NDVI').subtract(img2015_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
-var deltaNDVI2015_2016 = img2015_veg.select('NDVI').subtract(img2016_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
-var deltaNDVI2016_2017 = img2016_veg.select('NDVI').subtract(img2017_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
-var deltaNDVI2017_2018 = img2017_veg.select('NDVI').subtract(img2018_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
-var deltaNDVI2014_2018 = img2014_veg.select('NDVI').subtract(img2018_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT) //five year change
+var c15 = img2014_veg.select('NDVI').subtract(img2015_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
+var c16 = img2014_veg.select('NDVI').subtract(img2016_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
+var c17 = img2014_veg.select('NDVI').subtract(img2017_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
+var c18 = img2014_veg.select('NDVI').subtract(img2018_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT)
+var c19 = img2014_veg.select('NDVI').subtract(img2019_veg.select('NDVI')).rename('deltaNDVI').clip(dalyNT) 
 ```
 
 
-Visualise the change in vegetation between years, the 5 year change is displayed below. The black pixels are where vegetation change is observed.
+Visualise the change in vegetation, you need to do this for every year. The vegetation change for 2016 is displayed below. The black pixels are where vegetation change is observed.
 
 ```JavaScript
 //visualise the long-term change n vegetation
-Map.addLayer(deltaNDVI2014_2018, {},'deltaNDVI2014_2018')
+Map.addLayer(c16, {},'deltaNDVI_2016')
 ```
 
-![image](https://github.com/user-attachments/assets/b94e21ad-f0fe-4f21-b53c-7a02938521f6)
+![image](https://github.com/user-attachments/assets/83a2064d-ac44-45ca-8c7c-2b17fa761fbe)
+
 
 
 ### Image histogram
