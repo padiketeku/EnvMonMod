@@ -25,13 +25,44 @@ It is assumed that previous practical sessions have been completed prior to taki
 
 # Task
 
-You are required to use Landsat 8 acquired over the Daly River Catchment to detect land clearing from 2014 to 2023. Use the Landsat 8 images acquired in the dry season to minimise the presence of cloud cover and detect land clearing between years (i.e., interannual change) and the 10 year change (long-term change, i.e. 2014-2023). Although, the main objective is to detect land clearing, as a residual task, your boss asked you to report regrowth post-clearing.
+You are required to use Landsat 8 acquired over the Daly River Catchment to detect land clearing from 2014 to 2023. Use the Landsat 8 images acquired in the dry season to minimise the presence of cloud cover and detect land clearing between years (i.e., interannual change) and estimate the total land clearing and regrowth. Although, the main objective is to detect land clearing, as a residual task, your boss asked you to report regrowth of vegetation.
 
 
 
 # Workflow
 
-The workflow is only for the change in 2014-2018. You are required to modify this workflow to produce a report for the required time series (i.e., 2014-2023)
+
+## Pre-analysis code
+
+This code is used in previous practical activities and relevant for this project, hence carried across.
+
+```JavaScript
+//region of interest is the Daly River catchment of the Northern Territory, Australia
+var dalyNT = ee.FeatureCollection("projects/ee-niiazucrabbe/assets/DalyCatchment") //modify the path to your own GEE asset 
+
+//let the computer display the base map to location of interest (i.e., Daly River)
+Map.setCenter(130.6884, -13.694,9)
+
+//create a symoblogy that makes the study boundary transparent and display this  
+var symbology = {color: 'black', fillColor: '00000000'};
+
+//apply the symbology to visualise the boundary of the study area
+Map.addLayer(dalyNT.style(symbology), {}, 'Daly River Catchment');
+
+//eliminate pixels that represent cloud and cloud shadow
+// First, define the function to mask cloud and shadow pixels.
+function fmask(img) {
+  var cloudShadowBitMask = 1 << 3;
+  var cloudsBitMask = 1 << 5;
+  var qa = img.select('QA_PIXEL');
+  var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
+    .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
+  return img.updateMask(mask);
+}
+```
+
+**Project Begins**
+
 
 ## Get Landsat 8 data 
 
