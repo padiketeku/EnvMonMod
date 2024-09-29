@@ -427,7 +427,7 @@ The report outline should include:
 
 4, Explain the results, including maps and charts <br>
 
-5, Critically evaluate the results, include a discussion on the effects of spatial scale <br>
+5, Critically evaluate the results, including a discussion on the effects of spatial scale <br>
 
 6, Conclusion
 
