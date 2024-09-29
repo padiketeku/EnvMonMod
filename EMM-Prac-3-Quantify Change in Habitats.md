@@ -174,7 +174,7 @@ var changeMatrix_sum_pixels = change_FromTo.reduceRegion({
 print( changeMatrix_sum_pixels.get('FromToChange'), ' ChangeMatrix Total Pixels')
 ```
 
-You are expected to have an object with 66 items. Your resultt may be as shown below.
+You are expected to have an object with 66 items. Your result may be as shown below.
 
 
 
