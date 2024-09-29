@@ -411,7 +411,7 @@ ENV506:1000-1500 words
 
 **Background**
 
-Environmental monitoring is a process in which time is an important phenomenon. For instance, the condition of a habitat 30 years ago may not be the same today. The Daly River Catchment in the Northern Territory of Australia is an important ecosystem for several reasons. The catchment is a habitat for many native plants, birds, reptiles, and mammals. The condition of the catchment is reported to have changed over the years [(Wygralak, 2006)](https://www.tandfonline.com/doi/pdf/10.1071/ASEG2006ab200). To understand the recent ecological state of the catchment  it is worth going back into time to have a baseline information. 
+Environmental monitoring is a process in which time is an important phenomenon. For instance, the condition of a habitat 30 years ago may not be the same today. The Daly River Catchment in the Northern Territory of Australia is an important ecosystem for several reasons. The catchment is a habitat for many native plants, birds, reptiles, and mammals. The condition of the catchment is reported to have changed over the years [(Wygralak, 2006)](https://www.tandfonline.com/doi/pdf/10.1071/ASEG2006ab200). To understand the recent ecological state of the catchment  it is worth going back in time to have baseline information. 
 
 **TASK**
 
@@ -419,7 +419,7 @@ Classify the cardinal land cover types of the Daly River Catchment in 2013, usin
 
 The report outline should include:
 
-1, Background, inclduing the description of the study area <br>
+1, Background, including the description of the study area <br>
 
 2, Aim and objectives <br>
 
