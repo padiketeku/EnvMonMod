@@ -4,7 +4,7 @@
 
 [Click link to go to the final part of practical 1:](https://github.com/padiketeku/EarthObservation101-Practicals/blob/main/Activity-02-Understanding%20the%20Earth%20Engine%20Interface.md)
 
-If you have already completed Practical in ENV202/ENV502, skip to practical 2.
+If you have already completed this practical in ENV202/ENV502, skip to practical 2.
 
 Thanks.
 
