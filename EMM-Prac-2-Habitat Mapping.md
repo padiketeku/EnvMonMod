@@ -363,7 +363,7 @@ The results should be as shown below. The unit is square kilometers. Note you ma
 
 Export classification image to Google Drive
 
-Finally, you would like to export the classification image to your Google Drive to bring it down to your desktop for further use, such adding map properties and adding this to a report.
+Finally, you would like to export the classification image to your Google Drive to bring it down to your desktop for further use, such as adding map properties and including this in a report.
 Note that image classified image is a very large file, so if you do not have enough space in your drive the export may not work for you.
 
 ```JavaScript
