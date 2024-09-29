@@ -16,7 +16,7 @@ In this practical, you would apply Random Forest to classify an image with the o
 ## Task
 
 
-Environmental monitoring is a process in which time is an important phenomenon. For instance, the condition of a habitat 30 years ago may not be the same today. The Daly River Catchments in the Northern Territory of Australia is an important ecosystem for several reasons. The catchment is a habitat for many native plants, birds, reptiles, and mammals. The condition of the catchment is reported to have changed over the years [(Wygralak, 2006)](https://www.tandfonline.com/doi/pdf/10.1071/ASEG2006ab200). To understand the recent ecological state of the catchment  it is worth going back into time to have a baseline information. In this practical, your task is to classify the cardinal land cover types of the Daly River Catchment in 2013, using Landsat 8 imagery, to obtain baseline data for further assessment.
+Environmental monitoring is a process in which time is an important phenomenon. For instance, the condition of a habitat 30 years ago may not be the same today. The Daly River Catchment in the Northern Territory of Australia is an important ecosystem for several reasons. The catchment is a habitat for many native plants, birds, reptiles, and mammals. The condition of the catchment is reported to have changed over the years [(Wygralak, 2006)](https://www.tandfonline.com/doi/pdf/10.1071/ASEG2006ab200). To understand the recent ecological state of the catchment  it is worth going back into time to have a baseline information. In this practical, your task is to classify the cardinal land cover types of the Daly River Catchment in 2013, using Landsat 8 imagery, to obtain baseline data for further assessment.
 
 
 ### Workflow
@@ -382,6 +382,50 @@ Export.image.toDrive({
 ## Conclusion
 
 We have created baseline habitat map for the Daly River Catchment. In the next activity, this baseline data will be used to mointor change in habitats.
+
+
+## Assignment 1-Project Proposal 
+
+Word Count
+
+ENV306: 700 words
+
+ENV506:1000 words
+
+**TASK**
+
+You are required to produce a habitat map of the Daly River Catchment. Prepare a short research proposal on this topic. The proposal should include the title of the project, aim and objectives, methodology, expected contribution, resources required, and bibliography. The title of the project and bibliography do **not** contribute to the word count.
+
+A template and exemplars are provided to help you complete this task. 
+
+
+
+## Assignment 2-Practical Assignment (Habitat Mapping)
+
+Word Count
+
+ENV306: 700-1000 words
+
+ENV506:1000-1500 words
+
+
+**Background**
+
+Environmental monitoring is a process in which time is an important phenomenon. For instance, the condition of a habitat 30 years ago may not be the same today. The Daly River Catchment in the Northern Territory of Australia is an important ecosystem for several reasons. The catchment is a habitat for many native plants, birds, reptiles, and mammals. The condition of the catchment is reported to have changed over the years [(Wygralak, 2006)](https://www.tandfonline.com/doi/pdf/10.1071/ASEG2006ab200). To understand the recent ecological state of the catchment  it is worth going back into time to have a baseline information. 
+
+**TASK**
+
+Classify the cardinal land cover types of the Daly River Catchment in 2013, using Landsat 8 imagery. Prepare a short scientific article that would be published in a magazine with an audience outside the field of remote sensing.
+
+The report outline should include:
+
+1, Background, inclduing the description of the study area
+2, Aim and objectives
+3, Description of data (including sources of data) and methods used
+4, Explain the results, including maps and charts
+5, Critically evaluate the results, include a discussion on the effects of spatial scale
+6, Conclusion
+
 
 ## The End
 
