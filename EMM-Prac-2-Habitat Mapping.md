@@ -419,11 +419,11 @@ Classify the cardinal land cover types of the Daly River Catchment in 2013, usin
 
 The report outline should include:
 
-1, Background, inclduing the description of the study area
-2, Aim and objectives
-3, Description of data (including sources of data) and methods used
-4, Explain the results, including maps and charts
-5, Critically evaluate the results, include a discussion on the effects of spatial scale
+1, Background, inclduing the description of the study area <br>
+2, Aim and objectives <br>
+3, Description of data (including sources of data) and methods used <br>
+4, Explain the results, including maps and charts <br>
+5, Critically evaluate the results, include a discussion on the effects of spatial scale <br>
 6, Conclusion
 
 
