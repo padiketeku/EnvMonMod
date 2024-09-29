@@ -213,6 +213,23 @@ From the figure above, the spatial extent of the first change element (12): wate
 
 The practical shows the techniques involved in performing bi-temporal image differencing to estimate change.
 
+
+
+# Assignment 3: Critical Assessment (Short Answers)
+
+
+**Word Count**
+ENV306 (400-500 words)
+ENV506 (500-700 words)
+
+Upon the completion of the practical 3, provider short answers to the following questions:
+
+
+
+
+
+
+
 # Code
 
 ```JavaScript
