@@ -222,7 +222,9 @@ The practical shows the techniques involved in performing bi-temporal image diff
 ENV306 (400-500 words)
 ENV506 (500-700 words)
 
-Upon the completion of the practical 3, provider short answers to the following questions:
+Upon completion of the practical 3, provide short answers to the following questions:
+
+1, Produce the transition matrix
 
 
 
