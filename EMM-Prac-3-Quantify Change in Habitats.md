@@ -224,7 +224,22 @@ ENV506 (500-700 words)
 
 Upon completion of the practical 3, provide short answers to the following questions:
 
-1, Produce the transition matrix
+1, Produce the transition matrix <br>
+
+
+Using the transition table in (1), answer the following question <br>
+
+
+2, Explain the relationship between woodland and agriculture <br>
+
+
+3, Given that remotely sensed data is used for this analysis, justify the uncertainty in change between woodland and agriculture <br>
+
+
+4, Explain the relationship between water, agriculture, and baaresoil <br>
+
+
+5, Discuss sources of uncertainty in change between water, agriculture, and baresoil
 
 
 
