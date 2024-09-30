@@ -236,10 +236,10 @@ Using the transition table in (1), answer the following question <br>
 3, Given that remotely sensed data is used for this analysis, justify the uncertainty in change between woodland and agriculture <br>
 
 
-4, Explain the relationship between water, agriculture, and baaresoil <br>
+4, Explain the relationship between water, agriculture, and baresoil <br>
 
 
-5, Discuss sources of uncertainty in change between water, agriculture, and baresoil
+5, Discuss potential sources of uncertainty in change between water, agriculture, and baresoil
 
 
 
