@@ -1,1 +1,4 @@
-# EnvMonMod
+# Environmental Monitoring and Modelling
+
+This unit brings together the theoretical concepts of landscape ecology with spatial analysis techniques from remote sensing and GIS to address landscape scale applications of relevance to natural resource management. Landscape ecology is concerned with spatial patterns, in particular spatial heterogeneity across landscapes, the spatial and temporal arrangement of features, and the implications of this patterning for ecosystems. This unit takes a practical approach to look at how landscape analysis can be used to quantify pattern to generate land cover and habitat maps using digital image processing techniques and explores spatial pattern analysis techniques in the form of landscape metrics using local
+applications. Important issues such as scale, data integration errors and natural variability in landscapes are addressed in terms of classifying landscape features and identifying temporal changes.
