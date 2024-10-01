@@ -1,3 +1,14 @@
+# Acknowledgements
+
+Google Earth Engine Developers
+
+Google Earth Engine Team
+
+Sandra MacFadyen @ https://www0.sun.ac.za/biomath
+
+
+
+
 # Introduction
 
 Fire can start naturally or through human activities; the intensity can be high or low depending on the moisture condition and size of the fuel load at the time of the outbreak. Fire alters the landscape pattern and can be attributable to variability in ecosystems. In savanna ecosystems, fire is common and a key driver of ecological changes. In tropical Australia, the savanna ecosystem experiences fires, usually, in the dry season. Early dry season fires are normally prescribed burning and are not hot as the fuel moisture is just beginning to dip. However, late dry season fires are hot and can significantly change the tree and grass ratio. Fire regime of an ecosystem can be described as the frequency, intensity, spatial extent, duration, and seasonality of the wildfire  (Bradstock, 2010). In savanna Australia, fire regime drives vegetation composition in that fire insensitive species survive and dominate frequently burnt areas while less burnt areas may be a suitable habitat for fire sensitive species (Smit et al. 2013). Monitoring fire regime of Australia savanna is vitally important for biodiversity conservation assessment. However, direct measurement of the fire regime can be challenging for many resons, including danger to human life. The aim of this project is describe the fire regime of the Daly River Catchment in Australia using satellite imagery. 
