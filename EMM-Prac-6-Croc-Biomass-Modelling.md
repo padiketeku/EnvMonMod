@@ -1,6 +1,11 @@
 # Acknowledgements
 
 
+Google Earth Engine Developers
+
+Google Earth Engine Team
+
+UN-SPIDER [website](https://un-spider.org/advisory-support/recommended-practices/recommended-practice-google-earth-engine-flood-mapping/step-by-step)
 
 
 # Introduction
