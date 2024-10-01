@@ -1,3 +1,12 @@
+# Acknowledgements
+
+Google Earth Engine Developers
+
+Google Earth Engine Team
+
+Stacker Overflow
+
+
 # Introduction
 
 In this practical, you would apply Random Forest to classify an image with the objective of defining the main surface types of the Daly River Catchment.
