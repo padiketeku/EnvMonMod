@@ -8,6 +8,10 @@ Google Earth Engine Team
 UN-SPIDER @ [website](https://un-spider.org/advisory-support/recommended-practices/recommended-practice-google-earth-engine-flood-mapping/step-by-step)
 <br> The scripts were originally written by the UN-SPIDER and were adapted for this project.
 
+Tim Palmer (the methodology, inclduing sharing GEE code)
+
+Cameron Baker (for the crocodile data)
+
 
 
 # Introduction
