@@ -161,6 +161,37 @@ var after_filtered = after.focal_mean(smoothing_radius, 'circle', 'meters');
 ```
 
 
+### Image differencing
+
+The pixel values of the Sentinel-1 image are negative. This is because the original values were log transformed on the fly. The transformation is performed for visualisation purposes as the original pixel values can be very low, making it difficult to visually contrast between pixels. To deal with the negative pixel values, the image differencing method is achieved by dividing the after-image by pre-image.
+
+```JavaScript
+var difference = after_filtered.divide(before_filtered);
+```
+
+
+### Mask change image
+
+To mask the change image, a threshold value is used. This value is based on trial and error method. It is subjective, so you can change this to a value that makes more sense to a study area.
+
+```JavaScript
+
+//threshold
+var threshold = 1.25;
+
+//mask the change image using the threshold
+var difference_binary = difference.gt(threshold);
+
+```
+
+### Refine change detection image
+
+Pixels have been flagged as change detection (flooded). However, the accuracy can be minimised if perennial water pixels are not removed. The Digital Earth Australia's Water Observation Statistics data would be used. This is a Landsat product that classifies a pixel as 'wet', 'dry' or 'invalid' and provides the basic statistics about the classes. Read more about this data [here](https://knowledge.dea.ga.gov.au/data/product/dea-water-observations-statistics-landsat/)  and via [EE](https://developers.google.com/earth-engine/datasets/catalog/projects_geoscience-aus-cat_assets_ga_ls_wo_fq_cyear_3)
+
+The DEA Water Observations Statistics is an image colllection, showing yearly data, and has three bands. The "frequency" is the most relevant for this project. This band shows what percentage of clear observations were detected as wet; the values range between 0 and 1.
+
+
+
 
 # Assignment
 
