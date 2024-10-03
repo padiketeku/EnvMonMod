@@ -186,10 +186,48 @@ var difference_binary = difference.gt(threshold);
 
 ### Refine change detection image
 
-Pixels have been flagged as change detection (flooded). However, the accuracy can be minimised if perennial water pixels are not removed. The Digital Earth Australia's Water Observation Statistics data would be used. This is a Landsat product that classifies a pixel as 'wet', 'dry' or 'invalid' and provides the basic statistics about the classes. Read more about this data [here](https://knowledge.dea.ga.gov.au/data/product/dea-water-observations-statistics-landsat/)  and via [EE](https://developers.google.com/earth-engine/datasets/catalog/projects_geoscience-aus-cat_assets_ga_ls_wo_fq_cyear_3)
+Pixels have been flagged as change detection (flooded). However, the accuracy can be minimised if perennial water pixels are not removed. The Digital Earth Australia's Water Observation Statistics data would be used. This is a Landsat product that classifies a pixel as 'wet', 'dry' or 'invalid' and provides the basic statistics about the classes. Read more about this data [here](https://knowledge.dea.ga.gov.au/data/product/dea-water-observations-statistics-landsat/)  and also in [EE](https://developers.google.com/earth-engine/datasets/catalog/projects_geoscience-aus-cat_assets_ga_ls_wo_fq_cyear_3)
+
+To get this data, type "Australia" into the search bar and under **RASTERS** click **more >>**. Scroll through the result to find "DEA Water Observations Statistics 3.1.6". Click the name for window that provides description on the data. Copy the Collection Snippet to programmatically lood this data into the Code Editor.
+
+
+Get the data into the Code Editor, programmatically.
+
+```JavaScript
+var deaWater = ee.ImageCollection("projects/geoscience-aus-cat/assets/ga_ls_wo_fq_cyear_3")
+```
 
 The DEA Water Observations Statistics is an image colllection, showing yearly data, and has three bands. The "frequency" is the most relevant for this project. This band shows what percentage of clear observations were detected as wet; the values range between 0 and 1.
 
+Filter the data to last 10 years and the study area
+
+```JavaScript
+var deaWater = deaWater.filterDate('2014-01-01','2024-01-01').filterBounds(aoi).select(['frequency'])
+```
+
+Next, mask perennial water pixels. The code below selects perennial water pixels and excludes them from the analysis.
+
+```JavaScript
+var permanentWater=deaWater.map(function permWater (img){
+   var mask = img.gte(0.60) // you may vary this
+   var img2 = img.updateMask(mask)
+   return img2
+   
+ })
+```
+
+
+
+Mosaic the collection and clip to area of interest
+
+```JavaScript
+
+var permanentWater = permanentWater.mosaic().clip(aoi2)
+Map.addLayer(permanentWater,{min:0.6, max:1, palette:['red',  'yellow', 'blue']},'permanent water' ) 
+```
+
+
+![image](https://github.com/user-attachments/assets/8888340b-e2bf-47bc-9fe2-c735d2f992da)
 
 
 
