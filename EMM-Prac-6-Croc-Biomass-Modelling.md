@@ -342,7 +342,7 @@ var flood_stats = flood_pixelarea.reduceRegion({
 
 // convert the flood extent to hectares 
 var flood_area_ha = flood_stats
-  .getNumber(polarization)
+  .getNumber("VH")
   .divide(10000)
   .round();
 
