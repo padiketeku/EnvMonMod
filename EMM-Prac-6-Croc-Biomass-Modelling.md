@@ -44,7 +44,7 @@ The Northern Territory is widely known for the crocodiles in her waterbodies. Un
 
 # Task
 
-You are given a simulated crocodile biomass data for the Daly River in the Northern Territory. The data spans 2017-2023. Given the issue of cloud cover during wet seasons, you are asked to:
+You are given a simulated crocodile biomass data for the Adelaide River in the Northern Territory. The data spans 2017-2023. Given the issue of cloud cover during wet seasons, you are asked to:
 
 1, use Sentinel-1 data to estimate floodplain size 
 
@@ -58,17 +58,18 @@ The workflow below is for August 2017. You may have to modify the scripts to pro
 
 ### Import and load shapefiles into Code Editor 
 
-Manually import all the shapefiles from your desktop to Assets. Once you have the shapefiles in Assets, programmatically load them into the Code Editor. Loading the shapefile for the Daly River would as shown below.
+Manually import all the shapefiles from your desktop to Assets. Once you have the shapefiles in Assets, programmatically load them into the Code Editor. Loading the shapefile for the Adelaide River would as shown below.
 
 
 ```JavaScript
 
-var aoi = ee.FeatureCollection('projects/ee-niiazucrabbe/assets/Daly_River_Floodplain')
+var aoi = ee.FeatureCollection('projects/ee-niiazucrabbe/assets/Adelaide_River_Floodplain') // your path would be different to this
 Map.addLayer(aoi, {}, 'AOI')
 ```
 
 
-![image](https://github.com/user-attachments/assets/961eee2b-44f6-4d66-9dfe-0e40e2c0895f)
+![image](https://github.com/user-attachments/assets/2f7b4949-5511-490e-88f5-e0fb112c80a5)
+
 
 
 
@@ -89,7 +90,8 @@ Map.addLayer(aoi2, {}, 'AOI2')
 The result may look like the figure below.
 
 
-![image](https://github.com/user-attachments/assets/684074a9-21c9-4deb-a17a-cabf739aec4a)
+![image](https://github.com/user-attachments/assets/d561e7b9-b868-4c9d-b107-dde6db7e09c4)
+
 
 
 
@@ -146,7 +148,9 @@ Map.addLayer(before, {min:-25, max:-10}, "S1 Post-Baseline")
 ```
 
 
-![image](https://github.com/user-attachments/assets/2373aac2-fe32-4885-a8a9-0ecd70d2b121)  ![image](https://github.com/user-attachments/assets/ca114c5d-00bf-4e20-9116-9c163ed93a38)
+![image](https://github.com/user-attachments/assets/846950b6-8a12-4518-86bb-518ec0011aa9) ![image](https://github.com/user-attachments/assets/605160d3-779c-4f80-bd48-b12ef46d7461)
+
+  
 
 
 
@@ -158,17 +162,6 @@ Take the **Inspector** tool to explore the pixel values. What is the difference 
 
 
 ### Speckle filtering
-
-
-
-
-
-![image](https://github.com/user-attachments/assets/1dfaeb87-103b-465b-a132-147eac5c341b)  ![image](https://github.com/user-attachments/assets/1a21809d-8e98-44f3-94de-9d3e5a153f3f)
-
-
-
-Left image is before spatial filter is applied and Right image is post-filtering.
-
 
 
 An inherent issue with radar remote sensing is speckles in the image. In the figure above, you can see speckles ("salt and pepper" grainy texture) almost everywhere in the image. The speckle can lower the quality of image, so it is ideal to minimise the effects of speckles by smoothing the image.The smoothing algorithm averages out the pixels, using a moving window sometimes referred to as a kernel. The kernel size is usually an odd number with 3 the minimum. Further reading on moving windows and applications in landscape ecology is [here](https://doi.org/10.1016/j.jag.2015.09.010). Through the filtering algorithm, spatial details, including speckles are lost. There are many filtering algorithms. simple and complex, available for use: [see this paper](https://www.mdpi.com/2072-4292/13/10/1954). We would use the Boxcar filter as it is simple to implement. The code below smoothes the Sentinel-1 image to minimise speckle noise. 
@@ -200,13 +193,12 @@ Map.addLayer(after_filtered, {min:-25, max:-10},' after_BoxCarApplied ')
 
 
 
-
-![image](https://github.com/user-attachments/assets/c6bc4001-1929-4aff-9e6b-1c088b901a26)
-
+![image](https://github.com/user-attachments/assets/1dfaeb87-103b-465b-a132-147eac5c341b)  ![image](https://github.com/user-attachments/assets/1a21809d-8e98-44f3-94de-9d3e5a153f3f)
 
 
 
-You may observe that the image is blurry after the spatial filtering.
+
+Left image is before spatial filter is applied and Right image is post-filtering. You may observe that the image is blurry after the spatial filtering.
 
 
 
@@ -277,7 +269,8 @@ Map.addLayer(permanentWater,{min:0.6, max:1, palette:['red',  'yellow', 'blue']}
 ```
 
 
-![image](https://github.com/user-attachments/assets/8888340b-e2bf-47bc-9fe2-c735d2f992da)
+![image](https://github.com/user-attachments/assets/4bbe851f-ded2-4648-8cf2-e6f3b2e83d83)
+
 
 
 
@@ -299,7 +292,8 @@ The change image with perennial water pixels masked is shown below. Note, you mu
 
 
 
-![image](https://github.com/user-attachments/assets/bf979c22-b434-4738-856f-46d3fe282ec6)
+![image](https://github.com/user-attachments/assets/673c454f-4d9e-45d4-8152-e02557945d01)
+
 
 
 
@@ -316,7 +310,9 @@ Map.addLayer(flooded, {}, 'Connected Flooded Pixels')
 ```
 
 
-![image](https://github.com/user-attachments/assets/84f6566a-426c-497a-8cf6-0caa6199c231)
+
+![image](https://github.com/user-attachments/assets/4ff77bc6-db25-4e55-9295-1e1c1a793fc3)
+
 
 
 
@@ -358,7 +354,8 @@ If you turn on the geometry for the study area and the baseline Google satellite
 
 
 
-![image](https://github.com/user-attachments/assets/b0633917-a40f-4510-84bc-ee181684d9fb)
+![image](https://github.com/user-attachments/assets/7bbbf8aa-50ea-4843-8db6-c925f095b706)
+
 
 
 
@@ -396,7 +393,7 @@ var flood_area_ha = flood_stats
 print(flood_area_ha, 'extent in ha')
 ```
 
-The size of floodplain in August 2017 is printed to the Console. What is the size? Correct, it is 10397 ha.
+The size of floodplain in August 2017 is printed to the Console. What is the size? Correct, it is 10894 ha.
 
 
 
@@ -410,7 +407,7 @@ Only the flood plain size for Aug is given.
 
 |Time| Floodplain size (ha) | Croc biomass (kg)
 |----|---------------|-------------|
-|Aug 2017|10397|187|
+|Aug 2017|10894|187|
 |Sep 2017|          |     145      |
 |Oct 2017|            |      211       |
 |Nov 2017|               |    219        |
@@ -452,7 +449,7 @@ Key Tasks
 # Conclusion
 
 
-Sentinel-1 image was used to estimate inundated areas in the Daly Catchments. The relationship between the floodplain size and crocodile biomass was investigated to test the hypothesis that there is a positive linear relationship between the two (floodplain size and crocodile biomass). 
+Sentinel-1 image was used to estimate inundated areas of the Adelaide River. The relationship between the floodplain size and crocodile biomass was investigated to test the hypothesis that there is a positive linear relationship between the two (floodplain size and crocodile biomass). 
 
 
 # Code
