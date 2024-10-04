@@ -38,10 +38,20 @@ Collect the recent Landsat imagery (this should be surface reflectance product) 
 
 ```JavaScript
 
-//get study area
-var dalyNT = ee.FeatureCollection("projects/ee-niiazucrabbe/assets/DalyCatchment")
+//region of interest is the Daly River catchment of the Northern Territory, Australia
+var dalyNT = ee.FeatureCollection("projects/ee-niiazucrabbe/assets/DalyCatchment") //modify the path to your own GEE asset 
 
-//function to mask cloud cover and shadow in Landsat imagery
+//let the computer display the base map to location of interest (i.e., Daly River)
+Map.setCenter(130.6884, -13.694,9)
+
+//create a symoblogy that makes the study boundary transparent and display this  
+var symbology = {color: 'black', fillColor: '00000000'};
+
+//apply the symbology to visualise the boundary of the study area
+Map.addLayer(dalyNT.style(symbology), {}, 'Daly River Catchment');
+
+//eliminate pixels that represent cloud and cloud shadow
+// First, define the function to mask cloud and shadow pixels.
 function fmask(img) {
   var cloudShadowBitMask = 1 << 3;
   var cloudsBitMask = 1 << 5;
@@ -50,6 +60,9 @@ function fmask(img) {
     .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
   return img.updateMask(mask);
 }
+```
+
+**Project Begins**
 
 //get recent Landsat 8 collection 
 var landsatCol2 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
