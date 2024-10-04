@@ -525,7 +525,14 @@ var threshold = difference_threshold;
 var difference_binary = difference.gt(threshold);
 
 //10. Refine flood result using additional datasets
+
+//Get the DEA Water Observations data
+var deaWater = ee.ImageCollection("projects/geoscience-aus-cat/assets/ga_ls_wo_fq_cyear_3")
+
+//filter DEA DEA Water Observations data
 var deaWater = deaWater.filterDate('2014-01-01','2024-01-01').filterBounds(aoi2).select(['frequency'])
+
+//identify permanent water pixels
 var permanentWater=deaWater.map(function permWater (img){
    var mask = img.gte(0.60)
    var img2 = img.updateMask(mask)
