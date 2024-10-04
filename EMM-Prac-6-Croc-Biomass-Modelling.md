@@ -163,7 +163,9 @@ Take the **Inspector** tool to explore the pixel values. What is the difference 
 
 
 
-![image](https://github.com/user-attachments/assets/b75fba61-6b72-46b8-b139-2b564aa61886)
+![image](https://github.com/user-attachments/assets/1dfaeb87-103b-465b-a132-147eac5c341b)  ![image](https://github.com/user-attachments/assets/1a21809d-8e98-44f3-94de-9d3e5a153f3f)
+
+
 
 
 
