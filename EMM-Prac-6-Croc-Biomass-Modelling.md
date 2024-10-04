@@ -158,7 +158,7 @@ Map.addLayer(before, {min:-25, max:-10}, "S1 Post-Baseline")
 
 
 
-![image](https://github.com/user-attachments/assets/59f98f5b-4d01-45ef-a97f-6001e9e6fe27)    ![image](https://github.com/user-attachments/assets/888ed397-595e-4339-879b-b9b34b388ca2)
+![image](https://github.com/user-attachments/assets/59f98f5b-4d01-45ef-a97f-6001e9e6fe27)  ![image](https://github.com/user-attachments/assets/888ed397-595e-4339-879b-b9b34b388ca2)
 
 
 
