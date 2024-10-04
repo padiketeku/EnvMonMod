@@ -125,17 +125,17 @@ var collection= ee.ImageCollection('COPERNICUS/S1_GRD')
 
 ```
 
-Next, trim the collection to pre-flood and post-flood dates. In this case, July 2016 is selected as the baseline date. It is assumed that the river systems are at their lowest levels at this date. Monthly Sentinel-1 data would be collected to determine inundation. 
+Next, trim the collection to pre-flood and post-flood dates. In this case, July 2017 is selected as the baseline date. It is assumed that the river systems are at their lowest levels at this date. Monthly Sentinel-1 data would be collected to determine inundation. 
 
 The code below describes flooding in August 2017.
 
 ```JavaScript
 
 //baseline date
-var before_collection = collection.filterDate('2016-07-01', '2016-08-01');
+var before_collection = collection.filterDate('2017-07-01', '2017-08-01');
 
 //first month after the baseline date
-var after_collection = collection.filterDate('2016-08-01', '2016-09-01');
+var after_collection = collection.filterDate('2017-08-01', '2017-09-01');
 
 ``` 
 
@@ -164,15 +164,24 @@ Map.addLayer(before, {min:-25, max:-10}, "S1 Post-Baseline")
 The left is baseline image while the right is post-baseline date.
 
 
-
+Take the **Inspector** tool to explore the pixel values. What is the difference between dark and light pixels? You are right, the bright pixels have larger values showing higher reflectivity of the microwave energy. You may also observe that clearer water bodies are the darkest pixels with very low reflectivity. Why? Yes, because water absorbs radiation, especially long wavelength radiation.
 
 
 
 ### Speckle filtering
 
 
-An inherent issue with radar remote sensing is speckles in the image. The speckle can lower the quality of image, so it is ideal to minimise the effects of speckles by smoothing the image.
+
+
+
+![image](https://github.com/user-attachments/assets/b75fba61-6b72-46b8-b139-2b564aa61886)
+
+
+
+
+An inherent issue with radar remote sensing is speckles in the image. In the figure above, you can see speckles ("salt and pepper" grainy texture) almost everywhere in the image. The speckle can lower the quality of image, so it is ideal to minimise the effects of speckles by smoothing the image.
 The smoothing algorithm averages out the pixels, using a moving window sometimes referred to as a kernel. The kernel shape can be square or circular. Further reading on moving windows and applications in landscape ecology is [here](https://doi.org/10.1016/j.jag.2015.09.010) Through the filtering algorithm, spatial details, including speckles are lost. The code below smoothes the Sentinel-1 image to minimise speckle noise. 
+
 
 ```JavaScript
 
