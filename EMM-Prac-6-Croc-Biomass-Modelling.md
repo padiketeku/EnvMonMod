@@ -402,10 +402,10 @@ The size of floodplain in August 2017 is printed to the Console. What is the siz
 The table shows monthly floodplain size and crocodile biomass per km for the Daly River for 2017. 
 Only the flood plain size for Aug is given.
 
-|Month| Floodplain size (ha) | Croc biomass (kg)
+|Time| Floodplain size (ha) | Croc biomass (kg)
 |----|---------------|-------------|
 |Aug 2017|10397|187|
-|Sep 2017|       145    |          |
+|Sep 2017|          |     145      |
 |Oct 2017|      211      |             |
 |Nov 2017|      219         |            |
 |Dec 2017|       219        |             |
