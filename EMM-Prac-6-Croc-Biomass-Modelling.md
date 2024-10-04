@@ -180,7 +180,7 @@ Take the **Inspector** tool to explore the pixel values. What is the difference 
 
 
 An inherent issue with radar remote sensing is speckles in the image. In the figure above, you can see speckles ("salt and pepper" grainy texture) almost everywhere in the image. The speckle can lower the quality of image, so it is ideal to minimise the effects of speckles by smoothing the image.
-The smoothing algorithm averages out the pixels, using a moving window sometimes referred to as a kernel. The kernel shape can be a square or circular. Further reading on moving windows and applications in landscape ecology is [here](https://doi.org/10.1016/j.jag.2015.09.010) Through the filtering algorithm, spatial details, including speckles are lost. The code below smoothes the Sentinel-1 image to minimise speckle noise. 
+The smoothing algorithm averages out the pixels, using a moving window sometimes referred to as a kernel. The kernel shape can be a square or circular. Further reading on moving windows and applications in landscape ecology is [here](https://doi.org/10.1016/j.jag.2015.09.010). Through the filtering algorithm, spatial details, including speckles are lost. The code below smoothes the Sentinel-1 image to minimise speckle noise. 
 
 
 ```JavaScript
@@ -277,6 +277,34 @@ Map.addLayer(permanentWater,{min:0.6, max:1, palette:['red',  'yellow', 'blue']}
 
 The perennial water bodies are identifed in red, yellow and blue colours.
 
+
+Although the perennial water pixels have been identified, it is worth recalling these pixels are not required to be part of the analysis. Thus, we would assign zero to these pixel to mask their effect on the analysis. The perennial water pixels in the change image would be identified and removed. The code below does this.  
+
+```JavaScript
+var flooded_mask = difference_binary.where(permanentWater,0);
+var flooded = flooded_mask.updateMask(flooded_mask);
+
+//visualise the result
+Map.addLayer(flooded, {}, 'PermanentWaterMasked')
+```
+
+
+The change image with perennial water pixels masked is shown below. Note, you must turn on the polygon for the study area and Google satellite imagery for a similar figure.
+
+
+
+![image](https://github.com/user-attachments/assets/bf979c22-b434-4738-856f-46d3fe282ec6)
+
+
+
+
+The potentially flooded pixels are the white pixels. You may also observe that some of the pixels are isolated. A contiguous flooded areas are more representative of reality. Thus, we would conduct a connectivity analysis to clump isolated pixels together as much as possible. The code below connects the isolated pixels.
+
+
+```JavaScript
+var connections = flooded.connectedPixelCount();    
+var flooded = flooded.updateMask(connections.gte(8));
+```
 
 
 Floodplains are lowlying lands so it is ideal to trim your data further to remove elevated areas from the analysis. To analyse flat land, only pixels with a maximum slope of 5% would be used.
