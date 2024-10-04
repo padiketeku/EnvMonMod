@@ -31,6 +31,9 @@ Because of consistency with existing data, you were tasked to use MODIS FireCC15
 
 # Workflow
 
+//Get study area- Daly River catchment of the Northern Territory, Australia
+var dalyNT = ee.FeatureCollection("projects/ee-niiazucrabbe/assets/DalyCatchment") //modify the path to your own GEE asset 
+
 
 
 ## MODIS Fire Data
