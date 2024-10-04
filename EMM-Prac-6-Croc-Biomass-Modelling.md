@@ -457,6 +457,7 @@ Sentinel-1 image was used to estimate inundated areas of the Adelaide River. The
 
 
 ```JavaScript
+
 //1. import shapefile of each river floodplain into EE
 //you would manually do this
 
@@ -464,15 +465,12 @@ Sentinel-1 image was used to estimate inundated areas of the Adelaide River. The
 //2. programmatically load the shapefile into the Code Editor
 //you would do this using by copying the assest ID
 
-var aoi = ee.FeatureCollection('projects/ee-niiazucrabbe/assets/Daly_River_Floodplain')
+var aoi = ee.FeatureCollection('projects/ee-niiazucrabbe/assets/Adelaide_River_Floodplain')
 Map.addLayer(aoi, {}, 'AOI')
 
 //retrieve the geometry of the aoi
 var aoi2 = aoi.geometry().convexHull()
 Map.addLayer(aoi2, {}, 'AOI2')
-
-
-
 
 
 //3. Load and filter Sentinel-1 GRD data by predefined parameters 
@@ -485,7 +483,7 @@ var collection= ee.ImageCollection('COPERNICUS/S1_GRD')
   
 //4. Select images by predefined dates
 var before_collection = collection.filterDate('2017-07-01', '2017-08-01');
-var after_collection = collection.filterDate('2017-09-01', '2017-10-01');
+var after_collection = collection.filterDate('2017-08-01', '2017-09-01');
 print(before_collection, 'before_collection')
 print(after_collection, 'after_collection')
 
@@ -498,11 +496,23 @@ Map.addLayer(before, {min:-25, max:-10}, "S1 Baseline")
 Map.addLayer(before, {min:-25, max:-10}, "S1 Post-Baseline")
 
 
-//7. Apply radar speckle by smoothing  
-var smoothing_radius = 50;
-var before_filtered = before.focal_mean(smoothing_radius, 'circle', 'meters');
-var after_filtered = after.focal_mean(smoothing_radius, 'circle', 'meters');
-Map.addLayer(after_filtered, {min:-25, max:-10}, 'Post-Speckle Filtering')
+//6. Boxcar filter >> Authors: Mullissa A., Vollrath A., Braun, C., Slagter B., Balling J., Gou Y., Gorelick N.,  Reiche J.
+//---------------------------------------------------------------------------//
+
+var boxcar = function(image, KERNEL_SIZE) {
+    var bandNames = image.bandNames().remove('angle');
+    // Define a boxcar kernel
+    var kernel = ee.Kernel.square({radius: (KERNEL_SIZE/2), units: 'pixels', normalize: true});
+    // Apply boxcar
+    var output = image.select(bandNames).convolve(kernel).rename(bandNames);
+  return image.addBands(output, null, true)
+};
+
+//7. Apply the spatial filter
+var before_filtered = boxcar(before, 3)
+var after_filtered = boxcar(after, 3)
+print( before_filtered , ' before_BoxCarApplied ')
+Map.addLayer(after_filtered, {min:-25, max:-10},' after_BoxCarApplied ')
 
 //------------------------------- FLOOD EXTENT CALCULATION -------------------------------//
 
@@ -564,7 +574,6 @@ var flood_area_ha = flood_stats
   .round();
 
 print(flood_area_ha, 'extent in ha')
-
 
 ```
 
