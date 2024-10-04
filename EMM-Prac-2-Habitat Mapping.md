@@ -312,7 +312,7 @@ The classification image is shown below.
 
 Display the unclassified/original image and use this to visually assess the performance. Do you reckon the Random Forest did a good job? Where are the problem areas? What do you reckon can be done to make the results more believable?
 
-What you have done so far is a qualitative assessment of the RF model. A qualitative assessment of the model is really useful, particularly if you are familiar with the suurface types in the study area. It is, however, also useful to quantatively evalaute the performance of the classifier.
+What you have done so far is a qualitative assessment of the RF model. A qualitative assessment of the model is really useful, particularly if you are familiar with the surface types in the study area. It is, however, also useful to quantatively evalaute the performance of the classifier.
 
 
 ## Quantitative evaluation of the RF classifier
@@ -344,7 +344,7 @@ The results appear in the Console. You may click on the drop-down to see the res
 
 
 
-The overall accuracy is 98%, but that can  be misleading if you are interested in just a cover type. The other metrics have accuracy value for each class, making it more useful for those interested in a specific class. If you are after wetlands, the consumer and prodcuer accuracy are about 98% and of course the average of producer and consumer accuracies (i.e., the fscore) is also 98%. Interpret the remaining classes. Critique the results.
+The overall accuracy is 98%, but that can  be misleading if you are interested in just a cover type. The other metrics have accuracy value for each class, making it more useful for those interested in a specific class. If you are after wetlands, the consumer and prodcuer accuracies are about 98% and of course the average of producer and consumer accuracies (i.e., the fscore) is also 98%. Interpret the remaining classes. Critique the results.
 
 Compute the spatial extent of cover classes in square kilometer 
 
@@ -373,7 +373,7 @@ The results should be as shown below. The unit is square kilometers. Note you ma
 Export classification image to Google Drive
 
 Finally, you would like to export the classification image to your Google Drive to bring it down to your desktop for further use, such as adding map properties and including this in a report.
-Note that image classified image is a very large file, so if you do not have enough space in your drive the export may not work for you.
+Note that the classified image is a very large file, so if you do not have enough space in your drive the export may fail.
 
 ```JavaScript
 //export classification image to google drive
