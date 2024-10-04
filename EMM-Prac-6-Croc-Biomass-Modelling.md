@@ -64,6 +64,7 @@ Manually import all the shapefiles from your desktop to Assets. Once you have th
 ```JavaScript
 
 var aoi = ee.FeatureCollection('projects/ee-niiazucrabbe/assets/Adelaide_River_Floodplain') // your path would be different to this
+Map.setCenter(131.27, -12.48)
 Map.addLayer(aoi, {}, 'AOI')
 ```
 
@@ -466,6 +467,9 @@ Sentinel-1 image was used to estimate inundated areas of the Adelaide River. The
 //you would do this using by copying the assest ID
 
 var aoi = ee.FeatureCollection('projects/ee-niiazucrabbe/assets/Adelaide_River_Floodplain')
+
+//display the area of interest
+Map.setCenter(131.27, -12.48)
 Map.addLayer(aoi, {}, 'AOI')
 
 //retrieve the geometry of the aoi
