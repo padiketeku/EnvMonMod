@@ -332,7 +332,7 @@ We know the spatial distribution of the flooded areas, however the size of the f
 // create a raster layer containing the area information of each pixel 
 var flood_pixelarea = flooded.select("VH").multiply(ee.Image.pixelArea());
 
-// Sum the areas of flooded pixels
+// sum the areas of flooded pixels
 var flood_stats = flood_pixelarea.reduceRegion({
   reducer: ee.Reducer.sum(),              
   geometry: aoi2,
@@ -340,7 +340,7 @@ var flood_stats = flood_pixelarea.reduceRegion({
   maxPixels: 1e9
   });
 
-// Convert the flood extent to hectares 
+// convert the flood extent to hectares 
 var flood_area_ha = flood_stats
   .getNumber(polarization)
   .divide(10000)
