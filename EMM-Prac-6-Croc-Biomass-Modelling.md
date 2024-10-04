@@ -349,6 +349,8 @@ var flood_area_ha = flood_stats
 print(flood_area_ha, 'extent in ha')
 ```
 
+The size of floodplain in August 2017 is printed to the Console. What is the size? Correct, it is 10397 ha.
+
 
 
 # Assignment
