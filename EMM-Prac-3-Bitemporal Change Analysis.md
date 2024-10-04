@@ -33,7 +33,8 @@ Collect the recent Landsat imagery (this should be surface reflectance product) 
 
 # Workflow
 
-- **Collect the relevant images for the given task**
+
+- **Define study area**
 
 
 ```JavaScript
@@ -49,7 +50,11 @@ var symbology = {color: 'black', fillColor: '00000000'};
 
 //apply the symbology to visualise the boundary of the study area
 Map.addLayer(dalyNT.style(symbology), {}, 'Daly River Catchment');
+```
 
+- **Cloud masking function**
+  
+```JavaScript
 //eliminate pixels that represent cloud and cloud shadow
 // First, define the function to mask cloud and shadow pixels.
 function fmask(img) {
@@ -62,6 +67,9 @@ function fmask(img) {
 }
 ```
 
+
+- **Collect the relevant images for the given task**
+  
 
 ```JavaScript
 
