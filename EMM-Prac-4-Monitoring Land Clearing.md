@@ -674,13 +674,9 @@ function fmask(img) {
     .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
   return img.updateMask(mask);
 }
-```
-
-**Project Begins**
 
 
-//get study area
-var dalyNT = ee.FeatureCollection("projects/ee-niiazucrabbe/assets/DalyCatchment")
+//Project Begins
 //get Landsat 8 collection for 2014
 var landsatCol2014 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
 
