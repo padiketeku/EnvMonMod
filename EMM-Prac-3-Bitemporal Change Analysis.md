@@ -38,6 +38,19 @@ Collect the recent Landsat imagery (this should be surface reflectance product) 
 
 ```JavaScript
 
+//get study area
+var dalyNT = ee.FeatureCollection("projects/ee-niiazucrabbe/assets/DalyCatchment")
+
+//function to mask cloud cover and shadow in Landsat imagery
+function fmask(img) {
+  var cloudShadowBitMask = 1 << 3;
+  var cloudsBitMask = 1 << 5;
+  var qa = img.select('QA_PIXEL');
+  var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
+    .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
+  return img.updateMask(mask);
+}
+
 //get recent Landsat 8 collection 
 var landsatCol2 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
 
@@ -259,6 +272,20 @@ Using the transition table in (1), answer the following question <br>
 # Code
 
 ```JavaScript
+
+//get study area
+var dalyNT = ee.FeatureCollection("projects/ee-niiazucrabbe/assets/DalyCatchment")
+
+//function to mask cloud cover and shadow in Landsat imagery
+function fmask(img) {
+  var cloudShadowBitMask = 1 << 3;
+  var cloudsBitMask = 1 << 5;
+  var qa = img.select('QA_PIXEL');
+  var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
+    .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
+  return img.updateMask(mask);
+}
+
 //get recent Landsat 8 collection 
 var landsatCol2 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
 
