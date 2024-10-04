@@ -651,6 +651,8 @@ This activity has explored Landsat 8 data for the detection of land clearing and
 # Code
 
 ```JavaScript
+//get study area
+var dalyNT = ee.FeatureCollection("projects/ee-niiazucrabbe/assets/DalyCatchment")
 //get Landsat 8 collection for 2014
 var landsatCol2014 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
 
