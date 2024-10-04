@@ -125,17 +125,17 @@ var collection= ee.ImageCollection('COPERNICUS/S1_GRD')
 
 ```
 
-Next, trim the collection to pre-flood and post-flood dates. In this case, July 2017 is selected as the baseline date. It is assumed that the river systems are at their lowest levels at this date. Monthly Sentinel-1 data would be collected to determine inundation. 
+Next, trim the collection to pre-flood and post-flood dates. In this case, July 2016 is selected as the baseline date. It is assumed that the river systems are at their lowest levels at this date. Monthly Sentinel-1 data would be collected to determine inundation. 
 
 The code below describes flooding in August 2017.
 
 ```JavaScript
 
 //baseline date
-var before_collection = collection.filterDate('2017-07-01', '2017-08-01');
+var before_collection = collection.filterDate('2016-07-01', '2016-08-01');
 
 //first month after the baseline date
-var after_collection = collection.filterDate('2017-08-01', '2017-09-01');
+var after_collection = collection.filterDate('2016-08-01', '2016-09-01');
 
 ``` 
 
@@ -161,6 +161,7 @@ Map.addLayer(before, {min:-25, max:-10}, "S1 Post-Baseline")
 
 
 
+The left is baseline image while the right is post-baseline date.
 
 
 
