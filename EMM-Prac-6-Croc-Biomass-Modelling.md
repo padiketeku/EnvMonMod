@@ -55,16 +55,16 @@ You are given a simulated crocodile biomass data for the following rivers in the
 - Cadell
 - Glyde
 
-The data was collected from 2014 to 2023 and includes crocodile abundance and biomass per km. Given the issue of cloud cover during wet seasons, you are asked to:
+The simulated crocodile biomass spans 2017-2023. Given the issue of cloud cover during wet seasons, you are asked to:
 
-1, use Sentinel-1 data to estimate floodplain size and inundation duration
+1, use Sentinel-1 data to estimate floodplain size 
 
-2, use floodplain size and inundation duration to model crocodile biomass
+2, investigate the linear relationship between floodplain size and crocodile biomass
 
 
 ## Workflow
 
-The workflow below is for the Daly River only. You may have to modify the scripts to produce estimates for the other river systems.
+The workflow below is for August 2017. You may have to modify the scripts to produce estimates for the other months. For the purposes of the study objective a seaonal calendar was used. So, a year starts from August and ends July the following year.
 
 
 ### Import and load shapefiles into Code Editor 
