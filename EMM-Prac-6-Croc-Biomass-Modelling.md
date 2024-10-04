@@ -44,18 +44,7 @@ The Northern Territory is widely known for the crocodiles in her waterbodies. Un
 
 # Task
 
-You are given a simulated crocodile biomass data for the following rivers in the Northern Territory.
-
-- Mary River
-- Adelaide River
-- Daly River
-- Liverpool
-- Tomkinson
-- Blyth
-- Cadell
-- Glyde
-
-The simulated crocodile biomass spans 2017-2023. Given the issue of cloud cover during wet seasons, you are asked to:
+You are given a simulated crocodile biomass data for the Daly River in the Northern Territory. The data spans 2017-2023. Given the issue of cloud cover during wet seasons, you are asked to:
 
 1, use Sentinel-1 data to estimate floodplain size 
 
