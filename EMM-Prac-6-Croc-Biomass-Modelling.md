@@ -167,6 +167,7 @@ Take the **Inspector** tool to explore the pixel values. What is the difference 
 
 
 
+Left image is before spatial filter is applied and Right image is post-filtering.
 
 
 
