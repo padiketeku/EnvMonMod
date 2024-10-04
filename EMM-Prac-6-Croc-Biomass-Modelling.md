@@ -108,13 +108,14 @@ The result may look like the figure below.
 
 ### Collect the Sentinel-1 imagery
 
-The Sentinel-1 system does not produce optimal imagery. It is a radar system which functions by employing microwave energy, and penetrate through cloud cover. Thus, the Sentinel-1 data is most useful in wet seasons when the optical sensors become ineffective. The Sentinel-1 has two bands: VV and VH. The VH is more suited to monitoring heterogenous environments. Also, the Sentinel-1 operated two passes, descending and ascending. Not every study area has data for both passes, but if your study site has data for both passes you have to select one and keep to it if you aim to compare results.  Further reading on Sentinel-1 is [here](https://sentiwiki.copernicus.eu/web/s1-mission)
+The Sentinel-1 system does not produce optimal imagery. It is a radar system which functions by employing microwave energy, and penetrates through cloud cover. Thus, the Sentinel-1 data is most useful in wet seasons when the optical sensors become less useful. The Sentinel-1 has two bands: VV and VH. The VH is more suited to monitoring heterogenous environments. Also, the Sentinel-1 operates two passes, descending and ascending. Not every study area has data for both passes, but if your study site has data for both passes you must select one and keep to it if you aim for time series analysis.  Further reading on Sentinel-1 is [here](https://sentiwiki.copernicus.eu/web/s1-mission)
 
 
 Now, let's collect the Sentinel-1 data for the area of interest.
 
 
 ```JavaScript
+
 var collection= ee.ImageCollection('COPERNICUS/S1_GRD')
   .filter(ee.Filter.eq('instrumentMode','IW'))
   .filter(ee.Filter.eq('orbitProperties_pass',"DESCENDING")) //feel free to explore "ASCENDING" collections, too
@@ -124,7 +125,7 @@ var collection= ee.ImageCollection('COPERNICUS/S1_GRD')
 
 ```
 
-Next, filter to collection to pre-flood and post-flood dates. In this case, July 2017 is selected as the baseline date. It is assumed that the river systems are at their lowest levels at this date. Monthly Sentinel-1 data would be collected post-baseline data to determine inundation. 
+Next, trim the collection to pre-flood and post-flood dates. In this case, July 2017 is selected as the baseline date. It is assumed that the river systems are at their lowest levels at this date. Monthly Sentinel-1 data would be collected to determine inundation. 
 
 The code below describes flooding in August 2017.
 
@@ -139,7 +140,7 @@ var after_collection = collection.filterDate('2017-08-01', '2017-09-01');
 ``` 
 
 
-Given the study area spans multiple Sentinel-1 image scenes, the collection must be mosiacked and clipped to the study area.
+Further trimming of the data. Given the study area spans multiple Sentinel-1 image scenes, the collection must be mosaicked and clipped to the study area.
 
 ```JavaScript
 var before = before_collection.mosaic().clip(aoi2);
@@ -147,13 +148,31 @@ var after = after_collection.mosaic().clip(aoi2);
 ```
 
 
+At this point, it is most ideal to visualise the data. The Sentinel-1 data, like all radar imagery, is not multispectral. The polarisation bands are displayed as a greyscale image. The code below visualises the baseline and post-baseline images.
+
+
+```JavaScript
+Map.addLayer(before, {min:-25, max:-10}, "S1 Baseline")
+Map.addLayer(before, {min:-25, max:-10}, "S1 Post-Baseline")
+```
+
+
+
+![image](https://github.com/user-attachments/assets/59f98f5b-4d01-45ef-a97f-6001e9e6fe27)    ![image](https://github.com/user-attachments/assets/888ed397-595e-4339-879b-b9b34b388ca2)
+
+
+
+
+
+
 ### Speckle filtering
 
 
 An inherent issue with radar remote sensing is speckles in the image. The speckle can lower the quality of image, so it is ideal to minimise the effects of speckles by smoothing the image.
-The smoothing algorithm averages out the pixels so spatial details, inclduing speckles are lost. The code below smoothes the Sentinel-1 image to minimise speckle noise. 
+The smoothing algorithm averages out the pixels, using a moving window sometimes referred to as a kernel. The kernel shape can be square or circular. Further reading on moving windows and applications in landscape ecology is [here](https://doi.org/10.1016/j.jag.2015.09.010) Through the filtering algorithm, spatial details, including speckles are lost. The code below smoothes the Sentinel-1 image to minimise speckle noise. 
 
 ```JavaScript
+
 var smoothing_radius = 50;
 var before_filtered = before.focal_mean(smoothing_radius, 'circle', 'meters');
 var after_filtered = after.focal_mean(smoothing_radius, 'circle', 'meters');
@@ -163,7 +182,7 @@ var after_filtered = after.focal_mean(smoothing_radius, 'circle', 'meters');
 
 ### Image differencing
 
-The pixel values of the Sentinel-1 image are negative. This is because the original values were log transformed on the fly. The transformation is performed for visualisation purposes as the original pixel values can be very low, making it difficult to visually contrast between pixels. To deal with the negative pixel values, the image differencing method is achieved by dividing the after-image by pre-image.
+The pixel values of the Sentinel-1 image are negative. This is because the original values were log transformed on the fly. The transformation is performed for visualisation purposes as the original pixel values can be very low, making it difficult to visually discern between pixels. To deal with the negative pixel values, the image differencing method is achieved by dividing the after-flood image by the baseline data.
 
 ```JavaScript
 var difference = after_filtered.divide(before_filtered);
@@ -188,7 +207,7 @@ var difference_binary = difference.gt(threshold);
 
 Pixels have been flagged as change detection (flooded). However, the accuracy can be minimised if perennial water pixels are not removed. The Digital Earth Australia's Water Observation Statistics data would be used. This is a Landsat product that classifies a pixel as 'wet', 'dry' or 'invalid' and provides the basic statistics about the classes. Read more about this data [here](https://knowledge.dea.ga.gov.au/data/product/dea-water-observations-statistics-landsat/)  and also in [EE](https://developers.google.com/earth-engine/datasets/catalog/projects_geoscience-aus-cat_assets_ga_ls_wo_fq_cyear_3)
 
-To get this data, type "Australia" into the search bar and under **RASTERS** click **more >>**. Scroll through the result to find "DEA Water Observations Statistics 3.1.6". Click the name for window that provides description on the data. Copy the Collection Snippet to programmatically lood this data into the Code Editor.
+To get this data, type "Australia" into the search bar and under **RASTERS** click **more >>**. Scroll through the results to find "DEA Water Observations Statistics 3.1.6". Click the name and a window that provides description on the data may pop up. Copy the **Collection Snippet** to programmatically load this data into the Code Editor.
 
 
 Get the data into the Code Editor, programmatically.
@@ -202,7 +221,7 @@ The DEA Water Observations Statistics is an image colllection, showing yearly da
 Filter the data to last 10 years and the study area
 
 ```JavaScript
-var deaWater = deaWater.filterDate('2014-01-01','2024-01-01').filterBounds(aoi).select(['frequency'])
+var deaWater = deaWater.filterDate('2014-01-01','2024-01-01').filterBounds(aoi2).select(['frequency'])
 ```
 
 Next, mask perennial water pixels. The code below selects perennial water pixels and excludes them from the analysis.
@@ -228,6 +247,31 @@ Map.addLayer(permanentWater,{min:0.6, max:1, palette:['red',  'yellow', 'blue']}
 
 
 ![image](https://github.com/user-attachments/assets/8888340b-e2bf-47bc-9fe2-c735d2f992da)
+
+
+
+The perennial water bodies are identifed in red, yellow and blue colours.
+
+
+
+Floodplains are lowlying lands so it is ideal to trim your data further to remove elevated areas from the analysis. To analyse flat land, only pixels with a maximum slope of 5% would be used.
+A digital elevation model is required to describe the slope of the terrain. The Hydrologically Enforced Digital Elevation Model (DEM-H), which is provided by the Geoscience Australia, in EE catalogue would be used. You can read more about this DEM data [here](https://developers.google.com/earth-engine/datasets/catalog/AU_GA_DEM_1SEC_v10_DEM-H#description). Replicate the steps used to load up the DEA Water Observations Statistics to get the DEM into Code Editor.
+
+```JavaScript
+
+//load the DEM data
+var DEM = ee.Image("AU/GA/DEM_1SEC/v10/DEM-H")
+
+//characterise the terrain
+var terrain = ee.Algorithms.Terrain(DEM); //produces slope, aspect and hillshade of the landscape
+
+//select slope only
+var slope = terrain.select('slope');
+
+//mask pixels with slope larger than 5%
+var flooded = flooded.updateMask(slope.lte(5));
+
+
 
 
 
