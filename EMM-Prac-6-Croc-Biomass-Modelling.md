@@ -37,7 +37,7 @@ The Northern Territory is widely known for the crocodiles in her waterbodies. Un
 
 - Determine inundation duration
 
-- Perform regression modelling in MS Excel
+- Perform regression analysis in MS Excel
 
 
 
