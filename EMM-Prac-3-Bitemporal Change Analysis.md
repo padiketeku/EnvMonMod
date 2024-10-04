@@ -62,7 +62,8 @@ function fmask(img) {
 }
 ```
 
-**Project Begins**
+
+```JavaScript
 
 //get recent Landsat 8 collection 
 var landsatCol2 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
