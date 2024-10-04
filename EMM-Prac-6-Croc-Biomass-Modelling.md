@@ -535,7 +535,7 @@ var difference_binary = difference.gt(threshold);
 //Get the DEA Water Observations data
 var deaWater = ee.ImageCollection("projects/geoscience-aus-cat/assets/ga_ls_wo_fq_cyear_3")
 
-//filter DEA DEA Water Observations data
+//filter DEA Water Observations data
 var deaWater = deaWater.filterDate('2014-01-01','2024-01-01').filterBounds(aoi2).select(['frequency'])
 
 //identify permanent water pixels
