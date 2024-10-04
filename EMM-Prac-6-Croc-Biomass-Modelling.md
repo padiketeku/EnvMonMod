@@ -64,6 +64,8 @@ Manually import all the shapefiles from your desktop to Assets. Once you have th
 ```JavaScript
 
 var aoi = ee.FeatureCollection('projects/ee-niiazucrabbe/assets/Adelaide_River_Floodplain') // your path would be different to this
+
+//display area of interest
 Map.setCenter(131.27, -12.48)
 Map.addLayer(aoi, {}, 'AOI')
 ```
