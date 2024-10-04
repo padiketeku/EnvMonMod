@@ -304,7 +304,20 @@ The potentially flooded pixels are the white pixels. You may also observe that s
 ```JavaScript
 var connections = flooded.connectedPixelCount();    
 var flooded = flooded.updateMask(connections.gte(8));
+
+//visualise the result
+Map.addLayer(flooded, {}, 'Connected Flooded Pixels')
 ```
+
+
+![image](https://github.com/user-attachments/assets/84f6566a-426c-497a-8cf6-0caa6199c231)
+
+
+
+
+Compared to the previous image, do you observe any effects of the connectivity analysis?
+
+
 
 
 Floodplains are lowlying lands so it is ideal to trim your data further to remove elevated areas from the analysis. To analyse flat land, only pixels with a maximum slope of 5% would be used.
