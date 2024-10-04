@@ -399,14 +399,171 @@ The size of floodplain in August 2017 is printed to the Console. What is the siz
 
 
 
+The table shows monthly floodplain size and crocodile biomass per km for the Daly River for 2017. 
+Only the flood plain size for Aug is given.
+
+|Month| Floodplain size (ha) | Croc biomass (kg)
+|----|---------------|-------------|
+|Aug 2017|10397|187|
+|Sep 2017|       145    |          |
+|Oct 2017|      211      |             |
+|Nov 2017|      219         |            |
+|Dec 2017|       219        |             |
+|Jan 2018|        301      |            |
+|Feb 2018|          573     |             |
+|Mar 2018|          571     |             |
+|Apr 2018|            501   |             |
+|May 2018|            165   |             |
+|Jun 2018|             138  |             |
+|Jul 2018|              133 |             |
+
+
+Key Tasks
+
+
+1, Complete the table, provide the floodplain size for the other months of 2017.
+
+
+2, Plot a time series chart for the floodplain data
+
+
+3, Display the spatial distribution of flooded areas for lowest and peak months
+
+
+4, Produce a linear regression relationship between floodpain size and crocodile biomass
+
+
+5, Discuss the methods you applied to achieve the results
+
+
+6, Appraise your key results
+
+
+
+
+
 
 # Conclusion
 
 
-
+Sentinel-1 image was used to estimate inundated areas in the Daly Catchments. The relationship between the floodplain size and crocodile biomass was investigated to test the hypothesis that there is a positive linear relationship between the two (floodplain size and crocodile biomass). 
 
 
 # Code
+
+
+
+```JavaScript
+//1. import shapefile of each river floodplain into EE
+//you would manually do this
+
+
+//2. programmatically load the shapefile into the Code Editor
+//you would do this using by copying the assest ID
+
+var aoi = ee.FeatureCollection('projects/ee-niiazucrabbe/assets/Daly_River_Floodplain')
+Map.addLayer(aoi, {}, 'AOI')
+
+//retrieve the geometry of the aoi
+var aoi2 = aoi.geometry().convexHull()
+Map.addLayer(aoi2, {}, 'AOI2')
+
+
+
+
+
+//3. Load and filter Sentinel-1 GRD data by predefined parameters 
+var collection= ee.ImageCollection('COPERNICUS/S1_GRD')
+  .filter(ee.Filter.eq('instrumentMode','IW'))
+  .filter(ee.Filter.eq('orbitProperties_pass', "DESCENDING")) 
+  .filter(ee.Filter.eq('resolution_meters',10))
+  .filterBounds(aoi2)
+  .select("VH");
+  
+//4. Select images by predefined dates
+var before_collection = collection.filterDate('2017-07-01', '2017-08-01');
+var after_collection = collection.filterDate('2017-09-01', '2017-10-01');
+print(before_collection, 'before_collection')
+print(after_collection, 'after_collection')
+
+//5. Create a mosaic of selected tiles and clip to study area
+var before = before_collection.mosaic().clip(aoi2);
+var after = after_collection.mosaic().clip(aoi2);
+
+// Visualise the SAR image
+Map.addLayer(before, {min:-25, max:-10}, "S1 Baseline")
+Map.addLayer(before, {min:-25, max:-10}, "S1 Post-Baseline")
+
+
+//7. Apply radar speckle by smoothing  
+var smoothing_radius = 50;
+var before_filtered = before.focal_mean(smoothing_radius, 'circle', 'meters');
+var after_filtered = after.focal_mean(smoothing_radius, 'circle', 'meters');
+Map.addLayer(after_filtered, {min:-25, max:-10}, 'Post-Speckle Filtering')
+
+//------------------------------- FLOOD EXTENT CALCULATION -------------------------------//
+
+//8. Calculate the difference between the before and after images
+var difference_threshold = 1.25; //*threshold to be applied for change detection. It has been chosen by trial and error.
+var difference = after_filtered.divide(before_filtered);
+
+//9. Apply the predefined difference-threshold and create the flood extent mask 
+var threshold = difference_threshold;
+var difference_binary = difference.gt(threshold);
+
+//10. Refine flood result using additional datasets
+var deaWater = deaWater.filterDate('2014-01-01','2024-01-01').filterBounds(aoi2).select(['frequency'])
+var permanentWater=deaWater.map(function permWater (img){
+   var mask = img.gte(0.60)
+   var img2 = img.updateMask(mask)
+   return img2
+   
+ })
+ 
+//mosaic the collection and clip to aoi
+var permanentWater = permanentWater.mosaic().clip(aoi2)
+Map.addLayer(permanentWater,{min:0.6, max:1, palette:['red',  'yellow', 'blue']},'permanent water' ) 
+
+var flooded_mask = difference_binary.where(permanentWater,0);
+var flooded = flooded_mask.updateMask(flooded_mask); 
+Map.addLayer(flooded,{}, 'PermanentWaterMasked')
+
+
+//11. Compute connectivity of pixels to eliminate those connected to 8 or fewer neighbours
+var connections = flooded.connectedPixelCount();    
+var flooded = flooded.updateMask(connections.gte(8));
+Map.addLayer(flooded, {}, 'Connected Flooded Pixels')
+
+
+//12. Mask out areas with more than 5 percent slope using a Digital Elevation Model 
+var DEM = ee.Image("AU/GA/DEM_1SEC/v10/DEM-H"); 
+var terrain = ee.Algorithms.Terrain(DEM);
+var slope = terrain.select('slope');
+var flooded = flooded.updateMask(slope.lte(5));
+Map.addLayer(flooded, {palette:"0000FF"},'Flooded areas')
+
+//13. Calculate flood extent area
+// Create a raster layer containing the area information of each pixel 
+var flood_pixelarea = flooded.select("VH").multiply(ee.Image.pixelArea());
+
+// Sum the areas of flooded pixels
+var flood_stats = flood_pixelarea.reduceRegion({
+  reducer: ee.Reducer.sum(),              
+  geometry: aoi2,
+  scale: 10, 
+  maxPixels: 1e9
+  });
+
+// Convert the flood extent to hectares 
+var flood_area_ha = flood_stats
+  .getNumber("VH")
+  .divide(10000)
+  .round();
+
+print(flood_area_ha, 'extent in ha')
+
+
+```
 
 
 
