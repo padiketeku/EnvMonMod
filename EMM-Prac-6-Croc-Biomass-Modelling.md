@@ -168,20 +168,34 @@ Take the **Inspector** tool to explore the pixel values. What is the difference 
 
 
 
-An inherent issue with radar remote sensing is speckles in the image. In the figure above, you can see speckles ("salt and pepper" grainy texture) almost everywhere in the image. The speckle can lower the quality of image, so it is ideal to minimise the effects of speckles by smoothing the image.
-The smoothing algorithm averages out the pixels, using a moving window sometimes referred to as a kernel. The kernel shape can be a square or circular. Further reading on moving windows and applications in landscape ecology is [here](https://doi.org/10.1016/j.jag.2015.09.010). Through the filtering algorithm, spatial details, including speckles are lost. The code below smoothes the Sentinel-1 image to minimise speckle noise. 
+An inherent issue with radar remote sensing is speckles in the image. In the figure above, you can see speckles ("salt and pepper" grainy texture) almost everywhere in the image. The speckle can lower the quality of image, so it is ideal to minimise the effects of speckles by smoothing the image.The smoothing algorithm averages out the pixels, using a moving window sometimes referred to as a kernel. The kernel size is usually an odd number with 3 the minimum. Further reading on moving windows and applications in landscape ecology is [here](https://doi.org/10.1016/j.jag.2015.09.010). Through the filtering algorithm, spatial details, including speckles are lost. There are many filtering algorithms. simple and complex, available for use: [see this paper](https://www.mdpi.com/2072-4292/13/10/1954). We would use the Boxcar filter as it is simple to implement. The code below smoothes the Sentinel-1 image to minimise speckle noise. 
 
 
 ```JavaScript
 
-var smoothing_radius = 50;
-var before_filtered = before.focal_mean(smoothing_radius, 'circle', 'meters');
-var after_filtered = after.focal_mean(smoothing_radius, 'circle', 'meters');
+//Boxcar filtering
+var boxcar = function(image, KERNEL_SIZE) {
+    var bandNames = image.bandNames().remove('angle');
+    // Define a boxcar kernel
+    var kernel = ee.Kernel.square({radius: (KERNEL_SIZE/2), units: 'pixels', normalize: true});
+    // Apply boxcar
+    var output = image.select(bandNames).convolve(kernel).rename(bandNames);
+  return image.addBands(output, null, true)
+};
+```
 
-//visualise the effect of the average smooting algorithm
-Map.addLayer(after_filtered, {min:-25, max:-10}, 'Post-Speckle Filtering') 
+```JavaScript
+
+//apply the Boxcar filtering method
+var before_filtered = boxcar(before, 3) //the kernel is 3
+var after_filtered = boxcar(after, 3)
+
+//visualise the image after applying the Boxcar filter
+Map.addLayer(after_filtered, {min:-25, max:-10},' after_BoxCarApplied ')
 
 ```
+
+
 
 
 ![image](https://github.com/user-attachments/assets/c6bc4001-1929-4aff-9e6b-1c088b901a26)
@@ -189,7 +203,7 @@ Map.addLayer(after_filtered, {min:-25, max:-10}, 'Post-Speckle Filtering')
 
 
 
-You may zoom in to pixels to evaluate the effect of the spatial filtering. You may still speckles in the image, but the effect is minimised.
+You may observe that the image is blurry after the spatial filtering.
 
 
 
