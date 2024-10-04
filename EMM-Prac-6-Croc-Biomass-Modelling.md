@@ -161,7 +161,7 @@ Map.addLayer(before, {min:-25, max:-10}, "S1 Post-Baseline")
 
 
 
-The left is baseline image while the right is post-baseline date.
+The left is the baseline image (July 2017) while the right is a post-baseline date (August 2017).
 
 
 Take the **Inspector** tool to explore the pixel values. What is the difference between dark and light pixels? You are right, the bright pixels have larger values showing higher reflectivity of the microwave energy. You may also observe that clearer water bodies are the darkest pixels with very low reflectivity. Why? Yes, because water absorbs radiation, especially long wavelength radiation.
@@ -180,7 +180,7 @@ Take the **Inspector** tool to explore the pixel values. What is the difference 
 
 
 An inherent issue with radar remote sensing is speckles in the image. In the figure above, you can see speckles ("salt and pepper" grainy texture) almost everywhere in the image. The speckle can lower the quality of image, so it is ideal to minimise the effects of speckles by smoothing the image.
-The smoothing algorithm averages out the pixels, using a moving window sometimes referred to as a kernel. The kernel shape can be square or circular. Further reading on moving windows and applications in landscape ecology is [here](https://doi.org/10.1016/j.jag.2015.09.010) Through the filtering algorithm, spatial details, including speckles are lost. The code below smoothes the Sentinel-1 image to minimise speckle noise. 
+The smoothing algorithm averages out the pixels, using a moving window sometimes referred to as a kernel. The kernel shape can be a square or circular. Further reading on moving windows and applications in landscape ecology is [here](https://doi.org/10.1016/j.jag.2015.09.010) Through the filtering algorithm, spatial details, including speckles are lost. The code below smoothes the Sentinel-1 image to minimise speckle noise. 
 
 
 ```JavaScript
@@ -189,7 +189,20 @@ var smoothing_radius = 50;
 var before_filtered = before.focal_mean(smoothing_radius, 'circle', 'meters');
 var after_filtered = after.focal_mean(smoothing_radius, 'circle', 'meters');
 
+//visualise the effect of the average smooting algorithm
+Map.addLayer(after_filtered, {min:-25, max:-10}, 'Post-Speckle Filtering') 
+
 ```
+
+
+![image](https://github.com/user-attachments/assets/c6bc4001-1929-4aff-9e6b-1c088b901a26)
+
+
+
+
+You may zoom in to pixels to evaluate the effect of the spatial filtering. You may still speckles in the image, but the effect is minimised.
+
+
 
 
 ### Image differencing
@@ -282,8 +295,59 @@ var slope = terrain.select('slope');
 
 //mask pixels with slope larger than 5%
 var flooded = flooded.updateMask(slope.lte(5));
+```
 
 
+Next, let's visualise pixels identified as flooded in August 2017.
+
+
+```JavaScript
+// Flooded areas
+Map.addLayer(flooded,{palette:"0000FF"},'Flooded areas');
+```
+
+If you turn on the geometry for the study area and the baseline Google satellite imagery, your result may be as shown below. 
+
+
+
+
+![image](https://github.com/user-attachments/assets/b0633917-a40f-4510-84bc-ee181684d9fb)
+
+
+
+
+The blue pixels are the flooded areas.
+
+
+
+### Spatial extent of floodplain
+
+
+We know the spatial distribution of the flooded areas, however the size of the floodplain is not given. To do this we would use the following code.
+
+
+
+```JavaScript
+
+// create a raster layer containing the area information of each pixel 
+var flood_pixelarea = flooded.select("VH").multiply(ee.Image.pixelArea());
+
+// Sum the areas of flooded pixels
+var flood_stats = flood_pixelarea.reduceRegion({
+  reducer: ee.Reducer.sum(),              
+  geometry: aoi2,
+  scale: 10, 
+  maxPixels: 1e9
+  });
+
+// Convert the flood extent to hectares 
+var flood_area_ha = flood_stats
+  .getNumber(polarization)
+  .divide(10000)
+  .round();
+
+print(flood_area_ha, 'extent in ha')
+```
 
 
 
