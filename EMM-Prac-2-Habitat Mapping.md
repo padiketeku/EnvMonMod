@@ -15,9 +15,13 @@ In this practical, you would apply Random Forest to classify an image with the o
 ## Learning Outcomes
 
 - Import shapefile
+
 - Visualise boundary of study area
+
 - Mosaic images
+
 - Classify an image
+ 
 - Assess the classifier 
 
 
@@ -25,7 +29,7 @@ In this practical, you would apply Random Forest to classify an image with the o
 ## Task
 
 
-Environmental monitoring is a process in which time is an important phenomenon. For instance, the condition of a habitat 30 years ago may not be the same today. The Daly River Catchment in the Northern Territory of Australia is an important ecosystem for several reasons. The catchment is a habitat for many native plants, birds, reptiles, and mammals. The condition of the catchment is reported to have changed over the years [(Wygralak, 2006)](https://www.tandfonline.com/doi/pdf/10.1071/ASEG2006ab200). To understand the recent ecological state of the catchment  it is worth going back into time to have a baseline information. In this practical, your task is to classify the cardinal land cover types of the Daly River Catchment in 2013, using Landsat 8 imagery, to obtain baseline data for further assessment.
+Environmental monitoring is a process in which time is an important phenomenon. For instance, the condition of a habitat 30 years ago may not be the same today. The Daly River Catchment in the Northern Territory of Australia is an important ecosystem for several reasons. The catchment is a habitat for many native plants, birds, reptiles, and mammals. The condition of the catchment is reported to have changed over the years [(Wygralak, 2006)](https://www.tandfonline.com/doi/pdf/10.1071/ASEG2006ab200). To understand the recent ecological state of the catchment  it is worth stepping back into time to have a baseline information. In this practical, your task is to classify the dominant land cover types of the Daly River Catchment in 2013, using Landsat 8 imagery, to obtain baseline data for further assessment.
 
 
 ### Workflow
@@ -47,12 +51,14 @@ Map.setCenter(130.6884, -13.694,9)
 You would want to display the boundary of the study area to be sure this is properly uploaded.
 
 ```JavaScript
-//create a symoblogy that makes the study boundary transparent and display this  
+//create a symbology that makes the study boundary transparent and display this  
 var symbology = {color: 'red', fillColor: '00000000'};
 
 //apply the symbology to visualise the boundary of the study area
 Map.addLayer(dalyNT.style(symbology), {}, 'Daly River Catchment');
 ```
+
+
 Zoom out a wee bit to see the entire size of the boundary layer. Your result should be similar to the figure below.
 
 
@@ -62,12 +68,12 @@ Zoom out a wee bit to see the entire size of the boundary layer. Your result sho
 
 
 
-Happy with the boundary layer? If so, you would like to find the Landsat 8 images in the database relevant for the given task.
+Happy with the boundary layer? If so, you would like to find the Landsat 8 imagery in the database relevant for the given task.
 
 
 2, Image Collection
 
-The script below retrieves a collection of Landsat 8 images from the database and filters the collection by date and the polygon of the study area to ensure images were acquired in the dry season to minimise cloud cover while spanning the whole study area. 
+The script below retrieves a collection of Landsat 8 images from the database and filters the collection by date and the polygon of the study area to ensure images were acquired in the dry season to minimise cloud cover. 
 
 
 ```JavaScript
@@ -90,7 +96,7 @@ Explore the result in the Console, always inspect the image properties taking no
 
 Question:
 
-How many images are in the collection? Correct, 8 image scenes required to have data for the entire study area.
+How many images are in the collection? Correct, eight Landsat 8 image scenes required to cover the entire study area.
 
 List down the Path and Row IDs for each image. Read more about Path and Row here: [The Landsat Worldwide Reference System](https://landsat.gsfc.nasa.gov/about/the-worldwide-reference-system/)
 (accessed on 14/9/2024).
@@ -179,10 +185,13 @@ print (select_bands, 'select_bands')
 
 ## Classification
 
-There are different habitats within the Daly Catchments, which have to mapped for effective monitoring. In this task, the habitats would be catgeorised into broad themes: *water,infrastructure, woodland, agriculture, and baresoil*. Given fire is an important management tool in this area, fire scar is common in this catchment, hence, fire scar would detected as another cover class. Thus, six cover classes would be mapped in this task.
+There are different habitats within the Daly Catchments, which have to be mapped for effective monitoring. In this task, the habitats would be categorised into broad themes: *water,infrastructure, woodland, agriculture, and baresoil*. Given fire is an important management tool in this area, fire scar is common in this catchment, hence, fire scar would be detected as another cover class. Thus, six cover classes would be mapped.
 
 6, Predictor variables
-For any modelling, variables that are known to be sensitive to the target are required. These are referred to as predictor variables. We have selected 6 bands to be the hpredictor variables. While it is OK to use these variables for the classification, it is perhaps best to create other variables out these bands to increase the number of predictor variables. Ideally, the additional variables created from the bands should be informed by existing literature. In this task, three vegetation indices that are commonly used to explain variation in such cover types would be created using the function below. [See this paper for further information on the vegetation indices](https://www.tandfonline.com/doi/pdf/10.1080/15324982.2016.1170076). 
+
+For any modelling, variables that are known to be sensitive to the target are required. These are referred to as predictor variables. We have selected 6 bands to be the predictor variables. While it is OK to use these variables for the classification, it is perhaps best to create other variables out of these bands to increase the number of predictor variables. Ideally, the additional variables created from the bands should be informed by existing literature. In this task, three vegetation indices that are commonly used to explain variation in these cover types would be created using the function below. [See this paper for further information on the vegetation indices](https://www.tandfonline.com/doi/pdf/10.1080/15324982.2016.1170076). 
+
+
 
 ```JavaScript
 
@@ -218,11 +227,11 @@ print (image2classify, 'image2classify');
 ```
 
 Normalise data
-Data normalisation is maing the data values to be in a range, e.g., 0-1. Ideally in machine learning, the data to be classified must be normalised, especially if the data variables are different units of measurement/dimension. If the data is not normalised it may affect the classification/prediction results. Given the image file is large it is not possible to normalise this data within EE as you may run out of server space. Thus, the data is not normalised.
+Data normalisation is 'forcing' the data values to be in a certain range, e.g., 0-1. Ideally in machine learning, the data to be classified must be normalised, especially if the data variables are of different units of measurement. If the data is not normalised it may affect the classification or prediction results. Given the image file is large it is not possible to normalise this data within EE as you may run out of server space. Thus, the data is not normalised.
 
 ### Training Data
 
-Field visits to collect reference data for the classes are ideal and important for classification tasks. However, sometimes for many reasons, it is not possible to have ground reference to validate image classification. Other methods can be used to obtain reference data for the classification. One of such methods is using higher resolution images. This approach is explored here as the reference classes would be obtained from high resolution Google satellite imagery.  
+Field visits to collect reference data for the classes are ideal and important for classification tasks. However, sometimes for many reasons, it is not possible to have ground reference data to validate image classification. Other methods can be used to obtain reference data for the classification. One of such methods is using higher resolution images. This approach is explored here as the reference classes would be obtained from high resolution Google satellite imagery.  
 
 Creating Reference Classes
 
@@ -255,7 +264,7 @@ var sample_reference = image2classify.sampleRegions({
 ```
 Data partitioning
 
-The reference data must be partitioned into training and test sets. The data points for the training set should be significantly larger thann the test set as the more training points the better you are able to teach the model to be conversant with all possible cases, so the model is more likely to perform well on unknown data (i.e., test data). The data split is based on the the size of the reference data, but the 80-20 rule is often used. This means 80% of the reference data is used to teach the model while the 20% is kept away from the model and later used to evaluate the predictability of the model. We would explore this ratio in the task.
+The reference data must be partitioned into training and test sets. The data points for the training set should be significantly larger than the test set as the more training points the better you are able to teach the model to be conversant with all possible cases, so the model is more likely to perform well on unknown data (i.e., test data). The data split is based on the size of the reference data, but the 80-20 rule is often used. This means 80% of the reference data is used to teach the model while the 20% is kept away from the model and later used to evaluate the predictability of the model. We would explore this ratio in the task.
 
 ```JavaScript
 
@@ -266,7 +275,7 @@ var testSample = sample_reference2.filter('random > 0.8')  //20% of data for mod
 
 ```
 
-Since we now have the image to classify and training and test data, the next thing to do is to training a Random Forest classification model. Random Forest is a widely used machine learning algorithm in remote sensing classification tasks as it is less sensitive to over prediction [(Belgiu and Drăguţ, 2016)] (https://doi.org/10.1016/j.isprsjprs.2016.01.011)
+Since we now have the image to classify and training and test data, the next thing to do is to train a Random Forest classification model. Random Forest is a widely used machine learning algorithm in remote sensing classification tasks, as it is less sensitive to over prediction [(Belgiu and Drăguţ, 2016)] (https://doi.org/10.1016/j.isprsjprs.2016.01.011)
 
 
 ```JavaScript
@@ -312,7 +321,7 @@ The classification image is shown below.
 
 Display the unclassified/original image and use this to visually assess the performance. Do you reckon the Random Forest did a good job? Where are the problem areas? What do you reckon can be done to make the results more believable?
 
-What you have done so far is a qualitative assessment of the RF model. A qualitative assessment of the model is really useful, particularly if you are familiar with the surface types in the study area. It is, however, also useful to quantatively evalaute the performance of the classifier.
+What you have done so far is a qualitative assessment of the RF model. A qualitative assessment of the model is really useful, particularly if you are familiar with the surface types in the study area. It is, however, also useful to quantatively evaluate the performance of the classifier.
 
 
 ## Quantitative evaluation of the RF classifier
@@ -344,7 +353,7 @@ The results appear in the Console. You may click on the drop-down to see the res
 
 
 
-The overall accuracy is 98%, but that can  be misleading if you are interested in just a cover type. The other metrics have accuracy value for each class, making it more useful for those interested in a specific class. If you are after wetlands, the consumer and prodcuer accuracies are about 98% and of course the average of producer and consumer accuracies (i.e., the fscore) is also 98%. Interpret the remaining classes. Critique the results.
+The overall accuracy is 98%, but that can be misleading if you are interested in just a cover type. The other metrics have accuracy value for each class, making it more useful for those interested in a specific class. If you are after wetlands, the consumer and prodcuer accuracies are about 98% and of course the average of producer and consumer accuracies (i.e., the fscore) is also 98%. Interpret the remaining classes. Critique the results.
 
 Compute the spatial extent of cover classes in square kilometer 
 
@@ -420,11 +429,11 @@ ENV506:1000-1500 words
 
 **Background**
 
-Environmental monitoring is a process in which time is an important phenomenon. For instance, the condition of a habitat 30 years ago may not be the same today. The Daly River Catchment in the Northern Territory of Australia is an important ecosystem for several reasons. The catchment is a habitat for many native plants, birds, reptiles, and mammals. The condition of the catchment is reported to have changed over the years [(Wygralak, 2006)](https://www.tandfonline.com/doi/pdf/10.1071/ASEG2006ab200). To understand the recent ecological state of the catchment  it is worth going back in time to have baseline information. 
+Environmental monitoring is a process in which time is an important phenomenon. For instance, the condition of a habitat 30 years ago may not be the same today. The Daly River Catchment in the Northern Territory of Australia is an important ecosystem for several reasons. The catchment is a habitat for many native plants, birds, reptiles, and mammals. The condition of the catchment is reported to have changed over the years [(Wygralak, 2006)](https://www.tandfonline.com/doi/pdf/10.1071/ASEG2006ab200). To understand the recent ecological state of the catchment it is worth going back in time to have baseline information. 
 
 **TASK**
 
-Classify the cardinal land cover types of the Daly River Catchment in 2013, using Landsat 8 imagery. Prepare a short scientific article that would be published in a magazine with an audience outside the field of remote sensing.
+Classify the major land cover types of the Daly River Catchment in 2013, using Landsat 8 imagery. Prepare a short scientific article that would be published in a magazine with an audience outside the field of remote sensing.
 
 The report outline should include:
 
