@@ -10,7 +10,7 @@ Cristina Calirgos Rodriguez
 
 # Introduction
 
-Land clearing can be broadly defined but in the context of this project it is the removal of native vegetation. Land clearing in the Daly River Catchment has often been in the news. Agricultural expansion is regarded as a main driver of clearing in the catchment. The importance of agricultural production cannot be esimated, however, rampant clearing of woody vegetation and shrubs may exacerbate drought, loss of biodiversity, and other ecological problems. Information on the extent of clearing is required for effective management of this problem. The use of free satellite imagery for the monitoring of land clearing can be more cost-efficient. The goal of this project is to explore Landsat imagery for the detection of land clearing in the Daly River Catchment. 
+Land clearing can be broadly defined but in the context of this project it is the removal of native vegetation. Land clearing in the Daly River Catchment has often been in the news. Agricultural expansion is regarded as a main driver of clearing in the catchment. The importance of agricultural production cannot be underestimated, however, rampant clearing of woody vegetation and shrubs may exacerbate drought, loss of biodiversity, and other ecological problems. Information on the extent of clearing is required for effective management of this problem. The use of free satellite imagery for the monitoring of land clearing can be more cost-efficient. The goal of this project is to explore Landsat imagery for the detection of land clearing in the Daly River Catchment. 
 
 It is assumed that previous practical sessions have been completed prior to taking this project. 
 
@@ -214,8 +214,8 @@ print(landsatCol2023 , 'landsatCol2023 ')
 
 ## Mask cloud cover and select bands
 
-When your print the collection to the Console, you may observe that there are 8 images in the collection. This is because 8 Land scenes required to completely cover the study area.
-Explore the image properties and you may observe that some of the images are affected by coud cover, especially the 2017 collection. Also, there bands that are not relevant to the project. To this end, mask the cloud cover and select the appropriate bands.
+When you print the collection to the Console, you may observe that there are 8 images in the collection. This is because 8 Landsat scenes are required to completely cover the study area.
+Explore the image properties and you may observe that some of the images are affected by coud cover, especially the 2017 collection. Also, there are bands not relevant to the project. To this end, mask the cloud cover and select the appropriate bands.
 
 ```JavaScript
 //mask cloud and cloud shadow; and select relevant bands
@@ -286,7 +286,7 @@ var img2022 =vegetation_indices(img2022)
 var img2023 =vegetation_indices(img2023)
 ```
 
-Now that we have the NDVI layer we would use this to identify the vegetation pixels. A subjective NDVI threshold value of 0.4 was used with the hope that only woodland and shrubs would be available for the investigation.
+Now that we have the NDVI layer we would use this to identify the vegetation pixels. A subjective NDVI threshold value of 0.4 was used with the aim that only woodland and shrubs would be available for the investigation.
 
 Ideally, you must explore literature to find the best threshold as this can be site specific.
 
@@ -364,7 +364,7 @@ var c23 = img2014_veg.select('NDVI').subtract(img2023_veg.select('NDVI')).rename
 ```
 
 
-Visualise the change in vegetation, you need to do this for every year. The vegetation change for 2016 is displayed below. The black pixels are where vegetation change is observed.
+Visualise the change in vegetation; you need to do this for every year. The vegetation change for 2016 is displayed below. The black pixels are where vegetation change is observed.
 
 ```JavaScript
 //visualise the long-term change n vegetation
@@ -413,14 +413,14 @@ The x-axis is the deltaNDVI, while the y-axis is the number of pixels (i.e., cou
 
 ## Detect land clearing
 
-Land clearing and regrowth for the first 5 years (2015-2019) is presented here. However, you are required to analyse the whole 9 years (2015-2023) to the complete assessment.
+Land clearing and regrowth for the first 5 years (2015-2019) is presented here. However, you are required to analyse the whole 9 years (2015-2023) to complete the assessment.
 
 
 
 ### The 2015-2019 Analysis
 
 
-We would use mean and standard deviation to detect pixels that were cleared. Before this, let's combine the deltaNDVI images into one collection.
+We would use mean and standard deviation to detect pixels that were cleared. Before this, let's combine the deltaNDVI images into a collection.
 
 
 ```JavaScript
@@ -549,7 +549,7 @@ Map.addLayer(imgG_2019,{}, 'Growth2019')
 
 ### Visualise land clearing and growth
 
-In the Layer Manager, you have all the land clearing and growth images that can be displayed separately. However, it is best to visualise land clearing and growth (and of course no-change) at the same time. To achieve this, we would explore the deltaNDVI images using conditional statements. The task demonstrates 2016 change only.
+In the Layer Manager, you have all the land clearing and regrowth images that can be displayed separately. However, it is best to visualise land clearing and regrowth (and of course no-change) at the same time. To achieve this, we would explore the deltaNDVI images using conditional statements. The task demonstrates 2016 change only.
 
 ```JavaScript
 
@@ -560,9 +560,9 @@ var classes = c16.expression(
 
     "(b(0) > 2.1831) ? 2" + //Regrowth
 
-      ": (b(0) < -2.1932) ? 1" + // LAND CLEARING
+      ": (b(0) < -2.1932) ? 1" + // Land clearing 
 
-        ": 0" //NO CHANGE
+        ": 0" //No-change
 
 );
 
@@ -590,7 +590,7 @@ You may observe that land clearing (red pixels) was more dominant than regrowth 
 
 ## Spatial extent of change
 
-What is the extent of land clearing and growth? At this point we know by the spatial information that there was more land clearing than regrowth in 2016. However, we need to quantify this. 
+What is the extent of land clearing and regrowth? At this point we know by the spatial information that there was more land clearing than regrowth in 2016. However, we need to quantify this. 
 
 ```JavaScript
 //size of potential land cleared in 2016 (in hectares)
