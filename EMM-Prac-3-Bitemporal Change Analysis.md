@@ -9,7 +9,7 @@ Stacker Overflow
 
 # Introduction
 
-This activity is building on practical 2 in that the output from that activity is used as a baseline data to estimate changes in habitat. This practical activity considers change in habitat between two time periods. The baseline habitat map was created for 2013 and this would be compared the most recent habitat map (i.e., 2024, note- this should be changed to the time you were performing this activity). In this activity, it is assumed that practical 2 is already completed.
+This activity is building on practical 2 in that the output from that activity is used as a baseline data to estimate changes in habitat. This practical activity considers change in habitat between two time periods. The baseline habitat map was created for 2013 and this would be compared against the most recent habitat map (i.e., 2024, note- this should be changed to the time you were performing this activity). In this activity, it is assumed that practical 2 is already completed.
 
 # Learning Outcomes
 
@@ -21,8 +21,9 @@ This activity is building on practical 2 in that the output from that activity i
 - Estimate changes in habitats using a baseline data
 
 # Task
+
 You have been provided a baseline habitat map of the Daly River Catchment, this is a product from the practical 2 activity, to estimate the latest changes in the spatial extent of habitats.  
-Collect the recent Landsat imagery (this should be surface reflectance product) of the study area with acquisition dates similar to baseline data and produce a new habitat map using Random Forest classification. Once you have the new habitat map, estimate changes in the spatial extent of the cover types. Critically evaluate your results, including:
+Collect recent Landsat imagery (this should be surface reflectance product) of the study area with acquisition dates similar to baseline data and produce a new habitat map using Random Forest classification. Once you have the new habitat map, estimate changes in the spatial extent of the cover types. Critically evaluate your results, including:
 
 - description of the task
 - description of the methods you applied to complete the task
@@ -162,7 +163,7 @@ Simply, you can compare these estimates against baseline (see figures below) to 
 
 - **Changes between cover types (from-to change analysis)**
 
-The results above show changes in the spatial extent of a habitat. However, we would step up this analysis to observe changes between classes inclduing the spatial extent of the change.
+The results above show changes in the spatial extent of a habitat. However, we would step up this analysis to observe changes between classes including the spatial extent of the change.
 For instance if woodland pixels changed to other cover, what cover was that and what was the spatial extent for this change. 
 
 Relabel the classification images
@@ -191,7 +192,7 @@ The image below shows changed areas in red. The grey pixels are no-change areas.
 
 
 
-- **Change matrix**
+- **Change detection matrix**
 
 A pixel of class 1 (e.g., water) in 2013 may change to class 2 (e.g., infrastructure) in a recent year, the matrix would capture this as 12. Alternatively, class 4 (woodland) may change to class 5 (agriculture) and this would appear on the change matrix as 45. We would use this logic to transform the two classification images for a change matrix.
 
