@@ -26,7 +26,7 @@ Fire can start naturally or through human activities; the intensity can be high 
 
 # Task
 
-You have been employed by the Northern Territor Government as *Senior Rangeland Monitoring Officer – Remote Sensing* and one of your KPIs is to produce and share information on the fire frequency of the Daly River Catchment (DRC) since 2001 to date. 
+You have been employed by the Northern Territory Government as *Senior Rangeland Monitoring Officer – Remote Sensing* and one of your KPIs is to produce and share information on the fire frequency of the Daly River Catchment (DRC) since 2001 to date. 
 Because of consistency with existing data, you were tasked to use MODIS FireCC151, a data product developed as part of the European Space Agency (ESA) Climate Change Initiative (CCI) Programme. For a thorough analysis, you were asked to explore every image collected over the region of interest. Present 5 PPT slides, critically evaluate the fire frequency of the DRC.
 
 # Workflow
@@ -94,7 +94,7 @@ var fireData = fireData
 print (fireData, 'fireData')
 ```
 
-The collection has 240 images (as of 2024). Drop-down "features" to see the list of images (fgure below). Explore the image properties and take note of "system: index:" for the product date. 
+The collection has 240 images (as of 2024). Drop-down "features" to see the list of images (figure below). Explore the image properties and take note of "system: index:" for the product date. 
 
 
 
@@ -104,7 +104,7 @@ The collection has 240 images (as of 2024). Drop-down "features" to see the list
 
 
 
-In the next step, would add two more items to the properties- 'year'and 'yrmnth'- for the purposes of producing monthly distibution of fire in the study area.
+In the next step, we would add two more items to the properties- 'year'and 'yrmnth'- for the purposes of producing monthly distribution of fire in the study area.
 
 
 We would want to further trim the data to the study area; given the dataset is an image collection, every image in the collection must be trimmed to the study. A user-defined function would be used to do this. In this function, the additional image properties would be created.
@@ -121,7 +121,7 @@ var fire = fireData.map(function(img) {
     });  
 ```
 
-Note that the function has been applied to the image collection , **fireData** , and this achieved through the **.map** . Now, print the variable to see if the image properties have two additional items (year and yrmnth).
+Note that the function has been applied to the image collection , **fireData** , and this was achieved through the **.map** . Now, print the variable to see if the image properties have two additional items (year and yrmnth).
 
 ```JavaScript
 print (fire, 'fire')
@@ -135,6 +135,7 @@ The properties of the first image in the collection is shown below. The new prop
 
 
 Optical imagery can be made less useful by cloud cover and thus it is important to ensure 'bad' pixels (or data) is excluded from the analysis. Low quality data can skew results so for a robust study you must select the data with high ocnfidence level. We would filter the data again selecting fire pixels with confidence level no less than 95% (a standard for ecological studies).
+
 
 ```JavaScript
 
@@ -327,7 +328,7 @@ Intepret the two charts. Critique the observations.
 # Conclusion
 
 MODIS fire product, which is a global data of 250 resolution, was used to characterise the fire regime of the Daly River Catchment. Both spatial and non-spatial outputs were created, the number of fires were highest in 2002, 2004 and 2006.
-Similar analysis with higher resolution imagery, such as Sentinel-2, may improve the accuracy of the observations.
+Similar analysis with higher resolution imagery, such as Landsat, may improve the accuracy of the observations.
 
 
 # Code
@@ -345,10 +346,6 @@ var symbology = {color: 'red', fillColor: '00000000'};
 
 //apply the symbology to visualise the boundary of the study area
 Map.addLayer(dalyNT.style(symbology), {}, 'Daly River Catchment');
-/// from: https://biomath-lab.github.io/OTS-GEE/pages/7_prac.html
-    
-
-
 
 //retrieve fire data for the project
 
