@@ -16,7 +16,7 @@ Cameron Baker (supplied the crocodile data)
 
 # Introduction
 
-The Northern Territory is widely known for the crocodiles in her waterbodies. Until 1971, the population of estuarine crocodiles in the Northern Territory was in decline at an alarming rate owing to overexploitation and human encroachment on crocodile habitats (Webb et al., 1984; Letnic & Connors, 2006). However, in recent times the population of crocodiles has been increasing. Many drivers, such as  a hunting ban in 1971 (Fukuda et al., 2008) and tourism ( (Saalfeld et al., 2016), have been flagged. Floodplains provide a habitat for crocodiles to grow (Adame et al., 2018) and reproduce (Fukuda et al., 2008; Fukuda & Cuff, 2013). Changes in the size of floodplains may drive the productivity of estuarine crocodiles, this practical aims to investigate this.
+The Northern Territory is widely known for the crocodiles in her waterbodies. Until 1971, the population of estuarine crocodiles in the Northern Territory was in decline at an alarming rate owing to overexploitation and human encroachment on crocodile habitats (Webb et al., 1984; Letnic & Connors, 2006). However, in recent times the population of crocodiles has been increasing. Many drivers, such as a hunting ban in 1971 (Fukuda et al., 2008) and tourism ( (Saalfeld et al., 2016), have been flagged. Floodplains provide a habitat for crocodiles to grow (Adame et al., 2018) and reproduce (Fukuda et al., 2008; Fukuda & Cuff, 2013). Changes in the size of floodplains may drive the productivity of estuarine crocodiles, this practical aims to investigate this.
 
 
 
@@ -53,12 +53,12 @@ You are given a simulated crocodile biomass data for the Adelaide River in the N
 
 ## Workflow
 
-The workflow below is for August 2017. You may have to modify the scripts to produce estimates for the other months. For the purposes of the study objective a seaonal calendar was used. So, a year starts from August and ends July the following year.
+The workflow below is for August 2017. You may have to modify the scripts to produce estimates for the other months. For the purposes of the study objective a seasonal calendar was used. So, a year starts from August and ends July the following year.
 
 
 ### Import and load shapefiles into Code Editor 
 
-Manually import all the shapefiles from your desktop to Assets. Once you have the shapefiles in Assets, programmatically load them into the Code Editor. Loading the shapefile for the Adelaide River would as shown below.
+Manually import all the shapefiles from your desktop to Assets. Once you have the shapefiles in Assets, programmatically load them into the Code Editor. Loading the shapefile for the Adelaide River the code below can be used.
 
 
 ```JavaScript
@@ -167,7 +167,7 @@ Take the **Inspector** tool to explore the pixel values. What is the difference 
 ### Speckle filtering
 
 
-An inherent issue with radar remote sensing is speckles in the image. In the figure above, you can see speckles ("salt and pepper" grainy texture) almost everywhere in the image. The speckle can lower the quality of image, so it is ideal to minimise the effects of speckles by smoothing the image.The smoothing algorithm averages out the pixels, using a moving window sometimes referred to as a kernel. The kernel size is usually an odd number with 3 the minimum. Further reading on moving windows and applications in landscape ecology is [here](https://doi.org/10.1016/j.jag.2015.09.010). Through the filtering algorithm, spatial details, including speckles are lost. There are many filtering algorithms. simple and complex, available for use: [see this paper](https://www.mdpi.com/2072-4292/13/10/1954). We would use the Boxcar filter as it is simple to implement. The code below smoothes the Sentinel-1 image to minimise speckle noise. 
+An inherent issue with radar remote sensing is speckles in the image. In the figure above, you can see speckles ("salt and pepper" grainy texture) almost everywhere in the image. The speckle can lower the quality of image, so it is ideal to minimise the effects of speckles by smoothing the image.The smoothing algorithm averages out the pixels, using a moving window sometimes referred to as a kernel. The kernel size is usually an odd number with 3 the minimum. Further reading on moving windows and applications in landscape ecology is [here](https://doi.org/10.1016/j.jag.2015.09.010). Through the filtering algorithm, spatial details, including speckles are lost. There are many filtering algorithms, simple and complex, available for use: [see this paper](https://www.mdpi.com/2072-4292/13/10/1954). We would use the Boxcar filter as it is simple to implement. The code below smoothes the Sentinel-1 image to minimise speckle noise. 
 
 
 ```JavaScript
@@ -301,7 +301,7 @@ The change image with perennial water pixels masked is shown below. Note, you mu
 
 
 
-The potentially flooded pixels are the white pixels. You may also observe that some of the pixels are isolated. A contiguous flooded areas are more representative of reality. Thus, we would conduct a connectivity analysis to clump isolated pixels together as much as possible. The code below connects the isolated pixels.
+The potentially flooded pixels are the white pixels. You may also observe that some of the pixels are isolated. A contiguous flooded areas are more representative of reality. Thus, we would conduct a connectivity analysis to clump isolated pixels together. The code below connects the isolated pixels.
 
 
 ```JavaScript
