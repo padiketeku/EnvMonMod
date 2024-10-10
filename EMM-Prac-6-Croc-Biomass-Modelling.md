@@ -400,9 +400,7 @@ The size of floodplain in August 2017 is printed to the Console. What is the siz
 
 
 
-# Assignment
-
-
+# Do It Yourself
 
 
 The table shows monthly floodplain size and crocodile biomass per km for the Daly River for 2017. 
@@ -593,8 +591,9 @@ print(flood_area_ha, 'extent in ha')
 
 # Assignment
 
-Modify the scripts to characterise the spatial extent of potential land clearing and regrowth in the Daly River Catchment from 2019 to 2023.
-Produce a scientific article for this task. 
+
+You are given a simulated crocodile biomass data for the Adelaide River in the Northern Territory. The data spans 2017-2023. Given the issue of cloud cover during wet seasons, you are asked to use Sentinel-1 data to estimate floodplain size and investigate the linear relationship between floodplain size and crocodile biomass
+
 
 **Task**
 
@@ -607,6 +606,7 @@ Complete the image processing and spatiotemporal analysis required to address th
 - Discussion; discuss your findings (linking back to the objectives) including any limitations of the study and suggestions for improvement
 - Conclusion; succinct summary of the main findings
 - References
+
 
 
 **The End**
