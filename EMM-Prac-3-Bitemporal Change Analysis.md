@@ -41,7 +41,7 @@ Collect recent Landsat imagery (this should be surface reflectance product) of t
 ```JavaScript
 
 //region of interest is the Daly River catchment of the Northern Territory, Australia
-var dalyNT = ee.FeatureCollection("projects/ee-niiazucrabbe/assets/DalyCatchment") //modify the path to your own GEE asset 
+var dalyNT = ee.FeatureCollection("projects/ee-niiazucrabbe/assets/DalyCatchment") //modify the path to your own EE asset 
 
 //let the computer display the base map to location of interest (i.e., Daly River)
 Map.setCenter(130.6884, -13.694,9)
