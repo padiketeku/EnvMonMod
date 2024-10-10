@@ -591,6 +591,23 @@ print(flood_area_ha, 'extent in ha')
 ```
 
 
+# Assignment
+
+Modify the scripts to characterise the spatial extent of potential land clearing and regrowth in the Daly River Catchment from 2019 to 2023.
+Produce a scientific article for this task. 
+
+**Task**
+
+Complete the image processing and spatiotemporal analysis required to address the task, and construct a scientific article to communicate your findings. Your scientific report should be prepared as a submission-ready document to the scientific journal and should include the following sections. You can use the formatting style of the [MDPI Remote Sensing](https://www.mdpi.com/journal/remotesensing/instructions) journal as a guide – see their Word or LaTeX [template](https://www.mdpi.com/journal/remotesensing/instructions).
+
+- Abstract
+- Introduction; include a brief literature review on the problem at hand, the aims and objectives
+- Methods; include descriptions of datasets, processing steps and analysis applied
+- Results; include appropriate maps, tables and charts to illustrate your findings
+- Discussion; discuss your findings (linking back to the objectives) including any limitations of the study and suggestions for improvement
+- Conclusion; succinct summary of the main findings
+- References
+
 
 **The End**
 
