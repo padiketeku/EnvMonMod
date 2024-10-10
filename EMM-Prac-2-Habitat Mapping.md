@@ -231,7 +231,7 @@ Data normalisation is 'forcing' the data values to be in a certain range, e.g., 
 
 ### Training Data
 
-Field visits to collect reference data for the classes are ideal and important for classification tasks. However, sometimes for many reasons, it is not possible to have ground reference data to validate image classification. Other methods can be used to obtain reference data for the classification. One of such methods is using higher resolution images. This approach is explored here as the reference classes would be obtained from high resolution Google satellite imagery.  
+Field visits to collect reference data for the classes are ideal and important for classification tasks. However, sometimes for many reasons, it is not possible to have ground reference data to validate image classification. Other methods can be used to obtain reference data for the classification. One of such methods is using higher resolution imagery. This approach is explored here as the reference classes would be obtained from high resolution Google satellite imagery.  
 
 Creating Reference Classes
 
