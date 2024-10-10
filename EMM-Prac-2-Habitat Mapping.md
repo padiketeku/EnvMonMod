@@ -38,7 +38,7 @@ Environmental monitoring is a process in which time is an important phenomenon. 
 1, Upload the boundary (or shapefile) of the study area 
 
 ```JavaScript
-var dalyNT = ee.FeatureCollection("projects/ee-niiazucrabbe/assets/DalyCatchment")
+var dalyNT = ee.FeatureCollection("projects/ee-niiazucrabbe/assets/DalyCatchment") //modify the path to your own EE asset 
 ```
 
 Usually, at the start of EE, the base map is centered on the US. If your study location is different you would have to re-set the base map to your region of interest. In our case, we would re-set the base map to the Daly River.
