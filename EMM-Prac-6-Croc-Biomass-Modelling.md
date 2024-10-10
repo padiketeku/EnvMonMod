@@ -56,6 +56,9 @@ You are given a simulated crocodile biomass data for the Adelaide River in the N
 The workflow below is for August 2017. You may have to modify the scripts to produce estimates for the other months. For the purposes of the study objective a seasonal calendar was used. So, a year starts from August and ends July the following year.
 
 
+Non-Remote Sensing data for the task can be downloaded from this [site](https://zenodo.org/records/13910706). Download the "Adelaide_river_shapefile.zip" for this practical.
+
+
 ### Import and load shapefiles into Code Editor 
 
 Manually import all the shapefiles from your desktop to Assets. Once you have the shapefiles in Assets, programmatically load them into the Code Editor. Loading the shapefile for the Adelaide River the code below can be used.
