@@ -12,7 +12,7 @@ Stacker Overflow
 In this practical, you would apply Random Forest to classify an image with the objective of defining the main surface types of the Daly River Catchment.
 
 
-## Learning Outcomes
+# Learning Outcomes
 
 - Import shapefile
 
@@ -26,13 +26,13 @@ In this practical, you would apply Random Forest to classify an image with the o
 
 
 
-## Task
+# Task
 
 
 Environmental monitoring is a process in which time is an important phenomenon. For instance, the condition of a habitat 30 years ago may not be the same today. The Daly River Catchment in the Northern Territory of Australia is an important ecosystem for several reasons. The catchment is a habitat for many native plants, birds, reptiles, and mammals. The condition of the catchment is reported to have changed over the years [(Wygralak, 2006)](https://www.tandfonline.com/doi/pdf/10.1071/ASEG2006ab200). To understand the recent ecological state of the catchment  it is worth stepping back into time to have a baseline information. In this practical, your task is to classify the dominant land cover types of the Daly River Catchment in 2013, using Landsat 8 imagery, to obtain baseline data for further assessment.
 
 
-### Workflow
+## Workflow
 
 
 1, Upload the boundary (or shapefile) of the study area 
@@ -183,7 +183,7 @@ print (select_bands, 'select_bands')
 ```
 
 
-## Classification
+### Classification
 
 There are different habitats within the Daly Catchments, which have to be mapped for effective monitoring. In this task, the habitats would be categorised into broad themes: *water,infrastructure, woodland, agriculture, and baresoil*. Given fire is an important management tool in this area, fire scar is common in this catchment, hence, fire scar would be detected as another cover class. Thus, six cover classes would be mapped.
 
@@ -229,7 +229,7 @@ print (image2classify, 'image2classify');
 Normalise data
 Data normalisation is 'forcing' the data values to be in a certain range, e.g., 0-1. Ideally in machine learning, the data to be classified must be normalised, especially if the data variables are of different units of measurement. If the data is not normalised it may affect the classification or prediction results. Given the image file is large it is not possible to normalise this data within EE as you may run out of server space. Thus, the data is not normalised.
 
-### Training Data
+#### Training Data
 
 Field visits to collect reference data for the classes are ideal and important for classification tasks. However, sometimes for many reasons, it is not possible to have ground reference data to validate image classification. Other methods can be used to obtain reference data for the classification. One of such methods is using higher resolution imagery. This approach is explored here as the reference classes would be obtained from high resolution Google satellite imagery.  
 
@@ -324,7 +324,7 @@ Display the unclassified/original image and use this to visually assess the perf
 What you have done so far is a qualitative assessment of the RF model. A qualitative assessment of the model is really useful, particularly if you are familiar with the surface types in the study area. It is, however, also useful to quantatively evaluate the performance of the classifier.
 
 
-## Quantitative evaluation of the RF classifier
+#### Quantitative evaluation of the RF classifier
 
 The RF classifier is assessed using error matrix, resulting in accuracy metrics such as overall accuracy, consumer accuracy, producer accuracy and F1-score.
 Further details on these accuracies can be found here: [Hurskainen et al. 2019](https://doi.org/10.1016/j.rse.2019.111354)
@@ -397,60 +397,12 @@ Export.image.toDrive({
 ```
 
 
-## Conclusion
+# Conclusion
 
 We have created baseline habitat map for the Daly River Catchment. In the next activity, this baseline data will be used to mointor change in habitats.
 
 
-## Assignment 1-Project Proposal 
-
-Word Count
-
-ENV306: 700 words
-
-ENV506:1000 words
-
-**TASK**
-
-You are required to produce a habitat map of the Daly River Catchment. Prepare a short research proposal on this topic. The proposal should include the title of the project, aim and objectives, methodology, expected contribution, resources required, and bibliography. The title of the project and bibliography do **not** contribute to the word count.
-
-A template and exemplars are provided to help you complete this task. 
-
-
-
-## Assignment 2-Practical Assignment (Habitat Mapping)
-
-Word Count
-
-ENV306: 700-1000 words
-
-ENV506:1000-1500 words
-
-
-**Background**
-
-Environmental monitoring is a process in which time is an important phenomenon. For instance, the condition of a habitat 30 years ago may not be the same today. The Daly River Catchment in the Northern Territory of Australia is an important ecosystem for several reasons. The catchment is a habitat for many native plants, birds, reptiles, and mammals. The condition of the catchment is reported to have changed over the years [(Wygralak, 2006)](https://www.tandfonline.com/doi/pdf/10.1071/ASEG2006ab200). To understand the recent ecological state of the catchment it is worth going back in time to have baseline information. 
-
-**TASK**
-
-Classify the major land cover types of the Daly River Catchment in 2013, using Landsat 8 imagery. Prepare a short scientific article that would be published in a magazine with an audience outside the field of remote sensing.
-
-The report outline should include:
-
-1, Background, including the description of the study area <br>
-
-2, Aim and objectives <br>
-
-3, Description of data (including sources of data) and methods used <br>
-
-4, Explain the results, including maps and charts <br>
-
-5, Critically evaluate the results, including a discussion on the effects of spatial scale <br>
-
-6, Conclusion
-
-
-## The End
+# Code
 
 See below for the complete code.
 
@@ -626,4 +578,56 @@ Export.image.toDrive({
 
 ```
 
+
+# Assignment 1-Project Proposal 
+
+Word Count
+
+ENV306: 700 words
+
+ENV506:1000 words
+
+
+## **TASK**
+
+You are required to produce a habitat map of the Daly River Catchment. Prepare a short research proposal on this topic. The proposal should include the title of the project, aim and objectives, methodology, expected contribution, resources required, and bibliography. The title of the project and bibliography do **not** contribute to the word count.
+
+A template and exemplars are provided to help you complete this task. 
+
+
+
+# Assignment 2-Practical Assignment (Habitat Mapping)
+
+Word Count
+
+ENV306: 700-1000 words
+
+ENV506:1000-1500 words
+
+
+## **Background**
+
+Environmental monitoring is a process in which time is an important phenomenon. For instance, the condition of a habitat 30 years ago may not be the same today. The Daly River Catchment in the Northern Territory of Australia is an important ecosystem for several reasons. The catchment is a habitat for many native plants, birds, reptiles, and mammals. The condition of the catchment is reported to have changed over the years [(Wygralak, 2006)](https://www.tandfonline.com/doi/pdf/10.1071/ASEG2006ab200). To understand the recent ecological state of the catchment it is worth going back in time to have baseline information. 
+
+
+## **TASK**
+
+Classify the major land cover types of the Daly River Catchment in 2013, using Landsat 8 imagery. Prepare a short scientific article that would be published in a magazine with an audience outside the field of remote sensing.
+
+The report outline should include:
+
+1, Background, including the description of the study area <br>
+
+2, Aim and objectives <br>
+
+3, Description of data (including sources of data) and methods used <br>
+
+4, Explain the results, including maps and charts <br>
+
+5, Critically evaluate the results, including a discussion on the effects of spatial scale <br>
+
+6, Conclusion
+
+
+**The End**
 
