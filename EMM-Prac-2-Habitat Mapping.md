@@ -35,7 +35,7 @@ Environmental monitoring is a process in which time is an important phenomenon. 
 ## Workflow
 
 
-Non-Remote Sensing data for the task can be downloaded from this [site](https://zenodo.org/records/13910706)
+Non-Remote Sensing data for the task can be downloaded from this [site](https://zenodo.org/records/13910706). Download the "Daly_data.zip" for this practical.
 
 
 1, Upload the boundary (or shapefile) of the study area 
