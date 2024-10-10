@@ -26,8 +26,8 @@ Fire can start naturally or through human activities; the intensity can be high 
 
 # Task
 
-You have been employed by the Northern Territory Government as *Senior Rangeland Monitoring Officer – Remote Sensing* and one of your KPIs is to produce and share information on the fire frequency of the Daly River Catchment (DRC) since 2001 to date. 
-Because of consistency with existing data, you were tasked to use MODIS FireCC151, a data product developed as part of the European Space Agency (ESA) Climate Change Initiative (CCI) Programme. For a thorough analysis, you were asked to explore every image collected over the region of interest. Present 5 PPT slides, critically evaluate the fire frequency of the DRC.
+You have been employed by the Northern Territory Government as *Senior Rangeland Monitoring Officer – Remote Sensing* and one of your KPIs is to produce and share information on the fire frequency of the Daly River Catchment (DRC) from 2001 to date. 
+Because of consistency with existing data, you were tasked to use MODIS FireCC151, a data product developed as part of the European Space Agency (ESA) Climate Change Initiative (CCI) Programme. For a thorough analysis, you were asked to explore every image collected over the region of interest. 
 
 # Workflow
 
@@ -481,8 +481,10 @@ Map.addLayer(fireMask.mode(), visDOY, 'Most frequently burnt DOY', true, 0.8);
 # Assignment
 
 
-Modify the scripts to characterise the spatial extent of potential land clearing and regrowth in the Daly River Catchment from 2019 to 2023.
-Produce a scientific article for this task. 
+**Background**
+
+You have been employed by the Northern Territory Government as *Senior Rangeland Monitoring Officer – Remote Sensing* and one of your KPIs is to produce and share information on the fire frequency of the Daly River Catchment (DRC) from 2001 to date. 
+Because of consistency with existing data, you were tasked to use MODIS FireCC151, a data product developed as part of the European Space Agency (ESA) Climate Change Initiative (CCI) Programme. For a thorough analysis, you were asked to explore every image collected over the region of interest. Modify the scripts to produce a scientific article for this task. 
 
 **Task**
 
