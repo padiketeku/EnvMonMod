@@ -291,40 +291,10 @@ In addition to the spatial distribution, we can prouce plots to support the obse
 
 
 
-2, Annual fire frequencies
-
-```JavaScript
-var opt_fireYr = {
-   title: 'Count number of Fires per year',
-   hAxis: {title: 'Time'},
-   vAxis: {title: 'Fire Frequency'},
-   colors: ['1d6b99', '39a8a7', '0f8755', '76b349']
- };
-
-// create a chart with a reducer
- var fireYr_chart = ui.Chart.image.seriesByRegion({
-   imageCollection: fireCNT, 
-   regions: dalyNT, 
-   reducer: ee.Reducer.sum(), 
-   band: 'BurnDate_count', 
-   scale: 250, 
-   xProperty: 'year', 
-   seriesProperty: 'region'})
-     .setChartType('ColumnChart')
-     .setOptions(opt_fireYr);
- print(fireYr_chart, 'Annual fire frequencies per region');
-```
-
-
-Your chart may be similar to the one below.
 
 
 
-![image](https://github.com/user-attachments/assets/9e9501be-6465-4083-8e45-262d071f055e)
-
-
-
-Intepret the two charts. Critique the observations.
+Intepret the charts. Critique the observations.
 
 
 # Conclusion
