@@ -26,7 +26,7 @@ Fire can start naturally or through human activities; the intensity can be high 
 
 # Task
 
-You have been employed by the Northern Territory Government as *Senior Rangeland Monitoring Officer – Remote Sensing* and one of your KPIs is to produce and share information on the fire frequency of the Daly River Catchment (DRC) from 2001 to date. 
+You have been employed by the Northern Territory Government as *Senior Rangeland Monitoring Officer – Remote Sensing* and one of your KPIs is to produce and share information on the fire frequency of the Daly River Catchment (DRC) from 2001 to 2020. 
 Because of consistency with existing data, you were tasked to use MODIS FireCC151, a data product developed as part of the European Space Agency (ESA) Climate Change Initiative (CCI) Programme. For a thorough analysis, you were asked to explore every image collected over the region of interest. 
 
 # Workflow
@@ -73,7 +73,7 @@ It is possible to use the **IMPORT** to get the dataset into Code Editor. Howeve
 var fireData = ee.ImageCollection("ESA/CCI/FireCCI/5_1")
 ```
 
-We are interested in all acquisition dates, so let's make a list of all the years of interest
+We are interested in all acquisition dates, so let's make a list of all years we may have data for the study area.
 
 ```JavaScript
 var years = ee.List.sequence(2001, 2024);
@@ -91,7 +91,7 @@ var fireData = fireData
 // select the relevant bands
 .select(['BurnDate','ConfidenceLevel'])
 
-//print resultto the Console
+//print result to the Console
 print (fireData, 'fireData')
 ```
 
@@ -329,7 +329,7 @@ Intepret the two charts. Critique the observations.
 
 # Conclusion
 
-MODIS fire product, which is a global data of 250 resolution, was used to characterise the fire regime of the Daly River Catchment. Both spatial and non-spatial outputs were created, the number of fires were highest in 2002, 2004 and 2006.
+MODIS fire product, which is a global data of 250 resolution, was used to characterise the fire regime of the Daly River Catchment. Both spatial and non-spatial outputs were created, showing early and late dry season fires. 
 
 Similar analysis with higher resolution imagery, such as Landsat, may improve the accuracy of the observations.
 
@@ -442,13 +442,13 @@ Map.addLayer(fireMask.mode(), visDOY, 'Most frequently burnt DOY', true, 0.8);
 
 // Monthly fire frequencies per year for the whole area
  var opt_cntFireMonth = {
-   title: 'Monthly fire frequencies: Daly River Catchment, 2001 to 2023',
+   title: 'Monthly fire frequencies: Daly River Catchment, 2001 to 2020',
    pointSize: 3,
    hAxis: {title: 'Year Month'},
    vAxis: {title: 'Number of fires'},
  };
 
-// Plot day count of monthly fires (Line chart the number of days a fire occured from 2001 to 2023)
+// Plot day count of monthly fires (Line chart the number of days a fire occured from 2001 to 2020)
  var cntFireMonth_chart = ui.Chart.image.series({ 
    imageCollection: fireMask.select('BurnDate'), 
    xProperty: 'yrmnth',
@@ -465,18 +465,6 @@ Map.addLayer(fireMask.mode(), visDOY, 'Most frequently burnt DOY', true, 0.8);
    colors: ['1d6b99', '39a8a7', '0f8755', '76b349']
  };
 
-// create a chart with a reducer
- var fireYr_chart = ui.Chart.image.seriesByRegion({
-   imageCollection: fireCNT, 
-   regions: dalyNT, 
-   reducer: ee.Reducer.sum(), 
-   band: 'BurnDate_count', 
-   scale: 250, 
-   xProperty: 'year', 
-   seriesProperty: 'region'})
-     .setChartType('ColumnChart')
-     .setOptions(opt_fireYr);
- print(fireYr_chart, 'Annual fire frequencies per region');
  
 ```
 
