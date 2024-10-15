@@ -294,7 +294,7 @@ In addition to the spatial distribution, we can prouce plots to support the obse
 
 
 
-Intepret the charts. Critique the observations.
+Intepret the maps and the chart. Critique the observations.
 
 
 # Conclusion
