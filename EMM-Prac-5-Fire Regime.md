@@ -83,7 +83,7 @@ var years = ee.List.sequence(2001, 2024);
 - **Resize dataset**
 
 
-Although we would explore all fire years in this data, only the **BurnDate** and **ConfidenceLevel** bands are useful for the task. Thus we would select these bands. 
+Although we would explore all fire years in this data, only the **BurnDate** and **ConfidenceLevel** bands are useful for the task. Thus, we would select these bands. 
 
 ```JavaScript
 var fireData = fireData
@@ -95,7 +95,7 @@ var fireData = fireData
 print (fireData, 'fireData')
 ```
 
-The collection has 240 images (as of 2024). Drop-down "features" to see the list of images (figure below). Explore the image properties and take note of "system: index:" for the product date. 
+The collection has 240 images (as of 2024). Expand "features" to see the list of images (figure below). Explore the image properties and take note of "system: index:" for the product date. 
 
 
 
@@ -135,7 +135,7 @@ The properties of the first image in the collection is shown below. The new prop
 
 
 
-Optical imagery can be made less useful by cloud cover and thus it is important to ensure 'bad' pixels (or data) is excluded from the analysis. Low quality data can skew results so for a robust study you must select the data with high ocnfidence level. We would filter the data again selecting fire pixels with confidence level no less than 95% (a standard for ecological studies).
+Optical imagery can be made less useful by cloud cover and thus, it is important to ensure 'bad' pixels (or data) is excluded from the analysis. Low quality data can skew results, so, for a robust study you must select the data with high ocnfidence level. We would filter the data again selecting fire pixels with confidence level no less than 95% (a statistical standard for ecological studies).
 
 
 ```JavaScript
@@ -204,7 +204,7 @@ Map.centerObject(dalyNT, 10);
 
 Fire frequency
 
-Light colours are areas that burn less frequently, dark colours are areas that burn often
+Light colours are areas that burnt less frequently, dark colours are areas that burnt often
 
 ```JavaScript
 
@@ -234,7 +234,7 @@ The fire frequency image may be like the one below:
 Fire seasonality (most frequently burnt day of the year)
 
 
-Here, the mode function would be used.
+Here, the mode (i.e., most frequuently occuring) function would be used.
 
 
 ```JavaScript
@@ -265,6 +265,7 @@ In addition to the spatial distribution, we can prouce plots to support the obse
 
 
 ```JavaScript
+
 // Monthly fire frequencies per year for the whole area
  var opt_cntFireMonth = {
    title: 'Monthly fire frequencies: Daly River Catchment, 2001 to 2023',
@@ -329,6 +330,7 @@ Intepret the two charts. Critique the observations.
 # Conclusion
 
 MODIS fire product, which is a global data of 250 resolution, was used to characterise the fire regime of the Daly River Catchment. Both spatial and non-spatial outputs were created, the number of fires were highest in 2002, 2004 and 2006.
+
 Similar analysis with higher resolution imagery, such as Landsat, may improve the accuracy of the observations.
 
 
