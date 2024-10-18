@@ -62,7 +62,17 @@ Once you click on the data filename : **FireCCI51: MODIS Fire_cci Burned Area Pi
 
 
 The "DESCRIPTION" gives users insight into the data. This is a monthly global fire data and the spatial resolution is approximately 250m. The dataset is available from 2001.
-When you click the "BANDS" tab, you may notice that the collection has four bands, including BurnDate, ConfidenceLevel,  LandCover and ObservedFlag. See the band description, and take note of the Min and Max values for BurnDate and ConfidenceLevel as these are the two bands relevant for this project.
+When you click the "BANDS" tab, you may notice that the collection has four bands (see the figure below), including BurnDate, ConfidenceLevel,  LandCover and ObservedFlag. See the band description, and take note of the Min and Max values for BurnDate and ConfidenceLevel as these are the two bands relevant for this project.
+
+
+
+
+
+![image](https://github.com/user-attachments/assets/4cefd564-e66a-4293-adf0-75255840fa81)
+
+
+
+
 
 
 - **Import dataset**
