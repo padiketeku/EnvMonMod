@@ -46,12 +46,12 @@ Type into the search bar "MODIS fire" as shown below.
 
 ![image](https://github.com/user-attachments/assets/8599f15c-d70c-4c2a-995d-32a3373f6d93)
 
-You may see a list of data under "RASTERS" and "TABLES", but click the search icon highlighted in red in the figure below.
+You may see a list of data under "RASTERS" and "TABLES", click the search icon highlighted in red in the figure below.
 
 ![image](https://github.com/user-attachments/assets/43baece9-7b5e-4954-92c0-9461f260ce81)
 
 
-The search result is as shown below, the data of interest highlighted in red polgyon.
+The search result is as shown below, the data of interest highlighted with a red polgyon.
 
 ![image](https://github.com/user-attachments/assets/d0b6dfaf-0016-4b70-a30b-2660e00680ac)
 
@@ -87,7 +87,7 @@ Let's be a bit greedy here in exploring all the data, so let's make a list for a
 
 
 ```JavaScript
-var years = ee.List.sequence(2001, 2024);
+var years = ee.List.sequence(2001, 2020);
 ```
 
 
@@ -106,7 +106,7 @@ var fireData = fireData
 print (fireData, 'fireData')
 ```
 
-The collection has 240 images (as of 2024). Expand "features" to see the list of images (figure below). Explore the image properties and take note of "system: index:" for the product date. 
+The collection has 240 images (as of 2024 when data was first accessed). Expand "features" to see the list of images (figure below). Explore the image properties and take note of "system: index:" for the product date. 
 
 
 
@@ -116,6 +116,9 @@ The collection has 240 images (as of 2024). Expand "features" to see the list of
 
 
 
+- **Adding new properties**
+
+  
 In the next step, we would add two more items to the properties- 'year'and 'yrmnth'- for the purposes of producing monthly distribution of fire in the study area.
 
 
@@ -133,7 +136,7 @@ var fire = fireData.map(function(img) {
     });  
 ```
 
-Note that the function has been applied to the image collection , **fireData** , and this was achieved through the **.map** . Now, print the variable to see if the image properties have two additional items (year and yrmnth).
+Note that the function has been applied to the image collection , **fireData** , and this was achieved through the **.map** . Now, print the variable to see if the image properties have the two new properties (year and yrmnth).
 
 ```JavaScript
 print (fire, 'fire')
@@ -151,16 +154,52 @@ Optical imagery can be made less useful by cloud cover and thus, it is important
 
 ```JavaScript
 
-var fireMask = fire.map(function(img) {
+var burntPixels = fire.map(function(img) {
   var conf = img.select('ConfidenceLevel');
-  var level = conf.gte(95);
+  var maskPixels = conf.gte(95);
   return img
-      .updateMask(level)
+      .updateMask(maskPixels)
       .select('BurnDate') //return only 'BurnDate' 
       .set('year', ee.Image(img).date().get('year'))
       .set('yrmnth', ee.Image(img).get('yrmnth'));
 });
+
+//print result to Console
+print(burntPixels, 'burntPixels');
 ```
+
+
+
+- **Visualise the data**
+
+
+Now that you have your 'best'data for analysis, you would want to visualise the images in the collection to ensure you understand your data. It is only when you understand your data that you can employ the right methods to analyse it. There are 240 images in the collection. It is not computationally expedient to display all of the images; however, we need to have an insight into the collection. Thus, we would display the images for the first year (i.e., 2001). Given the data is in monthly time-step, we would display the first 12 images to represent 2001. The function below would take the image collection and display the first 12 images, one after the other, in the Layer Manager. In the Layer Manager, the 
+
+
+```JavaScript
+
+//a function to display each image in a collection
+function addImage(image) { 
+  var id = image.id
+  var image = ee.Image(image.id)
+
+  //visualise the image; be sure to clip image to ROI
+  Map.addLayer(image.clip(dalyNT), {min:30, max:300, bands:['BurnDate', 'BurnDate', 'BurnDate']}, 'FireScar 2001') //see the results in the Layer Manager
+}
+
+////because of computation restrictions, display 2001 only (first 12 images)
+var burntPixels_2001 = burntPixels.limit(12)
+
+//apply the function using 'map'and 'evaluate' methods
+//the code firstly applies (i.e., map) the function to each image in the collection and displays the results to Console (i.e., evaluate)
+burntPixels_2001.evaluate(function(burntPixels_2001) {  
+  
+  // apply the function "addImage"
+  burntPixels_2001.features.map(addImage)
+})
+
+```
+
 
 
 - **Data analysis**
