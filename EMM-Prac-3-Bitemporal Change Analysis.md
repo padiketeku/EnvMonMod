@@ -263,27 +263,18 @@ print(changeMatrixSqKm, 'changeMatrixSqKm')
 Your result should be an object with 36 elements in the Console. Make sure you drop-down to see the size for each between-class change. The first eleven results are shown below.
 
 
+
 ![image](https://github.com/user-attachments/assets/c8de4761-9f7c-4af2-9bdb-8b265fea4474)
 
 
-From the figure above, the spatial extent of the first change element (12): water to infrastructure, was 1.4 km<sup>2</sup>
-
-Complete
 
 
-| water| infrastructure| firescar|woodland| agriculture|baresoil
-|----|---------------|-------------|-----------|--------|----------|
-|water|1.4|5.6|15.1|1.3|0.8|
-|infrastructure| 3.0|92.1|931.7|1888.2||
-|firescar| | ||||            |
-|woodland|  | | ||||
-|agriculture|   |    | ||||
-|baresoil||||||||
+Complete the transition matrix table below.
 
 || water| infrastructure| firescar| woodland|agriculture|baresoil|
 |----|---------------|-------------|-----------|--------|----------|----|
 |water||1.4|5.6|15.1|1.3|0.8|
-|infrastructure|3.0||92.1|931.7|1888.2||
+|infrastructure|3.0||92.1|931.7|1888.2|1612.3|
 |firescar|
 |woodland|
 |agriculture|
@@ -291,6 +282,7 @@ Complete
 
 
 
+From the figure above, the spatial extent of the first change element (12): water to infrastructure, was 1.4 km<sup>2</sup>
 
 
 
