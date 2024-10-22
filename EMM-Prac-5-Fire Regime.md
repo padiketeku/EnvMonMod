@@ -215,7 +215,7 @@ The result for each month is displayed in the figure below.
 
 
 
-What are the fire months for 2001?
+What are the fire months for 2001? You are right, it's April to November.
 
 
 
