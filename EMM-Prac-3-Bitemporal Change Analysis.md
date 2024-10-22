@@ -11,6 +11,8 @@ Stacker Overflow
 
 This activity is building on practical 2 in that the output from that activity is used as a baseline data to estimate changes in habitat. This practical activity considers change in habitat between two time points. The baseline habitat map was created for 2013 and this would be compared against the most recent habitat map (i.e., 2024, note- this should be changed to the most current time you were performing this activity). In this activity, it is assumed that practical 2 is already completed.
 
+
+
 # Learning Outcomes
 
 - Replicate existing techniques to prepare data for classification
@@ -33,6 +35,18 @@ Collect recent Landsat imagery (this should be surface reflectance product) of t
 - conclusion 
 
 # Workflow
+
+
+The change between habitats can be represented using a transition matrix (aka, change detection matrix). The figure below explains a transition matrix.
+
+
+
+![image](https://github.com/user-attachments/assets/c9ac80a5-be80-4b8d-ba43-de1d2c87895c)
+
+
+
+A transition matrix for a bitemporal change analysis requires the baseline (T<sub> 0</sub>) and current (T<sub> 1</sub>) image data. The transition matrix is a table of columns and rows reprensenting the change between the baseline and current times, respectively. The diagonal cells represent no-change while the off-diagonal cells show the transition and size of the transition. 
+
 
 
 - **Define study area**
