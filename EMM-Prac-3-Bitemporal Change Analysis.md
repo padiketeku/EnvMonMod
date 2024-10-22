@@ -270,6 +270,20 @@ From the figure above, the spatial extent of the first change element (12): wate
 
 
 
+
+| water | infrastructure| firescar| woodland| agriculture|baresoil
+|----|---------------|-------------|-----------|--------|----------
+|water||1.4|5.6|15.1|1.3|0.8|
+|infrastructure| 3.0||92.1|931.7|1888.2|1612.3|
+|firescar| 6.6| 89.8||246.7|202.4| 420.7           |
+|woodland|  15.9|407 |91.1 ||1584.1|610.5|
+|agriculture| 3.0  | 766.8   |94.6 |3228||1813.2|
+|baresoil|3.4|1527.4|293.3|1508.4|5795.5|||
+
+
+
+
+
 # Conclusion
 
 The practical shows the techniques involved in performing bi-temporal image differencing to estimate change.
