@@ -268,10 +268,10 @@ Your result should be an object with 36 elements in the Console. Make sure you d
 
 From the figure above, the spatial extent of the first change element (12): water to infrastructure, was 1.4 km<sup>2</sup>
 
+Complete
 
 
-
-| water | infrastructure| firescar| woodland| agriculture|baresoil
+| | water| infrastructure| firescar|woodland| agriculture|baresoil
 |----|---------------|-------------|-----------|--------|----------
 |water||1.4|5.6|15.1|1.3|0.8|
 |infrastructure| 3.0||92.1|931.7|1888.2||
