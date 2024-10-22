@@ -50,7 +50,13 @@ A transition matrix for a bitemporal change analysis requires the baseline (T<su
 Now that we understand a transition matrix, let's produce one by working through the following workflow.
 
 
+
+
+
 ![image](https://github.com/user-attachments/assets/28ea5c62-de62-4c0c-a728-ca15ea608e7f)
+
+
+
 
 
 
