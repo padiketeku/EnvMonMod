@@ -260,7 +260,7 @@ var changeMatrixSqKm = ee.Image.pixelArea().addBands(change_FromTo).divide(1e6)
 print(changeMatrixSqKm, 'changeMatrixSqKm')
 ```
 
-Your result should be an object with 36 elements in the Console. Make sure you drop-down to see the size for each between-class change. The first ten results are shown below.
+Your result should be an object with 36 elements in the Console. Make sure you drop-down to see the size for each between-class change. The first eleven results are shown below.
 
 
 ![image](https://github.com/user-attachments/assets/c8de4761-9f7c-4af2-9bdb-8b265fea4474)
@@ -274,11 +274,11 @@ From the figure above, the spatial extent of the first change element (12): wate
 | water | infrastructure| firescar| woodland| agriculture|baresoil
 |----|---------------|-------------|-----------|--------|----------
 |water||1.4|5.6|15.1|1.3|0.8|
-|infrastructure| 3.0||92.1|931.7|1888.2|1612.3|
-|firescar| 6.6| 89.8||246.7|202.4| 420.7           |
-|woodland|  15.9|407 |91.1 ||1584.1|610.5|
-|agriculture| 3.0  | 766.8   |94.6 |3228||1813.2|
-|baresoil|3.4|1527.4|293.3|1508.4|5795.5|||
+|infrastructure| 3.0||92.1|931.7|1888.2||
+|firescar| | ||||            |
+|woodland|  | | ||||
+|agriculture|   |    | ||||
+|baresoil||||||||
 
 
 
