@@ -271,8 +271,8 @@ From the figure above, the spatial extent of the first change element (12): wate
 Complete
 
 
-|habiat | water| infrastructure| firescar|woodland| agriculture|baresoil
-|----|---------------|-------------|-----------|--------|----------
+| | water| infrastructure| firescar|woodland| agriculture|baresoil
+|----|---------------|-------------|-----------|--------|----------|
 |water||1.4|5.6|15.1|1.3|0.8|
 |infrastructure| 3.0||92.1|931.7|1888.2||
 |firescar| | ||||            |
