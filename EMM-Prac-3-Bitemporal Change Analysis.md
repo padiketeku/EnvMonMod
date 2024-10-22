@@ -283,7 +283,7 @@ Complete
 || water| infrastructure| firescar| woodland|agriculture|baresoil|
 |----|---------------|-------------|-----------|--------|----------|----|
 |water||1.4|5.6|15.1|1.3|0.8|
-|infrastructure|
+|infrastructure|3.0||92.1|931.7|1888.2||
 |firescar|
 |woodland|
 |agriculture|
