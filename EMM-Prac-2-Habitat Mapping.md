@@ -192,7 +192,7 @@ There are different habitats within the Daly Catchments, which have to be mapped
 
 6, Predictor variables
 
-For any modelling, variables that are known to be sensitive to the target are required. These are referred to as predictor variables. We have selected 6 bands to be the predictor variables. While it is OK to use these variables for the classification, it is perhaps best to create other variables out of these bands to increase the number of predictor variables. Ideally, the additional variables created from the bands should be informed by existing literature. In this task, three vegetation indices that are commonly used to explain variation in these cover types would be created using the function below. [See this paper for further information on the vegetation indices](https://www.tandfonline.com/doi/pdf/10.1080/15324982.2016.1170076). 
+For any modelling, variables that are known to be sensitive to the target are required. These are referred to as predictor variables. We have selected 6 bands to be the predictor variables. While it is OK to use these variables for the classification, it is perhaps best to create other variables out of these bands to increase the number of predictor variables. Ideally, the additional variables created from the bands should be informed by existing literature. In this task, three vegetation indices that are commonly used to explain variation in these cover types would be created using the function below. [See this paper for further information on vegetation indices](https://www.tandfonline.com/doi/pdf/10.1080/15324982.2016.1170076). 
 
 
 
