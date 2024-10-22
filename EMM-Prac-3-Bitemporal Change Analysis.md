@@ -280,7 +280,7 @@ Complete
 |agriculture|   |    | ||||
 |baresoil||||||||
 
-| water | infrastructure| firescar| woodland| agriculture|baresoil
+|| infrastructure| firescar| woodland| agriculture|baresoil
 |----|---------------|-------------|-----------|--------|----------
 
 
