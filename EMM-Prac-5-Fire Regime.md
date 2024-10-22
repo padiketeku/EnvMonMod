@@ -214,6 +214,12 @@ The result for each month is displayed in the figure below.
 
 
 
+
+What are the fire months for 2001?
+
+
+
+
 - **Data analysis**
 
 I'M AWARE THIS IS NOT AVAILABLE. I'M WORKING ON IT. FEEL FREE TO MOVE TO PRAC 6. THANKS
