@@ -182,23 +182,35 @@ Now that you have your 'best'data for analysis, you would want to visualise the 
 function addImage(image) { 
   var id = image.id
   var image = ee.Image(image.id)
-
-  //visualise the image; be sure to clip image to ROI
-  Map.addLayer(image.clip(dalyNT), {min:30, max:300, bands:['BurnDate', 'BurnDate', 'BurnDate']}, 'FireScar 2001') //see the results in the Layer Manager
+  //visualise the image; be sure to clip image to ROI bands:['BurnDate', 'BurnDate', 'BurnDate']
+  Map.addLayer(image.clip(dalyNT), {min:30, max:300}, 'FireScar 2001') //see the results in the Layer Manager
 }
 
-////because of computation restrictions, display 2001 only (first 12 images)
+////apply the function to visualise the burnt date
+
+//because of computation restrictions, display 2001 only (first 12 images)
 var burntPixels_2001 = burntPixels.limit(12)
 
 //apply the function using 'map'and 'evaluate' methods
 //the code firstly applies (i.e., map) the function to each image in the collection and displays the results to Console (i.e., evaluate)
 burntPixels_2001.evaluate(function(burntPixels_2001) {  
   
-  // apply the function "addImage"
+  // use map on client-side
   burntPixels_2001.features.map(addImage)
 })
 
+
 ```
+
+
+The result for each month is displayed in the figure below.
+
+
+
+
+![image](https://github.com/user-attachments/assets/d052e58a-da2c-48b9-a2f7-41c1671cad3b)
+
+
 
 
 
