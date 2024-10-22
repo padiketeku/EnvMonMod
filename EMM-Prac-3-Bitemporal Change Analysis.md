@@ -50,6 +50,10 @@ A transition matrix for a bitemporal change analysis requires the baseline (T<su
 Now that we understand a transition matrix, let's produce one by working through the following workflow.
 
 
+![image](https://github.com/user-attachments/assets/28ea5c62-de62-4c0c-a728-ca15ea608e7f)
+
+
+
 
 - **Define study area**
 
@@ -269,7 +273,7 @@ Your result should be an object with 36 elements in the Console. Make sure you d
 
 
 
-Complete the transition matrix table below.
+Complete the transition matrix table below. Note, the spatial extent of the change is in square kilometre.
 
 || water| infrastructure| firescar| woodland|agriculture|baresoil|
 |----|---------------|-------------|-----------|--------|----------|----|
