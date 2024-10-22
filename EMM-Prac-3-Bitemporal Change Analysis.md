@@ -45,7 +45,9 @@ The change between habitats can be represented using a transition matrix (aka, c
 
 
 
-A transition matrix for a bitemporal change analysis requires the baseline (T<sub> 0</sub>) and current (T<sub> 1</sub>) image data. The transition matrix is a table of columns and rows reprensenting the change between the baseline and current times, respectively. The diagonal cells represent no-change while the off-diagonal cells show the transition and size of the transition. 
+A transition matrix for a bitemporal change analysis requires the baseline (T<sub> 0</sub>) and current (T<sub> 1</sub>) image data. The transition matrix is a table of columns and rows reprensenting the change between the baseline and current times, respectively. The diagonal cells represent no-change while the off-diagonal cells show the transition. The size of the transition is recorded in the cells. 
+
+Now that we understand a transition matrix, let's produce one by working through the following workflow.
 
 
 
