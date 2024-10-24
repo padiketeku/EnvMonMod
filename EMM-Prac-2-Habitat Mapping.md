@@ -238,7 +238,7 @@ Field visits to collect reference data for the classes are ideal and important f
 
 Creating Reference Classes
 
-[To be able to do this, go to this page: **Feature collection- create polygons for surface types**](https://github.com/padiketeku/EarthObservation101-Practicals/blob/main/Activity-07-Characterizing%20the%20Spectral%20Profiles%20of%20Surface%20Types.md#feature-collection--create-polygons-for-surface-types) 
+[To be able to do this, go to this page: **Sample surface types using point feature collections**](https://github.com/padiketeku/EarthObservation101-Practicals/blob/main/Activity-10-Classification%20of%20Surface%20Types.md) 
 
 
 For machine learning algorithms, it is best to have the same number of reference pixels for each cover class. 
