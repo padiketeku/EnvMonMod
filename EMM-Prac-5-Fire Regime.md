@@ -149,7 +149,7 @@ The properties of the first image in the collection is shown below. The new prop
 
 
 
-Optical imagery can be made less useful by cloud cover and thus, it is important to ensure 'bad' pixels (or data) is excluded from the analysis. Low quality data can skew results, so, for a robust study you must select the data with high ocnfidence level. We would filter the data again selecting fire pixels with confidence level no less than 95% (a statistical standard for ecological studies).
+Optical imagery can be made less useful by cloud cover and thus, it is important to ensure 'bad' pixels (or data) is excluded from the analysis. Low quality data can skew results, so, for a robust study you must select the data with high confidence level. We would filter the data again selecting fire pixels with confidence level no less than 95% (a statistical standard for ecological studies).
 
 
 ```JavaScript
@@ -173,7 +173,7 @@ print(burntPixels, 'burntPixels');
 - **Visualise the data**
 
 
-Now that you have your 'best'data for analysis, you would want to visualise the images in the collection to ensure you understand your data. It is only when you understand your data that you can employ the right methods to analyse it. There are 240 images in the collection. It is not computationally expedient to display all of the images; however, we need to have an insight into the collection. Thus, we would display the images for the first year (i.e., 2001). Given the data is in monthly time-step, we would display the first 12 images to represent 2001. The function below would take the image collection and display the first 12 images, one after the other, in the Layer Manager. In the Layer Manager, the 
+Now that you have your 'best'data for analysis, you would want to visualise the images in the collection to ensure you understand your data. It is only when you understand your data that you can employ the right methods to analyse it. There are 240 images in the collection. It is not computationally expedient to display all of the images; however, we need to have an insight into the collection. Thus, we would display the images for the first year (i.e., 2001). Given the data is in monthly time-step, we would display the first 12 images to represent 2001. The function below would take the image collection and display the first 12 images, one after the other, in the Layer Manager. 
 
 
 ```JavaScript
@@ -220,6 +220,77 @@ What are the fire months for 2001? You are right, it's April to November.
 
 
 
-- **Data analysis**
+- **EDS or LDS?**
+
+The time of fire attack can be early or late dry season. It is important for rangeland managers to know the time of the dry season (day of the year) fire ouccurs as late dry season fires are usually hotter and must be avoided. The function below produces a map layer showing early and late dry season fires.
+
+
+```JavaScript
+
+//function that finds the DOY the satellite observed fire scars 
+var f2FindBurnDate = function(year){
+  return burntPixels 
+  .filter(ee.Filter.eq('year', year))
+  .select('BurnDate').reduce(ee.Reducer.firstNonNull())
+  .set('year', year)
+}
+
+//apply the function to put all the yearly images into a collection
+var burnDate = ee.ImageCollection.fromImages(years.map(f2FindBurnDate))
+```
+
+Now that we have all the images with distinct burn dates in a collection, it is time to visualise this to see EDS and LSD fires. EDS fires would be displayed with light colours and the LDS fires would be dark colours. To achieve this in a more intuitive way, the entire palette module would be required to select an appropriate colour group to use. You can read more about the colour palette used in EE [here](https://github.com/gee-community/ee-palettes). The code below sets up the visualisation parameters and is applied to visualise the data.
+
+```JavaScript
+
+//load the colour palette
+var colourPalettes = require('users/gena/packages:palettes');
+
+//define the palette to use
+var visBurnDate = colourPalettes.crameri.lajolla[10]; //10 is the colour level
+
+//display the burn date, apply the visualisation parameter
+Map.addLayer(burnDate, {min:1, max:366, palette:visBurnDate}, 'Burn Date, DOY')
+
+```
+
+The result for the visualisation is shown below. Light colours represent EDS fires and dark colours are for LDS fires.
+
+
+
+
+
+![image](https://github.com/user-attachments/assets/0b545cfa-b17a-4313-8375-f1af46039fa9)
+
+
+
+
+
+
+
 
 I'M AWARE THIS IS NOT AVAILABLE. I'M WORKING ON IT. FEEL FREE TO MOVE TO PRAC 6. THANKS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
