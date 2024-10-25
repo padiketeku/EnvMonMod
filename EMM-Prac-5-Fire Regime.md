@@ -364,6 +364,37 @@ The time series chart for monthly fire frequency is shown below. The y-axis show
 
 
 
+# Conclusion
+
+MODIS global fire data was analysed to understand the fire regime of the Daly Region. Spatial and temporal results were produced to inform management decisions.
+
+
+
+# Assignment
+
+
+# Assignment
+
+
+You have been employed by the Northern Territory Government as *Senior Rangeland Monitoring Officer – Remote Sensing* and one of your KPIs is to produce and share information on the fire frequency of the Daly River Catchment (DRC) from 2001 to 2020. 
+Because of consistency with existing data, you were tasked to use MODIS FireCC151, a data product developed as part of the European Space Agency (ESA) Climate Change Initiative (CCI) Programme. For a thorough analysis, you were asked to explore every image collected over the region of interest. 
+
+
+**Task**
+
+Complete the image processing and spatiotemporal analysis required to address the task, and construct a scientific article to communicate your findings. Your scientific report should be prepared as a submission-ready document to the scientific journal and should include the following sections. You can use the formatting style of the [MDPI Remote Sensing](https://www.mdpi.com/journal/remotesensing/instructions) journal as a guide – see their Word or LaTeX [template](https://www.mdpi.com/journal/remotesensing/instructions).
+
+- Abstract
+- Introduction; include a brief literature review on the problem at hand, the aims and objectives
+- Methods; include descriptions of datasets, processing steps and analysis applied
+- Results; include appropriate maps, tables and charts to illustrate your findings
+- Discussion; discuss your findings (linking back to the objectives) including any limitations of the study and suggestions for improvement
+- Conclusion; succinct summary of the main findings
+- References
+
+
+
+**The End**
 
 
 
