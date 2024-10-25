@@ -370,7 +370,7 @@ MODIS global fire data was analysed to understand the fire regime of the Daly Re
 
 
 
-# Assignment
+
 
 
 # Assignment
