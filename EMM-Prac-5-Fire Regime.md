@@ -270,7 +270,7 @@ The result for the visualisation is shown below. Light colours represent EDS fir
 - **Fire Frequency- number of fires in a year**
 
 
-Rangelands managers are not only interest when the fires occured, but also the number of times fires occured is crucial for the assessment of management practices. If managment practices, such as early season prescribed burning, are efficient then the number of LDS fires is expected to be low. Below is a function to count the number of fires in year.
+Rangelands managers are not only interest when the fires occured, but also the number of times fires occured is crucial for the assessment of management practices. If managment practices, such as early season prescribed burning, are efficient then the number of LDS fires is expected to be low. Below is a function to count the number of fires in a year.
 
 
 
@@ -322,7 +322,45 @@ Given you have fire frequency data, sites that are most often burnt would be hel
 
 
 
-I'M AWARE THIS IS NOT AVAILABLE. I'M WORKING ON IT. FEEL FREE TO MOVE TO PRAC 6. THANKS
+- **Chart Fire Frequency**
+
+
+We have explored the spatial distribution of fire frequency. Now, let's chart the temporal variation of fire frequency. We would explore monthly frequencies of fire for each year. The code below produces this chart. 
+
+```JavaScript
+
+// set map center to ensure the images would display to the study area
+Map.centerObject(dalyNT, 7);
+
+//set visualisation parameters
+ var opt_cntFireMonth = {
+   title: 'Monthly fire frequencies: Daly River Catchment, 2001 to 2020',
+   pointSize: 3,
+   hAxis: {title: 'Year Month'},
+   vAxis: {title: 'Number of fires',  ticks: [0,4,8,12,16,20,24,28,32] },
+ };
+
+// Plot day count of monthly fires (Line chart the number of days fire occured from 2001 to 2020)
+ var cntFireMonth_chart = ui.Chart.image.series({ 
+   imageCollection: burntPixels.select('BurnDate'), 
+   xProperty: 'yrmnth',
+   region: dalyNT,
+   reducer: ee.Reducer.countDistinct(),
+   scale: 250 
+ }).setOptions(opt_cntFireMonth).setChartType('LineChart');
+
+/print the chart
+ print(cntFireMonth_chart, 'day count of monthly fires');
+ 
+```
+
+
+
+
+
+
+
+visualI'M AWARE THIS IS NOT AVAILABLE. I'M WORKING ON IT. FEEL FREE TO MOVE TO PRAC 6. THANKS
 
 
 
