@@ -325,7 +325,7 @@ Given you have fire frequency data, sites that are most often burnt would be hel
 - **Chart Fire Frequency**
 
 
-We have explored the spatial distribution of fire frequency. Now, let's chart the temporal variation of fire frequency. We would explore monthly frequencies of fire for each year. The code below produces this chart. 
+We have explored the spatial distribution of fire frequency. Now, let's chart the temporal variation of fire frequency. We would explore the monthly frequencies of fire for each year. The code below produces this chart. 
 
 ```JavaScript
 
@@ -355,12 +355,17 @@ Map.centerObject(dalyNT, 7);
 ```
 
 
+The time series chart for monthly fire frequency is shown below. The y-axis shows the number of fires in a month and this is variable as some months recoord more fires than others. For instance, in 2021 the highest number of fires occured in September.
+
+
+
+![image](https://github.com/user-attachments/assets/fedd49e6-4f83-4dc6-856f-a8295378ee59)
 
 
 
 
 
-visualI'M AWARE THIS IS NOT AVAILABLE. I'M WORKING ON IT. FEEL FREE TO MOVE TO PRAC 6. THANKS
+
 
 
 
