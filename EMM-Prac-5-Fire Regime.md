@@ -267,6 +267,59 @@ The result for the visualisation is shown below. Light colours represent EDS fir
 
 
 
+- **Fire Frequency- number of fires in a year**
+
+
+Rangelands managers are not only interest when the fires occured, but also the number of times fires occured is crucial for the assessment of management practices. If managment practices, such as early season prescribed burning, are efficient then the number of LDS fires is expected to be low. Below is a function to count the number of fires in year.
+
+
+
+```JavaScript
+
+//function that counts the number of fires in a year
+var f2CountFires = function(year){
+  return burntPixels 
+  .filter(ee.Filter.eq('year', year))
+  .select('BurnDate').reduce(ee.Reducer.countDistinct())
+  .set('year', year)
+}
+
+//apply the function, putting all the yearly images into a collection
+var fireCount = ee.ImageCollection.fromImages(years.map(f2CountFires))
+```
+
+The fire frequency images are now available, let's visualise this.
+
+
+```JavaScript
+
+//sum the number of burns 
+var fireCount_sum = fireCount.sum()
+
+//visualise the result. 
+Map.addLayer(fireCount_sum, {min:1, max:40, palette:['green', 'blue', 'yellow', 'purple', 'magenta', 'red']}, 'FireFrequency')
+```
+
+The result for fire frequency distribution is captured by the map displayed below. High frequency fires are the reddish pixels. 
+
+
+
+![image](https://github.com/user-attachments/assets/2f1b5d74-534e-4c96-9038-b3f5c482b834)
+
+
+
+
+
+
+Given you have fire frequency data, sites that are most often burnt would be helpful information for management. Let's visualise sites that recorded plenty fires; darker pixels represent highest fire frequency dates.
+
+
+
+![image](https://github.com/user-attachments/assets/ba08c1a1-f483-4b24-b65c-fc30d75be131)
+
+
+
+
 
 
 I'M AWARE THIS IS NOT AVAILABLE. I'M WORKING ON IT. FEEL FREE TO MOVE TO PRAC 6. THANKS
