@@ -29,7 +29,7 @@ Fire can start naturally or through human activities; the intensity can be high 
 You have been employed by the Northern Territory Government as *Senior Rangeland Monitoring Officer – Remote Sensing* and one of your KPIs is to produce and share information on the fire frequency of the Daly River Catchment (DRC) from 2001 to 2020. 
 Because of consistency with existing data, you were tasked to use MODIS FireCC151, a data product developed as part of the European Space Agency (ESA) Climate Change Initiative (CCI) Programme. For a thorough analysis, you were asked to explore every image collected over the region of interest. 
 
-# Workflow (!CAUTION THE WORKFLOW IS INCOMPLETE. WORK IN PROGRESS)
+# Workflow
 
 //Get study area- Daly River catchment of the Northern Territory, Australia
 
@@ -77,7 +77,7 @@ When you click the "BANDS" tab, you may notice that the collection has four band
 
 - **Import dataset**
 
-It is possible to use the **IMPORT** to get the dataset into Code Editor. However, we would not use this approach. Rather, copy the **Collection Snippet** and then create a variable for the image collection. Your snippet should be as shown below.
+It is possible to use the **IMPORT** to get the dataset into Code Editor. However, we would not use this approach. Instead, copy the **Collection Snippet** and then create a variable for the image collection. Your snippet should be as shown below.
 
 ```JavaScript
 var fireData = ee.ImageCollection("ESA/CCI/FireCCI/5_1")
@@ -106,7 +106,7 @@ var fireData = fireData
 print (fireData, 'fireData')
 ```
 
-The collection has 240 images (as of 2024 when data was first accessed). Expand "features" to see the list of images (figure below). Explore the image properties and take note of "system: index:" for the product date. 
+The collection has 240 images (as of 2024 when this data was accessed). Expand "features" to see the list of images (figure below). Explore the image properties and take note of "system: index:" for the product date. 
 
 
 
@@ -122,7 +122,7 @@ The collection has 240 images (as of 2024 when data was first accessed). Expand 
 In the next step, we would add two more items to the properties- 'year'and 'yrmnth'- for the purposes of producing monthly distribution of fire in the study area.
 
 
-We would want to further trim the data to the study area; given the dataset is an image collection, every image in the collection must be trimmed to the study. A user-defined function would be used to do this. In this function, the additional image properties would be created.
+We would want to further trim the data to the study area. Given the dataset is an image collection, every image in the collection must be trimmed to the study. A user-defined function would be used to do this. In this function, the additional image properties would be created using the **.set** method.
 
 ```JavaScript
 var fire = fireData.map(function(img) { 
@@ -149,7 +149,7 @@ The properties of the first image in the collection is shown below. The new prop
 
 
 
-Optical imagery can be made less useful by cloud cover and thus, it is important to ensure 'bad' pixels (or data) is excluded from the analysis. Low quality data can skew results, so, for a robust study you must select the data with high confidence level. We would filter the data again selecting fire pixels with confidence level no less than 95% (a statistical standard for ecological studies).
+Optical imagery can be made less useful by cloud cover and thus, it is important to ensure 'bad' pixels is excluded from the analysis. Low quality data can skew results, so, for a robust study you must select the data with high confidence level. We would filter the data again selecting fire pixels with confidence level no less than 95% (a statistical standard for ecological studies).
 
 
 ```JavaScript
@@ -173,7 +173,7 @@ print(burntPixels, 'burntPixels');
 - **Visualise the data**
 
 
-Now that you have your 'best'data for analysis, you would want to visualise the images in the collection to ensure you understand your data. It is only when you understand your data that you can employ the right methods to analyse it. There are 240 images in the collection. It is not computationally expedient to display all of the images; however, we need to have an insight into the collection. Thus, we would display the images for the first year (i.e., 2001). Given the data is in monthly time-step, we would display the first 12 images to represent 2001. The function below would take the image collection and display the first 12 images, one after the other, in the Layer Manager. 
+Now that you have your 'best'data for analysis, you would want to visualise the images in the collection to ensure you understand your data. It is only when you understand your data that you can employ the right methods to analyse it. There are 240 images in the collection, it is not computationally expedient to display all of the images. However, we need to have an insight into the collection. Thus, we would display the images for the first year (i.e., 2001). Given the data is in monthly time-step, we would display the first 12 images to represent 2001. The function below would take the image collection and display the first 12 images, one after the other, in the Layer Manager. 
 
 
 ```JavaScript
@@ -220,7 +220,7 @@ What are the fire months for 2001? You are right, it's April to November.
 
 
 
-- **EDS or LDS?**
+- **Early Dry Season (EDS) or Late Dry Season (EDS) Fires?**
 
 The time of fire attack can be early or late dry season. It is important for rangeland managers to know the time of the dry season (day of the year) fire ouccurs as late dry season fires are usually hotter and must be avoided. The function below produces a map layer showing early and late dry season fires.
 
@@ -239,7 +239,7 @@ var f2FindBurnDate = function(year){
 var burnDate = ee.ImageCollection.fromImages(years.map(f2FindBurnDate))
 ```
 
-Now that we have all the images with distinct burn dates in a collection, it is time to visualise this to see EDS and LSD fires. EDS fires would be displayed with light colours and the LDS fires would be dark colours. To achieve this in a more intuitive way, the entire palette module would be required to select an appropriate colour group to use. You can read more about the colour palette used in EE [here](https://github.com/gee-community/ee-palettes). The code below sets up the visualisation parameters and is applied to visualise the data.
+Now that we have all the images with distinct burn dates in a collection, it is time to visualise this to see EDS and LSD fires. EDS fires would be displayed with light colours and the LDS fires would be dark colours. To achieve this in a more intuitive way, the entire palette module in Earth Engine would be required to select an appropriate colour group to use. You can read more about the colour palette used in EE [here](https://github.com/gee-community/ee-palettes). The code below sets up the visualisation parameters and is applied to visualise the data.
 
 ```JavaScript
 
@@ -270,7 +270,7 @@ The result for the visualisation is shown below. Light colours represent EDS fir
 - **Fire Frequency- number of fires in a year**
 
 
-Rangelands managers are not only interest when the fires occured, but also the number of times fires occured is crucial for the assessment of management practices. If managment practices, such as early season prescribed burning, are efficient then the number of LDS fires is expected to be low. Below is a function to count the number of fires in a year.
+Rangelands managers are not only interested in the time of the fires, but also the number of times fires occured is crucial for the assessment of management practices. If managment practices, such as early season prescribed burning, are efficient then the number of LDS fires is expected to be low. Below is a function to count the number of fires in a year.
 
 
 
@@ -311,7 +311,7 @@ The result for fire frequency distribution is captured by the map displayed belo
 
 
 
-Given you have fire frequency data, sites that are most often burnt would be helpful information for management. Let's visualise sites that recorded plenty fires; darker pixels represent highest fire frequency dates.
+Given you have fire frequency data, sites that are most often burnt would be helpful information for management. Let's visualise sites that recorded plenty fires; darker pixels represent the highest fire frequency dates.
 
 
 
@@ -367,9 +367,6 @@ The time series chart for monthly fire frequency is shown below. The y-axis show
 # Conclusion
 
 MODIS global fire data was analysed to understand the fire regime of the Daly Region. Spatial and temporal results were produced to inform management decisions.
-
-
-
 
 
 
