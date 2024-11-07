@@ -413,7 +413,7 @@ The x-axis is the deltaNDVI, while the y-axis is the number of pixels (i.e., cou
 
 ## Detect land clearing
 
-Land clearing and regrowth for the first 5 years (2015-2019) is presented here. However, you are required to analyse the whole 9 years (2015-2023) to complete the assessment.
+Land clearing and regrowth for the first 5 years (2015-2019) is presented here. However, you are required to analyse the whole 9 years (2015-2023) to complete the assignment.
 
 
 
