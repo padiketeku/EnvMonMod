@@ -41,12 +41,11 @@ The change between habitats can be represented using a transition matrix (aka, c
 
 
 
-![image](https://github.com/user-attachments/assets/c9ac80a5-be80-4b8d-ba43-de1d2c87895c)
 
 
 
+![image](https://github.com/user-attachments/assets/1d60b159-55a8-42f8-876d-2394cf85e30e)
 
-![image](https://github.com/user-attachments/assets/f4aed31b-d181-4478-9379-6388586d7783)
 
 
 
