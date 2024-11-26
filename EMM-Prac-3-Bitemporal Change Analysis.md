@@ -37,7 +37,7 @@ Collect recent Landsat imagery (this should be surface reflectance product) of t
 # Workflow
 
 
-The change between habitats can be represented using a transition matrix (aka, change detection matrix). The figure below explains a transition matrix.
+The change between habitats can be represented using a transition matrix (aka, from-to change matrix). The figure below explains a transition matrix.
 
 
 
