@@ -73,8 +73,8 @@ Map.setOptions('SATELLITE')
 //define the region of interest
 var dalyNT= ee.FeatureCollection("projects/ee-racrabbe3/assets/DRC").geometry()
 
-//centre to basemap to your study area
-Map.centreObject(dalyNT, 10)
+//centre basemap to your study area
+Map.centerObject(dalyNT, 10)
 
 ```
 
@@ -119,9 +119,94 @@ As we just saw, our image contains 64 bands. There is no easy way to visualise a
 We can pick any three bands to visualize three axes of the embedding space as an RGB image.
 
 ```JavaScript
-var visParams = {min: -0.3, max: 0.3, bands: ['A01', 'A16', 'A09']};
-Map.addLayer(embeddingsImage.clip(geometry), visParams, 'Embeddings Image');
+var visParams = {min: -0.1, max: 0.1, bands: ['A01', 'A16', 'A09']};
+Map.addLayer(embeddingsImage.clip(dalyNT), visParams, 'Embeddings Image');
 ```
+
+
+<img width="614" height="528" alt="image" src="https://github.com/user-attachments/assets/ef765751-4061-4eb0-82b0-51b2eb8ea4cc" />
+
+***Figure: RGB Visualization of 3 axes of the embedding space***
+
+
+An alternative way to visualize this information is by using it to group pixels with similar embeddings and use these groupings to understand how the model has learnt the spatial and temporal variability of a landscape.
+
+We can use unsupervised clustering techniques to group the pixels in 64-dimensional space into groups or "clusters" of similar values. For this, we first sample some pixel values and train an **ee.Clusterer**.
+
+```JavaScript
+var nSamples = 1000;
+var training = embeddingsImage.sample({
+  region: dalyNT,
+  scale: 10,
+  numPixels: nSamples,
+  seed: 100
+});
+print(training.first());
+
+```
+
+If you print the values of the first sample, you’ll see it has 64 band values defining the embedding vector for that pixel. The embedding vector is designed to have a unit length (i.e., the length of the vector from the origin (0,0,....0) to the values of the vector will be 1). The first 12 bands shown below.
+
+
+
+<img width="636" height="510" alt="image" src="https://github.com/user-attachments/assets/e0179bc4-321d-497c-8e15-3f02c9088868" />
+
+***Figure: Extracted embedding vector***
+
+
+We can now train an unsupervised model to group the samples into the desired number of clusters. Each cluster would represent pixels of similar embeddings.
+
+```JavaScript
+// Function to train a model for desired number of clusters
+var getClusters = function(nClusters) {
+  var clusterer = ee.Clusterer.wekaKMeans({nClusters: nClusters})
+    .train(training);
+
+  // Cluster the image
+  var clustered = embeddingsImage.cluster(clusterer);
+  return clustered;
+};
+
+```
+
+We can now cluster the larger embedding image to see groups of pixels having similar embeddings. Before we do that, it is important to understand that the model has captured the full temporal trajectory of each pixel for the year - that means if two pixels have similar spectral values in all images but at different times - they can be separated.
+
+Let’s visualise the Satellite Embedding images by segmenting the landscape into 3 clusters,
+
+```JavaScript
+var cluster3 = getClusters(3);
+Map.addLayer(cluster3.randomVisualizer().clip(dalyNT), {}, '3 clusters');
+
+```
+
+<img width="637" height="571" alt="image" src="https://github.com/user-attachments/assets/e9171a78-a79d-4756-a2b6-2592c035dae0" />
+
+
+***Figure: Satellite Embedding image with 3 clusters***
+
+You will notice that the resulting clusters have clean boundaries. This is because the embeddings inherently include spatial context - pixels within the same object would be expected to have relatively similar embedding vectors. One of the clusters includes areas with seasonal water around the Daly River. This is due to the temporal context that is captured in the embedding vector that allows us to detect such pixels with similar temporal patterns.
+
+Let’s see if we can further refine the clusters by grouping the pixels into 9 clusters.
+
+```JavaScript
+var cluster9 = getClusters(9);
+Map.addLayer(cluster9.randomVisualizer().clip(dalyNT), {}, '9 clusters');
+
+```
+
+<img width="654" height="543" alt="image" src="https://github.com/user-attachments/assets/713e5321-b75e-4bb4-9867-62bfca14921e" />
+
+***Figure: Satellite Embedding image with 9 clusters***
+
+There are a lot of details emerging and we can see different types of bareland being grouped into different clusters. Cleared lands and farming lands are captured. Also, permanent and seasonal wetlands are captured as well as riparian vegetations. The southern tip captures the savanna vegetation (orange pixels). More details in the landscape will be revealed if you increase the number of clusters.
+
+
+
+
+
+
+
+
 
 
 ### Classification
