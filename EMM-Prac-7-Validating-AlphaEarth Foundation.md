@@ -4,32 +4,44 @@ Google Earth Engine Developers
 
 Google Earth Engine Team
 
-Stacker Overflow
-
 
 # Introduction
 
-In this practical, you would apply Random Forest to classify an image with the objective of defining the main surface types of the Daly River Catchment.
+In this practical, you will learn about the Google's AlphaEarth Foundation (AEF) model through the Satellite Embedding Dataset in Earthh Engine. Google AEF is one of the recent Geospatial Foundation Models created through Artificial Intelligence algorithms leveraging a range of earth observation data. Further details on the AEF have been reported in the paper [here](https://arxiv.org/pdf/2507.22291).
 
 
 # Learning Outcomes
 
-- Import shapefile
+- Learn the fundamentals of the Satellite Embedding Dataset (SED)
 
-- Visualise boundary of study area
+- Visualise the SED
 
-- Mosaic images
-
-- Classify an image
- 
-- Assess the classifier 
+- Perform cluster analysis using the SED
 
 
 
-# Task
 
 
-Environmental monitoring is a process in which time is an important phenomenon. For instance, the condition of a habitat 30 years ago may not be the same today. The Daly River Catchment in the Northern Territory of Australia is an important ecosystem for several reasons. The catchment is a habitat for many native plants, birds, reptiles, and mammals. The condition of the catchment is reported to have changed over the years [(Wygralak, 2006)](https://www.tandfonline.com/doi/pdf/10.1071/ASEG2006ab200). To understand the recent ecological state of the catchment  it is worth stepping back into time to have a baseline information. In this practical, your task is to classify the dominant land cover types of the Daly River Catchment in 2013, using Landsat 8 imagery, to obtain baseline data for further assessment.
+# Description of SED
+
+Google’s AlphaEarth Foundations is a geospatial embedding model trained on a variety of Earth observation (EO) datasets. The model has been run on annual time-series of images and the resulting embeddings are available as an analysis-ready dataset in Earth Engine. This dataset enables users to build any number of fine-tuning applications or other tasks without running computationally expensive deep learning models. The result is a general-purpose dataset that can be used for a number of different downstream tasks, such as Classification, Regression, Change detection and Similarity search
+
+## Understanding the embeddings
+
+Embeddings are a way to compress large amounts of information into a smaller set of features that represent meaningful semantics. The AlphaEarth Foundations model takes time series of images from sensors including Sentinel-2, Sentinel-1, and Landsat and learns how to uniquely represent the mutual information between sources and targets with just 64 numbers. The input data stream contains thousands of image bands from multiple sensors and the model takes this high dimensional input and turns it into a lower dimensional representation.
+
+A good mental model to understand how AlphaEarth Foundations works is a technique called Principal Component Analysis (PCA). PCA also helps reduce the dimensionality of the data for machine learning applications. While PCA is a statistical technique and can compress tens of input bands into a handful of principal components, AlphaEarth Foundations is a deep-learning model that can take thousands of input dimensions of multi-sensor time-series datasets and learns to create a 64-band representation that uniquely captures the spatial and temporal variability of that pixel.
+
+An embedding field is the continuous array or “field” of learned embeddings. Images in the embedding fields collections represent space-time trajectories covering an entire year and have 64 bands (one for each embedding dimension).
+
+
+
+<img width="629" height="417" alt="image" src="https://github.com/user-attachments/assets/de1bcdd1-7b88-4852-869a-9e5de4522a3a" />
+
+
+
+You can read more about the AEF in this [paper](https://arxiv.org/pdf/2507.22291).
+
 
 
 ## Workflow
