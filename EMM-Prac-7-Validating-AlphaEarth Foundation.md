@@ -201,6 +201,67 @@ Map.addLayer(cluster9.randomVisualizer().clip(dalyNT), {}, '9 clusters');
 There are a lot of details emerging and we can see different types of bareland being grouped into different clusters. Cleared lands and farming lands are captured. Also, permanent and seasonal wetlands are captured as well as riparian vegetations. The southern tip captures the savanna vegetation (orange pixels). More details in the landscape will be revealed if you increase the number of clusters.
 
 
+The scripts for this practical:
+```JavaScript
+var embeddings = ee.ImageCollection('GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL');
+
+//set the satellite basemap
+Map.setOptions('SATELLITE')
+
+//define the region of interest
+var dalyNT= ee.FeatureCollection("projects/ee-racrabbe3/assets/DRC").geometry()
+
+//centre to basemap to your study area
+Map.centerObject(dalyNT, 10)
+
+//filter parameters
+var year = 2024;
+var startDate = ee.Date.fromYMD(year, 1, 1);
+var endDate = startDate.advance(1, 'year');
+
+//filter the collection
+var filteredEmbeddings = embeddings
+  .filter(ee.Filter.date(startDate, endDate))
+  .filter(ee.Filter.bounds(dalyNT));
+
+//mosaic the collection
+var embeddingsImage = filteredEmbeddings.mosaic();
+print('Satellite Embedding Image', embeddingsImage);
+
+//visualise the embeddings
+var visParams = {min: -0.1, max: 0.1, bands: ['A01', 'A16', 'A09']};
+Map.addLayer(embeddingsImage.clip(dalyNT), visParams, 'Embeddings Image');
+
+//randomly sample some pixels for the clustering
+var nSamples = 1000;
+var training = embeddingsImage.sample({
+  region: dalyNT,
+  scale: 10,
+  numPixels: nSamples,
+  seed: 100
+});
+print(training.first());
+
+// Function to train a model for desired number of clusters
+var getClusters = function(nClusters) {
+  var clusterer = ee.Clusterer.wekaKMeans({nClusters: nClusters})
+    .train(training);
+
+  // Cluster the image
+  var clustered = embeddingsImage.cluster(clusterer);
+  return clustered;
+};
+
+//visualise 3 clusters
+var cluster3 = getClusters(3);
+Map.addLayer(cluster3.randomVisualizer().clip(dalyNT), {}, '3 clusters');
+
+
+//visualise  9 clusters
+var cluster9 = getClusters(9);
+Map.addLayer(cluster9.randomVisualizer().clip(dalyNT), {}, '9 clusters');
+
+```
 
 
 
