@@ -10,7 +10,7 @@
 
 # Final Part of Practical 1
 
-In this final part of the practical, which will also be relevant for the next practical activity, we will explore image collection. Image collection is created when at least 2 images are available in a folder. The individual images in the collection may contain multiple bands, represnting different information about the environment. Here, we will explore MODIS data. MODIS is a satellite system that collected data about the environment since 2000. MODIS provides global earth observation data, but we will focus on Daly River Catchment of the Northern Terrotor, Australia, as the study area. The MOD13Q1 V6.1 product, which provides a vegetation index (VI) value at a per pixel basis, will be explored. The pixel size for the MOD13Q1 is 250 m. Further details about this product are [here](https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MOD13Q1)
+In this final part of the practical, which will also be relevant for the next practical activity, we will explore image collection. Image collection is created when at least 2 images are available in a folder. The individual images in the collection may contain multiple bands, represnting different information about the environment. Here, we will explore image collection through MODIS data. MODIS is a satellite system that collected data about the environment since 2000. MODIS provides global earth observation data, but we will focus on Daly River Catchment of the Northern Terrotor, Australia, as the study area. The MOD13Q1 V6.1 product, which provides a vegetation index (VI) value at a per pixel basis, will be explored. The pixel size for the MOD13Q1 is 250 m. Further details about this product are [here](https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MOD13Q1)
 
 ## Workflow
 
@@ -176,7 +176,9 @@ print(chartNDVI, 'chartNDVI')
 
 ```
 
+# Do It Yourself
 
+The MOD13Q1 contains EVI (enhanced vegetation index), which functions similarly as the NDVI in that the EVI also tells us about the greenness or health of the landscape. Select the EVI and produce a time series chart for the DR Catchment. Hint: Copy the code used for the NDVI analysis and modify this, 'i.e., replacing the "NDVI" with "EVI". Compare your EVI chart with the NDVI chart. What did you observe?
 
 
 End of Practical 1
