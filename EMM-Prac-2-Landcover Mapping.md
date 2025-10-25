@@ -188,7 +188,7 @@ print (select_bands, 'select_bands')
 
 ### Classification
 
-There are different habitats within the Daly Catchments, which have to be mapped for effective monitoring. In this task, the habitats would be categorised into broad themes: *water,infrastructure, woodland, agriculture, and baresoil*. Given fire is an important management tool in this area, fire scar is common in this catchment, hence, fire scar would be detected as another cover class. Thus, six cover classes would be mapped.
+There are different habitats within the Daly Catchments, which have to be mapped for effective monitoring. In this task, the landcover/use would be categorised into broad themes: *water,infrastructure, woodland, agriculture, and baresoil*. Given fire is an important management tool in this area, fire scar is common in this catchment, hence, fire scar would be detected as another cover class. Thus, six cover classes would be mapped.
 
 6, Predictor variables
 
@@ -278,7 +278,7 @@ var testSample = sample_reference2.filter('random > 0.8')  //20% of data for mod
 
 ```
 
-Since we now have the image to classify and training and test data, the next thing to do is to train a Random Forest classification model. Random Forest is a widely used machine learning algorithm in remote sensing classification tasks, as it is less sensitive to over prediction [(Belgiu and Drăguţ, 2016)] (https://doi.org/10.1016/j.isprsjprs.2016.01.011)
+Since we now have the image to classify and training and test data, the next thing to do is to train a Random Forest classification model. Random Forest is a widely used machine learning algorithm in remote sensing classification tasks, as it is less sensitive to over prediction [(Belgiu and Drăguţ, 2016)] (https://doi.org/10.1016/j.isprsjprs.2016.01.011). You can read more about random forest via the resources [here](https://einsteinmed.edu/uploadedfiles/centers/ictr/new/intro-to-random-forest.pdf) and [there](https://www.sciencedirect.com/science/article/pii/S0924271616000265).
 
 
 ```JavaScript
@@ -402,7 +402,7 @@ Export.image.toDrive({
 
 # Conclusion
 
-We have created baseline habitat map for the Daly River Catchment. In the next activity, this baseline data will be used to mointor change in habitats.
+We have created baseline landcover map for the Daly River Catchment. In the next activity, this baseline data will be used to monitor change in habitats.
 
 
 # Code
@@ -593,13 +593,13 @@ ENV506:1000 words
 
 ## **TASK**
 
-You are required to produce a habitat map of the Daly River Catchment. Prepare a short research proposal on this topic. The proposal should include the title of the project, aim and objectives, methodology, expected contribution, resources required, and bibliography. The title of the project and bibliography do **not** contribute to the word count.
+You are required to produce a landcover map of the Daly River Catchment. Prepare a short research proposal on this topic. The proposal should include the title of the project, aim and objectives, description of the study area, data and methods employed, expected contribution, resources required, and bibliography. The title of the project and bibliography do **not** contribute to the word count.
 
 A template and exemplars are provided to help you complete this task. 
 
 
 
-# Assignment 2-Practical Assignment (Habitat Mapping)
+# Assignment 2-Practical Assignment (Landcover Mapping)
 
 Word Count
 
@@ -619,9 +619,11 @@ Classify the major land cover types of the Daly River Catchment in 2013, using L
 
 The report outline should include:
 
-1, Background, including the description of the study area <br>
+1, Background (including reviewing past similar studies) <br>
 
 2, Aim and objectives <br>
+
+3, The description of the study area <br>
 
 3, Description of data (including sources of data) and methods used <br>
 
