@@ -44,157 +44,83 @@ You can read more about the AEF in this [paper](https://arxiv.org/pdf/2507.22291
 
 
 
-## Workflow
+
+### Access the Satellite Embedding dataset
+
+The SED is an image collection containing annual images from the years 2017 onward (e.g., 2017, 2018, 2019…). Each image has 64 bands where each pixel is the embedding vector representing the multi-sensor time-series for the given year.
 
 
-Non-Remote Sensing data for the task can be downloaded from this [site](https://zenodo.org/records/13910706). Download the "Daly_data.zip" for this practical.
-
-
-1, Upload the boundary (or shapefile) of the study area 
-
-```JavaScript
-var dalyNT = ee.FeatureCollection("projects/ee-niiazucrabbe/assets/DalyCatchment") //modify the path to your own EE asset 
-```
-
-Usually, at the start of EE, the base map is centered on the US. If your study location is different you would have to re-set the base map to your region of interest. In our case, we would re-set the base map to the Daly River.
-
-```JavaScript
-//let the computer display the base map to location of interest (i.e., Daly River)
-Map.setCenter(130.6884, -13.694,9)
-```
-
-You would want to display the boundary of the study area to be sure this is properly uploaded.
-
-```JavaScript
-//create a symbology that makes the study boundary transparent and display this  
-var symbology = {color: 'red', fillColor: '00000000'};
-
-//apply the symbology to visualise the boundary of the study area
-Map.addLayer(dalyNT.style(symbology), {}, 'Daly River Catchment');
-```
-
-
-Zoom out a wee bit to see the entire size of the boundary layer. Your result should be similar to the figure below.
-
-
-
-![image](https://github.com/user-attachments/assets/409533fe-17ca-4f02-b9e4-03964091f3e2)
-
-
-
-
-Happy with the boundary layer? If so, you would like to find the Landsat 8 imagery in the database relevant for the given task.
-
-
-2, Image Collection
-
-The script below retrieves a collection of Landsat 8 images from the database and filters the collection by date and the polygon of the study area to ensure images were acquired in the dry season to minimise cloud cover. 
+To access the SED you can use the script below.
 
 
 ```JavaScript
-
-//get Landsat 8 collection; this is a surface reflectance product 
-var landsatCol = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
-
-//filter by date
-.filterDate('2013-07-11','2013-07-31')
-
-//filter by study area
-.filterBounds(dalyNT)
-
-//print the image collection to the Console
-print(landsatCol , 'landsatCol ')
-```
-
-Explore the result in the Console, always inspect the image properties taking note of cloud coverage. You may observe that there are images with cloud and cloud shadow pixels.
-
-
-Question:
-
-How many images are in the collection? Correct, eight Landsat 8 image scenes required to cover the entire study area.
-
-List down the Path and Row IDs for each image. Read more about Path and Row here: [The Landsat Worldwide Reference System](https://landsat.gsfc.nasa.gov/about/the-worldwide-reference-system/)
-(accessed on 14/9/2024).
-
-
-Explore the "landsatCol" in the Console, when you drop-down "features" the Path/Row ID would be in the image filename. The Path/Row IDs are:
-104/069
-104/070
-104/071
-105/069
-105/070
-105/071
-106/069
-106/070
-
-
-```JavaScript
-//visualise the collection
-Map.addLayer(landsatCol, {bands:["SR_B4", "SR_B3", "SR_B2"], min:6000, max:12000})
-```
-
-You may observe that the image collection is displayed without an overlay of the study area polygon. To correct this, turn the polygon on as shown via the code below.
-
-```JavaScript
-//turn on the boundary of the study area again to overlay the collection
-Map.addLayer(dalyNT.style(symbology), {}, 'Daly River Catchment');
-```
-
-The result should be as shown in the figure below.
-
-
-![image](https://github.com/user-attachments/assets/ef339a31-0386-4867-9606-03c025d255a8)
-
-
-
-
-3, Remove cloud and cloud shadow pixels
-
-```JavaScript
-
-// define a function to mask cloud and shadow pixels.
-function fmask(img) {
-  var cloudShadowBitMask = 1 << 3;
-  var cloudsBitMask = 1 << 5;
-  var qa = img.select('QA_PIXEL');
-  var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
-    .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
-  return img.updateMask(mask);
-}
-
-//apply the function to mask the cloud and shadow pixels
-
-var landsatCol = landsatCol.map(fmask)
+var embeddings = ee.ImageCollection('GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL');
 ```
 
 
 
-4, [Mosaicking](https://en.wikipedia.org/wiki/Image_mosaic)
+### Define region of interest
 
-Although the image collection displays as a single image it is not. Rather, there are 8 individual images in the collection. Image collection cannot be an input for a classifier; **a classification analysis requires an image**. To this end, the image collection is turned into a single image by mosaicking the individual images together.
+The SED is a global dataset, so often you would have to specify your region of interest. In this case, we will explore the Daly River Catchment.
+
+
 
 ```JavaScript
 
-//mosaic the collection to make an image as this is required for classification 
-var imgCol2img = landsatCol.mosaic()
+//set the satellite basemap
+Map.setOptions('SATELLITE')
 
-//print the mosaick to the Console
-print(imgCol2img, 'Mosaicked image')
+//define the region of interest
+var dalyNT= ee.FeatureCollection("projects/ee-racrabbe3/assets/DRC").geometry()
+
+//centre to basemap to your study area
+Map.centreObject(dalyNT, 10)
+
 ```
 
-In the Console, you may observe that you have just one image with 19 bands. The bands include reflective, thermal and quality assessment bands.
-The reflective bands are "SR_B1", "SR_B2", "SR_B3", "SR_B4","SR_B5", "SR_B6", "SR_B7". The SR is surface reflectance. **Look it up** : List the light the bands represent.
 
-5, Trim the image
 
-Since not all bands are required for this and the image size is larger than the study area, it is prudent to trim the data. Trimming the data means you minimise the chance of running into EE computation issues. Thus, let's select the relevant bands and clip the image to the study area to lower the file size
+### Prepare the SED
+Each year’s images are split into tiles for easy access. We apply filters and find the images for our chosen year and region.
 
 ```JavaScript
+var year = 2024;
+var startDate = ee.Date.fromYMD(year, 1, 1);
+var endDate = startDate.advance(1, 'year');
 
-//select the relevant bands, 2. trim the image to the study area, 3. print result to Console
-var select_bands = imgCol2img.select("SR_B2", "SR_B3", "SR_B4", "SR_B5","SR_B6","SR_B7").clip(dalyNT)
-print (select_bands, 'select_bands')
+var filteredEmbeddings = embeddings
+  .filter(ee.Filter.date(startDate, endDate))
+  .filter(ee.Filter.bounds(dalyNT));
 
+```
+
+Satellite Embedding images are gridded into tiles of up to 163,840 m x 163,840 m each and served in the projection for the UTM zones for the tile. As a result, we get multiple Satellite Embedding tiles covering the region of interest. We can use the mosaic() function to combine multiple tiles into a single image. Let’s print the resulting image to see the bands.
+
+!Tip: ***Using mosaic() loses the original UTM projection and the resulting image will be set to a Default Projection, which is WGS84 with a 1-degree scale. This is fine for most cases, and you can specify the scale and projection suitable for your region when sampling data or exporting the results. For example, if you specify the crs as EPSG:3857 and scale as 10m, Earth Engine will reproject all the inputs to that projection and ensure the operation occurs in that projection. However, in some cases–especially for global-scale analyses, where no ideal projection exists and you do not want pixels in a geographic CRS–it may be more effective to leverage the built-in tiling structure by using map() on the collection. This approach retains the original UTM projection of each tile and can yield more accurate results***.
+
+
+```JavaScript
+var embeddingsImage = filteredEmbeddings.mosaic();
+print('Satellite Embedding Image', embeddingsImage);
+```
+
+
+You will see that the image has 64 bands, named A00, A01, … , A63. Each band contains the value of the embedding vector for the given year in that dimension or axis. Unlike spectral bands or indices, individual bands have no independent meaning – rather, each band represents one axis of the embedding space. You would use all of the 64 bands as inputs for your downstream applications.
+
+
+<img width="437" height="677" alt="image" src="https://github.com/user-attachments/assets/cee7048a-c0dc-4ad6-8336-df4e7e2c1268" />
+
+
+
+### Visulaisie the SED
+
+As we just saw, our image contains 64 bands. There is no easy way to visualise all the information contained in all the bands since we can only view a combination of three bands at a time.
+
+We can pick any three bands to visualize three axes of the embedding space as an RGB image.
+
+```JavaScript
+var visParams = {min: -0.3, max: 0.3, bands: ['A01', 'A16', 'A09']};
+Map.addLayer(embeddingsImage.clip(geometry), visParams, 'Embeddings Image');
 ```
 
 
