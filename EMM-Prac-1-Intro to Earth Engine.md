@@ -178,7 +178,7 @@ print(chartNDVI, 'chartNDVI')
 
 # Do It Yourself
 
-The MOD13Q1 contains EVI (enhanced vegetation index), which functions similarly as the NDVI in that the EVI also tells us about the greenness or health of the landscape. Select the EVI and produce a time series chart for the DR Catchment. Hint: Copy the code used for the NDVI analysis and modify this, 'i.e., replacing the "NDVI" with "EVI". Compare your EVI chart with the NDVI chart. What did you observe?
+The MOD13Q1 contains EVI (enhanced vegetation index), which functions similarly as the NDVI in that the EVI also tells us about the greenness or health of the landscape. Select the EVI and produce a time series chart for the DR Catchment. Hint: Copy the code used for the NDVI analysis and modify this, i.e., replacing the "NDVI" with "EVI". Compare your EVI chart with the NDVI chart. What did you observe?
 
 
 End of Practical 1
