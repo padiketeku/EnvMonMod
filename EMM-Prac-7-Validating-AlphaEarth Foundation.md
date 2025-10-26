@@ -661,7 +661,103 @@ Map.addLayer(predictedImage, gediVis, 'Predicted AGBD');
 ```
 
 
+
+
 <img width="940" height="687" alt="image" src="https://github.com/user-attachments/assets/79b57240-2da7-4dcb-97b8-2e0830c722f6" />
+
+
+
+
+
+
+
+
+
+#### Estimate total biomass
+
+
+
+We now have predicted AGBD values for each pixel of the image and that can be used to estimate the total aboveground biomass (AGB) stock in the region. But we must first remove all pixels belonging to non-vegetated areas. We can use the ESA WorldCover landcover dataset and select vegetated pixels.
+
+
+
+
+```JavaScript
+
+// GEDI data is processed only for certain landcovers
+// from Plant Functional Types (PFT) classification
+// https://doi.org/10.1029/2022EA002516
+
+// Here we use ESA WorldCover v200 product to
+// select landcovers representing vegetated areas
+var worldcover = ee.ImageCollection('ESA/WorldCover/v200').first();
+
+// Aggregate pixels to the same grid as other dataset
+// with 'mode' value.
+// i.e. The landcover with highest occurrence within the grid
+var worldcoverResampled = worldcover
+  .reduceResolution({
+    reducer: ee.Reducer.mode(),
+    maxPixels: 1024
+  })
+  .reproject({
+    crs: gridProjection
+});
+
+// Select grids for the following classes
+// | Class Name | Value |
+// | Forests    | 10    |
+// | Shrubland  | 20    |
+// | Grassland  | 30    |
+// | Cropland   | 40    |
+// | Mangroves  | 95    |
+var landCoverMask = worldcoverResampled.eq(10)
+    .or(worldcoverResampled.eq(20))
+    .or(worldcoverResampled.eq(30))
+    .or(worldcoverResampled.eq(40))
+    .or(worldcoverResampled.eq(95));
+
+var predictedImageMasked = predictedImage
+  .updateMask(landCoverMask);
+Map.addLayer(predictedImageMasked, gediVis, 'Predicted AGBD (Masked)');
+
+```
+
+
+
+
+
+<img width="933" height="683" alt="image" src="https://github.com/user-attachments/assets/a191b4e4-8e64-4ad1-825c-90a9fe541406" />
+
+
+
+
+
+
+The units of GEDI AGBD values are megagrams per hectare (Mg/ha). To get the total AGB, we multiply each pixel by its area in hectares and sum their values.
+
+
+```JavaSript
+
+var pixelAreaHa = ee.Image.pixelArea().divide(10000);
+var predictedAgb = predictedImageMasked.multiply(pixelAreaHa);
+
+var stats = predictedAgb.reduceRegion({
+  reducer: ee.Reducer.sum(),
+  geometry: geometry,
+  scale: gridScale,
+  maxPixels: 1e10,
+  tileScale: 16
+});
+
+// Result is a dictionary with key for each band
+var totalAgb = stats.getNumber('agbd');
+
+print('Total AGB (Mg)', totalAgb);
+
+```
+
+
 
 
 
