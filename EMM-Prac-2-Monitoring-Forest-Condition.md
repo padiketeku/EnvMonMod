@@ -44,7 +44,7 @@ from a conservation and management perspective. The vegetation turns most green
 and abundant during the rainy monsoon months, but also becomes hard to observe
 from optical satellite imagery due to the accompanying heavy cloud cover.
 
-## Approach
+## Workflow
 
 ### Import images, features
 
