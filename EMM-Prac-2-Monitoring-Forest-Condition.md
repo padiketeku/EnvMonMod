@@ -1,17 +1,14 @@
 Acknowledgement
 This tutorial was sourced from the Google Engine Engine developer team 
 
-
-# Monitoring Forest Vegetation Condition
-
-
-# Monitoring Forest Vegetation Condition
-
-
- 
-[Page history](https://github.com/google/earthengine-community/commits/master/tutorials/forest-vegetation-condition/index.md "View changes to this article over time.")  
 Author(s): [pskoulgi](https://github.com/pskoulgi "View the profile for pskoulgi on GitHub")
 Tutorials contributed by the Earth Engine developer community are not part of the official Earth Engine product documentation.  
+
+
+
+# Monitoring Forest Vegetation Condition
+
+
 
 ## Context
 
