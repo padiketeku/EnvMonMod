@@ -342,6 +342,7 @@ var embeddingsImage = embeddingsFiltered.mosaic()
 
 ```
 
+
 #### Prepare the GEDI L4A mosaic
 
 As the GEDI biomass estimates will be used to train our regression model, it is critical to filter out invalid or unreliable GEDI data before using it. We apply several masks to remove potentially erroneous measurements.
@@ -421,17 +422,107 @@ Map.addLayer(gediMosaic, gediVis, 'GEDI L4A (Filtered)', false);
 
 ```
 
+<img width="912" height="683" alt="image" src="https://github.com/user-attachments/assets/5853f168-919c-4848-a960-8263c4926ab9" />
 
 
 
+#### Resample and aggregate inputs
+
+Before sampling pixels to train a regression model, we resample and reproject the inputs to the same pixel grid. GEDI measurements have a horizontal accuracy of +/- 9 m. This is problematic when matching the GEDI AGB values to Satellite Embedding pixels. To overcome this, we resample and aggregate all input images to a larger pixel grid with mean values from the original pixels. This also helps remove noise from the data and helps build a better machine-learning model.
 
 
+```JavaScript
+// Choose the grid size and projection
+var gridScale = 100;
+var gridProjection = ee.Projection('EPSG:3857')
+  .atScale(gridScale);
+
+// Create a stacked image with predictor and predicted variables
+var stacked = embeddingsImage.addBands(gediMosaic);
+
+//  Set the resampling mode
+var stacked = stacked.resample('bilinear');
+
+// Aggregate pixels with 'mean' statistics
+var stackedResampled = stacked
+  .reduceResolution({
+    reducer: ee.Reducer.mean(),
+    maxPixels: 1024
+  })
+  .reproject({
+    crs: gridProjection
+});
+
+// As larger GEDI pixels contain masked original
+// pixels, it has a transparency mask.
+// We update the mask to remove the transparency
+var stackedResampled = stackedResampled
+  .updateMask(stackedResampled.mask().gt(0));
+```
+
+Reprojecting and aggregating pixels is an expensive operation, and it is a good practice to export the resulting stacked image as an Asset and use the pre-computed image in subsequent steps. This will help overcome computation timed out or user memory exceeded errors when working with large regions.
 
 
+```JavaScript
+
+//make sure you specifyy the path to your own GEE Assets. Using this code without modifying the assetId may throw out error messages.
+Export.image.toAsset({
+  image: stackedResampled.clip(geometry),
+  description: 'GEDI_Mosaic_Export',
+  assetId: "users/racrabbe/EMM_GEDI_Mosaic_Export", //'projects/ee-racrabbe3/assets/compositeLayer3'
+  scale:gridScale,
+  region: geometry,
+  maxPixels:1e10
+});
+
+```
 
 
+Start the export task and wait until it finishes. Once done, we import the Asset and continue building the model.
+
+```JavaScript
+// load the exported asset
+var stackedResampled = ee.Image('users/racrabbe/EMM_GEDI_Mosaic_Export');
+
+```
 
 
+#### Extract training features
+
+We have our input data ready for extracting training features. We use the Satellite Embedding bands as dependent variables (predictors) and GEDI AGBD values as Independent Variable (predicted) in the regression model. We can extract the coincident values at each pixel and prepare our training dataset. Our GEDI image is mostly masked and contains values at only a small subset of pixels. If we use `sample()` it will return mostly empty values. To overcome this, we create a class band from the GEDI mask and use stratifiedSample() to ensure we sample from the non-masked pixels.
+
+```JavaScript
+var predictors = embeddingsImage.bandNames();
+var predicted = gediMosaic.bandNames().get(0);
+print('predictors', predictors);
+print('predicted', predicted);
+
+var predictorImage = stackedResampled.select(predictors);
+var predictedImage = stackedResampled.select([predicted]);
+
+var classMask = predictedImage.mask().toInt().rename('class');
+
+var numSamples = 1000;
+
+// We set classPoints to [0, numSamples]
+// This will give us 0 points for class 0 (masked areas)
+// and numSample points for class 1 (non-masked areas)
+var training = stackedResampled.addBands(classMask)
+  .stratifiedSample({
+    numPoints: numSamples,
+    classBand: 'class',
+    region: geometry,
+    scale: gridScale,
+    classValues: [0, 1],
+    classPoints: [0, numSamples],
+    dropNulls: true,
+    tileScale: 16,
+});
+
+print('Number of Features Extracted', training.size());
+print('Sample Training Feature', training.first());
+
+```
 
 
 
