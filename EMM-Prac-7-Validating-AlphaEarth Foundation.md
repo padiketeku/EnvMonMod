@@ -767,13 +767,16 @@ print('Total AGB (Mg)', totalAgb);
 ```
 
 
+<img width="516" height="97" alt="image" src="https://github.com/user-attachments/assets/e1b6c2ee-e6c4-4c4f-8ff4-0b91caf0fed9" />
 
 
 
 
 
 
-Conclusion
+
+**Conclusion**
+
 We have modelled abovegorund biomass (AGB) using random forest regression, leveraging Satellite Embedding, GEDI LiDAR, global DEM and land cover datasets.
 AGB for unknown locations were estiamted as well as the total AGB.
 
