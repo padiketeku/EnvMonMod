@@ -276,16 +276,164 @@ Map.addLayer(cluster9.randomVisualizer().clip(dalyNT), {}, '9 clusters');
 
 
 
-
-
-
-
-
 ### Regression Analysis- Modelling Aboveground Biomass
 
+Embedding fields can be used as feature inputs/predictors for regression in the same way they’re used for classification.
+In this tutorial, we will learn how to use the 64D embedding field layers as inputs to a multiple regression analysis predicting above-ground biomass (AGB).
+NASA’s Global Ecosystem Dynamics Investigation (GEDI) mission collects LIDAR measurements along ground transects at 30 m spatial resolution at 60 m intervals. We will use the GEDI L4A Raster Aboveground Biomass Density dataset containing point estimates of above ground biomass density (AGBD) that will be used as the predicted variable in the regression model.
+
+The learning outcomes include: <br>
+
+Select a study region <br>
+Select a time period <br>
+Prepare the Satellite Embedding dataset <br>
+Prepare GEDI L4A Mosaic data <br>
+Resample and aggregate inputs <br>
+Extract training features<br>
+Train a regression model <br>
+Generate prediction for unknown values<br>
+Estimaate total biomass
+
+#### Select a study region
+
+Let’s start by defining a region of interest. For this tutorial, we will pick a region in the Western Ghats of India and define a polygon as the geometry variable. Alternatively, you can use the Drawing Tools in the Code Editor to draw a polygon around the region of interest that will be saved as the geometry variable in the Imports. We also use the Satellite basemap, which makes it easy to locate vegetated areas.
+
 ```JavaScript
+var geometry = ee.Geometry.Polygon([[
+  [74.322, 14.981],
+  [74.322, 14.765],
+  [74.648, 14.765],
+  [74.648, 14.980]
+]]);
+
+// Use the satellite basemap
+Map.setOptions('SATELLITE');
 
 ```
+
+#### Select a time period
+Pick a year for which we want to run the regression. Remember that Satellite Embeddings are aggregated at yearly intervals so we define the period for the entire year.
+```JavaScript
+var startDate = ee.Date.fromYMD(2022, 1, 1);
+var endDate = startDate.advance(1, 'year');
+```
+
+#### Prepare the Satellite Embedding dataset
+
+The 64-band Satellite Embedding Images will be used as the predictor for the regression. We load the Satellite Embedding dataset, filter for images for the chosen year and region.
+
+```JavaScript
+var embeddings = ee.ImageCollection('GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL');
+
+var embeddingsFiltered = embeddings
+  .filter(ee.Filter.date(startDate, endDate))
+  .filter(ee.Filter.bounds(geometry));
+```
+
+Satellite Embedding images are gridded into tiles and served in the projection for the UTM zones for the tile. As a result, we get multiple Satellite Embedding tiles covering the region of interest. To get a single image, we need to mosaic them. In Earth Engine, a mosaic of input images is assigned the default projection, which is WGS84 with a 1-degree scale. As we will be aggregating and reprojecting this mosaic later in the tutorial, it is helpful to retain the original projection. We can extract the projection information from one of the tiles and set it on the mosaic using the setDefaultProjection() function.
+
+```JavaScript
+// Extract the projection of the first band of the first image
+var embeddingsProjection = ee.Image(embeddingsFiltered.first()).select(0).projection();
+
+// Set the projection of the mosaic to the extracted projection
+var embeddingsImage = embeddingsFiltered.mosaic()
+  .setDefaultProjection(embeddingsProjection);
+
+```
+
+#### Prepare the GEDI L4A mosaic
+
+As the GEDI biomass estimates will be used to train our regression model, it is critical to filter out invalid or unreliable GEDI data before using it. We apply several masks to remove potentially erroneous measurements.
+
+    Remove all measurements not meeting quality requirement (l4_quality_flag = 0 and degrade_flag > 0)
+    Remove all measurements with high relative error ('agbd_se' / 'agbd' > 50%)
+    Remove all measurements on slopes > 30% based on the Copernicus GLO-30 Digital Elevation Mode (DEM)
+
+Finally, we select all remaining measurements for the time period and region of interest and create a mosaic.
+
+
+```JavaScript
+var gedi = ee.ImageCollection('LARSE/GEDI/GEDI04_A_002_MONTHLY');
+// Function to select the highest quality GEDI data
+var qualityMask = function(image) {
+  return image.updateMask(image.select('l4_quality_flag').eq(1))
+      .updateMask(image.select('degrade_flag').eq(0));
+};
+
+// Function to mask unreliable GEDI measurements
+// with a relative standard error > 50%
+// agbd_se / agbd > 0.5
+var errorMask = function(image) {
+  var relative_se = image.select('agbd_se')
+    .divide(image.select('agbd'));
+  return image.updateMask(relative_se.lte(0.5));
+};
+
+// Function to mask GEDI measurements on slopes > 30%
+
+var slopeMask = function(image) {
+  // Use Copernicus GLO-30 DEM for calculating slope
+  var glo30 = ee.ImageCollection('COPERNICUS/DEM/GLO30');
+
+  var glo30Filtered = glo30
+    .filter(ee.Filter.bounds(geometry))
+    .select('DEM');
+
+  // Extract the projection
+  var demProj = glo30Filtered.first().select(0).projection();
+
+  // The dataset consists of individual images
+  // Create a mosaic and set the projection
+  var elevation = glo30Filtered.mosaic().rename('dem')
+    .setDefaultProjection(demProj);
+
+  // Compute the slope
+  var slope = ee.Terrain.slope(elevation);
+
+  return image.updateMask(slope.lt(30));
+};
+
+var gediFiltered = gedi
+  .filter(ee.Filter.date(startDate, endDate))
+  .filter(ee.Filter.bounds(geometry));
+
+var gediProjection = ee.Image(gediFiltered.first())
+  .select('agbd').projection();
+
+var gediProcessed = gediFiltered
+  .map(qualityMask)
+  .map(errorMask)
+  .map(slopeMask);
+
+var gediMosaic = gediProcessed.mosaic()
+  .select('agbd').setDefaultProjection(gediProjection);
+
+// Visualize the GEDI Mosaic
+var gediVis = {
+  min: 0,
+  max: 200,
+  palette: ['#edf8fb', '#b2e2e2', '#66c2a4', '#2ca25f', '#006d2c'],
+  bands: ['agbd']
+};
+
+Map.addLayer(gediMosaic, gediVis, 'GEDI L4A (Filtered)', false);
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 Conclusion
