@@ -563,7 +563,7 @@ var calculateRmse = function(input) {
     return rmse;
 };
 var rmse = calculateRmse(predicted);
-print('RMSE', rmse);
+print('RMSE', rmse); //result was approximately 28.55
 
 // Create a plot of observed vs. predicted values
 var chart = ui.Chart.feature.byFeature({
