@@ -1,7 +1,7 @@
 # Species Distribution Modelling
 
 
-The context for this tutorial is found in this [study]([DOI: 10.1111/ddi.13491](https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.13491). Make sure you ready the paper before or alongside working through the tutorial for detail comprehension of the task.
+The context for this tutorial is found in this [study](https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.13491). Make sure you ready the paper before or alongside working through the tutorial for detail comprehension of the task.
 
 
 The code found below can also be accessed through the GEE repository for this study: [HERE](https://code.earthengine.google.com/?accept_repo=users/ramirocrego84/SDM_Manuscript)
