@@ -1,5 +1,9 @@
 # Species Distribution Modelling
 
+
+The code found below can also be accessed through the GEE repository for this study: https://code.earthengine.google.com/?accept_repo=users/ramirocrego84/SDM_Manuscript
+
+
 ```JavaScript
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
