@@ -609,6 +609,65 @@ print(chart);
 
 
 
+#### Generate predictions for unknown values
+
+
+Once we are happy with the model, we can use the trained model to generate predictions at unknown locations from the image containing predictor bands.
+
+```JavaScript
+// We set the band name of the output image as 'agbd'
+var predictedImage = stackedResampled.classify({
+  classifier: model,
+  outputName: 'agbd'
+});
+
+```
+
+
+The image containing predicted AGBD values at each pixel is now ready for export. We will use this in the next part to visualize the results.
+
+
+```JavaScript
+//export data to assets
+Export.image.toAsset({
+  image: predictedImage.clip(geometry),
+  description: 'GEDI_RegressionModel',
+  assetId: "users/racrabbe/EMM_AGB_RegressionModel", //'projects/ee-racrabbe3/assets/compositeLayer3'
+  scale:gridScale,
+  region: geometry,
+  maxPixels:1e10
+});
+
+```
+
+Start the export task and wait until it finishes. Once done, we import the Asset and visualize the results.
+
+
+
+```  JavaScript
+//import/load the predicted image
+var predictedImage = ee.Image('users/racrabbe/EMM_AGB_RegressionModel');
+
+// Visualize the image
+var gediVis = {
+  min: 0,
+  max: 200,
+  palette: ['#edf8fb', '#b2e2e2', '#66c2a4', '#2ca25f', '#006d2c'],
+  bands: ['agbd']
+};
+
+Map.addLayer(predictedImage, gediVis, 'Predicted AGBD');
+
+```
+
+
+<img width="940" height="687" alt="image" src="https://github.com/user-attachments/assets/79b57240-2da7-4dcb-97b8-2e0830c722f6" />
+
+
+
+
+
+
 Conclusion
 We have modelled abovegorund biomass (AGB) using random forest regression, leveraging Satellite Embedding, GEDI LiDAR, global DEM and land cover datasets.
 AGB for unknown locations were estiamted as well as the total AGB.
