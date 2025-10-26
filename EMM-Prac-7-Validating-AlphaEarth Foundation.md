@@ -727,7 +727,16 @@ Map.addLayer(predictedImageMasked, gediVis, 'Predicted AGBD (Masked)');
 
 
 
+
+
+
 <img width="933" height="683" alt="image" src="https://github.com/user-attachments/assets/a191b4e4-8e64-4ad1-825c-90a9fe541406" />
+
+
+
+
+
+
 
 
 
