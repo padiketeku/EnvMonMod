@@ -1,5 +1,5 @@
 Acknowledgement
-This tutorial was developed by the Google Engine Engine developer
+This tutorial was sourced from the Google Engine Engine developer team 
 
 
 # Monitoring Forest Vegetation Condition
