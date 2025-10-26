@@ -422,7 +422,11 @@ Map.addLayer(gediMosaic, gediVis, 'GEDI L4A (Filtered)', false);
 
 ```
 
+
+
+
 <img width="912" height="683" alt="image" src="https://github.com/user-attachments/assets/5853f168-919c-4848-a960-8263c4926ab9" />
+
 
 
 
@@ -523,6 +527,84 @@ print('Number of Features Extracted', training.size());
 print('Sample Training Feature', training.first());
 
 ```
+
+
+#### Train a regression model
+
+We are now ready to train the model. Many classifiers in Earth Engine can be used for both classification and regression tasks. Since we want to predict a numeric value (instead of a class) – we can set the classifier to run in the `REGRESSION` mode and train using the training data. Once the model is trained, we can compare the model’s prediction against input values and compute the root-mean square error (`rmse`) and correlation coefficient `r^2` to check the model’s performance.
+
+
+```JavaScript
+
+// Use the RandomForest classifier and set the
+// output mode to REGRESSION
+var model = ee.Classifier.smileRandomForest(50)
+  .setOutputMode('REGRESSION')
+  .train({
+    features: training,
+    classProperty: predicted,
+    inputProperties: predictors
+  });
+
+// Get model's predictions for training samples
+var predicted = training.classify({
+  classifier: model,
+  outputName: 'agbd_predicted'
+});
+
+// Calculate RMSE
+var calculateRmse = function(input) {
+    var observed = ee.Array(
+      input.aggregate_array('agbd'));
+    var predicted = ee.Array(
+      input.aggregate_array('agbd_predicted'));
+    var rmse = observed.subtract(predicted).pow(2)
+      .reduce('mean', [0]).sqrt().get([0]);
+    return rmse;
+};
+var rmse = calculateRmse(predicted);
+print('RMSE', rmse);
+
+// Create a plot of observed vs. predicted values
+var chart = ui.Chart.feature.byFeature({
+  features: predicted.select(['agbd', 'agbd_predicted']),
+  xProperty: 'agbd',
+  yProperties: ['agbd_predicted'],
+}).setChartType('ScatterChart')
+  .setOptions({
+    title: 'Aboveground Biomass Density (Mg/Ha)',
+    dataOpacity: 0.8,
+    hAxis: {'title': 'Observed'},
+    vAxis: {'title': 'Predicted'},
+    legend: {position: 'right'},
+    series: {
+      0: {
+        visibleInLegend: false,
+        color: '#525252',
+        pointSize: 3,
+        pointShape: 'triangle',
+      },
+    },
+    trendlines: {
+      0: {
+        type: 'linear',
+        color: 'black',
+        lineWidth: 1,
+        pointSize: 0,
+        labelInLegend: 'Linear Fit',
+        visibleInLegend: true,
+        showR2: true
+      }
+    },
+    chartArea: {left: 100, bottom: 100, width: '50%'},
+
+});
+print(chart);
+
+```
+
+
+<img width="898" height="623" alt="image" src="https://github.com/user-attachments/assets/16dd9180-2739-4838-af43-b692d4cee116" />
 
 
 
