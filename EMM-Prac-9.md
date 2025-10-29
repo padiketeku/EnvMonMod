@@ -1,12 +1,11 @@
 # Species Distribution Modelling
 
 
-The context for this tutorial is found in this [study](https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.13491). Make sure you ready the paper before or alongside working through the tutorial for detail comprehension of the task.
+The context for this tutorial is found in this [study](https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.13491). Make sure you read the paper before or alongside working through the tutorial for detail comprehension of the task.
 
-There are three case studies, but only the first case study is used here.
+There are three case studies in the paper, but only the first case study you are required to work through in this unit. The scripts and other details to complete this selected case study - habitat suitability mapping of the brown-throated sloth (Bradypus variegatus).
 
-
-The code found below can also be accessed through the GEE repository for this study: [HERE](https://code.earthengine.google.com/?accept_repo=users/ramirocrego84/SDM_Manuscript)
+The below scripts can also be accessed through the GEE repository for this study: [HERE](https://code.earthengine.google.com/?accept_repo=users/ramirocrego84/SDM_Manuscript)
 
 
 ```JavaScript
@@ -149,7 +148,7 @@ var mask = Data
 //Option 3: Environmental pseudo-absences selection (environmental profiling)
 // Extract environmental values for the a random subset of presence data
 var PixelVals = predictors.sampleRegions({collection: Data.randomColumn().sort('random').limit(200), properties: [], tileScale: 16, scale: GrainSize});
-// Perform k-means clusteringthe clusterer and train it using based on Eeuclidean distance.
+// Perform k-means clusteringthe clusterer and train it using based on Euclidean distance.
 var clusterer = ee.Clusterer.wekaKMeans({nClusters:2, distanceFunction:"Euclidean"}).train(PixelVals);
 // Assign pixels to clusters using the trained clusterer
 var Clresult = predictors.cluster(clusterer);
