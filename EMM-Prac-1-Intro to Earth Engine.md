@@ -10,7 +10,7 @@
 
 # Final Part of Practical 1
 
-In this final part of the practical, which will also be relevant for the next practical activity, we will explore image collection. Image collection is created when at least 2 images are available in a folder. The individual images in the collection may contain multiple bands, represnting different information about the environment. Here, we will explore image collection through MODIS data. MODIS is a satellite system that collected data about the environment since 2000. MODIS provides global earth observation data, but we will focus on Daly River Catchment of the Northern Terrotor, Australia, as the study area. The MOD13Q1 V6.1 product, which provides a vegetation index (VI) value at a per pixel basis, will be explored. The pixel size for the MOD13Q1 is 250 m. Further details about this product are [here](https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MOD13Q1)
+In this final part of the practical, which will also be relevant for the assignment 1, we will explore image collection. Image collection is created when at least 2 images are available in a folder. The individual images in the collection may contain multiple bands, representing different information about the environment. Here, we will explore image collection through MODIS data. MODIS is a satellite system that collected data about the environment since 2000. MODIS provides global earth observation data, but we will focus on Daly River Catchment of the Northern Territory, Australia, as the study area. The MOD13Q1 V6.1 product, which provides a vegetation index (VI) value at a per pixel basis, will be explored. The pixel size for the MOD13Q1 is 250 m. Further details about this product are [here](https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MOD13Q1)
 
 ## Workflow
 
@@ -24,7 +24,7 @@ Non-Remote Sensing data for the task can be downloaded from this [site](https://
 var dalyNT = ee.FeatureCollection("projects/ee-niiazucrabbe/assets/DalyCatchment") //modify the path to your own EE asset 
 ```
 
-Usually, at the start of EE, the base map is centered on the US. If your study location is different you would have to re-set the base map to your region of interest. In our case, we would re-set the base map to the Daly River.
+Usually, at the start of EE, the base map is centered on United States. If your study location is different you would have to re-set the base map to your region of interest. In our case, we would re-set the base map to the Daly River.
 
 ```JavaScript
 //let the computer display the base map to location of interest (i.e., Daly River)
@@ -62,7 +62,7 @@ Vegetation Index (NDVI) which is referred to as the continuity index to the
 existing National Oceanic and Atmospheric Administration-Advanced Very High 
 Resolution Radiometer (NOAA-AVHRR) derived NDVI. 
 The second vegetation layer is the Enhanced Vegetation Index (EVI) 
-that minimizes canopy background variations and maintains sensitivity 
+that minimises canopy background variations and maintains sensitivity 
 over dense vegetation conditions. The EVI also uses the blue band 
 to remove residual atmosphere contamination caused by smoke 
 and sub-pixel thin cloud clouds. The MODIS NDVI and EVI products 
@@ -176,7 +176,7 @@ print(chartNDVI, 'chartNDVI')
 
 ```
 
-# Do It Yourself
+# Do It Yourself (Assignment 1)
 
 The MOD13Q1 contains EVI (enhanced vegetation index), which functions similarly as the NDVI in that the EVI also tells us about the greenness or health of the landscape. Select the EVI and produce a time series chart for the DR Catchment. Hint: Copy the code used for the NDVI analysis and modify this, i.e., replacing the "NDVI" with "EVI". Compare your EVI chart with the NDVI chart. What did you observe?
 
