@@ -8,7 +8,7 @@
 [Click link to go to the third part of practical 1:](https://github.com/padiketeku/EarthObservation101-Practicals/blob/main/Activity-03-Understanding%20Data%20Types%20and%20Conventions.md)
 
 
-# Final Part of Practical 1
+# Vegetation Dynamics
 
 In this final part of the practical, which will also be relevant for the assignment 1, we will explore image collection. Image collection is created when at least 2 images are available in a folder. The individual images in the collection may contain multiple bands, representing different information about the environment. Here, we will explore image collection through MODIS data. MODIS is a satellite system that collected data about the environment since 2000. MODIS provides global earth observation data, but we will focus on Daly River Catchment of the Northern Territory, Australia, as the study area. The MOD13Q1 V6.1 product, which provides a vegetation index (VI) value at a per pixel basis, will be explored. The pixel size for the MOD13Q1 is 250 m. Further details about this product are [here](https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MOD13Q1)
 
