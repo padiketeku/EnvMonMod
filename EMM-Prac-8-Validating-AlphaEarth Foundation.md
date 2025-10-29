@@ -783,9 +783,9 @@ AGB for unknown locations were estiamted as well as the total AGB.
 
 # Code
 
-See below for the complete code.
+See below for the complete scripts.
 
-Note, all feature data required for the project must be available for the code to run successfully.
+Note, all feature data required for the project must be available for the scripts to run successfully.
 ```JavaScript
 //select region of interest
 var geometry = ee.Geometry.Polygon([[
