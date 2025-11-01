@@ -154,3 +154,20 @@ Map.addLayer(image_ratio, null, 'image ratio')
 var image_logRatio =image_ratio.log()
 Map.addLayer(image_logRatio,null, 'image_logRatio')
 ```
+
+The log transformed change map should be like this:
+
+
+
+<img width="623" height="551" alt="image" src="https://github.com/user-attachments/assets/3429bfaa-8946-46b4-91aa-feac3a3c5540" />
+
+
+
+
+# Do It Yourself
+
+Identify another location in the ACT (or another area of your choice) that has experienced urban expansion in the last ten years, and map the change using Sentinel-1 data and the log ratio method.
+Write up a report on this work, include introduction to the topic, aim and objective of the work, the data and methods leveraged, results, discussion and references. 
+
+
+
