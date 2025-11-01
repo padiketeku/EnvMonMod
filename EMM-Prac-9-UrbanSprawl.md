@@ -67,4 +67,5 @@ var s1col2 = s1col
 
 ```
 
-Print the result to the console. ```JavaScript print(s1col2, 's1col2')```
+Print the result to the console. 
+```JavaScript print(s1col2, 's1col2')```
