@@ -136,11 +136,33 @@ Map.addLayer(aoiNDVI, null, 'NDVI') // the 'null' means no visualisation paramet
 //if you zoom out you may see brighter and darker pixels.
 //brighter pixels have higher NDVI values
 
+```
+
+The NDV map in grey-scale is displayed below.
+
+
+
+
+<img width="675" height="530" alt="image" src="https://github.com/user-attachments/assets/abfc07f7-64f2-47eb-8484-3f6abb166d73" />
+
+
+
+
+
+We can enhanced the visualisation by assigning colours to the range of NDVI values. This is demonstrated below.
+
+
+
+
+
+
+
+
+```JavaScript
 //visualise, include setting the visualisation parameters
 //here, we will modify "null"
 Map.addLayer(aoiNDVI, {min:-0.01, max:0.5, palette:["red", "pink", "purple", "yellow", "green"]}, 'NDVI-2')
 ```
-
 
 
 
