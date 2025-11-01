@@ -3,7 +3,7 @@ Growth in human population and the concomitant social needs drive expansion of u
 
 # Learning outcomes
 
-Filter image collectiom
-Register two Sentinel-1 images
-Compute log ratio
+Filter image collectiom <br>
+Register two Sentinel-1 images <br>
+Compute log ratio <br>
 Interpret changes in Sentinel- imagery
