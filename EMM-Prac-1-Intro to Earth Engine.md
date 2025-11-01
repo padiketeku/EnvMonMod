@@ -122,6 +122,14 @@ var aoiNDVI = modisNDVI.map(clipImage)
 print(aoiNDVI,'aoiNDVI')
 //In the console, explore the image properties
 
+
+```
+
+
+## Visualise the NDVI map
+
+
+```JavaScript
 //visualise
 Map.addLayer(aoiNDVI, null, 'NDVI') // the 'null' means no visualisation parameters are specified
 
@@ -131,7 +139,25 @@ Map.addLayer(aoiNDVI, null, 'NDVI') // the 'null' means no visualisation paramet
 //visualise, include setting the visualisation parameters
 //here, we will modify "null"
 Map.addLayer(aoiNDVI, {min:-0.01, max:0.5, palette:["red", "pink", "purple", "yellow", "green"]}, 'NDVI-2')
+```
 
+
+
+
+
+
+<img width="696" height="624" alt="image" src="https://github.com/user-attachments/assets/5702776a-37ec-4159-b3a4-711c2afa8ed4" />
+
+
+
+
+
+
+
+## Chart the time series of the NDVI
+
+
+```JavaScript
 var chartNDVI = ui.Chart.image.series({
   
   //specify the variable representing image collection
@@ -173,8 +199,10 @@ var chartNDVI = ui.Chart.image.series({
         });
   
 print(chartNDVI, 'chartNDVI')
-
 ```
+
+
+
 
 
 
