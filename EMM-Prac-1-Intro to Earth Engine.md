@@ -201,6 +201,7 @@ var chartNDVI = ui.Chart.image.series({
 print(chartNDVI, 'chartNDVI')
 ```
 
+See the figure below for the chart result.
 
 
 
