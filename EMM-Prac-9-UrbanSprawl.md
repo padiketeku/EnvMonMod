@@ -68,4 +68,89 @@ var s1col2 = s1col
 ```
 
 Print the result to the console. 
-```JavaScript print(s1col2, 's1col2')```
+
+```JavaScript 
+print(s1col2, 's1col2')
+```
+
+The rest of the workflows is captured by the scripts below.
+
+```JavaScript
+//convert collection to a list
+var col_list = s1col2.toList(283)
+print(col_list,"col_list")
+
+//select the 2015 image
+var col_list_2015 = col_list.slice(2,3)
+print(col_list_2015,"col_list_2015")
+
+
+//convert the list to an image object: 2015
+var image2015 = ee.Image(col_list_2015.get(0))
+print(image2015, "image2015")
+
+//select the 2025 image
+var col_list_2025 = col_list.slice(282,283)
+print(col_list_2025,"col_list_2025")
+
+
+//convert the list to an image object: 2025
+var image2025 = ee.Image(col_list_2025.get(0))
+print(image2025, "image2025")
+
+//visualise the selected images
+Map.addLayer(image2015, {min:-15, max:-10}, 'image2015')
+Map.addLayer(image2025, {min:-15, max:-10}, 'image2025')
+
+//clip the two images to the study area
+var image2015c = image2015.clip(roi)
+var image2025c = image2025.clip(roi)
+
+//visualise clipped images
+Map.addLayer(image2015c, {min:-15, max:-10}, 'image2015 clipped')
+Map.addLayer(image2025c, {min:-15, max:-10}, 'image2025 cliped')
+
+//***register the two images
+
+// use bicubic resampling during registration.
+var image2015Orig = image2015c.resample('bicubic');
+var image2025Orig = image2025c.resample('bicubic');
+
+// determine the displacement 
+var displacement = image2015Orig.displacement({
+  referenceImage: image2025Orig,
+  maxOffset: 50.0,
+  patchWidth: 100.0
+});
+
+// Compute image offset and direction.
+var offset = displacement.select('dx').hypot(displacement.select('dy'));
+var angle = displacement.select('dx').atan2(displacement.select('dy'));
+
+//set the map centre to the point of interest
+Map.setCenter(149.14,-35.18, 10);
+
+//warping the image**
+
+// Use the computed displacement to register all original bands.
+var image2015_reg = image2015Orig.displace(displacement);
+
+// Show the results of co-registering the images.
+var visParams = {min:-15, max:-10};
+Map.addLayer(image2025Orig, visParams, 'Reference');
+Map.addLayer(image2015Orig, visParams, 'Before Registration');
+Map.addLayer(image2015_reg, visParams, 'After Registration');
+
+//Use the computed displacement to register the 2025 image
+var image2025_reg = image2025Orig.displace(displacement);
+
+
+//compute image ratio
+var image_ratio =image2015_reg.divide(image2025_reg)
+Map.addLayer(image_ratio, null, 'image ratio')
+
+
+//log transform the ratio image to visually enhance change areas 
+var image_logRatio =image_ratio.log()
+Map.addLayer(image_logRatio,null, 'image_logRatio')
+```
