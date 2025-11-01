@@ -175,6 +175,13 @@ Map.addLayer(aoiNDVI, {min:-0.01, max:0.5, palette:["red", "pink", "purple", "ye
 
 
 
+Green and Yellow pixels are the most healthy part of the catchment.
+
+
+
+
+
+
 
 ## Chart the time series of the NDVI
 
