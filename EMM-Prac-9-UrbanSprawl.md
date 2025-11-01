@@ -17,7 +17,8 @@ Growth in the human population and the concomitant social needs drive the expans
   New homes have been developed in the Gungahlin since 2015. You are required to compare the Sentinel-1 images in 2015 and 2025 to detect the new homes that have emerged in the last ten years at Gungahlin.
 
   # Workflow
-Because of the multiplicative nature of speckle noise [1,20], it has been proven to be more effective to use the ratio operator than the difference operator [21,22] as a change-detection metric to compare two SAR temporal images [23,24,25].
+
+The log ratio method was used to overcome the multiplicative effect of speckle noise. Studies have shown that it is more effective to use the image ratio method to identify changegs in SAR images.
 
 Pont of interest: 
 
