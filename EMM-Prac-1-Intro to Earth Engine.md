@@ -52,6 +52,13 @@ Once you click  UPLOAD, wait for few seconds and go to the `Tasks` tab to monito
 
 
 
+
+
+
+### Apply the asset
+
+
+
 1, Upload the boundary (or shapefile) of the study area 
 
 ```JavaScript
