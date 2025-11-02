@@ -17,6 +17,39 @@ In this final part of the practical, which will also be relevant for the assignm
 
 Non-Remote Sensing data for the task can be downloaded from this [site](https://zenodo.org/records/13910706). Download the "Daly_data.zip" for this practical.
 
+Unzip the folder and then import the 'Daly_River' files to `Assets` in Earth Engine. To do this go to GEE and click the `Assets` tab. Click `NEW` your result may be like this:
+
+
+
+
+<img width="606" height="629" alt="image" src="https://github.com/user-attachments/assets/927ab3aa-e3e4-4831-9c2a-aba7fdb21b49" />
+
+
+
+
+
+Under `Table Upload` click 'Shape files' , `Select` and navigate to your local computer to where you have the unzipped folder. Select the first four files (i.e., .dbf, .sbn,.shp, and .shx) at once and click `UPLOAD' (is at the bottom right of the window shown below).
+
+
+
+
+
+<img width="974" height="820" alt="image" src="https://github.com/user-attachments/assets/396a969b-c13a-449b-a216-44c0f2231f8b" />
+
+
+
+
+
+
+
+Once you click  UPLOAD, wait for few seconds and go to the `Tasks` tab to monitor the progress of the upload. You may see a tick mark once the upload completes. Go to the `Assets`tab and click the refresh icon shown below. This will make the data available in your assets and you can use the `Import to script` arrow to get the data into your Code Editor for use in your scripts. Alternatively, you can copy the path ID and bring it into the Code Editor. This option is used in the prac manual. These steps will be demonstrated in class. 
+
+
+
+<img width="50" height="52" alt="image" src="https://github.com/user-attachments/assets/b0fe5d51-1cb4-4dec-8946-1d6b31a701ba" />
+
+
+
 
 1, Upload the boundary (or shapefile) of the study area 
 
