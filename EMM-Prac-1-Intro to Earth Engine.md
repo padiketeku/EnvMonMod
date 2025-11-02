@@ -14,6 +14,7 @@ In this final part of the practical, which will also be relevant for the assignm
 
 ## Workflow
 
+### Importing data from local computer to GEE
 
 Non-Remote Sensing data for the task can be downloaded from this [site](https://zenodo.org/records/13910706). Download the "Daly_data.zip" for this practical.
 
