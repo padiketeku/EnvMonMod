@@ -42,7 +42,7 @@ Under `Table Upload` click 'Shape files' , `Select` and navigate to your local c
 
 
 
-Once you click  UPLOAD, wait for few seconds and go to the `Tasks` tab to monitor the progress of the upload. You may see a tick mark once the upload completes. Go to the `Assets`tab and click the refresh icon shown below. This will make the data available in your assets and you can use the `Import to script` arrow to get the data into your Code Editor for use in your scripts. Alternatively, you can copy the path ID and bring it into the Code Editor. This option is used in the prac manual. These steps will be demonstrated in class. 
+Once you click  UPLOAD, wait for few seconds and go to the `Tasks` tab to monitor the progress of the upload. You may see a tick mark once the upload completes. Go to the `Assets`tab and click the refresh icon shown below. This will make the data available in your assets and you can use the `Import to script` arrow to get the data into your Code Editor for use in your scripts. Alternatively, you can copy the asset path ID and bring this into the Code Editor. This option is used in the prac manual. These steps will be demonstrated in class. 
 
 
 
