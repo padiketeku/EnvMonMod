@@ -188,7 +188,7 @@ print (select_bands, 'select_bands')
 
 ### Classification
 
-There are different habitats within the Daly Catchments, which have to be mapped for effective monitoring. In this task, the landcover/use would be categorised into broad themes: *water,infrastructure, woodland, agriculture, and baresoil*. Given fire is an important management tool in this area, fire scar is common in this catchment, hence, fire scar would be detected as another cover class. Thus, six cover classes would be mapped.
+There are different landcover/use types within the Daly Catchments, which have to be mapped for effective monitoring. In this task, the landcover/use would be categorised into broad themes: *water,infrastructure, woodland, agriculture, and baresoil*. Given fire is an important management tool in this area, fire scar is common in this catchment, hence, fire scar would be detected as another cover class. Thus, six cover classes would be mapped.
 
 6, Predictor variables
 
