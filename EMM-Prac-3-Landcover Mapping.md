@@ -582,20 +582,6 @@ Export.image.toDrive({
 ```
 
 
-# Assignment 1-Project Proposal 
-
-Word Count
-
-ENV306: 700 words
-
-ENV506:1000 words
-
-
-## **TASK**
-
-You are required to produce a landcover map of the Daly River Catchment. Prepare a short research proposal on this topic. The proposal should include the title of the project, aim and objectives, description of the study area, data and methods employed, expected contribution, resources required, and bibliography. The title of the project and bibliography do **not** contribute to the word count.
-
-A template and exemplars are provided to help you complete this task. 
 
 
 
