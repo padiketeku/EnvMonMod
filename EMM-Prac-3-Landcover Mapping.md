@@ -601,7 +601,7 @@ Environmental monitoring is a process in which time is an important phenomenon. 
 
 ## **TASK**
 
-Classify the major land cover types of the Daly River Catchment in 2013, using Landsat 8 imagery. Prepare a short scientific article that would be published in a magazine with an audience outside the field of remote sensing.
+Classify the major land cover types of the Daly River Catchment in 2013, using Landsat 8 imagery. Prepare a short scientific article that would be published in a magazine for ecologists.
 
 The report outline should include:
 
