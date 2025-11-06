@@ -149,7 +149,7 @@ The properties of the first image in the collection is shown below. The new prop
 
 
 
-Optical imagery can be made less useful by cloud cover and thus, it is important to ensure 'bad' pixels is excluded from the analysis. Low quality data can skew results, so, for a robust study you must select the data with high confidence level. We would filter the data again selecting fire pixels with confidence level no less than 95% (a statistical standard for ecological studies).
+Optical imagery can be made less useful by cloud cover and thus, it is important to ensure 'bad' pixels are excluded from the analysis. Low quality data can skew results, so, for a robust study you must select the data with high confidence level. We would filter the data again selecting fire pixels with confidence level no less than 95% (a statistical standard for ecological studies).
 
 
 ```JavaScript
@@ -311,7 +311,7 @@ The result for fire frequency distribution is captured by the map displayed belo
 
 
 
-Given you have fire frequency data, sites that are most often burnt would be helpful information for management. Let's visualise sites that recorded plenty fires; darker pixels represent the highest fire frequency dates.
+Given you have fire frequency data, knowing sites that are most often burnt would be a helpful information for management. Let's visualise sites that recorded plenty fires; darker pixels represent the highest fire frequency dates.
 
 
 
