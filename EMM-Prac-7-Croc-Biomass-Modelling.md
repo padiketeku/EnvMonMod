@@ -277,11 +277,11 @@ Clip the permanent water surface layer to the study area and visualise this.
 ```JavaScript
 
 var permanentWater = permanentWater.clip(aoi2)
-Map.addLayer(permanentWater,{min:0.6, max:1, palette:['red',  'yellow', 'blue']},'permanent water' ) 
+Map.addLayer(permanentWater,{min:10, max:12, palette:['red',  'yellow', 'blue']},'permanent water' ) 
 ```
 
 
-![image](https://github.com/user-attachments/assets/4bbe851f-ded2-4648-8cf2-e6f3b2e83d83)
+<img width="543" height="668" alt="image" src="https://github.com/user-attachments/assets/f9fcdb48-4b95-4b41-9844-5b32d34c9e13" />
 
 
 
