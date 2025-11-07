@@ -407,18 +407,18 @@ Only the flood plain size for Aug is given.
 
 |Time| Floodplain size (ha) | Croc biomass (kg)
 |----|---------------|-------------|
-|Aug 2017|10894|187|
-|Sep 2017|          |     145      |
+|Aug 2017|7818|603|
+|Sep 2017|          |     388      |
 |Oct 2017|            |      211       |
 |Nov 2017|               |    219        |
 |Dec 2017|               |     219        |
-|Jan 2018|              |      301      |
-|Feb 2018|              |        573      |
-|Mar 2018|               |        571     |
-|Apr 2018|              |            501  |
+|Jan 2018|              |      518      |
+|Feb 2018|              |        316      |
+|Mar 2018|               |        271     |
+|Apr 2018|              |            201|
 |May 2018|              |              165|
 |Jun 2018|              |             138 |
-|Jul 2018|              |             133 |
+|Jul 2018|              |             400 |
 
 
 Key Tasks
