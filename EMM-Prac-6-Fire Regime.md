@@ -4,7 +4,7 @@ Google Earth Engine Developers
 
 Google Earth Engine Team
 
-Sandra MacFadyen @ https://www0.sun.ac.za/biomath
+Sandra MacFadyen
 
 
 
@@ -310,12 +310,6 @@ The result for fire frequency distribution is captured by the map displayed belo
 
 
 
-
-Given you have fire frequency data, knowing sites that are most often burnt would be a helpful information for management. Let's visualise sites that recorded plenty fires; darker pixels represent the highest fire frequency dates.
-
-
-
-![image](https://github.com/user-attachments/assets/ba08c1a1-f483-4b24-b65c-fc30d75be131)
 
 
 
