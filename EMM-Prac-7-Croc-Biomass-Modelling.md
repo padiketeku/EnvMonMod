@@ -304,7 +304,8 @@ The change image with perennial water pixels masked is shown below. Note, you mu
 
 
 
-![image](https://github.com/user-attachments/assets/673c454f-4d9e-45d4-8152-e02557945d01)
+<img width="733" height="767" alt="image" src="https://github.com/user-attachments/assets/7780694b-a912-4162-832d-6d942ca59f4b" />
+
 
 
 
@@ -316,22 +317,11 @@ The potentially flooded pixels are the white pixels. You may also observe that s
 ```JavaScript
 var connections = flooded.connectedPixelCount();    
 var flooded = flooded.updateMask(connections.gte(8));
-
-//visualise the result
-Map.addLayer(flooded, {}, 'Connected Flooded Pixels')
 ```
 
 
 
-![image](https://github.com/user-attachments/assets/4ff77bc6-db25-4e55-9295-1e1c1a793fc3)
-
-
-
-
-
-Compared to the previous image, do you observe any effects of the connectivity analysis?
-
-
+## Select lowlying areas
 
 
 Floodplains are lowlying lands so it is ideal to trim your data further to remove elevated areas from the analysis. To analyse flat land, only pixels with a maximum slope of 5% would be used.
@@ -366,7 +356,7 @@ If you turn on the geometry for the study area and the baseline Google satellite
 
 
 
-![image](https://github.com/user-attachments/assets/7bbbf8aa-50ea-4843-8db6-c925f095b706)
+<img width="778" height="777" alt="image" src="https://github.com/user-attachments/assets/f2e228c3-b8a8-412c-9de3-b680c387337f" />
 
 
 
@@ -405,7 +395,7 @@ var flood_area_ha = flood_stats
 print(flood_area_ha, 'extent in ha')
 ```
 
-The size of floodplain in August 2017 is printed to the Console. What is the size? Correct, it is 10894 ha.
+The size of floodplain in August 2017 is printed to the Console. What is the size? Correct, it is 7818 ha.
 
 
 
@@ -467,51 +457,46 @@ Sentinel-1 image was used to estimate inundated areas of the Adelaide River. The
 
 
 ```JavaScript
+//region of interest
+var aoi =ee.FeatureCollection("projects/ee-racrabbe3/assets/Adelaide_River")
 
-//1. import shapefile of each river floodplain into EE
-//you would manually do this
-
-
-//2. programmatically load the shapefile into the Code Editor
-//you would do this using by copying the assest ID
-
-var aoi = ee.FeatureCollection('projects/ee-niiazucrabbe/assets/Adelaide_River_Floodplain')
-
-//display the area of interest
+//display area of interest
 Map.setCenter(131.27, -12.48)
 Map.addLayer(aoi, {}, 'AOI')
 
-//retrieve the geometry of the aoi
-var aoi2 = aoi.geometry().convexHull()
+//retrieve a solid geometry of the study area
+var aoi2 = aoi.geometry().convexHull() //the convexHull method is applied for a tight clip to the extent of the feature collections
 Map.addLayer(aoi2, {}, 'AOI2')
 
 
-//3. Load and filter Sentinel-1 GRD data by predefined parameters 
 var collection= ee.ImageCollection('COPERNICUS/S1_GRD')
   .filter(ee.Filter.eq('instrumentMode','IW'))
-  .filter(ee.Filter.eq('orbitProperties_pass', "DESCENDING")) 
+  .filter(ee.Filter.eq('orbitProperties_pass',"DESCENDING")) //feel free to explore "ASCENDING" collections, too
   .filter(ee.Filter.eq('resolution_meters',10))
   .filterBounds(aoi2)
-  .select("VH");
-  
-//4. Select images by predefined dates
-var before_collection = collection.filterDate('2017-07-01', '2017-08-01');
-var after_collection = collection.filterDate('2017-08-01', '2017-09-01');
-print(before_collection, 'before_collection')
-print(after_collection, 'after_collection')
+  .select("VH"); // more suited for flood monitoring
 
-//5. Create a mosaic of selected tiles and clip to study area
+print(collection,"collection")
+
+//baseline date
+var before_collection = collection.filterDate('2018-08-01', '2018-09-01');
+print(before_collection, "before_collection")
+
+
+//first month after the baseline date
+var after_collection = collection.filterDate('2018-09-01', '2018-10-01');
+print(after_collection, "after_collection")
+
+//mosaic
 var before = before_collection.mosaic().clip(aoi2);
 var after = after_collection.mosaic().clip(aoi2);
 
-// Visualise the SAR image
+//visualisation
 Map.addLayer(before, {min:-25, max:-10}, "S1 Baseline")
 Map.addLayer(before, {min:-25, max:-10}, "S1 Post-Baseline")
 
 
-//6. Boxcar filter >> Authors: Mullissa A., Vollrath A., Braun, C., Slagter B., Balling J., Gou Y., Gorelick N.,  Reiche J.
-//---------------------------------------------------------------------------//
-
+//Boxcar filtering
 var boxcar = function(image, KERNEL_SIZE) {
     var bandNames = image.bandNames().remove('angle');
     // Define a boxcar kernel
@@ -521,65 +506,82 @@ var boxcar = function(image, KERNEL_SIZE) {
   return image.addBands(output, null, true)
 };
 
-//7. Apply the spatial filter
-var before_filtered = boxcar(before, 3)
+
+
+//apply the Boxcar filtering method
+var before_filtered = boxcar(before, 3) //the kernel is 3
 var after_filtered = boxcar(after, 3)
-print( before_filtered , ' before_BoxCarApplied ')
+
+//visualise the image after applying the Boxcar filter
+Map.addLayer(before_filtered, {min:-25, max:-10},' before_BoxCarApplied ')
 Map.addLayer(after_filtered, {min:-25, max:-10},' after_BoxCarApplied ')
 
-//------------------------------- FLOOD EXTENT CALCULATION -------------------------------//
-
-//8. Calculate the difference between the before and after images
-var difference_threshold = 1.25; //*threshold to be applied for change detection. It has been chosen by trial and error.
+//image differencing
 var difference = after_filtered.divide(before_filtered);
 
-//9. Apply the predefined difference-threshold and create the flood extent mask 
-var threshold = difference_threshold;
+
+//threshold
+var threshold = 1.25;
+
+//mask the change image using the threshold
 var difference_binary = difference.gt(threshold);
 
-//10. Refine flood result using additional datasets
+//mask perennial water surfaces
+//var deaWater = ee.ImageCollection("projects/geoscience-aus-cat/assets/ga_ls_wo_fq_cyear_3")
+var surfWater = ee.Image("JRC/GSW1_4/GlobalSurfaceWater")
+print (surfWater, "surfaceWater")
 
-//Get the DEA Water Observations data
-var deaWater = ee.ImageCollection("projects/geoscience-aus-cat/assets/ga_ls_wo_fq_cyear_3")
+//select the seasonality band to determine permanent water surfaces
+var seasonalWater = surfWater.select("seasonality")
 
-//filter DEA Water Observations data
-var deaWater = deaWater.filterDate('2014-01-01','2024-01-01').filterBounds(aoi2).select(['frequency'])
+//mask seasonal surface water 
+var seasonalWaterMask = seasonalWater.gte(10)
 
-//identify permanent water pixels
-var permanentWater=deaWater.map(function permWater (img){
-   var mask = img.gte(0.60)
-   var img2 = img.updateMask(mask)
-   return img2
-   
- })
- 
-//mosaic the collection and clip to aoi
-var permanentWater = permanentWater.mosaic().clip(aoi2)
-Map.addLayer(permanentWater,{min:0.6, max:1, palette:['red',  'yellow', 'blue']},'permanent water' ) 
+//update the seasonal water layer
+var permanentWater = seasonalWater.updateMask(seasonalWaterMask)
+print(permanentWater, 'permanent')
 
+//clip to ROI
+var permanentWater = permanentWater.clip(aoi2)
+
+//visualise the image
+Map.addLayer(permanentWater,{min:10, max:12, palette:['red',  'yellow', 'blue']},'permanent water' ) 
+
+//mask permanent water surfaces
 var flooded_mask = difference_binary.where(permanentWater,0);
-var flooded = flooded_mask.updateMask(flooded_mask); 
-Map.addLayer(flooded,{}, 'PermanentWaterMasked')
+var flooded = flooded_mask.updateMask(flooded_mask);
 
+//visualise the result
+Map.addLayer(flooded, {}, 'PermanentWaterMasked')
 
-//11. Compute connectivity of pixels to eliminate those connected to 8 or fewer neighbours
+//conected isolated pixels to have a contiguous floodplain
 var connections = flooded.connectedPixelCount();    
 var flooded = flooded.updateMask(connections.gte(8));
+
+//visualise the result
 Map.addLayer(flooded, {}, 'Connected Flooded Pixels')
 
 
-//12. Mask out areas with more than 5 percent slope using a Digital Elevation Model 
-var DEM = ee.Image("AU/GA/DEM_1SEC/v10/DEM-H"); 
-var terrain = ee.Algorithms.Terrain(DEM);
-var slope = terrain.select('slope');
-var flooded = flooded.updateMask(slope.lte(5));
-Map.addLayer(flooded, {palette:"0000FF"},'Flooded areas')
+//load the DEM data
+var DEM = ee.Image("AU/GA/DEM_1SEC/v10/DEM-H")
+print(DEM,"DEM")
+//characterise the terrain
+var terrain = ee.Algorithms.Terrain(DEM); 
 
-//13. Calculate flood extent area
-// Create a raster layer containing the area information of each pixel 
+//select slope only
+var slope = terrain.select('slope');
+
+//mask pixels with slope larger than 5%
+var flooded = flooded.updateMask(slope.lte(5));
+
+// Flooded areas
+Map.addLayer(flooded,{palette:"0000FF"},'Flooded areas');
+
+
+// create a raster layer containing the area information of each pixel 
 var flood_pixelarea = flooded.select("VH").multiply(ee.Image.pixelArea());
 
-// Sum the areas of flooded pixels
+// sum the areas of flooded pixels
 var flood_stats = flood_pixelarea.reduceRegion({
   reducer: ee.Reducer.sum(),              
   geometry: aoi2,
@@ -587,14 +589,13 @@ var flood_stats = flood_pixelarea.reduceRegion({
   maxPixels: 1e9
   });
 
-// Convert the flood extent to hectares 
+// convert the flood extent to hectares 
 var flood_area_ha = flood_stats
   .getNumber("VH")
   .divide(10000)
   .round();
 
 print(flood_area_ha, 'extent in ha')
-
 ```
 
 
