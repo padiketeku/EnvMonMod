@@ -234,43 +234,49 @@ var difference_binary = difference.gt(threshold);
 
 ### Refine change detection image
 
-Pixels have been flagged as change detection (flooded). However, the accuracy can be minimised if perennial water pixels are not removed. The Digital Earth Australia's Water Observation Statistics data would be used. This is a Landsat product that classifies a pixel as 'wet', 'dry' or 'invalid' and provides the basic statistics about the classes. Read more about this data [here](https://knowledge.dea.ga.gov.au/data/product/dea-water-observations-statistics-landsat/)  and also in [EE](https://developers.google.com/earth-engine/datasets/catalog/projects_geoscience-aus-cat_assets_ga_ls_wo_fq_cyear_3)
-
-To get this data, type "Australia" into the search bar and under **RASTERS** click **more >>**. Scroll through the results to find "DEA Water Observations Statistics 3.1.6". Click the name and a window that provides description on the data may pop up. Copy the **Collection Snippet** to programmatically load this data into the Code Editor.
+Pixels have been flagged as change detection (flooded). However, the accuracy can be minimised if perennial water pixels are not removed. A global surface water data ([JRC Global Surface Water Mapping Layers](https://developers.google.com/earth-engine/datasets/catalog/JRC_GSW1_4_GlobalSurfaceWater#description)) would be used. This is a Landsat product that includes bands explaining number of months water is present and the frequency with which was present.  Read more about this data [here](https://developers.google.com/earth-engine/datasets/catalog/JRC_GSW1_4_GlobalSurfaceWater#description)  
+To get this data, type "JRC Global Surface Water" into the search bar. Click the name and a window that provides description on the data may pop up. Copy the **Collection Snippet** to programmatically load this data into the Code Editor.
 
 
 Get the data into the Code Editor, programmatically.
 
 ```JavaScript
-var deaWater = ee.ImageCollection("projects/geoscience-aus-cat/assets/ga_ls_wo_fq_cyear_3")
+var surfWater = ee.Image("JRC/GSW1_4/GlobalSurfaceWater")
 ```
 
-The DEA Water Observations Statistics is an image colllection, showing yearly data, and has three bands. The "frequency" is the most relevant for this project. This band shows what percentage of clear observations were detected as wet; the values range between 0 and 1.
+The JRC Global Surface Water Mapping Layers is an image colllection, showing yearly data, and has three bands. The "seasonality" is the most relevant for this project. This band shows the number of months water is present; the values range between 0 and 12.
 
-Filter the data to last 10 years and the study area
-
-```JavaScript
-var deaWater = deaWater.filterDate('2014-01-01','2024-01-01').filterBounds(aoi2).select(['frequency'])
-```
+Select the seasonality band to determine permanent water surface. We would define permament water surface to be pixels that were observed to be covered by water for at least 10 months of the year.
 
 Next, mask perennial water pixels. The code below selects perennial water pixels and excludes them from the analysis.
 
 ```JavaScript
-var permanentWater=deaWater.map(function permWater (img){
-   var mask = img.gte(0.60) // you may vary this
-   var img2 = img.updateMask(mask)
-   return img2
-   
- })
+//select the seasonality band to determine permanent water surfaces
+var seasonalWater = surfWater.select("seasonality")
+```
+
+Take the seasonality band and create a mask layer based on the definition for permanent water surface above. This may result in having potentially permanent water surfaces only.
+
+
+```JavaScript
+//mask seasonal surface water 
+var seasonalWaterMask = seasonalWater.gte(10)
 ```
 
 
+Apply the mask layer to determine the permanent water surface areas.
 
-Mosaic the collection and clip to area of interest
+```JavaScript
+//update the seasonal water layer
+var permanentWater = seasonalWater.updateMask(seasonalWaterMask)
+print(permanentWater, 'permanent')
+```
+
+Clip the permanent water surface layer to the study area and visualise this.
 
 ```JavaScript
 
-var permanentWater = permanentWater.mosaic().clip(aoi2)
+var permanentWater = permanentWater.clip(aoi2)
 Map.addLayer(permanentWater,{min:0.6, max:1, palette:['red',  'yellow', 'blue']},'permanent water' ) 
 ```
 
