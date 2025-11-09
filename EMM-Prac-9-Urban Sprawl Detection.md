@@ -155,7 +155,7 @@ The SAR images before and after urban expansion in the last 10 years are display
 
 ## Image registration
 
-The image above might not be well aligned as they were collected at different dates. To be sure the pixels between the images are comparable, you must register the two images- a master (or reference image) and a slave (or servant image). This method is performed to ensure the pixels of both images precisely match onto each other. To do this, we require the shift between the two images; this is called displacement. Once you have the displacement values you would apply these to the original images. use the values of the reference imagery to warp the pixels of the other image to align with the master image.  
+The image above might not be well aligned as they were collected at different dates. To be sure the pixels between the images are comparable, you must register the two images- a master (or reference image) and a slave (or servant image). The 2015 image is the reference in this case. This method is performed to ensure the pixels of both images precisely match onto each other. To do this, we require the shift between the two images; this is called displacement. Once you have the displacement values you would apply these to the original images. use the values of the reference imagery to warp the pixels of the other image to align with the master image.  
 
 
 ```JavaScript
