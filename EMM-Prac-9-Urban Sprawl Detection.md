@@ -23,7 +23,7 @@ The log ratio method was used to overcome the multiplicative effect of speckle n
 Pont of interest: 
 
 ```JavaScript
-var poi = ee.Geometry.Point([149.13796346428305, -35.1836945608286]),
+var poi = ee.Geometry.Point([149.13796346428305, -35.1836945608286]);
 ```
 
 
