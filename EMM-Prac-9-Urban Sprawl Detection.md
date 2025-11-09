@@ -30,6 +30,7 @@ var poi = ee.Geometry.Point([149.13796346428305, -35.1836945608286]),
 The region of interest, Gungahlin, is defined by the polygon below:
 
 ```JavaScript
+
 var roi = 
     ee.Geometry.Polygon(
         [[[149.11592258305404, -35.13796974819787],
