@@ -173,8 +173,7 @@ var displacement = image2015Orig.displacement({
   patchWidth: 100.0
 });
 
-//set the map centre to the point of interest
-Map.setCenter(149.14,-35.18, 10);
+
 
 //**warping the images**
 
@@ -197,6 +196,9 @@ We will compute the ratio between the two images and transform this through natu
 
 
 ```JavaScript
+
+//set the map centre to the point of interest
+Map.setCenter(149.14,-35.18, 10);
 
 //compute image ratio
 var image_ratio =image2015_reg.divide(image2025_reg)
