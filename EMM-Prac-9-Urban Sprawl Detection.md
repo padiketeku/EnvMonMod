@@ -56,14 +56,14 @@ var s1col2 = s1col
 //filter by point of interest
 .filterBounds(poi)
 
-//filter by orbit pass 
+//filter by orbit pass to make sure you have scenes from the same orbit pass 
 .filter(
   ee.Filter.eq('orbitProperties_pass', 'DESCENDING'))
 
-// filter by relative orbit number 
+// filter by relative orbit number to make sure the images are from same incidence angle
   .filter(ee.Filter.eq('relativeOrbitNumber_start', 45))
   
-  //select the VV polarisation
+  //select the VV polarisation as it is more sensive to vertical objects such as buildings
   .select('VV')
 
 ```
@@ -193,7 +193,7 @@ var image2025_reg = image2025Orig.displace(displacement);
 
 ## Change detection
 
-We will determine ratio between the two images and transform this through natural log to make the change areas more apparent. The new urban areas would be readily detected areas that experienced urban expansion in the last 10 years.
+We will compute the ratio between the two images and transform this through natural log to make the change areas more apparent. The new urban areas in the last 10 years would be readily detected via the bright pixels.
 
 
 ```JavaScript
@@ -208,11 +208,14 @@ var image_logRatio =image_ratio.log()
 Map.addLayer(image_logRatio,null, 'image_logRatio')
 ```
 
-The log transformed change map should be like this:
+The figure below is the result of the ratio and log transformed change maps. Bright pixels in the log transformed image represent the new developed homes and offices.
 
 
 
-<img width="623" height="551" alt="image" src="https://github.com/user-attachments/assets/3429bfaa-8946-46b4-91aa-feac3a3c5540" />
+
+<img width="1823" height="904" alt="image" src="https://github.com/user-attachments/assets/4747d607-93a1-4651-be83-3e659ff8327d" />
+
+
 
 
 
