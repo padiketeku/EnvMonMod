@@ -208,7 +208,7 @@ var image_logRatio =image_ratio.log()
 Map.addLayer(image_logRatio,null, 'image_logRatio')
 ```
 
-The figure below is the result of the ratio and log transformed change maps. Bright pixels in the log transformed image represent the new developed homes and offices.
+The figure below is the result of the ratio and log transformed change maps. Bright pixels in the log transformed image represent the new developed homes and offices. Throsby and Moncrieff are the new urbanised suburbs.
 
 
 
