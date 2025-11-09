@@ -110,6 +110,55 @@ var image2025c = image2025.clip(roi)
 //visualise clipped images
 Map.addLayer(image2015c, {min:-15, max:-10}, 'image2015 clipped')
 Map.addLayer(image2025c, {min:-15, max:-10}, 'image2025 cliped')
+```
+
+
+The SAR images before and after urban expansion in the last 10 years are displayed below. The areas with large urban development have been highlighted with a red polygon. Try to discern other areas that experienced urban expansion.
+
+
+
+
+
+
+
+
+
+
+
+
+<img width="1836" height="878" alt="image" src="https://github.com/user-attachments/assets/fb37e58b-f78f-48b2-9b9e-fd65ace126b5" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+
+## Image registration
+
+This method is performed to ensure the pixels of both images precisely match onto each other. This is required to compare the two SAR images.
+
+
+```JavaScript
 
 //***register the two images
 
