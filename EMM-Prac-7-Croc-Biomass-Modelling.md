@@ -44,7 +44,7 @@ The Northern Territory is widely known for the crocodiles in her waterbodies. Un
 
 # Task
 
-You are given a simulated crocodile biomass data for the Adelaide River in the Northern Territory. The data spans 2017-2023. Given the issue of cloud cover during wet seasons, you are asked to:
+You are given a simulated crocodile biomass data for the Adelaide River in the Northern Territory. The data spans 2017-2018. Given the issue of cloud cover during wet seasons, you are asked to:
 
 1, use Sentinel-1 data to estimate floodplain size 
 
@@ -395,19 +395,19 @@ var flood_area_ha = flood_stats
 print(flood_area_ha, 'extent in ha')
 ```
 
-The size of floodplain in August 2017 is printed to the Console. What is the size? Correct, it is 7818 ha.
+The size of floodplain in August 2017 is printed to the Console. What is the size? Correct, it is 11256 ha.
 
 
 
 # Do It Yourself
 
 
-The table shows monthly floodplain size and crocodile biomass per km for the Daly River for 2017. 
+The table shows monthly floodplain size and crocodile biomass per km for the Adelaide River for 2017. 
 Only the flood plain size for Aug is given.
 
 |Time| Floodplain size (ha) | Croc biomass (kg)
 |----|---------------|-------------|
-|Aug 2017|7818|603|
+|Aug 2017|11256|603|
 |Sep 2017|          |     388      |
 |Oct 2017|            |      211       |
 |Nov 2017|               |    219        |
@@ -602,7 +602,7 @@ print(flood_area_ha, 'extent in ha')
 # Assignment
 
 
-You are given a simulated crocodile biomass data for the Adelaide River in the Northern Territory. The data spans 2017-2023. Given the issue of cloud cover during wet seasons, you are asked to use Sentinel-1 data to estimate floodplain size and investigate the linear relationship between floodplain size and crocodile biomass
+You are given a simulated crocodile biomass data for the Adelaide River in the Northern Territory. The data spans 2017-2018. Given the issue of cloud cover during wet seasons, you are asked to use Sentinel-1 data to estimate floodplain size and investigate the linear relationship between floodplain size and crocodile biomass
 
 
 **Task**
