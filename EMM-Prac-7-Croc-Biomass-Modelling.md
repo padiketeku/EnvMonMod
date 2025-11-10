@@ -122,7 +122,7 @@ var collection= ee.ImageCollection('COPERNICUS/S1_GRD')
 
 ```
 
-Next, trim the collection to pre-flood and post-flood dates. In this case, July 2017 is selected as the baseline date. It is assumed that the river systems are at their lowest levels at this date. Monthly Sentinel-1 data would be collected to determine inundation. 
+Next, trim the collection to pre-flood and post-flood dates. In this case, July 2017 is selected as the start date. It is assumed that the river systems are at their lowest levels at this date. Monthly Sentinel-1 data would be collected to determine inundation. 
 
 The code below describes flooding in August 2017.
 
@@ -131,7 +131,7 @@ The code below describes flooding in August 2017.
 //baseline date
 var before_collection = collection.filterDate('2017-07-01', '2017-08-01');
 
-//first month after the baseline date
+//first month after the start date
 var after_collection = collection.filterDate('2017-08-01', '2017-09-01');
 
 ``` 
@@ -160,7 +160,7 @@ Map.addLayer(before, {min:-25, max:-10}, "S1 Post-Baseline")
 
 
 
-The left is the baseline image (July 2017) while the right is a post-baseline date (August 2017).
+The left is the July 2017 image, while the right is the August 2017 image.
 
 
 Take the **Inspector** tool to explore the pixel values. What is the difference between dark and light pixels? You are right, the bright pixels have larger values showing higher reflectivity of the microwave energy. You may also observe that clearer water bodies are the darkest pixels with very low reflectivity. Why? Yes, because water absorbs radiation, especially long wavelength radiation.
@@ -444,159 +444,13 @@ Key Tasks
 
 
 
-
-
 # Conclusion
 
 
 Sentinel-1 image was used to estimate inundated areas of the Adelaide River. The relationship between the floodplain size and crocodile biomass was investigated to test the hypothesis that there is a positive linear relationship between the two (floodplain size and crocodile biomass). 
 
 
-# Code
 
-
-
-```JavaScript
-//region of interest
-var aoi =ee.FeatureCollection("projects/ee-racrabbe3/assets/Adelaide_River")
-
-//display area of interest
-Map.setCenter(131.27, -12.48)
-Map.addLayer(aoi, {}, 'AOI')
-
-//retrieve a solid geometry of the study area
-var aoi2 = aoi.geometry().convexHull() //the convexHull method is applied for a tight clip to the extent of the feature collections
-Map.addLayer(aoi2, {}, 'AOI2')
-
-
-var collection= ee.ImageCollection('COPERNICUS/S1_GRD')
-  .filter(ee.Filter.eq('instrumentMode','IW'))
-  .filter(ee.Filter.eq('orbitProperties_pass',"DESCENDING")) //feel free to explore "ASCENDING" collections, too
-  .filter(ee.Filter.eq('resolution_meters',10))
-  .filterBounds(aoi2)
-  .select("VH"); // more suited for flood monitoring
-
-print(collection,"collection")
-
-//baseline date
-var before_collection = collection.filterDate('2018-08-01', '2018-09-01');
-print(before_collection, "before_collection")
-
-
-//first month after the baseline date
-var after_collection = collection.filterDate('2018-09-01', '2018-10-01');
-print(after_collection, "after_collection")
-
-//mosaic
-var before = before_collection.mosaic().clip(aoi2);
-var after = after_collection.mosaic().clip(aoi2);
-
-//visualisation
-Map.addLayer(before, {min:-25, max:-10}, "S1 Baseline")
-Map.addLayer(before, {min:-25, max:-10}, "S1 Post-Baseline")
-
-
-//Boxcar filtering
-var boxcar = function(image, KERNEL_SIZE) {
-    var bandNames = image.bandNames().remove('angle');
-    // Define a boxcar kernel
-    var kernel = ee.Kernel.square({radius: (KERNEL_SIZE/2), units: 'pixels', normalize: true});
-    // Apply boxcar
-    var output = image.select(bandNames).convolve(kernel).rename(bandNames);
-  return image.addBands(output, null, true)
-};
-
-
-
-//apply the Boxcar filtering method
-var before_filtered = boxcar(before, 3) //the kernel is 3
-var after_filtered = boxcar(after, 3)
-
-//visualise the image after applying the Boxcar filter
-Map.addLayer(before_filtered, {min:-25, max:-10},' before_BoxCarApplied ')
-Map.addLayer(after_filtered, {min:-25, max:-10},' after_BoxCarApplied ')
-
-//image differencing
-var difference = after_filtered.divide(before_filtered);
-
-
-//threshold
-var threshold = 1.25;
-
-//mask the change image using the threshold
-var difference_binary = difference.gt(threshold);
-
-//mask perennial water surfaces
-//var deaWater = ee.ImageCollection("projects/geoscience-aus-cat/assets/ga_ls_wo_fq_cyear_3")
-var surfWater = ee.Image("JRC/GSW1_4/GlobalSurfaceWater")
-print (surfWater, "surfaceWater")
-
-//select the seasonality band to determine permanent water surfaces
-var seasonalWater = surfWater.select("seasonality")
-
-//mask seasonal surface water 
-var seasonalWaterMask = seasonalWater.gte(10)
-
-//update the seasonal water layer
-var permanentWater = seasonalWater.updateMask(seasonalWaterMask)
-print(permanentWater, 'permanent')
-
-//clip to ROI
-var permanentWater = permanentWater.clip(aoi2)
-
-//visualise the image
-Map.addLayer(permanentWater,{min:10, max:12, palette:['red',  'yellow', 'blue']},'permanent water' ) 
-
-//mask permanent water surfaces
-var flooded_mask = difference_binary.where(permanentWater,0);
-var flooded = flooded_mask.updateMask(flooded_mask);
-
-//visualise the result
-Map.addLayer(flooded, {}, 'PermanentWaterMasked')
-
-//conected isolated pixels to have a contiguous floodplain
-var connections = flooded.connectedPixelCount();    
-var flooded = flooded.updateMask(connections.gte(8));
-
-//visualise the result
-Map.addLayer(flooded, {}, 'Connected Flooded Pixels')
-
-
-//load the DEM data
-var DEM = ee.Image("AU/GA/DEM_1SEC/v10/DEM-H")
-print(DEM,"DEM")
-//characterise the terrain
-var terrain = ee.Algorithms.Terrain(DEM); 
-
-//select slope only
-var slope = terrain.select('slope');
-
-//mask pixels with slope larger than 5%
-var flooded = flooded.updateMask(slope.lte(5));
-
-// Flooded areas
-Map.addLayer(flooded,{palette:"0000FF"},'Flooded areas');
-
-
-// create a raster layer containing the area information of each pixel 
-var flood_pixelarea = flooded.select("VH").multiply(ee.Image.pixelArea());
-
-// sum the areas of flooded pixels
-var flood_stats = flood_pixelarea.reduceRegion({
-  reducer: ee.Reducer.sum(),              
-  geometry: aoi2,
-  scale: 10, 
-  maxPixels: 1e9
-  });
-
-// convert the flood extent to hectares 
-var flood_area_ha = flood_stats
-  .getNumber("VH")
-  .divide(10000)
-  .round();
-
-print(flood_area_ha, 'extent in ha')
-```
 
 
 # Assignment
