@@ -347,9 +347,9 @@ var embeddingsImage = embeddingsFiltered.mosaic()
 
 As the GEDI biomass estimates will be used to train our regression model, it is critical to filter out invalid or unreliable GEDI data before using it. We apply several masks to remove potentially erroneous measurements.
 
-    Remove all measurements not meeting quality requirement (l4_quality_flag = 0 and degrade_flag > 0)
-    Remove all measurements with high relative error ('agbd_se' / 'agbd' > 50%)
-    Remove all measurements on slopes > 30% based on the Copernicus GLO-30 Digital Elevation Mode (DEM)
+- Remove all measurements not meeting quality requirement (l4_quality_flag = 0 and degrade_flag > 0)
+- Remove all measurements with high relative error ('agbd_se' / 'agbd' > 50%)
+ - Remove all measurements on slopes > 30% based on the Copernicus GLO-30 Digital Elevation Mode (DEM)
 
 Finally, we select all remaining measurements for the time period and region of interest and create a mosaic.
 
