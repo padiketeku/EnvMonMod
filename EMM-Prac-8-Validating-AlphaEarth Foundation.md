@@ -18,6 +18,8 @@ In this practical, you will learn about the Google's AlphaEarth Foundation (AEF)
 
 - Perform cluster analysis using the SED
 
+  - Perform a regression modelling of aboveground biomass using SED
+
 
 
 
@@ -1121,6 +1123,10 @@ print('Total AGB (Mg)', totalAgb);
 ```
 
 
+
+## Assignment
+
+Your boss has tasked you to use the Google's Satellite Embeddings to perform k-mean clustering and regression prediction of aboveground biomass of vegetation in the any locations of choice.
 
 
 
