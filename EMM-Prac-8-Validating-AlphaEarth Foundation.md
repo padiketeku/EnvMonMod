@@ -7,7 +7,7 @@ Google Earth Engine Team
 
 # Introduction
 
-In this practical, you will learn about the Google's AlphaEarth Foundation (AEF) model through the Satellite Embedding Dataset in Earth Engine. Google AEF is one of the recent Geospatial Foundation Models created through Artificial Intelligence algorithms leveraging a range of earth observation data. Further details on the AEF have been reported in the paper [here](https://arxiv.org/pdf/2507.22291).
+This tutorial is in two sessions- kmeans clustering surface types in the Daly River Catchment and regression modelling of aboveground biomass using a location in the Western Ghats as the study area. You will learn about the Google's AlphaEarth Foundation (AEF) model through the Satellite Embedding Dataset in Earth Engine. Google AEF is one of the recent Geospatial Foundation Models created through Artificial Intelligence algorithms leveraging a range of earth observation data. Further details on the AEF have been reported in the paper [here](https://arxiv.org/pdf/2507.22291).
 
 
 # Learning Outcomes
@@ -39,7 +39,7 @@ The Satellite Embedding dataset was produced by AlphaEarth Foundations, a geospa
 
 Because representations are learned across many sensors and images, embedding representations generally overcome common issues such as clouds, scan lines, sensor artifacts, or missing data, providing seamless analysis-ready features that can be directly substituted for other Earth Observation image sources in classification, regression, and change detection analyses.
 
-## Understanding the embeddings
+# Understanding the embeddings
 
 Embeddings are a way to compress large amounts of information into a smaller set of features that represent meaningful semantics. The AlphaEarth Foundations model takes time series of images from sensors including Sentinel-2, Sentinel-1, and Landsat and learns how to uniquely represent the mutual information between sources and targets with just 64 numbers. The input data stream contains thousands of image bands from multiple sensors and the model takes this high dimensional input and turns it into a lower dimensional representation.
 
@@ -57,6 +57,8 @@ You can read more about the AEF in this [paper](https://arxiv.org/pdf/2507.22291
 
 
 
+
+## Session 1: Cluster analysis
 
 ### Access the Satellite Embedding dataset
 
@@ -278,10 +280,10 @@ Map.addLayer(cluster9.randomVisualizer().clip(dalyNT), {}, '9 clusters');
 
 
 
-### Regression Analysis- Modelling Aboveground Biomass
+## Session 2: Regression Analysis- Modelling Aboveground Biomass
 
 Embedding fields can be used as feature inputs/predictors for regression in the same way they’re used for classification.
-In this tutorial, we will learn how to use the 64D embedding field layers as inputs to a multiple regression analysis predicting above-ground biomass (AGB).
+In this tutorial, we will learn how to use the 64D embedding field layers as inputs to a random forest regression analysis predicting above-ground biomass (AGB).
 NASA’s Global Ecosystem Dynamics Investigation (GEDI) mission collects LIDAR measurements along ground transects at 30 m spatial resolution at 60 m intervals. We will use the GEDI L4A Raster Aboveground Biomass Density dataset containing point estimates of above ground biomass density (AGBD) that will be used as the predicted variable in the regression model.
 
 The learning outcomes include: <br>
@@ -296,7 +298,7 @@ Train a regression model <br>
 Generate prediction for unknown values<br>
 Estimaate total biomass
 
-#### Select a study region
+### Select a study region
 
 Let’s start by defining a region of interest. For this tutorial, we will pick a region in the Western Ghats of India and define a polygon as the geometry variable. Alternatively, you can use the Drawing Tools in the Code Editor to draw a polygon around the region of interest that will be saved as the geometry variable in the Imports. We also use the Satellite basemap, which makes it easy to locate vegetated areas.
 
@@ -313,14 +315,16 @@ Map.setOptions('SATELLITE');
 
 ```
 
-#### Select a time period
+### Select a time period
+
 Pick a year for which we want to run the regression. Remember that Satellite Embeddings are aggregated at yearly intervals so we define the period for the entire year.
+
 ```JavaScript
 var startDate = ee.Date.fromYMD(2022, 1, 1);
 var endDate = startDate.advance(1, 'year');
 ```
 
-#### Prepare the Satellite Embedding dataset
+### Prepare the Satellite Embedding dataset
 
 The 64-band Satellite Embedding Images will be used as the predictor for the regression. We load the Satellite Embedding dataset, filter for images for the chosen year and region.
 
@@ -345,7 +349,7 @@ var embeddingsImage = embeddingsFiltered.mosaic()
 ```
 
 
-#### Prepare the GEDI L4A mosaic
+### Prepare the GEDI L4A mosaic
 
 As the GEDI biomass estimates will be used to train our regression model, it is critical to filter out invalid or unreliable GEDI data before using it. We apply several masks to remove potentially erroneous measurements.
 
@@ -432,7 +436,7 @@ Map.addLayer(gediMosaic, gediVis, 'GEDI L4A (Filtered)', false);
 
 
 
-#### Resample and aggregate inputs
+### Resample and aggregate inputs
 
 Before sampling pixels to train a regression model, we resample and reproject the inputs to the same pixel grid. GEDI measurements have a horizontal accuracy of +/- 9 m. This is problematic when matching the GEDI AGB values to Satellite Embedding pixels. To overcome this, we resample and aggregate all input images to a larger pixel grid with mean values from the original pixels. This also helps remove noise from the data and helps build a better machine-learning model.
 
@@ -462,8 +466,9 @@ var stackedResampled = stacked
 // As larger GEDI pixels contain masked original
 // pixels, it has a transparency mask.
 // We update the mask to remove the transparency
-var stackedResampled = stackedResampled
-  .updateMask(stackedResampled.mask().gt(0));
+
+//this is the image ready for the modelling
+var stackedResampled = stackedResampled.updateMask(stackedResampled.mask().gt(0));
 ```
 
 Reprojecting and aggregating pixels is an expensive operation, and it is a good practice to export the resulting stacked image as an Asset and use the pre-computed image in subsequent steps. This will help overcome computation timed out or user memory exceeded errors when working with large regions.
@@ -498,21 +503,37 @@ var stackedResampled = ee.Image('users/racrabbe/EMM_GEDI_Mosaic_Export');
 We have our input data ready for extracting training features. We use the Satellite Embedding bands as dependent variables (predictors) and GEDI AGBD values as Independent Variable (predicted) in the regression model. We can extract the coincident values at each pixel and prepare our training dataset. Our GEDI image is mostly masked and contains values at only a small subset of pixels. If we use `sample()` it will return mostly empty values. To overcome this, we create a class band from the GEDI mask and use stratifiedSample() to ensure we sample from the non-masked pixels.
 
 ```JavaScript
+
+
+//predictors
 var predictors = embeddingsImage.bandNames();
+
+//predicted
 var predicted = gediMosaic.bandNames().get(0);
+
+
+//print the results to the Console
 print('predictors', predictors);
 print('predicted', predicted);
 
+
+//select the predictors and predicted images
 var predictorImage = stackedResampled.select(predictors);
 var predictedImage = stackedResampled.select([predicted]);
 
+
+//create the class band
 var classMask = predictedImage.mask().toInt().rename('class');
 
+
+//number of samples to use
 var numSamples = 1000;
 
 // We set classPoints to [0, numSamples]
 // This will give us 0 points for class 0 (masked areas)
 // and numSample points for class 1 (non-masked areas)
+
+//stratified sampling of the imagery
 var training = stackedResampled.addBands(classMask)
   .stratifiedSample({
     numPoints: numSamples,
@@ -525,6 +546,7 @@ var training = stackedResampled.addBands(classMask)
     tileScale: 16,
 });
 
+//print the results
 print('Number of Features Extracted', training.size());
 print('Sample Training Feature', training.first());
 
@@ -679,7 +701,7 @@ Map.addLayer(predictedImage, gediVis, 'Predicted AGBD');
 
 
 
-We now have predicted AGBD values for each pixel of the image and that can be used to estimate the total aboveground biomass (AGB) stock in the region. But we must first remove all pixels belonging to non-vegetated areas. We can use the ESA WorldCover landcover dataset and select vegetated pixels.
+We now have predicted AGBD values for each pixel of the image and that can be used to estimate the total aboveground biomass (AGB) stock in the region. But we must first remove all pixels belonging to non-vegetated areas. We used the ESA WorldCover landcover dataset and selected vegetated pixels only.
 
 
 
@@ -692,11 +714,13 @@ We now have predicted AGBD values for each pixel of the image and that can be us
 
 // Here we use ESA WorldCover v200 product to
 // select landcovers representing vegetated areas
+
 var worldcover = ee.ImageCollection('ESA/WorldCover/v200').first();
 
 // Aggregate pixels to the same grid as other dataset
 // with 'mode' value.
 // i.e. The landcover with highest occurrence within the grid
+
 var worldcoverResampled = worldcover
   .reduceResolution({
     reducer: ee.Reducer.mode(),
@@ -713,14 +737,20 @@ var worldcoverResampled = worldcover
 // | Grassland  | 30    |
 // | Cropland   | 40    |
 // | Mangroves  | 95    |
+
+//masking non-vegetation pixels 
 var landCoverMask = worldcoverResampled.eq(10)
     .or(worldcoverResampled.eq(20))
     .or(worldcoverResampled.eq(30))
     .or(worldcoverResampled.eq(40))
     .or(worldcoverResampled.eq(95));
 
+//select the vegetation pixels only using the mask layer created above
 var predictedImageMasked = predictedImage
   .updateMask(landCoverMask);
+
+
+//visualise the image required for the computataion of the total AGB
 Map.addLayer(predictedImageMasked, gediVis, 'Predicted AGBD (Masked)');
 
 ```
