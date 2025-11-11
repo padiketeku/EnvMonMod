@@ -29,6 +29,8 @@ The below scripts can also be accessed through the GEE repository for this study
 // Load presence data
 var Data = ee.FeatureCollection('users/ramirocrego84/BradypusVariegatus');
 print('Original data size:', Data.size());
+```
+
 
 What is the data size? 571?
 
@@ -89,6 +91,10 @@ left.addLayer(outline, {palette: 'FF0000'}, "Study Area");
 right.centerObject(AOI, 4); //Number indicates the zoom level
 left.centerObject(AOI, 4); //Number indicates the zoom level
 
+```
+
+
+```JavaScript
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Section 3 - Selectiong Predictor Variables
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
