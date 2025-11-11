@@ -7,7 +7,7 @@ Google Earth Engine Team
 
 # Introduction
 
-This tutorial is in two sessions- kmeans clustering surface types in the Daly River Catchment and regression modelling of aboveground biomass using a location in the Western Ghats as the study area. You will learn about the Google's AlphaEarth Foundation (AEF) model through the Satellite Embedding Dataset in Earth Engine. Google AEF is one of the recent Geospatial Foundation Models created through Artificial Intelligence algorithms leveraging a range of earth observation data. Further details on the AEF have been reported in the paper [here](https://arxiv.org/pdf/2507.22291).
+This tutorial is in two sessions- `kmeans clustering` surface types in the Daly River Catchment and `regression modelling` of aboveground biomass using a location in the Western Ghats as the study area. You will learn about the Google's AlphaEarth Foundation (AEF) model through the Satellite Embedding Dataset in Earth Engine. Google AEF is one of the recent Geospatial Foundation Models created through Artificial Intelligence algorithms leveraging a range of earth observation data. Further details on the AEF have been reported in the paper [here](https://arxiv.org/pdf/2507.22291).
 
 
 # Learning Outcomes
