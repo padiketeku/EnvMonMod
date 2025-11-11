@@ -51,6 +51,8 @@ print('Final data size:', Data.size());
 ```
 
 
+
+
 ```JavaScript
 // Add two maps to the screen.
 var left = ui.Map();
