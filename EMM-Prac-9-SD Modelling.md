@@ -71,6 +71,21 @@ ui.Map.Linker([left, right], 'change-bounds');
 //left.addLayer(Data, {color:'red'}, 'Presence', 1);
 ```
 
+Your result in the Map console may be like the one below.
+
+
+
+
+
+
+<img width="1206" height="395" alt="image" src="https://github.com/user-attachments/assets/62403c59-57ee-4b6c-819b-a51b2c46525a" />
+
+
+
+
+
+
+
 
 ```JavaScript
 
