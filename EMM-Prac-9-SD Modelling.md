@@ -30,6 +30,12 @@ The below scripts can also be accessed through the GEE repository for this study
 var Data = ee.FeatureCollection('users/ramirocrego84/BradypusVariegatus');
 print('Original data size:', Data.size());
 
+What is the data size? 571?
+
+There are potentially duplicates of data and this must be dealt with. The following function does this for you.
+
+
+```JavaScript
 // Define spatial resolution to work with (m)
 var GrainSize = 1000;
 
@@ -39,9 +45,13 @@ function RemoveDuplicates(data){
   return randpointvals.distinct('random');
 }
 
+//apply the function to remove duplicate
 var Data = RemoveDuplicates(Data);
 print('Final data size:', Data.size());
+```
 
+
+```JavaScript
 // Add two maps to the screen.
 var left = ui.Map();
 var right = ui.Map();
