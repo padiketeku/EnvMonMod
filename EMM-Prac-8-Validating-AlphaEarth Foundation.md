@@ -780,7 +780,7 @@ print('Total AGB (Mg)', totalAgb);
 **Conclusion**
 
 We have modelled abovegorund biomass (AGB) using random forest regression, leveraging Satellite Embedding, GEDI LiDAR, global DEM and land cover datasets.
-AGB for unknown locations were estiamted as well as the total AGB.
+AGB for unknown locations were estimated as well as the total AGB.
 
 
 # Code
@@ -1122,11 +1122,19 @@ var totalAgb = stats.getNumber('agbd');
 print('Total AGB (Mg)', totalAgb);
 ```
 
+Embedding fields can be used as feature inputs/predictors for regression in the same way they’re used for classification.
+In this tutorial, we will learn how to use the 64D embedding field layers as inputs to a multiple regression analysis predicting above-ground biomass (AGB).
+NASA’s Global Ecosystem Dynamics Investigation (GEDI) mission collects LIDAR measurements along ground transects at 30 m spatial resolution at 60 m intervals. We will use the GEDI L4A Raster Aboveground Biomass Density dataset containing point estimates of above ground biomass density (AGBD) that will be used as the predicted variable in the regression model.
 
 
 ## Assignment
 
-Your boss has tasked you to use the Google's Satellite Embeddings to perform k-mean clustering and regression prediction of aboveground biomass of vegetation in the any locations of choice.
+Geospatial Foundation Models are emerging, providing pre-trained model data for environmental monitoring. GFMs provide global or regional data, and although they are pre-trained they require validation for local applications. In your role as Ecological Monitoring Officer, you are to validate a recently developed GSF model by Google known as the AlphaEarth Foundations using the Satellite Embeddings Dataset (SED) in Earth Engine. Specifically, 
+1, characterise the SED 
+2, perform k-mean clustering of the Daly River Catchment and interpret the results
+3. model aboveground biomass of any forest ecosystem of your choice using the GEDI L4A Raster Aboveground Biomass Density (AGBD) dataset and the SED bands as the predictor variables
+
+Go to learnline to use the assignment 4 template to complete this assignment.
 
 
 
