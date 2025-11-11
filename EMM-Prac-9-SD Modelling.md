@@ -185,6 +185,19 @@ var CorrAll = predictors.bandNames().map(function(i){
 //print('Variables correlation matrix',CorrAll);
 ```
 
+The result for the  correlation matrix will be in the Console. Extract of the results in the Console is shown below. 
+
+
+
+
+<img width="464" height="496" alt="image" src="https://github.com/user-attachments/assets/80430bba-ed51-485b-8e92-2adb860934ff" />
+
+
+
+
+
+
+
 
 ```JavaScript
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
