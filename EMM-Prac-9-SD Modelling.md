@@ -157,6 +157,8 @@ right.addLayer(predictors, {bands:['Percent_Tree_Cover'], min: 1, max: 100, pale
 ```
 
 
+Turn these layers on/off in the layer manager for visualisation.
+
 
 
 
