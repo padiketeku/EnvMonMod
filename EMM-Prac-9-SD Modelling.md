@@ -67,6 +67,10 @@ ui.Map.Linker([left, right], 'change-bounds');
 // Visualize presence points on the map
 //right.addLayer(Data, {color:'red'}, 'Presence', 1);
 //left.addLayer(Data, {color:'red'}, 'Presence', 1);
+```
+
+
+```JavaScript
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Section 2 - Define Area of Interest (Extent)
