@@ -108,6 +108,20 @@ left.centerObject(AOI, 4); //Number indicates the zoom level
 
 ```
 
+The AOI is displayed as shown below.
+
+
+
+
+
+<img width="1292" height="349" alt="image" src="https://github.com/user-attachments/assets/af9061cb-a4df-40b4-be0e-606248739b59" />
+
+
+
+
+
+
+
 
 ```JavaScript
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -140,7 +154,14 @@ right.addLayer(predictors, {bands:['elevation'], min: 0, max: 5000,  palette: ['
 right.addLayer(predictors, {bands:['bio05'], min: 190, max: 400, palette:'white,red'}, 'Temperature seasonality', 0); 
 right.addLayer(predictors, {bands:['bio12'], min: 0, max: 4000, palette:'white,blue'}, 'Annual Mean Precipitation (mm)', 0); 
 right.addLayer(predictors, {bands:['Percent_Tree_Cover'], min: 1, max: 100, palette:'white,yellow,green'}, 'Percent_Tree_Cover', 0); 
- 
+```
+
+
+
+
+
+
+ ```JavaScript
 
 // Estimate correlation among predictor variables
 
