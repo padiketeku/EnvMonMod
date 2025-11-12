@@ -212,16 +212,8 @@ var mask = Data
     reducer: ee.Reducer.first()
 }).reproject('EPSG:4326', null, ee.Number(GrainSize)).mask().neq(1).selfMask();
 
-// Option 1: Simple random pseudo-absence selection across the entire area of interest.
-// var AreaForPA = mask.updateMask(watermask).clip(AOI);
 
-// Option 2: Spatially constrained pseudo-absence selection to a buffer around presence points.
-//var buffer = 500000; // Distance in meters.
-//var AreaForPA = Data.geometry().buffer({distance:buffer, maxError:1000});
-//var AreaForPA = mask.clip(AreaForPA).updateMask(watermask).clip(AOI);
-//right.addLayer(AreaForPA, {},'Area to create pseudo-absences', 0);
-
-//Option 3: Environmental pseudo-absences selection (environmental profiling)
+//approach : Environmental pseudo-absences selection (environmental profiling)
 // Extract environmental values for the a random subset of presence data
 var PixelVals = predictors.sampleRegions({collection: Data.randomColumn().sort('random').limit(200), properties: [], tileScale: 16, scale: GrainSize});
 // Perform k-means clusteringthe clusterer and train it using based on Euclidean distance.
@@ -241,6 +233,7 @@ var AreaForPA = mask.updateMask(mask2).clip(AOI);
 // Display area for creation of pseudo-absence
 right.addLayer(AreaForPA, {},'Area to create pseudo-absences', 0);
 ```
+
 
 ```JavaScript
 
