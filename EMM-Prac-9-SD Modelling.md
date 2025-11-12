@@ -240,6 +240,9 @@ var AreaForPA = mask.updateMask(mask2).clip(AOI);
 
 // Display area for creation of pseudo-absence
 right.addLayer(AreaForPA, {},'Area to create pseudo-absences', 0);
+```
+
+```JavaScript
 
 // Define a function to create a grid over AOI
 function makeGrid(geometry, scale) {
