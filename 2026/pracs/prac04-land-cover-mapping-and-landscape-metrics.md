@@ -27,7 +27,7 @@ Supervised classification assigns every pixel to a class, using training samples
 - Kappa is reported by convention but is widely criticised (Pontius & Millones, 2011).
 - **Good practice** (Olofsson et al., 2014): use a probability-based sample and report *area-adjusted* accuracy and area estimates with confidence intervals.
 
-```latex
+```math
 \hat{p}_{\cdot k}=\sum_i W_i\frac{n_{ik}}{n_{i\cdot}} \qquad \hat{A}_k=A_{tot}\,\hat{p}_{\cdot k} \qquad W_i=\text{mapped area proportion of class } i
 ```
 
@@ -60,6 +60,22 @@ Supervised classification assigns every pixel to a class, using training samples
 2. Map habitat lost, edge, core and isolation, and chart the patch-size distribution.
 3. Re-run at 10, 30 and 90 m grain and tabulate how each metric responds.
 4. Repeat the 2017 vs 2024 comparison for **your tile**.
+
+**Key code** (an excerpt from [`prac04a_landcover_classification.js`](../scripts/prac04a_landcover_classification.js); run the full script for the complete workflow):
+
+```javascript
+// Train a Random Forest on 70 % of the samples and assess it on the other 30 %
+// (predictors, samples and bands are built earlier in the script)
+var samples = samples.randomColumn('rand', 1);
+var train = samples.filter(ee.Filter.lt('rand', 0.7));
+var test = samples.filter(ee.Filter.gte('rand', 0.7));
+var rf = ee.Classifier.smileRandomForest({numberOfTrees: 200, seed: 1})
+  .train({features: train, classProperty: 'class', inputProperties: bands});
+var cm = test.classify(rf).errorMatrix('class', 'classification');
+print('Overall accuracy', cm.accuracy(), 'Kappa', cm.kappa());
+print("Producer's accuracy", cm.producersAccuracy(), "User's accuracy", cm.consumersAccuracy());
+Map.addLayer(predictors.classify(rf), {min: 0, max: 6, palette: palette}, 'Land cover (RF)');
+```
 
 ## 3. Challenge questions (knowledge check)
 

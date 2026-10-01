@@ -22,7 +22,7 @@ Until protection in 1971, estuarine crocodiles in the NT were declining because 
 
 **Hypothesis:** crocodile biomass per km of river increases with the area of floodplain inundated in the wet season before the dry-season survey.
 
-```latex
+```math
 B_{r,t}=\beta_0+\beta_1F_{r,t}\;(+\,u_r)+\varepsilon_{r,t}\qquad F_{r,t}=\text{floodplain inundation for river } r \text{ in the wet season before survey year } t
 ```
 
@@ -82,6 +82,25 @@ Wait for the seven ingestion tasks in the **Tasks** tab, then edit `ROOT` (your 
 - **B:** JRC vs Sentinel-1 as the predictor.
 - **C:** between-river vs within-river relationships (pooled vs Adelaide-only vs river effects).
 - **D:** lags (inundation 1–2 wet seasons before the survey).
+
+**Key code** (an excerpt from [`prac09_crocodile_biomass.js`](../scripts/prac09_crocodile_biomass.js); run the full script for the complete workflow):
+
+```javascript
+// Floodplain inundation for one river-year: darkest wet-season VH vs a dry-season baseline (linear units)
+// (s1 is a linear-σ⁰ VH collection; zone is the river's convex-hull floodplain zone; permanent and slope as in the script)
+function floodMap(before, after) {
+  var b = before.focalMean({radius: 1, kernelType: 'square', units: 'pixels'});   // 3 × 3 boxcar
+  var a = after.focalMean({radius: 1, kernelType: 'square', units: 'pixels'});
+  var flood = a.divide(b).lt(Math.pow(10, -3 / 10)).where(permanent, 0).selfMask();  // ≥ 3 dB darker
+  flood = flood.updateMask(flood.connectedPixelCount(9, true).gte(8));
+  return flood.updateMask(slope.lte(5));
+}
+var inundated = floodMap(s1.filterDate('2018-09-01', '2018-11-01').median(),
+                         s1.filterDate('2019-01-01', '2019-05-01').min());
+var ha = ee.Image.pixelArea().divide(1e4).updateMask(inundated)
+  .reduceRegion({reducer: ee.Reducer.sum(), geometry: zone, scale: 30, maxPixels: 1e11, tileScale: 8});
+print('Peak inundation 2019 (ha)', ha);
+```
 
 ## 3. Challenge questions (knowledge check)
 

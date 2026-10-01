@@ -22,9 +22,9 @@ SAR is an *active* microwave sensor. It records backscatter (σ⁰) and works th
 | Geometry | Side-looking; ascending vs descending passes | Keep one pass throughout a time series |
 | Speckle | Granular "salt and pepper" noise | Smooth with a moving window (boxcar filter), at the cost of spatial detail |
 
-**SAR units in this unit: dB to look, linear to compute.** Sentinel-1 values in GEE are stored in dB, so they are negative. Backscatter is a power, and dB is a logarithm of it, so averaging or filtering dB values gives the wrong answer (the mean of −10 dB and −20 dB is −15 dB in dB, but −12.6 dB in power). Every script therefore converts to linear σ⁰ first, and uses dB only for map layers and chart axes:
+**SAR units in this unit: dB to look, linear to compute.** Earth Engine holds Sentinel-1 in two versions of the same scenes: `COPERNICUS/S1_GRD` in dB (negative values) and `COPERNICUS/S1_GRD_FLOAT` in linear power. Backscatter is a power, and dB is a logarithm of it, so averaging or filtering dB values gives the wrong answer (the mean of −10 dB and −20 dB is −15 dB in dB, but −12.6 dB in power). Every script therefore loads the linear `S1_GRD_FLOAT` collection, does all calculations in linear σ⁰, and uses dB only for map layers and chart axes:
 
-```latex
+```math
 \sigma^0_{\mathrm{lin}}=10^{\,\sigma^0_{\mathrm{dB}}/10}\qquad \sigma^0_{\mathrm{dB}}=10\log_{10}\sigma^0_{\mathrm{lin}}\qquad \text{ratio}=\frac{\sigma^0_{\mathrm{after}}}{\sigma^0_{\mathrm{before}}}\;(\text{shown as }10\log_{10}\text{ratio dB})
 ```
 
@@ -36,7 +36,7 @@ Composites, speckle filters, ratios, standard deviations, regression predictors 
 
 **Optical water indices.**
 
-```latex
+```math
 \mathrm{NDWI}=\frac{\rho_{Green}-\rho_{NIR}}{\rho_{Green}+\rho_{NIR}}\qquad \mathrm{MNDWI}=\frac{\rho_{Green}-\rho_{SWIR1}}{\rho_{Green}+\rho_{SWIR1}}
 ```
 
@@ -75,6 +75,23 @@ Optical indices detect open water well, but miss water under emergent vegetation
 1. Compare the Giri 2000 and WorldCover 2021 mangrove extents at Limmen Bight.
 2. Chart annual dry-season NDVI inside the mangrove mask (2014–2024).
 3. Map dieback (2015 → 2017) and recovery by 2024, and calculate the areas.
+
+**Key code** (an excerpt from [`prac08b_flood_sentinel1.js`](../scripts/prac08b_flood_sentinel1.js); run the full script for the complete workflow):
+
+```javascript
+// Sentinel-1 flood mapping: statistics in linear units, dB for display only
+function toDb(img) { return img.log10().multiply(10); }   // display only
+function dbToLin(x) { return Math.pow(10, x / 10); }
+var aoi = ee.Geometry.Rectangle([130.40, -17.80, 131.20, -17.00]);   // Victoria River at Kalkarindji
+var s1 = ee.ImageCollection('COPERNICUS/S1_GRD_FLOAT').filterBounds(aoi)   // linear σ⁰, no conversion needed
+  .filter(ee.Filter.eq('instrumentMode', 'IW')).select('VV');
+var before = s1.filterDate('2022-10-01', '2022-11-30').mean().focalMean(50, 'circle', 'meters');
+var after = s1.filterDate('2023-02-25', '2023-03-15').min().focalMean(50, 'circle', 'meters');
+var ratio = after.divide(before);                                   // water darkens → ratio < 1
+var flood = ratio.lt(dbToLin(-3)).and(after.lt(dbToLin(-16))).selfMask();
+Map.addLayer(toDb(ratio), {min: -8, max: 8, palette: ['#08519c', '#ffffff', '#a50f15']}, 'VV change (dB)');
+Map.addLayer(flood, {palette: 'cyan'}, 'Flood extent');
+```
 
 ## 3. Challenge questions (knowledge check)
 

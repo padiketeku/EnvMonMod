@@ -19,7 +19,7 @@ Savanna burning projects such as the West Arnhem Land Fire Abatement (WALFA) pro
 
 **Burn indices.**
 
-```latex
+```math
 \mathrm{NBR}=\frac{\rho_{NIR}-\rho_{SWIR2}}{\rho_{NIR}+\rho_{SWIR2}}\qquad \mathrm{dNBR}=\mathrm{NBR}_{pre}-\mathrm{NBR}_{post}\qquad \mathrm{RdNBR}=\frac{\mathrm{dNBR}}{\sqrt{|\mathrm{NBR}_{pre}|}}
 ```
 
@@ -80,6 +80,21 @@ Expect only partial agreement. Grass-layer surface fires give low dNBR in any se
 3. Chart stacked EDS and LDS burned area per year for the NT and western Arnhem Land.
 4. Summarise the fire regime of **your tile** (frequency, LDS share, last fire).
 5. Compare burned area in **your tile** from MCD64A1 and ESA FireCCI51 (2001–2020), year by year, and explain where they disagree.
+
+**Key code** (an excerpt from [`prac07a_dnbr_burn_severity.js`](../scripts/prac07a_dnbr_burn_severity.js); run the full script for the complete workflow):
+
+```javascript
+// dNBR from pre- and post-fire Sentinel-2 composites, classed with Key & Benson (2006)
+// (pre and post are cloud-masked median composites built earlier in the script)
+var nbr = function(img) { return img.normalizedDifference(['B8A', 'B12']); };
+var dNBR = nbr(pre).subtract(nbr(post)).rename('dNBR');
+var severity = ee.Image(0)
+  .where(dNBR.gte(0.10).and(dNBR.lt(0.27)), 4)    // low
+  .where(dNBR.gte(0.27).and(dNBR.lt(0.44)), 5)    // moderate–low
+  .where(dNBR.gte(0.44).and(dNBR.lt(0.66)), 6)    // moderate–high
+  .where(dNBR.gte(0.66), 7).selfMask();           // high
+Map.addLayer(severity, {min: 4, max: 7, palette: ['#fff70b', '#ffaf38', '#ff641b', '#a41fd6']}, 'Burn severity');
+```
 
 ## 3. Challenge questions (knowledge check)
 

@@ -12,7 +12,7 @@ Each Python and R file covers the **core activities** of one prac and mirrors th
 
 ## SAR units
 
-Sentinel-1 (and ALOS PALSAR-2) backscatter is converted to **linear σ⁰ for every computation and statistic** (composites, filters, ratios, CV, regression predictors, areas); dB is used only for display. `nt_common.py` / `nt_common.R` provide `to_linear`, `to_db` and `db_to_lin`, and `s1_grd()` returns linear σ⁰. In QGIS, export linear rasters and style them with a `10 * log10()` expression (Raster calculator) for viewing only.
+Sentinel-1 (and ALOS PALSAR-2) backscatter is used as **linear σ⁰ for every computation and statistic** (composites, filters, ratios, CV, regression predictors, areas); dB is used only for display. `nt_common.py` / `nt_common.R` provide `to_linear`, `to_db` and `db_to_lin`, and `s1_grd()` loads `COPERNICUS/S1_GRD_FLOAT`, which is already linear σ⁰. In QGIS, export linear rasters and style them with a `10 * log10()` expression (Raster calculator) for viewing only.
 
 ## Setup
 

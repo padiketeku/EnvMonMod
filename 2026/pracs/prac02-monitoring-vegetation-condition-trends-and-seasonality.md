@@ -19,7 +19,7 @@ Separating the two is the first step in monitoring condition. In the NT, monsoon
 
 **Trend analysis: Sen's slope and the Mann–Kendall test.** These are non-parametric methods. They are robust to outliers and to non-normal data, which is typical of NDVI.
 
-```latex
+```math
 S=\sum_{i=1}^{n-1}\sum_{j=i+1}^{n}\operatorname{sgn}(x_j-x_i)\qquad \mathrm{Var}(S)=\frac{n(n-1)(2n+5)}{18}\qquad Z=\frac{S-\operatorname{sgn}(S)}{\sqrt{\mathrm{Var}(S)}}\qquad \beta_{Sen}=\operatorname{median}\!\left(\frac{x_j-x_i}{t_j-t_i}\right)
 ```
 
@@ -27,7 +27,7 @@ S counts increases minus decreases across all pairs of years, Z tests whether th
 
 **Seasonality: harmonic regression.** Model the seasonal cycle as sine and cosine waves. The amplitude says how strongly the vegetation greens and browns; the phase says *when* it peaks.
 
-```latex
+```math
 \mathrm{NDVI}(t)=\beta_0+\beta_1t+\sum_{k=1}^{K}\left[\beta_{2k}\cos(2\pi kt)+\beta_{2k+1}\sin(2\pi kt)\right]\qquad A=\sqrt{\beta_2^2+\beta_3^2},\ \phi=\operatorname{atan2}(\beta_3,\beta_2)
 ```
 
@@ -53,6 +53,19 @@ S counts increases minus decreases across all pairs of years, Z tests whether th
 2. Map amplitude, phase (day of peak greenness) and the HSV seasonality composite.
 3. Plot observed vs fitted values at savanna, floodplain and rural probes, then refit with `HARMONICS = 2` and compare RMSE.
 4. **AT2:** fit the model in your tile, and compare amplitude and peak timing for at least two land covers.
+
+**Key code** (an excerpt from [`prac02a_trend_sens_mk.js`](../scripts/prac02a_trend_sens_mk.js); run the full script for the complete workflow):
+
+```javascript
+// Sen's slope of annual mean NDVI, 2001–2024 (MODIS MOD13A3)
+var modis = ee.ImageCollection('MODIS/061/MOD13A3').select('NDVI');
+var annual = ee.ImageCollection.fromImages(ee.List.sequence(2001, 2024).map(function(y) {
+  var img = modis.filter(ee.Filter.calendarRange(y, y, 'year')).mean().multiply(0.0001);
+  return ee.Image.constant(y).float().rename('year').addBands(img.rename('NDVI'));
+}));
+var sens = annual.reduce(ee.Reducer.sensSlope());   // bands: slope (NDVI per year), offset
+Map.addLayer(sens.select('slope'), {min: -0.006, max: 0.006, palette: ['#8c510a', '#f5f5f5', '#01665e']}, "Sen's slope");
+```
 
 ## 3. Challenge questions (knowledge check)
 

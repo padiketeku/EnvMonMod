@@ -19,7 +19,7 @@
 
 **Embeddings.** Each 10 m pixel and year has a 64-number, **unit-length** vector (bands A00–A63) that summarises its surface and its seasonal pattern. The axes have no physical meaning, but similar places have similar vectors. Because the vectors are unit length, the dot product is the cosine similarity:
 
-```latex
+```math
 \cos\theta=\mathbf{e}_a\cdot\mathbf{e}_b=\sum_{i=0}^{63}e_{a,i}\,e_{b,i}\qquad (1=\text{identical},\ 0=\text{unrelated})
 ```
 
@@ -36,6 +36,21 @@ Typical uses are clustering, few-shot classification, similarity search, change 
 5. **Change detection:** compute the dot product of the 2018 and 2024 embeddings, and validate it against new built-up land (Dynamic World) and your Prac 10 urban map.
 6. **Your tile:** run steps 2 and 5 for your Daly tile, and compare the result with your Prac 05 transition matrix or Prac 06 clearing patches.
 7. **Group poster:** validate one use-case against 20 points per class that your group digitises itself.
+
+**Key code** (an excerpt from [`prac13_alphaearth_foundation_model.js`](../scripts/prac13_alphaearth_foundation_model.js); run the full script for the complete workflow):
+
+```javascript
+// AlphaEarth embeddings: few-shot classification and change between years
+var aoi = ee.Geometry.Rectangle([130.80, -12.75, 131.30, -12.35]);
+var emb = ee.ImageCollection('GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL');
+function embYear(y) { return emb.filterDate(y + '-01-01', (y + 1) + '-01-01').filterBounds(aoi).mosaic().clip(aoi); }
+var e2024 = embYear(2024), e2018 = embYear(2018);
+// Embeddings are unit vectors, so the dot product is the cosine similarity (1 = unchanged)
+var similarity = e2018.multiply(e2024).reduce('sum').rename('cosine');
+Map.addLayer(similarity, {min: 0.3, max: 1, palette: ['red', 'orange', 'white']}, 'Embedding similarity 2018 vs 2024');
+// Few-shot: kNN on 64 embedding bands, trained on a handful of labelled points (train25 in the script)
+// var knn = ee.Classifier.smileKNN(3).train(train25, 'class', e2024.bandNames());
+```
 
 ## 3. Challenge questions (knowledge check)
 

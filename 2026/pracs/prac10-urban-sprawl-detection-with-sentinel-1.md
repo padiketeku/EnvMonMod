@@ -32,7 +32,7 @@ Use one orbit pass and dry-season composites to reduce both.
 
 **Landscape Expansion Index (LEI).** For each new urban patch, the LEI is the share of a buffer around it that was already urban (Liu et al., 2010): infilling (> 50 %), edge-expansion (0–50 %), or outlying/leapfrog (0 %). Leapfrog growth is the signature of sprawl.
 
-```latex
+```math
 \text{Annual growth rate}=\frac{\ln(A_{t_2}/A_{t_1})}{t_2-t_1}\times 100\%
 ```
 
@@ -49,6 +49,19 @@ Use one orbit pass and dry-season composites to reduce both.
 5. Map new urban land (2016 → 2024) by LEI type, and calculate the area of each type.
 6. Validate 2020 against GHSL built-up surface and Dynamic World `built`.
 7. Test sensitivity with `VV_T_DB` set to −6, −8 and −10 dB (the script converts each to linear before comparing).
+
+**Key code** (an excerpt from [`prac10_urban_sprawl_sentinel1.js`](../scripts/prac10_urban_sprawl_sentinel1.js); run the full script for the complete workflow):
+
+```javascript
+// Log-ratio change: ratio of linear dry-season medians from one relative orbit, shown in dB
+// (s1 is a descending, linear-σ⁰ VV/VH collection; aoi, toDb and dbToLin as in the script)
+var orbit = ee.Number(s1.filterDate('2024-05-01', '2024-10-31').first().get('relativeOrbitNumber_start'));
+var vv = s1.filter(ee.Filter.eq('relativeOrbitNumber_start', orbit)).select('VV');
+var ratio = vv.filterDate('2024-05-01', '2024-10-31').median()
+  .divide(vv.filterDate('2016-05-01', '2016-10-31').median()).clip(aoi);
+Map.addLayer(toDb(ratio), {min: -6, max: 6, palette: ['#2166ac', '#f7f7f7', '#b2182b']}, 'VV log ratio (dB)');
+Map.addLayer(ratio.gt(dbToLin(3)).selfMask(), {palette: 'red'}, 'Brightening > +3 dB');
+```
 
 ## 3. Challenge questions (knowledge check)
 

@@ -45,7 +45,7 @@ These concepts are relevant to management because decisions on clearing, burning
 - **Transformation:** re-expresses bands as new variables. Examples are band ratios and normalised differences (NDVI, NDWI, NBR), the tasseled cap (brightness, greenness, wetness) and principal components analysis (PCA).
 - **Analysis and classification:** extracting information. Prac 04 covers supervised classification.
 
-```latex
+```math
 \mathbf{PC} = \mathbf{E}^{\mathsf{T}}(\mathbf{x}-\bar{\mathbf{x}}) \quad\text{where the columns of } \mathbf{E} \text{ are eigenvectors of the band covariance matrix}
 ```
 
@@ -72,7 +72,7 @@ Cloud masking:
 
 ### 1.5 Vegetation indices and NT phenology
 
-```latex
+```math
 \mathrm{NDVI}=\frac{\rho_{NIR}-\rho_{Red}}{\rho_{NIR}+\rho_{Red}} \qquad \mathrm{EVI}=2.5\,\frac{\rho_{NIR}-\rho_{Red}}{\rho_{NIR}+6\rho_{Red}-7.5\rho_{Blue}+1}
 ```
 
@@ -102,6 +102,24 @@ NDVI saturates over dense canopy and is affected by the soil background. EVI red
 2. Build the monthly climatology, compare NDVI and EVI, and chart Sentinel-2 EVI at 10 m.
 3. Map wet- and dry-season NDVI across the NT.
 4. Repeat step 1 with a point inside **your tile**.
+
+**Key code** (an excerpt from [`prac01a_gee_basics.js`](../scripts/prac01a_gee_basics.js); run the full script for the complete workflow):
+
+```javascript
+// Scale and cloud-mask Landsat 8/9 surface reflectance, then map NDVI around Darwin
+var aoi = ee.Geometry.Point([130.8456, -12.4634]).buffer(20000);
+function prepLandsat(img) {
+  var qa = img.select('QA_PIXEL');
+  var mask = qa.bitwiseAnd(1 << 3).eq(0).and(qa.bitwiseAnd(1 << 4).eq(0));   // cloud, cloud shadow
+  var sr = img.select('SR_B.').multiply(0.0000275).add(-0.2);              // Collection 2 scale factors
+  return img.addBands(sr, null, true).updateMask(mask);
+}
+var ls = ee.ImageCollection('LANDSAT/LC09/C02/T1_L2').filterBounds(aoi)
+  .filterDate('2024-05-01', '2024-09-30').map(prepLandsat).median().clip(aoi);
+var ndvi = ls.normalizedDifference(['SR_B5', 'SR_B4']).rename('NDVI');
+Map.centerObject(aoi, 10);
+Map.addLayer(ndvi, {min: 0, max: 0.8, palette: ['brown', 'white', 'green']}, 'NDVI, dry season 2024');
+```
 
 ## 3. Challenge questions (knowledge check)
 

@@ -15,9 +15,8 @@ SHP <- c(Adelaide = "Adelaide_river_shapefile/flooded_Adelaide_river.shp", Mary 
 SHP["Tomkinson"] <- SHP["Liverpool"]; SHP["Cadell"] <- SHP["Blyth"]     # tributaries share the floodplain zone
 ZONES <- lapply(SHP, function(f) sf_as_ee(st_sf(geometry = st_convex_hull(st_union(st_transform(st_read(file.path(D, f), quiet = TRUE), 4326)))))$geometry())
 
-s1 <- ee$ImageCollection("COPERNICUS/S1_GRD")$filter(ee$Filter$eq("instrumentMode", "IW"))$
-  filter(ee$Filter$eq("orbitProperties_pass", "DESCENDING"))$filter(ee$Filter$eq("resolution_meters", 10))$select("VH")$
-  map(to_linear)   # linear sigma0; dB only for display
+s1 <- ee$ImageCollection("COPERNICUS/S1_GRD_FLOAT")$filter(ee$Filter$eq("instrumentMode", "IW"))$
+  filter(ee$Filter$eq("orbitProperties_pass", "DESCENDING"))$filter(ee$Filter$eq("resolution_meters", 10))$select("VH")   # linear sigma0 (S1_GRD_FLOAT); dB only for display
 permanent <- ee$Image("JRC/GSW1_4/GlobalSurfaceWater")$select("seasonality")$gte(10)$unmask(0)
 slope <- ee$Terrain$slope(ee$Image("AU/GA/DEM_1SEC/v10/DEM-H")$select("elevation"))
 boxcar <- function(img) img$convolve(ee$Kernel$square(radius = 1, units = "pixels", normalize = TRUE))   # 3 x 3 mean, linear

@@ -58,7 +58,8 @@ def s2_sr(aoi, start, end, cs_threshold=0.6):
 
 
 # ---------------------------------------------------------------- SAR units
-# COPERNICUS/S1_GRD is stored in dB. All statistics and computations use LINEAR sigma0; dB is for display only.
+# COPERNICUS/S1_GRD_FLOAT is stored as LINEAR sigma0 (COPERNICUS/S1_GRD holds the same values in dB).
+# All statistics and computations use linear sigma0; dB is for display only. to_linear() is only needed for dB data.
 def to_linear(img):
     """dB -> linear power, 10^(dB/10); keeps metadata (orbit, pass, date)."""
     img = ee.Image(img)
@@ -77,12 +78,12 @@ def db_to_lin(x):
 
 def s1_grd(aoi, start, end, pass_direction=None):
     """Sentinel-1 IW GRD, VV + VH, returned in LINEAR sigma0."""
-    col = (ee.ImageCollection("COPERNICUS/S1_GRD").filterBounds(aoi).filterDate(start, end)
+    col = (ee.ImageCollection("COPERNICUS/S1_GRD_FLOAT").filterBounds(aoi).filterDate(start, end)
            .filter(ee.Filter.eq("instrumentMode", "IW"))
            .filter(ee.Filter.listContains("transmitterReceiverPolarisation", "VH")))
     if pass_direction:
         col = col.filter(ee.Filter.eq("orbitProperties_pass", pass_direction))
-    return col.select(["VV", "VH"]).map(to_linear)
+    return col.select(["VV", "VH"])   # already linear sigma0
 
 
 # ---------------------------------------------------------------- data out

@@ -16,7 +16,7 @@ joined <- ee$ImageCollection(ee$Join$saveAll("after")$apply(primary = annual, se
 S <- ee$ImageCollection(joined$map(function(cur) {
   cur <- ee$Image(cur)
   ee$ImageCollection$fromImages(cur$get("after"))$map(function(j)
-    ee$Image(j)$neq(cur)$multiply(ee$Image(j)$subtract(cur)$clamp(-1, 1))$int()$unmask(0))
+    ee$Image(j)$subtract(cur)$signum()$int()$unmask(0))   # sign of the change: -1, 0 or +1
 })$flatten())$reduce("sum", 2L)
 sdS <- sqrt(n * (n - 1) * (2 * n + 5) / 18)
 Z <- ee$Image(0)$where(S$gt(0), S$subtract(1)$divide(sdS))$where(S$lt(0), S$add(1)$divide(sdS))

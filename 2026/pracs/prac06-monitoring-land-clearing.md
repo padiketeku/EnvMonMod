@@ -20,7 +20,7 @@
 
 The usual tools to separate them are *persistence rules* (the low NDVI must persist into the next year), *bare-soil indices*, and a baseline mask of woody vegetation.
 
-```latex
+```math
 \mathrm{BSI}=\frac{(\rho_{SWIR1}+\rho_{Red})-(\rho_{NIR}+\rho_{Blue})}{(\rho_{SWIR1}+\rho_{Red})+(\rho_{NIR}+\rho_{Blue})}
 ```
 
@@ -43,6 +43,19 @@ The usual tools to separate them are *persistence rules* (the low NDVI must pers
 3. Chart clearing per year, vectorise the patches, and inspect the ten largest with the satellite basemap.
 4. Export the patches as a shapefile and as an Earth Engine asset.
 5. Run Part B for **your tile**.
+
+**Key code** (an excerpt from [`prac06_land_clearing.js`](../scripts/prac06_land_clearing.js); run the full script for the complete workflow):
+
+```javascript
+// Tree-cover loss by year from Hansen Global Forest Change (savanna threshold: 20 % cover in 2000)
+var aoi = ee.Geometry.Rectangle([130.9, -14.2, 131.6, -13.6]);   // Douglas–Daly
+var gfc = ee.Image('UMD/hansen/global_forest_change_2023_v1_11').clip(aoi);
+var loss = gfc.select('loss').and(gfc.select('treecover2000').gte(20));
+var lossByYear = ee.Image.pixelArea().divide(1e4).updateMask(loss).addBands(gfc.select('lossyear'))
+  .reduceRegion({reducer: ee.Reducer.sum().group({groupField: 1, groupName: 'year'}),
+                 geometry: aoi, scale: 30, maxPixels: 1e10});
+print('Loss (ha) by year (1 = 2001)', lossByYear.get('groups'));
+```
 
 ## 3. Challenge questions (knowledge check)
 

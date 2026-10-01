@@ -39,7 +39,8 @@ s2_sr <- function(aoi, start, end, cs_threshold = 0.6) {
     })
 }
 
-# SAR units: COPERNICUS/S1_GRD is stored in dB. All statistics and computations use LINEAR sigma0; dB is for display only.
+# SAR units: COPERNICUS/S1_GRD_FLOAT is stored as LINEAR sigma0 (COPERNICUS/S1_GRD holds the same values in dB).
+# All statistics and computations use linear sigma0; dB is for display only. to_linear() is only needed for dB data.
 to_linear <- function(img) {          # 10^(dB/10), keeps metadata (orbit, pass, date)
   img <- ee$Image(img)
   ee$Image(ee$Image(img$multiply(log(10) / 10)$exp()$copyProperties(img, list("system:time_start")))$copyProperties(img))
@@ -49,11 +50,11 @@ db_to_lin <- function(x) 10^(x / 10)                           # thresholds quot
 
 # Sentinel-1 IW GRD, VV + VH, returned in LINEAR sigma0
 s1_grd <- function(aoi, start, end, pass = NULL) {
-  col <- ee$ImageCollection("COPERNICUS/S1_GRD")$filterBounds(aoi)$filterDate(start, end)$
+  col <- ee$ImageCollection("COPERNICUS/S1_GRD_FLOAT")$filterBounds(aoi)$filterDate(start, end)$
     filter(ee$Filter$eq("instrumentMode", "IW"))$
     filter(ee$Filter$listContains("transmitterReceiverPolarisation", "VH"))
   if (!is.null(pass)) col <- col$filter(ee$Filter$eq("orbitProperties_pass", pass))
-  col$select(c("VV", "VH"))$map(to_linear)
+  col$select(c("VV", "VH"))   # already linear sigma0
 }
 
 # Reduce each image over a geometry → data.frame (one row per image)
