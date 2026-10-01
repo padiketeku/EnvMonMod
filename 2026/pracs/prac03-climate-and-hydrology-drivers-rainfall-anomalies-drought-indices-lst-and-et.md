@@ -14,7 +14,7 @@ Vegetation condition is the state of vegetation relative to what is expected for
 
 **Rainfall anomalies.** An anomaly can be expressed in mm, as a % of the mean, as a z-score or as a decile. All are measured against a baseline period (WMO standard 1991–2020).
 
-```latex
+```math
 z=\frac{P-\bar P_{1991\text{–}2020}}{\sigma_{1991\text{–}2020}}
 ```
 
@@ -26,7 +26,7 @@ z=\frac{P-\bar P_{1991\text{–}2020}}{\sigma_{1991\text{–}2020}}
 | Agricultural / ecological | Soil moisture, plant water | VCI, TCI, VHI, evaporative stress index |
 | Hydrological | Streams, groundwater | 12-month SPI-type index, PDSI (TerraClimate) |
 
-```latex
+```math
 \mathrm{VCI}=100\frac{\mathrm{NDVI}-\mathrm{NDVI}_{min}}{\mathrm{NDVI}_{max}-\mathrm{NDVI}_{min}}\quad
 \mathrm{TCI}=100\frac{\mathrm{LST}_{max}-\mathrm{LST}}{\mathrm{LST}_{max}-\mathrm{LST}_{min}}\quad
 \mathrm{VHI}=0.5\,\mathrm{VCI}+0.5\,\mathrm{TCI}

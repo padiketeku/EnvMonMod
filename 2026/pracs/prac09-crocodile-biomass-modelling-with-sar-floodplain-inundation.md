@@ -22,7 +22,7 @@ Until protection in 1971, estuarine crocodiles in the NT were declining because 
 
 **Hypothesis:** crocodile biomass per km of river increases with the area of floodplain inundated in the wet season before the dry-season survey.
 
-```latex
+```math
 B_{r,t}=\beta_0+\beta_1F_{r,t}\;(+\,u_r)+\varepsilon_{r,t}\qquad F_{r,t}=\text{floodplain inundation for river } r \text{ in the wet season before survey year } t
 ```
 

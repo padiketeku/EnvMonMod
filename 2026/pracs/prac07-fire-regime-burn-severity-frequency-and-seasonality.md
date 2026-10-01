@@ -19,7 +19,7 @@ Savanna burning projects such as the West Arnhem Land Fire Abatement (WALFA) pro
 
 **Burn indices.**
 
-```latex
+```math
 \mathrm{NBR}=\frac{\rho_{NIR}-\rho_{SWIR2}}{\rho_{NIR}+\rho_{SWIR2}}\qquad \mathrm{dNBR}=\mathrm{NBR}_{pre}-\mathrm{NBR}_{post}\qquad \mathrm{RdNBR}=\frac{\mathrm{dNBR}}{\sqrt{|\mathrm{NBR}_{pre}|}}
 ```
 

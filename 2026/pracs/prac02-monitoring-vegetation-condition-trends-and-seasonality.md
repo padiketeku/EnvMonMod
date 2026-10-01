@@ -19,7 +19,7 @@ Separating the two is the first step in monitoring condition. In the NT, monsoon
 
 **Trend analysis: Sen's slope and the Mann–Kendall test.** These are non-parametric methods. They are robust to outliers and to non-normal data, which is typical of NDVI.
 
-```latex
+```math
 S=\sum_{i=1}^{n-1}\sum_{j=i+1}^{n}\operatorname{sgn}(x_j-x_i)\qquad \mathrm{Var}(S)=\frac{n(n-1)(2n+5)}{18}\qquad Z=\frac{S-\operatorname{sgn}(S)}{\sqrt{\mathrm{Var}(S)}}\qquad \beta_{Sen}=\operatorname{median}\!\left(\frac{x_j-x_i}{t_j-t_i}\right)
 ```
 
@@ -27,7 +27,7 @@ S counts increases minus decreases across all pairs of years, Z tests whether th
 
 **Seasonality: harmonic regression.** Model the seasonal cycle as sine and cosine waves. The amplitude says how strongly the vegetation greens and browns; the phase says *when* it peaks.
 
-```latex
+```math
 \mathrm{NDVI}(t)=\beta_0+\beta_1t+\sum_{k=1}^{K}\left[\beta_{2k}\cos(2\pi kt)+\beta_{2k+1}\sin(2\pi kt)\right]\qquad A=\sqrt{\beta_2^2+\beta_3^2},\ \phi=\operatorname{atan2}(\beta_3,\beta_2)
 ```
 

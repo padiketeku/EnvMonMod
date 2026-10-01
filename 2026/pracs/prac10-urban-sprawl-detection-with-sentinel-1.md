@@ -32,7 +32,7 @@ Use one orbit pass and dry-season composites to reduce both.
 
 **Landscape Expansion Index (LEI).** For each new urban patch, the LEI is the share of a buffer around it that was already urban (Liu et al., 2010): infilling (> 50 %), edge-expansion (0–50 %), or outlying/leapfrog (0 %). Leapfrog growth is the signature of sprawl.
 
-```latex
+```math
 \text{Annual growth rate}=\frac{\ln(A_{t_2}/A_{t_1})}{t_2-t_1}\times 100\%
 ```
 

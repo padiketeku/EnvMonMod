@@ -20,7 +20,7 @@
 
 The usual tools to separate them are *persistence rules* (the low NDVI must persist into the next year), *bare-soil indices*, and a baseline mask of woody vegetation.
 
-```latex
+```math
 \mathrm{BSI}=\frac{(\rho_{SWIR1}+\rho_{Red})-(\rho_{NIR}+\rho_{Blue})}{(\rho_{SWIR1}+\rho_{Red})+(\rho_{NIR}+\rho_{Blue})}
 ```
 

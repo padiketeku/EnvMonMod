@@ -19,7 +19,7 @@
 
 **Embeddings.** Each 10 m pixel and year has a 64-number, **unit-length** vector (bands A00–A63) that summarises its surface and its seasonal pattern. The axes have no physical meaning, but similar places have similar vectors. Because the vectors are unit length, the dot product is the cosine similarity:
 
-```latex
+```math
 \cos\theta=\mathbf{e}_a\cdot\mathbf{e}_b=\sum_{i=0}^{63}e_{a,i}\,e_{b,i}\qquad (1=\text{identical},\ 0=\text{unrelated})
 ```
 

@@ -24,7 +24,7 @@ SAR is an *active* microwave sensor. It records backscatter (σ⁰) and works th
 
 **SAR units in this unit: dB to look, linear to compute.** Sentinel-1 values in GEE are stored in dB, so they are negative. Backscatter is a power, and dB is a logarithm of it, so averaging or filtering dB values gives the wrong answer (the mean of −10 dB and −20 dB is −15 dB in dB, but −12.6 dB in power). Every script therefore converts to linear σ⁰ first, and uses dB only for map layers and chart axes:
 
-```latex
+```math
 \sigma^0_{\mathrm{lin}}=10^{\,\sigma^0_{\mathrm{dB}}/10}\qquad \sigma^0_{\mathrm{dB}}=10\log_{10}\sigma^0_{\mathrm{lin}}\qquad \text{ratio}=\frac{\sigma^0_{\mathrm{after}}}{\sigma^0_{\mathrm{before}}}\;(\text{shown as }10\log_{10}\text{ratio dB})
 ```
 
@@ -36,7 +36,7 @@ Composites, speckle filters, ratios, standard deviations, regression predictors 
 
 **Optical water indices.**
 
-```latex
+```math
 \mathrm{NDWI}=\frac{\rho_{Green}-\rho_{NIR}}{\rho_{Green}+\rho_{NIR}}\qquad \mathrm{MNDWI}=\frac{\rho_{Green}-\rho_{SWIR1}}{\rho_{Green}+\rho_{SWIR1}}
 ```
 

@@ -27,7 +27,7 @@ Supervised classification assigns every pixel to a class, using training samples
 - Kappa is reported by convention but is widely criticised (Pontius & Millones, 2011).
 - **Good practice** (Olofsson et al., 2014): use a probability-based sample and report *area-adjusted* accuracy and area estimates with confidence intervals.
 
-```latex
+```math
 \hat{p}_{\cdot k}=\sum_i W_i\frac{n_{ik}}{n_{i\cdot}} \qquad \hat{A}_k=A_{tot}\,\hat{p}_{\cdot k} \qquad W_i=\text{mapped area proportion of class } i
 ```
 

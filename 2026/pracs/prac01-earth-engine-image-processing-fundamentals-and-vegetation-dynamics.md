@@ -45,7 +45,7 @@ These concepts are relevant to management because decisions on clearing, burning
 - **Transformation:** re-expresses bands as new variables. Examples are band ratios and normalised differences (NDVI, NDWI, NBR), the tasseled cap (brightness, greenness, wetness) and principal components analysis (PCA).
 - **Analysis and classification:** extracting information. Prac 04 covers supervised classification.
 
-```latex
+```math
 \mathbf{PC} = \mathbf{E}^{\mathsf{T}}(\mathbf{x}-\bar{\mathbf{x}}) \quad\text{where the columns of } \mathbf{E} \text{ are eigenvectors of the band covariance matrix}
 ```
 
@@ -72,7 +72,7 @@ Cloud masking:
 
 ### 1.5 Vegetation indices and NT phenology
 
-```latex
+```math
 \mathrm{NDVI}=\frac{\rho_{NIR}-\rho_{Red}}{\rho_{NIR}+\rho_{Red}} \qquad \mathrm{EVI}=2.5\,\frac{\rho_{NIR}-\rho_{Red}}{\rho_{NIR}+6\rho_{Red}-7.5\rho_{Blue}+1}
 ```
 
