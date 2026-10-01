@@ -22,7 +22,7 @@ SAR is an *active* microwave sensor. It records backscatter (σ⁰) and works th
 | Geometry | Side-looking; ascending vs descending passes | Keep one pass throughout a time series |
 | Speckle | Granular "salt and pepper" noise | Smooth with a moving window (boxcar filter), at the cost of spatial detail |
 
-**SAR units in this unit: dB to look, linear to compute.** Sentinel-1 values in GEE are stored in dB, so they are negative. Backscatter is a power, and dB is a logarithm of it, so averaging or filtering dB values gives the wrong answer (the mean of −10 dB and −20 dB is −15 dB in dB, but −12.6 dB in power). Every script therefore converts to linear σ⁰ first, and uses dB only for map layers and chart axes:
+**SAR units in this unit: dB to look, linear to compute.** Earth Engine holds Sentinel-1 in two versions of the same scenes: `COPERNICUS/S1_GRD` in dB (negative values) and `COPERNICUS/S1_GRD_FLOAT` in linear power. Backscatter is a power, and dB is a logarithm of it, so averaging or filtering dB values gives the wrong answer (the mean of −10 dB and −20 dB is −15 dB in dB, but −12.6 dB in power). Every script therefore loads the linear `S1_GRD_FLOAT` collection, does all calculations in linear σ⁰, and uses dB only for map layers and chart axes:
 
 ```math
 \sigma^0_{\mathrm{lin}}=10^{\,\sigma^0_{\mathrm{dB}}/10}\qquad \sigma^0_{\mathrm{dB}}=10\log_{10}\sigma^0_{\mathrm{lin}}\qquad \text{ratio}=\frac{\sigma^0_{\mathrm{after}}}{\sigma^0_{\mathrm{before}}}\;(\text{shown as }10\log_{10}\text{ratio dB})
@@ -80,12 +80,11 @@ Optical indices detect open water well, but miss water under emergent vegetation
 
 ```javascript
 // Sentinel-1 flood mapping: statistics in linear units, dB for display only
-function toLinear(img) { return ee.Image(img.multiply(Math.LN10 / 10).exp().copyProperties(img, ['system:time_start'])); }
-function toDb(img) { return img.log10().multiply(10); }
+function toDb(img) { return img.log10().multiply(10); }   // display only
 function dbToLin(x) { return Math.pow(10, x / 10); }
 var aoi = ee.Geometry.Rectangle([130.40, -17.80, 131.20, -17.00]);   // Victoria River at Kalkarindji
-var s1 = ee.ImageCollection('COPERNICUS/S1_GRD').filterBounds(aoi)
-  .filter(ee.Filter.eq('instrumentMode', 'IW')).select('VV').map(toLinear);
+var s1 = ee.ImageCollection('COPERNICUS/S1_GRD_FLOAT').filterBounds(aoi)   // linear σ⁰, no conversion needed
+  .filter(ee.Filter.eq('instrumentMode', 'IW')).select('VV');
 var before = s1.filterDate('2022-10-01', '2022-11-30').mean().focalMean(50, 'circle', 'meters');
 var after = s1.filterDate('2023-02-25', '2023-03-15').min().focalMean(50, 'circle', 'meters');
 var ratio = after.divide(before);                                   // water darkens → ratio < 1

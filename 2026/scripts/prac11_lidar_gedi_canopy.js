@@ -32,7 +32,7 @@
  *   - LARSE/GEDI/GEDI04_B_002 — GEDI L4B gridded mean biomass (MU, Mg/ha), 1 km, mission-period mean.
  *   - COPERNICUS/S2_SR_HARMONIZED — Sentinel-2 surface reflectance, 10–20 m, May–Sep 2021.
  *   - GOOGLE/CLOUD_SCORE_PLUS/V1/S2_HARMONIZED — Cloud Score+ cloud probability for Sentinel-2.
- *   - COPERNICUS/S1_GRD — Sentinel-1 C-band SAR, VV/VH, 10 m, May–Sep 2021.
+ *   - COPERNICUS/S1_GRD_FLOAT — linear σ⁰; Sentinel-1 C-band SAR, VV/VH, 10 m, May–Sep 2021.
  *   - JAXA/ALOS/PALSAR/YEARLY/SAR_EPOCH — ALOS PALSAR-2 L-band HH/HV yearly mosaic, 25 m, 2021.
  *   - NASA/NASADEM_HGT/001 — NASADEM elevation, 30 m.
  *
@@ -120,21 +120,17 @@ var optical = s2.select(['B2', 'B3', 'B4', 'B5', 'B8', 'B11', 'B12'])
   .addBands(s2.normalizedDifference(['B8', 'B4']).rename('NDVI'))
   .addBands(s2.normalizedDifference(['B8', 'B11']).rename('NDMI'));
 // ---------- SAR units convention (ENV306/506) ----------
-// COPERNICUS/S1_GRD stores backscatter (σ⁰) in dB. Averages, medians of composites, ratios, filters, thresholds and
+// COPERNICUS/S1_GRD_FLOAT stores backscatter (σ⁰) as LINEAR power (its twin, COPERNICUS/S1_GRD, stores the same
+// values in dB). So the data arrive in linear units: averages, medians of composites, ratios, filters, thresholds and
 // all statistics are computed in LINEAR power units; dB is used ONLY for display (map layers, chart axes).
 // Thresholds quoted in dB in the literature are converted to linear with dbToLin().
 // Here that means: medians and the VH/VV ratio are in linear units, and the model is trained on linear values.
-function toLinear(img) {   // 10^(dB/10); keeps metadata (orbit, pass, date) for later filters
-  img = ee.Image(img);
-  // exp(dB × ln10 / 10) is the same as 10^(dB/10). copyProperties keeps the date and orbit tags on the new image.
-  return ee.Image(img.multiply(Math.LN10 / 10).exp().copyProperties(img, ['system:time_start'])).copyProperties(img);
-}
 function toDb(img) { return ee.Image(img).log10().multiply(10); }                                                    // display only
 function dbToLin(x) { return Math.pow(10, x / 10); }   // not used in this script; kept so all SAR scripts share the same helpers
-// Sentinel-1 dry-season 2021: IW mode, dual-pol (VV+VH), converted to linear σ⁰ BEFORE the median is taken.
-var s1 = ee.ImageCollection('COPERNICUS/S1_GRD').filterBounds(aoi).filterDate('2021-05-01', '2021-09-30')
+// Sentinel-1 dry-season 2021: IW mode, dual-pol (VV+VH), already linear σ⁰ (S1_GRD_FLOAT), so the median is of power values.
+var s1 = ee.ImageCollection('COPERNICUS/S1_GRD_FLOAT').filterBounds(aoi).filterDate('2021-05-01', '2021-09-30')
   .filter(ee.Filter.eq('instrumentMode', 'IW')).filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VH'))
-  .select(['VV', 'VH']).map(toLinear).median();                          // linear σ⁰
+  .select(['VV', 'VH']).median();   // median of linear σ⁰
 // VH/VV: cross-pol (volume scattering from branches and leaves) relative to co-pol. A ratio must use linear values.
 var sarC = s1.addBands(s1.select('VH').divide(s1.select('VV')).rename('VH_VV'));   // cross-pol ratio, linear
 // ALOS PALSAR-2 yearly mosaic (L-band, 25 m): γ⁰ (dB) = 10·log10(DN²) − 83  →  linear γ⁰ = DN² · 10^(−8.3)

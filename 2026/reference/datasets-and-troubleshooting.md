@@ -10,7 +10,7 @@
 | Optical | Sentinel-2 SR + Cloud Score+ | `COPERNICUS/S2_SR_HARMONIZED`, `GOOGLE/CLOUD_SCORE_PLUS/V1/S2_HARMONIZED` | 10–20 m; 2017–present | 01, 04, 06–08, 10, 11, 13 |
 | Optical | MODIS VI, LST, ET, tree cover, burned area | `MODIS/061/MOD13Q1`, `MOD13A3`, `MOD11A2`, `MOD16A2`, `MOD44B`, `MCD64A1` | 250 m – 1 km | 01–03, 07, 12 |
 | Optical | ESA FireCCI51 burned area | `ESA/CCI/FireCCI/5_1` | 250 m; 2001–2020 | 07 (AT4 Part 3) |
-| SAR | Sentinel-1 GRD (C-band) | `COPERNICUS/S1_GRD` | 10 m; 2014–present | 08–11 |
+| SAR | Sentinel-1 GRD (C-band), linear σ⁰ | `COPERNICUS/S1_GRD_FLOAT` | 10 m; 2014–present | 08–11 |
 | SAR | ALOS PALSAR-2 yearly mosaic (L-band) | `JAXA/ALOS/PALSAR/YEARLY/SAR_EPOCH` | 25 m; 2015–present | 11 |
 | Lidar | GEDI L2A, L4A (monthly), L4B (gridded) | `LARSE/GEDI/GEDI02_A_002_MONTHLY`, `LARSE/GEDI/GEDI04_A_002_MONTHLY`, `LARSE/GEDI/GEDI04_B_002` | 25 m footprints; 1 km; 2019– | 11 |
 | Foundation model | AlphaEarth satellite embeddings | `GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL` | 10 m; 2017–2024 | 13 |

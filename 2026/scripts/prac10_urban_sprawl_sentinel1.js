@@ -25,7 +25,7 @@
  *   new urban area by LEI type (km²); agreement tables (km²) against GHSL and Dynamic World.
  *
  * DATA:
- *   - COPERNICUS/S1_GRD — Sentinel-1 C-band SAR, IW mode, VV and VH, 10 m, descending pass, 2016–2024 used.
+ *   - COPERNICUS/S1_GRD_FLOAT — linear σ⁰; Sentinel-1 C-band SAR, IW mode, VV and VH, 10 m, descending pass, 2016–2024 used.
  *   - JRC/GSW1_4/GlobalSurfaceWater ('occurrence') — 30 m, 1984–2021; masks water.
  *   - NASA/NASADEM_HGT/001 — NASADEM elevation, 30 m (from 2000 SRTM); used for slope.
  *   - JRC/GHSL/P2023A/GHS_BUILT_S/2020 — GHSL built-up surface, 100 m, epoch 2020 (validation).
@@ -51,27 +51,23 @@ var YEARS = [2016, 2018, 2020, 2022, 2024];   // client-side list of study years
 var areaKm2 = ee.Image.pixelArea().divide(1e6);   // pixel area in m² ÷ 1,000,000 = km²
 
 // ---------- SAR units convention (ENV306/506) ----------
-// COPERNICUS/S1_GRD stores backscatter (σ⁰) in dB. Averages, medians of composites, ratios, filters, thresholds and
+// COPERNICUS/S1_GRD_FLOAT stores backscatter (σ⁰) as LINEAR power (its twin, COPERNICUS/S1_GRD, stores the same
+// values in dB). So the data arrive in linear units: averages, medians of composites, ratios, filters, thresholds and
 // all statistics are computed in LINEAR power units; dB is used ONLY for display (map layers, chart axes).
 // Thresholds quoted in dB in the literature are converted to linear with dbToLin().
 // Why: dB is a log scale. The mean or standard deviation of dB values is not that of the power, so they are biased.
 // Rule of thumb: +3 dB ≈ double the power (×2); −3 dB ≈ half; +10 dB = ×10.
-function toLinear(img) {   // 10^(dB/10); keeps metadata (orbit, pass, date) for later filters
-  img = ee.Image(img);
-  // exp(dB × ln10 / 10) is the same as 10^(dB/10). copyProperties keeps the date and orbit tags on the new image.
-  return ee.Image(img.multiply(Math.LN10 / 10).exp().copyProperties(img, ['system:time_start'])).copyProperties(img);
-}
 function toDb(img) { return ee.Image(img).log10().multiply(10); }                                                    // display only
 function dbToLin(x) { return Math.pow(10, x / 10); }   // client-side number conversion, e.g. dbToLin(-8) ≈ 0.158
 
 // ---------- 2 Data ----------
-// Sentinel-1 scenes over the aoi, filtered so every scene is comparable, then converted to linear σ⁰.
-var s1 = ee.ImageCollection('COPERNICUS/S1_GRD').filterBounds(aoi)
+// Sentinel-1 scenes over the aoi, filtered so every scene is comparable (already linear σ⁰).
+var s1 = ee.ImageCollection('COPERNICUS/S1_GRD_FLOAT').filterBounds(aoi)
   .filter(ee.Filter.eq('instrumentMode', 'IW'))   // Interferometric Wide swath, the standard mode over land
   .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VH'))   // scene must include VH (dual-pol VV+VH)
   .filter(ee.Filter.eq('orbitProperties_pass', 'DESCENDING'))   // one look direction for consistency
-  .select(['VV', 'VH'])
-  .map(toLinear);   // linear σ⁰ from here on
+  .select(['VV', 'VH']);
+// The collection is already in linear σ⁰ (S1_GRD_FLOAT), so no dB-to-linear conversion is needed.
 // Count scenes per year on the server. Few scenes = noisier composites for that year.
 print('Descending S1 scenes per year',
   ee.List(YEARS).map(function(y) { return s1.filter(ee.Filter.calendarRange(y, y, 'year')).size(); }));

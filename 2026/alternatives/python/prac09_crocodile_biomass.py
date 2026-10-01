@@ -28,9 +28,8 @@ SHP["Tomkinson"], SHP["Cadell"] = SHP["Liverpool"], SHP["Blyth"]     # tributari
 ZONES = {r: ee.Geometry(gpd.read_file(f).to_crs(4326).geometry.union_all().convex_hull.__geo_interface__)
          for r, f in SHP.items()}
 
-s1 = (ee.ImageCollection("COPERNICUS/S1_GRD").filter(ee.Filter.eq("instrumentMode", "IW"))
-      .filter(ee.Filter.eq("orbitProperties_pass", "DESCENDING")).filter(ee.Filter.eq("resolution_meters", 10)).select("VH")
-      .map(nt.to_linear))   # linear sigma0; dB only for display
+s1 = (ee.ImageCollection("COPERNICUS/S1_GRD_FLOAT").filter(ee.Filter.eq("instrumentMode", "IW"))
+      .filter(ee.Filter.eq("orbitProperties_pass", "DESCENDING")).filter(ee.Filter.eq("resolution_meters", 10)).select("VH"))   # linear sigma0 (S1_GRD_FLOAT); dB only for display
 permanent = ee.Image("JRC/GSW1_4/GlobalSurfaceWater").select("seasonality").gte(10).unmask(0)
 slope = ee.Terrain.slope(ee.Image("AU/GA/DEM_1SEC/v10/DEM-H").select("elevation"))
 boxcar = lambda img: img.convolve(ee.Kernel.square(radius=1, units="pixels", normalize=True))   # 3 x 3 mean, linear units

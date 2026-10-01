@@ -22,7 +22,7 @@
  *     flooded area (km²); a chart of mean VV (dB) near Kalkarindji from Oct 2022 to Jun 2023 showing the flood pulse.
  *
  * DATA:
- *   - Sentinel-1 C-band SAR GRD, COPERNICUS/S1_GRD, IW mode, VV and VH, 10 m, Oct 2022 – Jun 2023 used (stored in dB).
+ *   - Sentinel-1 C-band SAR GRD, COPERNICUS/S1_GRD_FLOAT, IW mode, VV and VH, 10 m, Oct 2022 – Jun 2023 used (linear σ⁰).
  *   - JRC Global Surface Water v1.4, JRC/GSW1_4/GlobalSurfaceWater, 30 m, 1984–2021 (seasonality band).
  *   - NASADEM elevation, NASA/NASADEM_HGT/001, 30 m (≈ year 2000), used for slope.
  *
@@ -30,9 +30,9 @@
  *   (course repository). Feeds Prac 08 and AT4 Part 4; also supports AT4 elective (c).
  *
  * KEY GEE IDEAS:
- *   - SAR units: convert dB → linear σ⁰ with map() before any maths; convert back to dB only for display.
+ *   - SAR units: load linear σ⁰ (S1_GRD_FLOAT), do all maths in linear units, convert to dB only for display.
  *   - Filtering a collection by metadata (instrument mode, polarisation, relative orbit) with ee.Filter.
- *   - Client-side vs server-side: dbToLin() is plain JavaScript (Math.pow) on numbers; toLinear() works on ee.Image.
+ *   - Client-side vs server-side: dbToLin() is plain JavaScript (Math.pow) on numbers; toDb() works on ee.Image.
  *   - Neighbourhood operations (focalMean, connectedPixelCount) and reduceRegion for area; exports.
  *
  * Q = core (ENV306 and ENV506). EXT = ENV506 extension.
@@ -48,27 +48,23 @@ Map.centerObject(aoi, 10);
 Map.addLayer(ee.Geometry.Point([130.83, -17.43]), {color: 'red'}, 'Kalkarindji (approx.)');
 
 // ---------- SAR units convention (ENV306/506) ----------
-// COPERNICUS/S1_GRD stores backscatter (σ⁰) in dB. Averages, medians of composites, ratios, filters, thresholds and
+// COPERNICUS/S1_GRD_FLOAT stores backscatter (σ⁰) as LINEAR power (its twin, COPERNICUS/S1_GRD, stores the same
+// values in dB). So the data arrive in linear units: averages, medians of composites, ratios, filters, thresholds and
 // all statistics are computed in LINEAR power units; dB is used ONLY for display (map layers, chart axes).
 // Thresholds quoted in dB in the literature are converted to linear with dbToLin().
 // Why: dB is a logarithm. Averaging logarithms is not the same as averaging power (it biases the mean low),
-// and a ratio in linear units is a difference in dB. So: convert to linear first, do the maths, convert to dB to look.
-function toLinear(img) {   // 10^(dB/10); keeps metadata (orbit, pass, date) for later filters
-  img = ee.Image(img);
-  // exp(dB × ln10 / 10) is the same as 10^(dB/10). copyProperties keeps all metadata, which maths would otherwise drop.
-  return ee.Image(img.multiply(Math.LN10 / 10).exp().copyProperties(img, ['system:time_start'])).copyProperties(img);
-}
+// and a ratio in linear units is a difference in dB. So: do the maths in linear units, and convert to dB only to look.
 function toDb(img) { return ee.Image(img).log10().multiply(10); }                                                    // display only
 function dbToLin(x) { return Math.pow(10, x / 10); }   // client-side: converts one dB NUMBER (not an image) to linear
 
 // ---------- 2 Data ----------
 // All Sentinel-1 images over the AOI in Interferometric Wide (IW) swath mode that include VV polarisation.
-var s1 = ee.ImageCollection('COPERNICUS/S1_GRD')
+var s1 = ee.ImageCollection('COPERNICUS/S1_GRD_FLOAT')
   .filterBounds(aoi)
   .filter(ee.Filter.eq('instrumentMode', 'IW'))                                  // standard mode over land
   .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'))       // image must have a VV band
-  .select(['VV', 'VH'])   // VV = vertical send/receive (best for open water); VH = cross-polarised
-  .map(toLinear);   // linear σ⁰ from here on
+  .select(['VV', 'VH']);   // VV = vertical send/receive (best for open water); VH = cross-polarised
+// The collection is already in linear σ⁰ (S1_GRD_FLOAT), so no dB-to-linear conversion is needed.
 
 var afterCol = s1.filterDate(AFTER[0], AFTER[1]);
 // Print the date, pass (ASCENDING/DESCENDING) and relative orbit of every flood-period image.

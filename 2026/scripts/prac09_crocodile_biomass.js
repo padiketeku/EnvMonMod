@@ -48,7 +48,7 @@
  *
  * DATA (from the code):
  *   - Your uploaded assets: croc-biomass-data (table, 42 river × year records) and flooded_<River>_river polygons.
- *   - COPERNICUS/S1_GRD — Sentinel-1 C-band SAR, IW mode, 10 m, VH, descending pass (used 2016–2022; Part A 2017).
+ *   - COPERNICUS/S1_GRD_FLOAT — linear σ⁰; Sentinel-1 C-band SAR, IW mode, 10 m, VH, descending pass (used 2016–2022; Part A 2017).
  *   - JRC/GSW1_4/GlobalSurfaceWater ('seasonality') and JRC/GSW1_4/YearlyHistory ('waterClass') — 30 m, 1984–2021.
  *   - AU/GA/DEM_1SEC/v10/DEM-H — Geoscience Australia hydrologically enforced DEM, 1 arc-second (~30 m).
  *
@@ -113,27 +113,23 @@ var permanent = ee.Image('JRC/GSW1_4/GlobalSurfaceWater').select('seasonality').
 var haImg = ee.Image.pixelArea().divide(1e4);   // pixel area in m² ÷ 10,000 = hectares
 
 // ---------- SAR units convention (ENV306/506) ----------
-// COPERNICUS/S1_GRD stores backscatter (σ⁰) in dB. Averages, medians of composites, ratios, filters, thresholds and
+// COPERNICUS/S1_GRD_FLOAT stores backscatter (σ⁰) as LINEAR power (its twin, COPERNICUS/S1_GRD, stores the same
+// values in dB). So the data arrive in linear units: averages, medians of composites, ratios, filters, thresholds and
 // all statistics are computed in LINEAR power units; dB is used ONLY for display (map layers, chart axes).
 // Thresholds quoted in dB in the literature are converted to linear with dbToLin().
 // Why: dB is a log scale. The mean of dB values is not the dB of the mean power, so statistics in dB are biased.
 // Rule of thumb: −3 dB ≈ half the power (×0.5); −10 dB = one tenth (×0.1).
-function toLinear(img) {   // 10^(dB/10); keeps metadata (orbit, pass, date) for later filters
-  img = ee.Image(img);
-  // exp(dB × ln10 / 10) is the same as 10^(dB/10). copyProperties keeps the date and orbit tags on the new image.
-  return ee.Image(img.multiply(Math.LN10 / 10).exp().copyProperties(img, ['system:time_start'])).copyProperties(img);
-}
 function toDb(img) { return ee.Image(img).log10().multiply(10); }                                                    // display only
 function dbToLin(x) { return Math.pow(10, x / 10); }   // client-side number conversion, e.g. dbToLin(-3) ≈ 0.50
 
 // Sentinel-1 collection: each filter keeps only images that match, so every image is comparable.
-var s1 = ee.ImageCollection('COPERNICUS/S1_GRD')
+var s1 = ee.ImageCollection('COPERNICUS/S1_GRD_FLOAT')
   .filter(ee.Filter.eq('instrumentMode', 'IW'))   // Interferometric Wide swath, the standard mode over land
   .filter(ee.Filter.eq('orbitProperties_pass', PASS))   // one pass direction only (see BAND/PASS above)
   .filter(ee.Filter.listContains('transmitterReceiverPolarisation', BAND))   // image must include VH
   .filter(ee.Filter.eq('resolution_meters', 10))   // 10 m pixels
-  .select(BAND)
-  .map(toLinear);   // linear σ⁰ from here on
+  .select(BAND);
+// The collection is already in linear σ⁰ (S1_GRD_FLOAT), so no dB-to-linear conversion is needed.
 
 // Flood map from two linear-σ⁰ mosaics (UN-SPIDER workflow, linear-unit ratio)
 // Steps: smooth speckle → ratio after/before → threshold → remove permanent water, tiny patches and slopes.
