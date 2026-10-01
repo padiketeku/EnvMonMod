@@ -104,7 +104,7 @@ var samples = predictors.addBands(labels).stratifiedSample({
 // SVM step (section 3) can re-sample the same points.
 // Draw FeatureCollections named tree, grass, ... with property 'class' (0–6) using the geometry tools, then:
 // var training = tree.merge(grass).merge(crop) ... ;
-// var samples = predictors.sampleRegions({collection: training, properties: ['class'], scale: 10});
+// var samples = predictors.sampleRegions({collection: training, properties: ['class'], scale: 10, geometries: true});
 
 // Random 70/30 split: 70 % of points train the models, 30 % are held back to test them.
 samples = samples.randomColumn('rand', 7);   // adds a uniform random number 0–1 to each point (seed 7)

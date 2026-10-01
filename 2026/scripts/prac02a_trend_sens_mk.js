@@ -10,7 +10,7 @@
  *
  * HOW TO USE IT:
  *   (1) Save a copy in your Owner repository.
- *   (2) Optional edits: START and END years (section 1), ALPHA (significance level), and the probe point (section 4).
+ *   (2) Optional edits: START and END years (section 1), ALPHA (significance level), and the probe point (section 4), or click the map to chart any pixel.
  *   (3) Click Run. The NT-wide calculations can take a minute or two.
  *   (4) Read the Console (right panel), turn layers on/off in the Map's Layers list, and start the export in the Tasks tab.
  *
@@ -105,13 +105,23 @@ print('Area with significant greening (km²)', sigInc.reduceRegion(ee.Reducer.su
 print('Area with significant browning (km²)', sigDec.reduceRegion(ee.Reducer.sum(), nt.geometry(), 1000, null, null, false, 1e11));
 
 // Inspect one pixel: series + Sen line
-// To look at a different place, change the coordinates [lon, lat] below and click Run again.
+// To look at a different place, change the coordinates [lon, lat] below and click Run again,
+// or simply click on the map: the click handler below charts the pixel you click.
 var probe = ee.Geometry.Point([131.19, -13.83]);   // Douglas–Daly
 // The red line on the chart is the chart's own least-squares trend line, drawn for reference — it is not Sen's slope.
 print(ui.Chart.image.series(annual, probe, ee.Reducer.mean(), 1000, 'year')   // 'year' = x-axis property
-  .setOptions({title: 'Annual NDVI at probe (click map to move)', trendlines: {0: {color: 'red'}}, pointSize: 4}));
+  .setOptions({title: 'Annual NDVI at probe', trendlines: {0: {color: 'red'}}, pointSize: 4}));
 // Reducer.first() simply reads the value of the pixel under the point.
 print('Probe: Sen slope / tau / p', sens.select('slope').addBands(tau).addBands(p).reduceRegion(ee.Reducer.first(), probe, 1000));
+// Click anywhere on the map: Map.onClick runs this function with the clicked longitude and latitude,
+// and prints a new chart and the Sen slope / tau / p for that pixel in the Console.
+Map.onClick(function(coords) {
+  var pt = ee.Geometry.Point([coords.lon, coords.lat]);
+  print(ui.Chart.image.series(annual, pt, ee.Reducer.mean(), 1000, 'year')
+    .setOptions({title: 'Annual NDVI at ' + coords.lon.toFixed(3) + ', ' + coords.lat.toFixed(3),
+                 trendlines: {0: {color: 'red'}}, pointSize: 4}));
+  print('Clicked pixel: Sen slope / tau / p', sens.select('slope').addBands(tau).addBands(p).reduceRegion(ee.Reducer.first(), pt, 1000));
+});
 
 // ---------- 5 Visualise ----------
 // Brown = browning (negative slope), white = no change, teal-green = greening (positive slope).

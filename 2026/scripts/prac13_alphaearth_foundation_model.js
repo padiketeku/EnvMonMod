@@ -11,7 +11,7 @@
  *   Each pixel has a 64-number "summary" (embedding) of what the model learned about it in a year. The script clusters
  *   them, classifies land cover from very few labels (vs a Sentinel-2 baseline), finds pixels similar to a reference
  *   point, and detects change 2018→YEAR — checking each result against WorldCover or Dynamic World.
- *   Note: script sections are numbered 1–7; map layer and Console labels use the activity numbers 1–5.
+ *   Map layer and Console labels start with the activity step they belong to (1–5); each section banner names its step.
  *
  * HOW TO USE IT:
  *   (1) Save a copy in your Owner repository.
@@ -51,7 +51,7 @@ var aoi = ee.Geometry.Rectangle([130.80, -12.75, 131.30, -12.35]);   // Darwin�
 Map.centerObject(aoi, 11);
 var YEAR = 2024;   // EDIT if you like: any year 2017–2024
 
-// ---------- 2 Data ----------
+// ---------- 2 Data (activity step 1: explore) ----------
 // Activity 1 (explore): load one year of embeddings. The collection is stored as tiles, one per area per year.
 var emb = ee.ImageCollection('GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL');
 // embYear(): all tiles for year y (1 Jan to 1 Jan next year; end date exclusive) over the aoi, joined by mosaic().
@@ -65,7 +65,7 @@ print('Embedding bands', bands);
 Map.addLayer(e, {bands: ['A01', 'A16', 'A09'], min: -0.3, max: 0.3}, '1: Embedding ' + YEAR + ' (3 axes as RGB)');
 // Q: The axes have no physical meaning (unlike bands). What does colour similarity mean here?
 
-// ---------- 3 Unsupervised clustering ----------
+// ---------- 3 Unsupervised clustering (activity step 2) ----------
 // Activity 2: group pixels with similar embeddings into K clusters WITHOUT any labels (k-means), then check
 // what the clusters correspond to in an independent land-cover map.
 var K = 8;   // number of clusters — a starting value, test others
@@ -83,7 +83,7 @@ var xtab = clusters.addBands(wc).sample({region: aoi, scale: 10, numPixels: 5000
   .reduceColumns(ee.Reducer.frequencyHistogram().group({groupField: 0, groupName: 'cluster'}), ['cluster', 'Map']);
 print('2: Cluster × WorldCover class counts', xtab);
 
-// ---------- 4 Few-shot classification: embeddings vs Sentinel-2 spectral baseline ----------
+// ---------- 4 Few-shot classification: embeddings vs Sentinel-2 spectral baseline (activity step 3) ----------
 // Activity 3: how many labels does each approach need? Train with 5 to 100 labels per class and compare
 // embeddings + k-nearest-neighbour (kNN) against Sentinel-2 bands + Random Forest on the same test set.
 // Labels: WorldCover 2021 merged to 6 classes (teaching labels — see EXT for independent validation)
@@ -134,7 +134,7 @@ var fewShot = e.classify(ee.Classifier.smileKNN(3).train(train25, 'class', bands
 Map.addLayer(fewShot, {min: 0, max: 5, palette: ['#006400', '#ffbb22', '#f096ff', '#fa0000', '#b4b4b4', '#0064c8']},
   '3: Few-shot map (25 labels/class, embeddings)', false);
 
-// ---------- 5 Similarity search ----------
+// ---------- 5 Similarity search (activity step 4) ----------
 // Activity 4: find all pixels whose embedding points in nearly the same direction as a reference location's.
 // Click-free version: a reference pixel (edit the point — e.g. a mango orchard, a solar farm, a mangrove stand)
 var refPoint = ee.Geometry.Point([131.05, -12.55]);   // EDIT: [longitude, latitude]
@@ -150,7 +150,7 @@ Map.addLayer(similarity, {min: 0.5, max: 1, palette: ['black', 'yellow', 'white'
 Map.addLayer(similarity.gt(0.9).selfMask(), {palette: 'magenta'}, '4: Pixels with similarity > 0.9', false);
 Map.addLayer(refPoint, {color: 'cyan'}, '4: Reference point', false);
 
-// ---------- 6 Change detection: dot product between years ----------
+// ---------- 6 Change detection: dot product between years (activity step 5) ----------
 // Activity 5: the same pixel in two years. A dot product near 1 = the embedding barely changed; low = something changed.
 var e2018 = embYear(2018);
 var change = e2018.multiply(e).reduce('sum').rename('dot_2018_' + YEAR);   // 1 = unchanged, low = changed

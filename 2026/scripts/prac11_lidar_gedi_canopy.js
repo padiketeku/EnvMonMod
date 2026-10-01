@@ -201,7 +201,7 @@ Map.addLayer(heightMap, hVis, 'B: Predicted canopy height 10 m (m)');
 // var meta = ee.ImageCollection('projects/meta-forest-monitoring-okw37/assets/CanopyHeight').mosaic();
 // Map.addLayer(meta.clip(aoi), hVis, 'Meta 1 m canopy height', false);
 
-// ---------- 6 Export ----------
+// ---------- 5 Export ----------
 // Save the height map as a GeoTIFF to Google Drive (start it in the Tasks tab).
 // scale: 10 m (Sentinel-2 resolution); crs 'EPSG:32752' = WGS 84 / UTM zone 52S (metres), which covers this area.
 Export.image.toDrive({image: heightMap.float(), description: 'Prac11_canopy_height', folder: 'GEE_NT', region: aoi,

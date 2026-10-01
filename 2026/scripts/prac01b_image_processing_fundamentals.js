@@ -86,8 +86,10 @@ Map.addLayer(offsetM, {min: 0, max: 15, palette: ['white', 'red']}, 'B: L9 vs S2
 var l9Registered = l9Red.displace(displacement);   // or l9Red.register(s2Red, 60)
 Map.addLayer(l9Registered, {min: 0, max: 0.3}, 'B: L9 red registered to S2', false);
 // Reprojection = changing CRS / pixel grid (a form of rectification to a map grid)
-// Shown as an example only: "reprojected" is not used later. In GEE you rarely need reproject() — set crs in Export instead.
+// In GEE you rarely need reproject(): the Map and Export handle projections. Here we only print the result
+// to show that the image now sits on a GDA2020 / MGA zone 52 grid with 30 m pixels. Set crs in Export instead.
 var reprojected = img.reproject({crs: 'EPSG:7852', scale: 30});   // GDA2020 / MGA zone 52
+print('B: Reprojected image — CRS and pixel size', reprojected.projection());
 // Q: What is the difference between orthorectification, georeferencing and co-registration?
 
 // ========================== C. ENHANCEMENT ==========================
@@ -150,7 +152,8 @@ Map.addLayer(canny.selfMask(), {palette: 'red'}, 'D: Canny edges', false);   // 
 // E1 Band ratios and indices
 var ndwi = img.normalizedDifference(['green', 'nir']).rename('NDWI');   // McFeeters NDWI: open water > 0
 var nbr = img.normalizedDifference(['nir', 'swir2']).rename('NBR');     // Normalised Burn Ratio: low over recent burns
-// (ndwi and nbr are calculated but not added to the map — try adding them yourself.)
+Map.addLayer(ndwi, {min: -0.5, max: 0.5, palette: ['#8c510a', 'white', '#2166ac']}, 'E: NDWI (blue = open water)', false);
+Map.addLayer(nbr, {min: -0.5, max: 0.8, palette: ['#d73027', 'white', '#1a9850']}, 'E: NBR (red = recent burns)', false);
 
 // E2 Tasseled cap (Baig et al. 2014 coefficients for OLI; derived for TOA reflectance —
 // applied to SR here for teaching; note the caveat in your report)
