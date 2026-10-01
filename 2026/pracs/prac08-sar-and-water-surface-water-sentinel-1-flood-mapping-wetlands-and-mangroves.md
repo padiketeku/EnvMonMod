@@ -76,6 +76,24 @@ Optical indices detect open water well, but miss water under emergent vegetation
 2. Chart annual dry-season NDVI inside the mangrove mask (2014–2024).
 3. Map dieback (2015 → 2017) and recovery by 2024, and calculate the areas.
 
+**Key code** (an excerpt from [`prac08b_flood_sentinel1.js`](../scripts/prac08b_flood_sentinel1.js); run the full script for the complete workflow):
+
+```javascript
+// Sentinel-1 flood mapping: statistics in linear units, dB for display only
+function toLinear(img) { return ee.Image(img.multiply(Math.LN10 / 10).exp().copyProperties(img, ['system:time_start'])); }
+function toDb(img) { return img.log10().multiply(10); }
+function dbToLin(x) { return Math.pow(10, x / 10); }
+var aoi = ee.Geometry.Rectangle([130.40, -17.80, 131.20, -17.00]);   // Victoria River at Kalkarindji
+var s1 = ee.ImageCollection('COPERNICUS/S1_GRD').filterBounds(aoi)
+  .filter(ee.Filter.eq('instrumentMode', 'IW')).select('VV').map(toLinear);
+var before = s1.filterDate('2022-10-01', '2022-11-30').mean().focalMean(50, 'circle', 'meters');
+var after = s1.filterDate('2023-02-25', '2023-03-15').min().focalMean(50, 'circle', 'meters');
+var ratio = after.divide(before);                                   // water darkens → ratio < 1
+var flood = ratio.lt(dbToLin(-3)).and(after.lt(dbToLin(-16))).selfMask();
+Map.addLayer(toDb(ratio), {min: -8, max: 8, palette: ['#08519c', '#ffffff', '#a50f15']}, 'VV change (dB)');
+Map.addLayer(flood, {palette: 'cyan'}, 'Flood extent');
+```
+
 ## 3. Challenge questions (knowledge check)
 
 **Core**

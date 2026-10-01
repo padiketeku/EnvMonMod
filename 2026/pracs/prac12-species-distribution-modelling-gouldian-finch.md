@@ -48,6 +48,19 @@
    - **C:** predictor set without fire.
    - **D:** Maxent feature types.
 
+**Key code** (an excerpt from [`prac12_species_distribution_model.js`](../scripts/prac12_species_distribution_model.js); run the full script for the complete workflow):
+
+```javascript
+// Presence–background models: Random Forest (probability) and Maxent
+// (train holds presences pa = 1 and background points pa = 0, sampled from predictors)
+var rf = ee.Classifier.smileRandomForest({numberOfTrees: 500, minLeafPopulation: 5, seed: 1})
+  .setOutputMode('PROBABILITY').train(train, 'pa', bands);
+var maxent = ee.Classifier.amnhMaxent({autoFeature: true, seed: 1}).train(train, 'pa', bands);
+var suitRF = predictors.classify(rf).rename('suitability_RF');
+var suitMX = predictors.classify(maxent).select('probability').rename('suitability_Maxent');
+Map.addLayer(suitRF, {min: 0, max: 1, palette: ['#f7fcf5', '#74c476', '#00441b']}, 'Suitability (RF)');
+```
+
 ## 3. Challenge questions (knowledge check)
 
 **Core**

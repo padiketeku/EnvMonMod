@@ -60,6 +60,19 @@ VCI and TCI are computed per calendar month, so the normal dry season is not mis
 2. Part B: chart monthly rainfall, ET and PET for the Daly basin, then map the late-dry-season ESI and annual ET.
 3. **AT2 (ENV506):** map LST and ESI for your tile in your focus year.
 
+**Key code** (an excerpt from [`prac03a_rainfall_anomaly.js`](../scripts/prac03a_rainfall_anomaly.js); run the full script for the complete workflow):
+
+```javascript
+// Wet-season (Oct–Apr) rainfall anomaly as a z-score against 1991–2020 (CHIRPS)
+var chirps = ee.ImageCollection('UCSB-CHG/CHIRPS/PENTAD').select('precipitation');
+function wetSeason(y) {   // y = year the wet season ends
+  return chirps.filterDate(ee.Date.fromYMD(ee.Number(y).subtract(1), 10, 1), ee.Date.fromYMD(y, 5, 1)).sum();
+}
+var base = ee.ImageCollection.fromImages(ee.List.sequence(1992, 2020).map(wetSeason));
+var z = wetSeason(2025).subtract(base.mean()).divide(base.reduce(ee.Reducer.stdDev())).rename('z');
+Map.addLayer(z, {min: -2, max: 2, palette: ['#8c510a', '#f5f5f5', '#01665e']}, 'Wet-season rainfall z-score 2024/25');
+```
+
 ## 3. Challenge questions (knowledge check)
 
 **Core**

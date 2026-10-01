@@ -52,6 +52,24 @@ This is the logic behind global canopy height products (Potapov et al., 2021; La
 3. Predict canopy height at 10 m, and plot observed vs predicted values.
 4. **Your tile:** summarise GEDI footprints in your Daly tile, and judge what canopy height adds to your AT4 assessment (Part 4).
 
+**Key code** (an excerpt from [`prac11_lidar_gedi_canopy.js`](../scripts/prac11_lidar_gedi_canopy.js); run the full script for the complete workflow):
+
+```javascript
+// GEDI canopy height (rh98) as training data for wall-to-wall Random Forest regression
+// (predictors stacks Sentinel-2, linear Sentinel-1 and PALSAR-2, and terrain, as in the script)
+var aoi = ee.Geometry.Rectangle([130.90, -13.10, 131.50, -12.50]);
+var gedi = ee.ImageCollection('LARSE/GEDI/GEDI02_A_002_MONTHLY').filterBounds(aoi)
+  .map(function(img) {
+    return img.updateMask(img.select('quality_flag').eq(1)).updateMask(img.select('degrade_flag').eq(0))
+      .updateMask(img.select('sensitivity').gt(0.95));
+  }).select('rh98').mosaic().rename('height');
+var samples = predictors.addBands(gedi).sample({region: aoi, scale: 25, numPixels: 20000, seed: 1, tileScale: 4})
+  .filter(ee.Filter.notNull(['height']));
+var rf = ee.Classifier.smileRandomForest({numberOfTrees: 200, minLeafPopulation: 5, seed: 1})
+  .setOutputMode('REGRESSION').train(samples, 'height', predictors.bandNames());
+Map.addLayer(predictors.classify(rf), {min: 0, max: 30, palette: ['#ffffcc', '#78c679', '#006837']}, 'Canopy height (m)');
+```
+
 ## 3. Challenge questions (knowledge check)
 
 **Core**

@@ -45,6 +45,18 @@ Landscapes change abruptly (clearing, fire, flood) and gradually (woody thickeni
 3. Run CCDC for 2000–2024, and map the most recent break and the number of breaks.
 4. Map where the two algorithms agree, and compare them with your transition matrix.
 
+**Key code** (an excerpt from [`prac05a_transition_matrix.js`](../scripts/prac05a_transition_matrix.js); run the full script for the complete workflow):
+
+```javascript
+// From–to codes: 12 = class 1 in YEAR_A became class 2 in YEAR_B; area (ha) per code
+var code = lcA.multiply(10).add(lcB).rename('code');
+var grouped = ee.Image.pixelArea().divide(1e4).addBands(code).reduceRegion({
+  reducer: ee.Reducer.sum().group({groupField: 1, groupName: 'code'}),
+  geometry: TILE, scale: 30, maxPixels: 1e10, tileScale: 4});
+print('Area (ha) by from–to code', grouped.get('groups'));
+Map.addLayer(lcA.eq(1).and(lcB.eq(2)).selfMask(), {palette: 'red'}, 'Woodland → agriculture');
+```
+
 ## 3. Challenge questions (knowledge check)
 
 **Core**

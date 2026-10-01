@@ -50,6 +50,19 @@ Use one orbit pass and dry-season composites to reduce both.
 6. Validate 2020 against GHSL built-up surface and Dynamic World `built`.
 7. Test sensitivity with `VV_T_DB` set to −6, −8 and −10 dB (the script converts each to linear before comparing).
 
+**Key code** (an excerpt from [`prac10_urban_sprawl_sentinel1.js`](../scripts/prac10_urban_sprawl_sentinel1.js); run the full script for the complete workflow):
+
+```javascript
+// Log-ratio change: ratio of linear dry-season medians from one relative orbit, shown in dB
+// (s1 is a descending, linear-σ⁰ VV/VH collection; aoi, toDb and dbToLin as in the script)
+var orbit = ee.Number(s1.filterDate('2024-05-01', '2024-10-31').first().get('relativeOrbitNumber_start'));
+var vv = s1.filter(ee.Filter.eq('relativeOrbitNumber_start', orbit)).select('VV');
+var ratio = vv.filterDate('2024-05-01', '2024-10-31').median()
+  .divide(vv.filterDate('2016-05-01', '2016-10-31').median()).clip(aoi);
+Map.addLayer(toDb(ratio), {min: -6, max: 6, palette: ['#2166ac', '#f7f7f7', '#b2182b']}, 'VV log ratio (dB)');
+Map.addLayer(ratio.gt(dbToLin(3)).selfMask(), {palette: 'red'}, 'Brightening > +3 dB');
+```
+
 ## 3. Challenge questions (knowledge check)
 
 **Core**

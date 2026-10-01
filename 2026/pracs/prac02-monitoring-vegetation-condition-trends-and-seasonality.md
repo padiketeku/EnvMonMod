@@ -54,6 +54,19 @@ S counts increases minus decreases across all pairs of years, Z tests whether th
 3. Plot observed vs fitted values at savanna, floodplain and rural probes, then refit with `HARMONICS = 2` and compare RMSE.
 4. **AT2:** fit the model in your tile, and compare amplitude and peak timing for at least two land covers.
 
+**Key code** (an excerpt from [`prac02a_trend_sens_mk.js`](../scripts/prac02a_trend_sens_mk.js); run the full script for the complete workflow):
+
+```javascript
+// Sen's slope of annual mean NDVI, 2001–2024 (MODIS MOD13A3)
+var modis = ee.ImageCollection('MODIS/061/MOD13A3').select('NDVI');
+var annual = ee.ImageCollection.fromImages(ee.List.sequence(2001, 2024).map(function(y) {
+  var img = modis.filter(ee.Filter.calendarRange(y, y, 'year')).mean().multiply(0.0001);
+  return ee.Image.constant(y).float().rename('year').addBands(img.rename('NDVI'));
+}));
+var sens = annual.reduce(ee.Reducer.sensSlope());   // bands: slope (NDVI per year), offset
+Map.addLayer(sens.select('slope'), {min: -0.006, max: 0.006, palette: ['#8c510a', '#f5f5f5', '#01665e']}, "Sen's slope");
+```
+
 ## 3. Challenge questions (knowledge check)
 
 **Core**
