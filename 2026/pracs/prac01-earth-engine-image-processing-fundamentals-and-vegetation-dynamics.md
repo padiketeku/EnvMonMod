@@ -72,7 +72,7 @@ Cloud masking:
 
 ### 1.5 Vegetation indices and NT phenology
 
-```latex
+```JavaScript
 \mathrm{NDVI}=\frac{\rho_{NIR}-\rho_{Red}}{\rho_{NIR}+\rho_{Red}} \qquad \mathrm{EVI}=2.5\,\frac{\rho_{NIR}-\rho_{Red}}{\rho_{NIR}+6\rho_{Red}-7.5\rho_{Blue}+1}
 ```
 
