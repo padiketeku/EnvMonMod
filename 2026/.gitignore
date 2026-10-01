@@ -1,0 +1,11 @@
+data/
+*.csv
+*.zip
+*.shp
+*.shx
+*.dbf
+*.prj
+*.cpg
+__pycache__/
+.Rhistory
+.ipynb_checkpoints/
