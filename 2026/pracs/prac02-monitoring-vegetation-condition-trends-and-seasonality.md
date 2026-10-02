@@ -86,7 +86,7 @@ Map.addLayer(sens.select('slope'), {min: -0.006, max: 0.006, palette: ['#8c510a'
 ## 4. Link to summative assessment
 
 - **AT2:** the trend and seasonality maps of your tile are the core of your magazine article (ENV506: false-discovery-rate correction).
-- **AT4 Part 3:** your AT2 results, revised after feedback, explain the drivers of change in your tile.
+- **AT4 Part 3:** the same trend methods, applied to your clearing period and fire window, help separate climate-driven change from clearing and fire (AT4 does not reuse your AT2 results).
 
 ## 5. Reading
 

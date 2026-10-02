@@ -94,7 +94,7 @@ Map.addLayer(z, {min: -2, max: 2, palette: ['#8c510a', '#f5f5f5', '#01665e']}, '
 ## 4. Link to summative assessment
 
 - **AT2:** rainfall anomalies and drought indices for your focus year explain your vegetation trends (ENV506: gamma SPI, lags, RESTREND, LST and ET).
-- **AT4 Part 3:** the same driver analysis supports your attribution of change.
+- **AT4 Part 3:** rainfall anomalies and drought indices over your clearing period and fire window test whether climate explains the change and fire in your tile.
 
 ## 5. Reading
 

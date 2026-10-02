@@ -2,14 +2,14 @@
 
 # ENV306/506 Summative assessment 2026
 
-The four tasks build one chain on each student's own 20 km tile in the Daly River Catchment: AT2 explains vegetation condition and its climate drivers, AT3 interprets land cover change, and AT4 integrates every topic into one landscape assessment. Personal tiles and years make every student's numbers unique, and check values, version history, a supervised AT3 and an ungraded AT4 verification check (viva) verify the work. Every task maps to all four ULOs. Confirm the due dates in Learnline.
+All four tasks use each student's own 20 km tile in the Daly River Catchment. AT2 explains vegetation condition and its climate drivers, and AT3 interprets land cover change; together they build the skills that AT4 applies to new questions in one integrated landscape assessment. AT4 does not reuse AT2 or AT3 work, so no analysis is marked twice. Personal tiles and years make every student's numbers unique, and check values, version history, a supervised AT3 and an ungraded AT4 verification check (viva) verify the work. Every task maps to all four ULOs. Confirm the due dates in Learnline.
 
 | Task | Weight | Linked pracs | ENV306 length | ENV506 length | Due |
 | --- | --- | --- | --- | --- | --- |
 | AT1 Project proposal: the plan for your AT4 | 10 % | 01, plus the AT4 design | 700 words ± 10 % (630–770) | 1000 words ± 10 % (900–1100) | Fri 6 Nov 2026, 11:59 pm |
 | AT2 Magazine article: vegetation condition and climate drivers | 30 % | 02, 03 | 700–1000 words | 1000–1500 words | Fri 20 Nov 2026, 11:59 pm |
 | AT3 Critical assessment: short answers on land cover change | 10 % | 04, 05 | 400–500 words | 500–700 words | In class, Thu 5 Nov 2026, 3:30–4:30 pm |
-| AT4 Integrated landscape assessment: scientific article + ungraded verification check (viva) | 50 % | All (core 02–08 and 11; one elective from 09, 10, 12 or 13) | 2000 words ± 10 % (1800–2200) | 3000 words ± 10 % (2700–3300) | Fri 11 Dec 2026, 11:59 pm; check-ins Fri 6, Tue 10, Thu 12 and Fri 13 Nov |
+| AT4 Integrated landscape assessment: scientific article + ungraded verification check (viva) | 50 % | All (core 02–08 and 11; one elective from 09, 10, 12 or 13) | 2000 words ± 10 % (1800–2200) | 3000 words ± 10 % (2700–3300) | Fri 11 Dec 2026, 11:59 pm; check-ins Mon 9, Tue 10, Thu 12 and Fri 13 Nov |
 
 Word limits exclude the title, references, figure and table captions, and the appendix.
 
@@ -52,8 +52,8 @@ No take-home task can be made completely "AI-proof". This design follows TEQSA's
 | 3. Process evidence | Version history across at least 3 dates, Tasks screenshots, and figures labelled with the student ID and tile code. | AT2, AT4 |
 | 4. Supervised writing | AT3 is answered in class, with no generative AI, on unseen questions about the student's **own** transition matrix. | AT3 |
 | 5. Oral verification | Two ungraded AT4 morning check-ins (ENV306 4 min; ENV506 5 min each), with a checkpoint record and the 50 % cap if the student cannot explain their work; and the ENV506 AT1 pitch. | AT1 (506), AT4 |
-| 6. Internal consistency | AT4 parts reuse each other's numbers (e.g. woodland area in Part 1 and cleared area in Part 2), and AT4 Part 3 builds on the student's AT2. Markers cross-check them. | AT2, AT4 |
-| 7. Feedback loop | A response-to-feedback table shows how AT2 feedback was applied in AT4. | AT4 |
+| 6. Internal consistency | AT4 parts reuse each other's numbers (e.g. woodland area in Part 1 and cleared area in Part 2). Markers cross-check them. | AT4 |
+| 7. Feedback loop | A response-to-feedback table shows how AT1 feedback on the plan was applied in AT4. | AT4 |
 | 8. Situated content | NT data, in-class references, and the student's own error analysis. | All |
 | 9. Verifiable references | A DOI or stable URL for every reference. | All |
 | 10. GenAI declaration | Permitted: debugging, grammar, explaining errors. Not permitted: generating analysis, interpretation, figures or references. | All |
@@ -151,7 +151,7 @@ The appendix contains the script link, results log and check values, process evi
 | --- | --- | --- | --- |
 | 1 Pattern | What is where, and how fragmented is it? | A Random Forest land cover map of your tile from your own training and validation points; error matrix, producer's and user's accuracy, area per class; at least two landscape metrics | 04 |
 | 2 Change | What changed, when, and how fast? | Clearing and regrowth over your clearing period (Hansen GFC and Sentinel-2), and the disturbance history from LandTrendr or CCDC | 05, 06 |
-| 3 Drivers | Is the change linked to climate or fire? | Your AT2 results, revised after feedback; fire frequency and seasonality over your 10-year window (MCD64A1 checked against ESA FireCCI51, `ESA/CCI/FireCCI/5_1`); burn severity for one fire year, with the NT season classes compared with Key & Benson | 02, 03, 07 |
+| 3 Drivers | Is the change linked to climate or fire? | Climate over your clearing period and fire window (CHIRPS rainfall anomalies, or SPI/SPEI), tested against the year-to-year clearing, regrowth and burned area from Parts 2–3; fire frequency and seasonality over your 10-year window (MCD64A1 checked against ESA FireCCI51, `ESA/CCI/FireCCI/5_1`); burn severity for one fire year, with the NT season classes compared with Key & Benson | 02, 03, 07 |
 | 4 Beyond optical | What do SAR and lidar add? | Sentinel-1 (linear units) for wet-season change, inundation or cloud-free clearing detection, and GEDI canopy height or biomass by land cover class | 08, 11 |
 | 5 Elective (choose one) | A linked case study | (a) habitat suitability for your assigned species, with spatial-block cross-validation and the effect of your Part 2 clearing; (b) AlphaEarth embeddings tested against your Part 1 map and Part 2 change for your AlphaEarth years; (c) crocodile biomass vs floodplain inundation for your focal river within the multi-river model; (d) urban expansion at your assigned site and years with Sentinel-1 | 12, 13, 09, 10 |
 | 6 Synthesis | What should a named NT decision-maker do, and how certain is that advice? | An integration of the parts, their uncertainties, and a recommendation for a named decision (e.g. a clearing permit, a fire management plan, water allocation) | All |
@@ -169,16 +169,19 @@ Numbers reused across parts must agree; explain any difference.
 
 **Viva: two morning check-ins (ungraded verification)**
 
-The viva carries no marks. It confirms, while the work is fresh, that your AT4 analysis is your own. Instead of one long viva after the course, you have **two short check-ins in the first hour of the morning, the day after you have done the AT4 work**. Each check-in covers every AT4 part you have finished so far.
+The viva carries no marks. It confirms, while the work is fresh, that your AT4 analysis is your own. Instead of one long viva after the course, you have **two short check-ins in the first hour of the morning, after the AT4 work has been taught**. Each check-in covers the AT4 parts taught so far.
 
-| Group | First check-in | Second check-in |
-| --- | --- | --- |
-| A (odd student numbers) | Fri 6 Nov, 9:00–10:00: Part 1 (land cover), early Part 2 (LandTrendr) and Part 3 drivers (AT2 analysis) | Thu 12 Nov, 9:00–10:00: Parts 2–4 (clearing, fire, SAR and lidar) and your elective so far |
-| B (even student numbers) | Tue 10 Nov, 9:00–10:00: Parts 1–3 (land cover, clearing, drivers and fire) and Part 4 SAR so far | Fri 13 Nov, 9:00–10:00: Part 4 (SAR and lidar), your elective and your synthesis plan |
+Staff place you in Group A or Group B from the class list, balancing group size and the number of ENV306 and ENV506 students. Your group is posted in Learnline by Fri 6 Nov, and your poster group comes from the same check-in group.
 
-- **ENV306 (4 min per check-in):** re-run one step live, explain one decision, interpret one figure.
+| Check-in | Group A | Group B | What is covered |
+| --- | --- | --- | --- |
+| First | Mon 9 Nov, 9:00–10:00 | Tue 10 Nov, 9:00–10:00 | Part 1 (land cover and accuracy), Part 2 (clearing, and LandTrendr or CCDC) and the fire analysis in Part 3, as far as you have gone |
+| Second | Thu 12 Nov, 9:00–10:00 | Fri 13 Nov, 9:00–10:00 | Part 3 (fire and climate), Part 4 (SAR and lidar), your elective so far, and your synthesis plan |
+
+- **ENV306 (4 min per check-in):** open your saved script and its version history, explain one step and one decision, and interpret one figure.
 - **ENV506 (5 min per check-in):** as for ENV306; at the second check-in, also defend a method choice against an alternative the examiner proposes.
 - **Checkpoint record:** the examiner notes your key values (for example, woodland area, cleared hectares, burned area) on a checkpoint record. The numbers in your submitted article must match it, or you must explain any change.
+- **Missed check-in:** if you miss a check-in for an approved reason (for example, illness), you do it in the make-up slot (Fri 13 Nov, 3:30–4:30 pm) or online within one week of the end of the course.
 
 The outcome is recorded as *satisfactory* or *not satisfactory*. If you cannot explain a part at your first check-in, you get help and try again at your second. If the outcome is still *not satisfactory* after the second check-in, or your article's numbers do not match your checkpoint record and a short online follow-up does not resolve it, your AT4 mark is capped at 50 % of the mark awarded for the article, with a possible integrity referral.
 

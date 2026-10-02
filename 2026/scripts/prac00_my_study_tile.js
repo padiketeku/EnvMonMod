@@ -118,8 +118,8 @@ print('AT4 elective (b) AlphaEarth years (Prac 13)', alphaPair);
 print('AT4 elective (c) focal river system (Prac 09)', crocRiver);
 print('AT4 elective (d) urban site and years (Prac 10)', urbanSite, urbanPair);
 // TILE_ID is your tile index written with 3 digits, e.g. tile 7 → "DALY-007".
-// AT4 check-in group: odd student numbers = Group A (Fri 6 and Thu 12 Nov), even = Group B (Tue 10 and Fri 13 Nov).
-print('AT4 morning check-in group', STUDENT_NUMBER % 2 === 1 ? 'Group A: Fri 6 Nov and Thu 12 Nov, 9:00–10:00' : 'Group B: Tue 10 Nov and Fri 13 Nov, 9:00–10:00');
+// AT4 check-in group (A or B) is allocated by staff from the class list and posted in Learnline by Fri 6 Nov.
+print('AT4 morning check-in group', 'see Learnline. Group A: Mon 9 and Thu 12 Nov; Group B: Tue 10 and Fri 13 Nov (9:00–10:00)');
 var TILE_ID = ee.String('DALY-').cat(tileIndex.int().format('%03d'));
 print('Your TILE_ID (label every figure with it and your student ID)', TILE_ID);
 // Allocation code = tile index × 1000 + (last two digits of AT2 year) × 10 + AT3 gap. Staff use it to check your allocation.
