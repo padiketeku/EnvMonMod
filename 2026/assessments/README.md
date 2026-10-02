@@ -2,14 +2,14 @@
 
 # ENV306/506 Summative assessment 2026
 
-The four tasks build one chain on each student's own 20 km tile in the Daly River Catchment: AT2 explains vegetation condition and its climate drivers, AT3 interprets land cover change, and AT4 integrates every topic into one landscape assessment. Personal tiles and years make every student's numbers unique, and check values, version history, a supervised AT3 and an AT4 viva verify the work. Every task maps to all four ULOs. Confirm the due dates in Learnline.
+The four tasks build one chain on each student's own 20 km tile in the Daly River Catchment: AT2 explains vegetation condition and its climate drivers, AT3 interprets land cover change, and AT4 integrates every topic into one landscape assessment. Personal tiles and years make every student's numbers unique, and check values, version history, a supervised AT3 and an ungraded AT4 verification check (viva) verify the work. Every task maps to all four ULOs. Confirm the due dates in Learnline.
 
 | Task | Weight | Linked pracs | ENV306 length | ENV506 length | Due |
 | --- | --- | --- | --- | --- | --- |
 | AT1 Project proposal: the plan for your AT4 | 10 % | 01, plus the AT4 design | 700 words ± 10 % (630–770) | 1000 words ± 10 % (900–1100) | Fri 6 Nov 2026, 11:59 pm |
 | AT2 Magazine article: vegetation condition and climate drivers | 30 % | 02, 03 | 700–1000 words | 1000–1500 words | Fri 20 Nov 2026, 11:59 pm |
 | AT3 Critical assessment: short answers on land cover change | 10 % | 04, 05 | 400–500 words | 500–700 words | In class, Thu 5 Nov 2026, 3:30–4:30 pm |
-| AT4 Integrated landscape assessment: scientific article + viva | 50 % | All (core 02–08 and 11; one elective from 09, 10, 12 or 13) | 2000 words ± 10 % (1800–2200) | 3000 words ± 10 % (2700–3300) | Fri 11 Dec 2026, 11:59 pm; vivas 14–16 Dec |
+| AT4 Integrated landscape assessment: scientific article + ungraded verification check (viva) | 50 % | All (core 02–08 and 11; one elective from 09, 10, 12 or 13) | 2000 words ± 10 % (1800–2200) | 3000 words ± 10 % (2700–3300) | Fri 11 Dec 2026, 11:59 pm; vivas 14–16 Dec |
 
 Word limits exclude the title, references, figure and table captions, and the appendix.
 
@@ -22,7 +22,7 @@ The Daly River Catchment is under growing pressure from land clearing for agricu
 | AT1 | Analyst | A project plan for monitoring your tile | The program manager |
 | AT2 | Analyst | A feature article on vegetation condition and climate drivers | Land managers and the interested public |
 | AT3 | Analyst | A briefing note answering the program manager's questions on your change matrix (in class) | The program manager |
-| AT4 | Analyst (ENV306) or senior analyst (ENV506) | A technical article with a recommendation, defended in a panel review (the viva) | The advisory group and its scientific reviewers |
+| AT4 | Analyst (ENV306) or senior analyst (ENV506) | A technical article with a recommendation, defended in a panel review (an ungraded viva) | The advisory group and its scientific reviewers |
 
 ENV506 students act as senior analysts: in AT4 they also advise on the design of the monitoring program and on how far its results can be relied on for decisions.
 
@@ -51,14 +51,14 @@ No take-home task can be made completely "AI-proof". This design follows TEQSA's
 | 2. Re-runnable check values | A versioned Code Editor link (or a Python/R notebook, or a QGIS model plus its export script) and a results log with three check values at staff-specified coordinates. Markers re-run the work, and the values must match. | AT2, AT4 |
 | 3. Process evidence | Version history across at least 3 dates, Tasks screenshots, and figures labelled with the student ID and tile code. | AT2, AT4 |
 | 4. Supervised writing | AT3 is answered in class, with no generative AI, on unseen questions about the student's **own** transition matrix. | AT3 |
-| 5. Oral verification | AT4 viva (ENV306 10 min; ENV506 15 min) and the ENV506 AT1 pitch. | AT1 (506), AT4 |
+| 5. Oral verification | Ungraded AT4 viva (ENV306 10 min; ENV506 15 min), with the 50 % cap if the student cannot explain their work; and the ENV506 AT1 pitch. | AT1 (506), AT4 |
 | 6. Internal consistency | AT4 parts reuse each other's numbers (e.g. woodland area in Part 1 and cleared area in Part 2), and AT4 Part 3 builds on the student's AT2. Markers cross-check them. | AT2, AT4 |
 | 7. Feedback loop | A response-to-feedback table shows how AT2 feedback was applied in AT4. | AT4 |
 | 8. Situated content | NT data, in-class references, and the student's own error analysis. | All |
 | 9. Verifiable references | A DOI or stable URL for every reference. | All |
 | 10. GenAI declaration | Permitted: debugging, grammar, explaining errors. Not permitted: generating analysis, interpretation, figures or references. | All |
 
-**Viva gate (AT4):** if the student cannot reproduce or explain their workflow, the mark is capped at 50 % of the awarded mark, with a possible integrity referral.
+**Viva gate (AT4):** the viva is ungraded: it adds no marks. If the student cannot reproduce or explain their workflow, the AT4 mark is capped at 50 % of the awarded mark, with a possible integrity referral.
 
 **Restricted data:** the crocodile survey data and floodplain shapefiles come from Learnline only. Students must not post them publicly, and should share their assets only with markers.
 
@@ -141,9 +141,9 @@ The appendix contains the script link, results log and check values, process evi
 | Uncertainty and error sources (40 % / 30 %) | Specific error sources (classification error and how it compounds between two maps, image dates and phenology, training data) justified, with their likely effect on your numbers | Several relevant sources, soundly reasoned | Some relevant sources; reasoning general | Few sources; weak reasoning | Uncertainty not addressed |
 | ENV506: quantified error impact and fitness for a decision (— / 25 %) | Correctly quantifies how the given error rate changes the woodland-loss estimate, and makes a well-argued judgement on fitness for the named decision | Correct quantification; judgement sound but brief | Quantification with minor errors; judgement general | Attempted, with major errors | Not attempted, or incorrect |
 
-## AT4 — Integrated landscape assessment (50 %) + viva
+## AT4 — Integrated landscape assessment (50 %) + ungraded viva
 
-**Role and audience:** the advisory group must make a decision that affects your tile. Your article goes to the group and its scientific reviewers, and you defend it in a panel review (the viva). ENV506 senior analysts also advise on the design of the monitoring program.
+**Role and audience:** the advisory group must make a decision that affects your tile. Your article goes to the group and its scientific reviewers, and you defend it in a panel review (an ungraded viva). ENV506 senior analysts also advise on the design of the monitoring program.
 
 **Question:** *What is changing in your tile, why, and what should managers do?* Write a submission-ready article in the format of the MDPI *Remote Sensing* template: Abstract; Introduction (literature review, aims and objectives); Methods; Results; Discussion (with limitations); Conclusion; References. Figures and tables carry the results; method details go in the appendix.
 
@@ -167,12 +167,14 @@ The appendix contains the script link, results log and check values, process evi
 
 Numbers reused across parts must agree; explain any difference.
 
-**Viva (panel review):**
+**Viva (panel review): an ungraded verification check**
+
+The viva carries no marks. It confirms that the work is your own. The outcome is recorded as *satisfactory* or *not satisfactory*.
 
 - **ENV306 (10 min):** re-run one step live from a part the examiner chooses, explain one decision, interpret one figure.
 - **ENV506 (15 min):** as for ENV306, plus defending a method choice against an alternative the examiner proposes.
 
-The viva gate applies.
+If the outcome is *not satisfactory* (you cannot reproduce or explain your workflow), your AT4 mark is capped at 50 % of the mark awarded for the article, with a possible integrity referral.
 
 | Criterion (ENV306 / ENV506 weight) | HD | D | C | P | F |
 | --- | --- | --- | --- | --- | --- |
@@ -182,5 +184,5 @@ The viva gate applies.
 | Integration: consistency across parts and synthesis (15 % / 15 %) | The parts form one argument; shared numbers agree or differences are explained; the synthesis answers the management question | Parts well linked; minor inconsistencies explained | Parts linked but largely separate; some inconsistencies unexplained | Little integration; inconsistencies not addressed | Disconnected parts or contradictory numbers |
 | ENV506: attribution and scale analysis (— / 15 %) | Attribution quantifies climate, fire and clearing with effect sizes and caveats; scale analysis interpreted through landscape-ecology theory | Both analyses sound; interpretation partial | Both attempted; one weak | One attempted, or both with major errors | Missing |
 | Discussion and recommendation for a named decision (10 % / 10 %; ENV506: plus monitoring-program advice) | Specific, defensible recommendation for a named decision, with limitations and uncertainty weighed; ENV506 monitoring advice practical and justified | Clear recommendation with limitations stated | Recommendation general; limitations listed but not weighed | Weak recommendation; limitations minimal | No recommendation, or unsupported |
-| Verification, process evidence and viva (15 % / 10 %) | Check values match; full version history; in the viva re-runs the chosen step, explains decisions and interprets figures fluently (ENV506: defends a method against an alternative) | Evidence complete; viva confident with minor hesitation | Evidence mostly complete; viva adequate | Gaps in evidence; viva shows partial understanding | Evidence missing, check values do not match, or work cannot be reproduced or explained (viva gate applies) |
+| Verification and process evidence (15 % / 10 %) | Script, results log and check values all match on re-run; version history across at least 3 dates; complete GenAI declaration | Evidence complete; check values match, minor documentation gaps | Most evidence present; small discrepancies explained | Evidence incomplete, or check values partly unmatched | Evidence missing, or check values do not match (may lead to an integrity review) |
 | Communication and referencing (10 % / 10 %) | Follows the MDPI template; concise and within the word limit; figures and tables carry the results; all references current and verifiable | Well structured, with minor issues | Generally clear; some structure or citation issues | Disorganised, or several citation problems | Unstructured, outside the word limit, or references missing or unverifiable |

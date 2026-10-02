@@ -75,7 +75,7 @@ Code Editor scripts are in [`scripts/`](scripts). Run [`prac00_my_study_tile.js`
 - **NT throughout:** every prac uses Northern Territory case studies.
 - **Three data families:** optical, SAR and lidar, combined in Prac 11 and in AT4.
 - **Rigorous science:** significance testing, accuracy assessment, spatial cross-validation and uncertainty run through every prac.
-- **Assessment as a chain:** AT2 (drivers), AT3 (change) and AT4 (integration) all use the student's own tile, and are verified by check values, version history, a supervised AT3 and a viva. ENV506 versions are more demanding.
+- **Assessment as a chain:** AT2 (drivers), AT3 (change) and AT4 (integration) all use the student's own tile, and are verified by check values, version history, a supervised AT3 and an ungraded verification check (viva). ENV506 versions are more demanding.
 - **Choice of environment:** optional Python, R and QGIS versions; the Code Editor remains the main environment.
 - **Consistent structure:** every prac has concept notes, activities, challenge questions, an assessment link and recent readings.
 

@@ -50,7 +50,7 @@ The course moves from tools to drivers, then to change, sensors and finally mode
 | AT1 Project proposal: the plan for your AT4 (ENV306 700 words ± 10 %; ENV506 1000 words ± 10 %) | 10 % | 01, plus the AT4 design | Fri 6 Nov 2026, 11:59 pm |
 | AT2 Magazine article: vegetation condition and climate drivers (ENV306 700–1000 words; ENV506 1000–1500 words) | 30 % | 02, 03 | Fri 20 Nov 2026, 11:59 pm |
 | AT3 Critical assessment: short answers on land cover change (ENV306 400–500 words; ENV506 500–700 words) | 10 % | 04, 05 | In class, Thu 5 Nov 2026, 3:30–4:30 pm |
-| AT4 Integrated landscape assessment: scientific article (ENV306 2000 words ± 10 %; ENV506 3000 words ± 10 %) + viva (ENV306 10 min; ENV506 15 min) | 50 % | All (core 02–08 and 11; one elective from 09, 10, 12 or 13) | Article Fri 11 Dec 2026, 11:59 pm; vivas 14–16 Dec 2026 (online) |
+| AT4 Integrated landscape assessment: scientific article (ENV306 2000 words ± 10 %; ENV506 3000 words ± 10 %) + ungraded viva (ENV306 10 min; ENV506 15 min; 50 % cap if the student cannot explain their work) | 50 % | All (core 02–08 and 11; one elective from 09, 10, 12 or 13) | Article Fri 11 Dec 2026, 11:59 pm; vivas 14–16 Dec 2026 (online) |
 
 ## Notes for staff
 
