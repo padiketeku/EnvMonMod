@@ -29,7 +29,7 @@
  *
  * LINKS:
  *   Prac page: pracs/prac04-land-cover-mapping-and-landscape-metrics.md
- *   Assessment: Prac 04; AT4 Part 1; training points reused for AT3.
+ *   Assessment: Prac 04; AT4 Part 1; training points reused for AT1.
  *
  * KEY GEE IDEAS:
  *   - Supervised classification: sample predictors at labelled points, train(), then classify() the image.

@@ -35,7 +35,7 @@ The Google Earth Engine Code Editor is the main environment for ENV306/506. The 
 | 12 Species distribution | Export the 12-band predictor stack and suitability maps | Import the ALA CSV (*Add delimited text layer*); remove duplicates within 1 km (*Snap points to grid* + *Delete duplicate geometries*); map suitability; *Zonal statistics* per land tenure | Delimited text, Snap to grid |
 | 13 AlphaEarth | Export 2018 and 2024 embeddings (64 bands, small AOI) | SAGA *K-Means clustering for grids* or GRASS `i.cluster` + `i.maxlik`; compare clusters with WorldCover via *Raster layer zonal statistics* | SAGA, GRASS imagery |
 
-## Cartography for AT2 and AT4 (all students)
+## Cartography for AT3 and AT4 (all students)
 
 Use **Project → New Print Layout** for publication-quality figures: map frame, legend, scale bar, north arrow, data source text, and **your student ID and tile code** (required for the assessment). Export at 300 dpi PNG or PDF.
 

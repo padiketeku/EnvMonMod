@@ -30,7 +30,7 @@
  *
  * LINKS:
  *   Prac page: pracs/prac03-climate-and-hydrology-drivers-rainfall-anomalies-drought-indices-lst-and-et.md
- *   Assessment: Prac 03; AT2 (climate drivers); AT4 Part 3.
+ *   Assessment: Prac 03; AT3 (climate drivers); AT4 Part 3.
  *
  * KEY GEE IDEAS:
  *   - Cloud masking with bitwiseAnd on a QA band, and scale factors/offsets to convert stored integers to real units.

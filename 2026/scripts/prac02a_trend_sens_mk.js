@@ -25,7 +25,7 @@
  *
  * LINKS:
  *   Prac page: pracs/prac02-monitoring-vegetation-condition-trends-and-seasonality.md
- *   Assessment: Prac 02; AT2 (trend and seasonality); AT4 Part 3.
+ *   Assessment: Prac 02; AT3 (trend and seasonality); AT4 Part 3.
  *
  * KEY GEE IDEAS:
  *   - Building a new ImageCollection with ee.List.sequence(...).map() (one image per year).

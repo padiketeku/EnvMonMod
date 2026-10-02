@@ -49,10 +49,10 @@ The course moves from tools to drivers, then to change, sensors and finally mode
 | Prac | Topic | Scripts |
 | --- | --- | --- |
 | [01](pracs/prac01-earth-engine-image-processing-fundamentals-and-vegetation-dynamics.md) | Earth Engine, image processing fundamentals, vegetation dynamics | `prac00`, `prac01a`–`c` |
-| [02](pracs/prac02-monitoring-vegetation-condition-trends-and-seasonality.md) | Vegetation condition: trends (Sen's slope, Mann–Kendall) and seasonality (harmonic regression) (AT2) | `prac02a`, `prac02b` |
-| [03](pracs/prac03-climate-and-hydrology-drivers-rainfall-anomalies-drought-indices-lst-and-et.md) | Climate and hydrology drivers: rainfall anomalies, drought indices, LST, ET (AT2) | `prac03a`–`c` |
-| [04](pracs/prac04-land-cover-mapping-and-landscape-metrics.md) | Land cover mapping (RF, CART, SVM) and landscape metrics (AT3 input; AT4 Part 1) | `prac04a`, `prac04b` |
-| [05](pracs/prac05-change-detection-bi-temporal-transitions-landtrendr-and-ccdc.md) | Change detection: transition matrix (AT3), LandTrendr, CCDC (AT4 Part 2) | `prac05a`, `prac05b` |
+| [02](pracs/prac02-monitoring-vegetation-condition-trends-and-seasonality.md) | Vegetation condition: trends (Sen's slope, Mann–Kendall) and seasonality (harmonic regression) (AT3) | `prac02a`, `prac02b` |
+| [03](pracs/prac03-climate-and-hydrology-drivers-rainfall-anomalies-drought-indices-lst-and-et.md) | Climate and hydrology drivers: rainfall anomalies, drought indices, LST, ET (AT3) | `prac03a`–`c` |
+| [04](pracs/prac04-land-cover-mapping-and-landscape-metrics.md) | Land cover mapping (RF, CART, SVM) and landscape metrics (AT1 input; AT4 Part 1) | `prac04a`, `prac04b` |
+| [05](pracs/prac05-change-detection-bi-temporal-transitions-landtrendr-and-ccdc.md) | Change detection: transition matrix (AT1), LandTrendr, CCDC (AT4 Part 2) | `prac05a`, `prac05b` |
 | [06](pracs/prac06-monitoring-land-clearing.md) | Monitoring land clearing (AT4 Part 2) | `prac06` |
 | [07](pracs/prac07-fire-regime-burn-severity-frequency-and-seasonality.md) | Fire regime: severity, frequency, seasonality (AT4 Part 3) | `prac07a`, `prac07b` |
 | [08](pracs/prac08-sar-and-water-surface-water-sentinel-1-flood-mapping-wetlands-and-mangroves.md) | SAR and water: surface water, Sentinel-1 floods, wetlands, mangroves (AT4 Part 4) | `prac08a`–`c` |
@@ -75,7 +75,7 @@ Code Editor scripts are in [`scripts/`](scripts). Run [`prac00_my_study_tile.js`
 - **NT throughout:** every prac uses Northern Territory case studies.
 - **Three data families:** optical, SAR and lidar, combined in Prac 11 and in AT4.
 - **Rigorous science:** significance testing, accuracy assessment, spatial cross-validation and uncertainty run through every prac.
-- **Assessments that build skills:** AT2 (vegetation condition and climate), AT3 (change) and AT4 (integration) all use the student's own tile. AT2 and AT3 build the skills that AT4 applies to new questions, without reusing their work. All tasks are verified by check values, version history, a supervised AT3 and an ungraded verification check (viva). ENV506 versions are more demanding.
+- **Assessments that build skills:** AT1 (change), AT3 (vegetation condition and climate) and AT4 (integration) all use the student's own tile. AT1 and AT3 build the skills that AT4 applies to new questions, without reusing their work. All tasks are verified by check values, version history, a supervised AT1 and an ungraded verification check (viva). ENV506 versions are more demanding.
 - **Choice of environment:** optional Python, R and QGIS versions; the Code Editor remains the main environment.
 - **Consistent structure:** every prac has concept notes, activities, challenge questions, an assessment link and recent readings.
 

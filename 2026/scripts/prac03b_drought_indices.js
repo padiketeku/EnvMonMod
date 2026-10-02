@@ -28,7 +28,7 @@
  *
  * LINKS:
  *   Prac page: pracs/prac03-climate-and-hydrology-drivers-rainfall-anomalies-drought-indices-lst-and-et.md
- *   Assessment: Prac 03; AT2 (climate drivers); AT4 Part 3.
+ *   Assessment: Prac 03; AT3 (climate drivers); AT4 Part 3.
  *
  * KEY GEE IDEAS:
  *   - Scale factors: MODIS bands are stored as integers and must be multiplied (and offset) to get real units.

@@ -97,7 +97,7 @@ Map.addLayer(predictors.classify(rf), {min: 0, max: 6, palette: palette}, 'Land 
 ## 4. Link to summative assessment
 
 - **AT4 Part 1:** classify **your Daly tile** with your own training and validation points; report the error matrix, producer's and user's accuracy, area per class and at least two landscape metrics (ENV506: area-adjusted accuracy with 95 % confidence intervals).
-- **AT3:** keep your training points; they are reused in Prac 05a.
+- **AT1:** keep your training points; they are reused in Prac 05a.
 
 ## 5. Reading
 
@@ -148,7 +148,7 @@ Each script is copied here from [`scripts/`](../scripts) so this page has everyt
  *
  * LINKS:
  *   Prac page: pracs/prac04-land-cover-mapping-and-landscape-metrics.md
- *   Assessment: Prac 04; AT4 Part 1; training points reused for AT3.
+ *   Assessment: Prac 04; AT4 Part 1; training points reused for AT1.
  *
  * KEY GEE IDEAS:
  *   - Supervised classification: sample predictors at labelled points, train(), then classify() the image.
@@ -359,7 +359,7 @@ Export.image.toDrive({image: classRF.toByte(), description: 'Prac04a_RF_landcove
  *
  * LINKS:
  *   Prac page: pracs/prac04-land-cover-mapping-and-landscape-metrics.md
- *   Assessment: Prac 04; AT4 Part 1; training points reused for AT3.
+ *   Assessment: Prac 04; AT4 Part 1; training points reused for AT1.
  *
  * KEY GEE IDEAS:
  *   - Projections and scale: reproject() fixes the analysis grain, so metrics change when SCALE changes.

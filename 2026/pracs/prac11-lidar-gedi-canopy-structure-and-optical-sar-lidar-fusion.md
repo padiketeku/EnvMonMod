@@ -88,7 +88,7 @@ Map.addLayer(predictors.classify(rf), {min: 0, max: 30, palette: ['#ffffcc', '#7
 ## 4. Link to summative assessment
 
 - **AT4 Part 4:** summarise GEDI canopy height or biomass by land cover class in your tile; ENV506 students meet the multi-sensor requirement here.
-- **AT1:** every proposal must justify its choice of optical, SAR and lidar data. This prac gives the basis for that choice.
+- **AT2:** every proposal must justify its choice of optical, SAR and lidar data. This prac gives the basis for that choice.
 
 ## 5. Reading
 
