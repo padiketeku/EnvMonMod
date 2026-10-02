@@ -82,7 +82,7 @@ Code Editor scripts are in [`scripts/`](scripts). Run [`prac00_my_study_tile.js`
 ## Getting the scripts into the Code Editor
 
 1. Sign up for Earth Engine with a Google account and select or create a Cloud project (noncommercial and academic use is free).
-2. Open the shared course repository in the Code Editor (**Scripts → Reader**), or create a new script and paste in any file from [`scripts/`](scripts).
+2. Open the shared course repository in the Code Editor (**Scripts → Reader**), or create a new script and paste in any file from [`scripts/`](scripts). Each prac page also ends with a **Full scripts** section holding a copy of every script for that prac.
 3. **Save as** your own copy in your **Owner** repository before editing. The Code Editor version history is assessment evidence.
 4. Create a Google Drive folder called `GEE_NT`. All exports go there.
 
