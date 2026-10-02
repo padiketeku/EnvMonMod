@@ -2,11 +2,11 @@
 
 # Prac 05: Change detection: bi-temporal transitions, LandTrendr and CCDC
 
-**When:** Thu 5 Nov 2026, Session 1 (transition matrix) and Session 3 (LandTrendr and CCDC); **AT3 in class, Session 4** · **Scripts:** [`prac05a_transition_matrix.js`](../scripts/prac05a_transition_matrix.js), [`prac05b_landtrendr_ccdc.js`](../scripts/prac05b_landtrendr_ccdc.js) · **ULOs:** 1, 2, 3, 4
+**When:** Thu 5 Nov 2026, Session 1 (transition matrix) and Session 3 (LandTrendr and CCDC); **AT1 in class, Session 4** · **Scripts:** [`prac05a_transition_matrix.js`](../scripts/prac05a_transition_matrix.js), [`prac05b_landtrendr_ccdc.js`](../scripts/prac05b_landtrendr_ccdc.js) · **ULOs:** 1, 2, 3, 4
 
-**Also available in:** Python and R versions of LandTrendr in [`prac02_05_trends_seasonality_change.py`](../alternatives/python/prac02_05_trends_seasonality_change.py) and [`prac02_05_trends_seasonality_change.R`](../alternatives/r/prac02_05_trends_seasonality_change.R); QGIS [recipe](../alternatives/qgis/README.md). The transition matrix for AT3 is Code Editor only.
+**Also available in:** Python and R versions of LandTrendr in [`prac02_05_trends_seasonality_change.py`](../alternatives/python/prac02_05_trends_seasonality_change.py) and [`prac02_05_trends_seasonality_change.R`](../alternatives/r/prac02_05_trends_seasonality_change.R); QGIS [recipe](../alternatives/qgis/README.md). The transition matrix for AT1 is Code Editor only.
 
-**Purpose.** Detect change between two dates in your own tile (your transition matrix for AT3), then over decades with LandTrendr and CCDC.
+**Purpose.** Detect change between two dates in your own tile (your transition matrix for AT1), then over decades with LandTrendr and CCDC.
 
 ## 1. Concept notes
 
@@ -31,12 +31,12 @@ Landscapes change abruptly (clearing, fire, flood) and gradually (woody thickeni
 
 ## 2. Practical activities
 
-**Activity 5.1 – Bi-temporal change and the transition matrix (`prac05a`, Session 1), needed for AT3.**
+**Activity 5.1 – Bi-temporal change and the transition matrix (`prac05a`, Session 1), needed for AT1.**
 
-1. Paste your tile geometry and AT3 year pair (from `prac00`), and point `TRAINING` to your Prac 04 training points.
+1. Paste your tile geometry and AT1 year pair (from `prac00`), and point `TRAINING` to your Prac 04 training points.
 2. Build dry-season Landsat 8/9 composites for both years, and classify both with one RF trained on year A. Report the hold-out accuracy.
 3. Compute the 5 × 5 transition matrix in hectares (water, woodland, agriculture, bare soil, grassland/other).
-4. Map woodland → agriculture and all changed pixels, then export the matrix. **Bring it to AT3 in Session 4.**
+4. Map woodland → agriculture and all changed pixels, then export the matrix. **Bring it to AT1 in Session 4.**
 
 **Activity 5.2 – Multi-temporal change (`prac05b`, Session 3).**
 
@@ -74,7 +74,7 @@ Map.addLayer(lcA.eq(1).and(lcB.eq(2)).selfMask(), {palette: 'red'}, 'Woodland �
 
 ## 4. Link to summative assessment
 
-- **AT3 (supervised, Thu 5 Nov, 3:30–4:30 pm):** answer unseen questions about **your own** transition matrix from Activity 5.1.
+- **AT1 (supervised, Thu 5 Nov, 3:30–4:30 pm):** answer unseen questions about **your own** transition matrix from Activity 5.1.
     - **ENV306:** 400–500 words.
     - **ENV506:** 500–700 words, including quantified error impact.
 - **AT4 Part 2:** LandTrendr or CCDC dates the disturbance history of your tile.
@@ -96,18 +96,18 @@ Each script is copied here from [`scripts/`](../scripts) so this page has everyt
 <summary><strong>prac05a_transition_matrix.js</strong> (162 lines)</summary>
 
 ```javascript
-/**** Prac 05a — Bi-temporal change: post-classification comparison and YOUR transition matrix (for AT3)
+/**** Prac 05a — Bi-temporal change: post-classification comparison and YOUR transition matrix (for AT1)
  * ENV306/506 Environmental Monitoring and Modelling (2026)
- * Inputs: your Prac 00 tile and AT3 years, and your Prac 04 training points ('class' 0–4).
+ * Inputs: your Prac 00 tile and AT1 years, and your Prac 04 training points ('class' 0–4).
  * Method: Landsat 8/9 dry-season composites → Random Forest trained on YEAR_A → classify both years
  *         → cross-tabulate (from-class × to-class) areas → transition matrix and change map.
- * AT3 (in class, Thu 5 Nov 3:30–4:30): short answers about THIS matrix. Bring the printed table and the export.
+ * AT1 (in class, Thu 5 Nov 3:30–4:30): short answers about THIS matrix. Bring the printed table and the export.
  *
  * WHAT THIS SCRIPT DOES:
  *   Asks: how much of your tile changed from one land-cover class to another between YEAR_A and YEAR_B?
  *   It builds a dry-season Landsat composite for each year, trains a Random Forest on your Prac 04 points (YEAR_A),
  *   classifies both years with that one model, and counts the hectares in every from-class → to-class combination.
- *   The result is YOUR transition matrix — the table you bring to the in-class AT3.
+ *   The result is YOUR transition matrix — the table you bring to the in-class AT1.
  *
  * HOW TO USE IT:
  *   (1) Save a copy in your Owner repository.
@@ -115,7 +115,7 @@ Each script is copied here from [`scripts/`](../scripts) so this page has everyt
  *       Cloud project name, or paste your tile polygon). Nothing else needs changing.
  *   (3) Click Run.
  *   (4) Read the accuracy and the transition matrix in the Console (right panel), turn layers on/off in the Map's
- *       Layers list, and start the export in the Tasks tab. The exported CSV is what you bring to AT3.
+ *       Layers list, and start the export in the Tasks tab. The exported CSV is what you bring to AT1.
  *
  * WHAT YOU WILL SEE:
  *   Map layers: composites for YEAR_A and YEAR_B; land cover for both years; Woodland → Agriculture (red);
@@ -130,7 +130,7 @@ Each script is copied here from [`scripts/`](../scripts) so this page has everyt
  *
  * LINKS:
  *   Prac page: pracs/prac05-change-detection-bi-temporal-transitions-landtrendr-and-ccdc.md
- *   Assessment: Prac 05; AT3 (your transition matrix).
+ *   Assessment: Prac 05; AT1 (your transition matrix).
  *
  * KEY GEE IDEAS:
  *   - Post-classification comparison: classify each date, then compare the maps pixel by pixel.
@@ -146,8 +146,8 @@ Each script is copied here from [`scripts/`](../scripts) so this page has everyt
 // Use the same tile and years you recorded in Prac 00, and the training points you made in Prac 04.
 // EDIT TILE: your Prac 00 tile asset path (replace YOUR_PROJECT), or paste the polygon from Prac 00.
 var TILE = ee.FeatureCollection('projects/YOUR_PROJECT/assets/my_tile').geometry();   // or paste the polygon from Prac 00
-var YEAR_A = 2018;   // Prac 00: AT3 YEAR_A   <- EDIT (the earlier year)
-var YEAR_B = 2024;   // Prac 00: AT3 YEAR_B   <- EDIT (the later year)
+var YEAR_A = 2018;   // Prac 00: AT1 YEAR_A   <- EDIT (the earlier year)
+var YEAR_B = 2024;   // Prac 00: AT1 YEAR_B   <- EDIT (the later year)
 // EDIT TRAINING: your Prac 04 training points asset. Each point needs an integer 'class' 0–4 in the order of NAMES below.
 var TRAINING = ee.FeatureCollection('projects/YOUR_PROJECT/assets/prac04_training');   // points with integer 'class'
 // Do not edit below this line unless your classes differ. NAMES[i], IDX[i] and PAL[i] all describe class i.
@@ -231,7 +231,7 @@ var rows = IDX.map(function(i) {
   return ee.Feature(null, props);
 });
 var matrix = ee.FeatureCollection(rows);
-// THIS IS YOUR AT3 MATRIX. Diagonal cells (Water → Water, ...) = persistence; off-diagonal cells = change.
+// THIS IS YOUR AT1 MATRIX. Diagonal cells (Water → Water, ...) = persistence; off-diagonal cells = change.
 print('Transition matrix (ha): rows = ' + YEAR_A + ', columns = ' + YEAR_B, matrix);
 
 // Persistence and gross change
@@ -248,9 +248,9 @@ Map.addLayer(lcA.neq(lcB).selfMask(), {palette: 'yellow'}, 'Any change', false);
 // outline only
 Map.addLayer(ee.FeatureCollection([ee.Feature(TILE)]).style({color: 'red', fillColor: '00000000'}), {}, 'My tile');
 
-// ---------- 6 Export (bring to AT3) ----------
+// ---------- 6 Export (bring to AT1) ----------
 // Saves the transition matrix as a CSV (the default format) to the GEE_NT folder in Google Drive.
-// Go to the Tasks tab and click Run. Bring this CSV (and the printed Console table) to the in-class AT3.
+// Go to the Tasks tab and click Run. Bring this CSV (and the printed Console table) to the in-class AT1.
 Export.table.toDrive({collection: matrix, description: 'AT3_transition_matrix_' + YEAR_A + '_' + YEAR_B, folder: 'GEE_NT'});
 
 // Q: Which transition is largest after persistence? Is it real change or classification error? How would you tell?

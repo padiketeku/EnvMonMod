@@ -57,8 +57,8 @@ rgee depends on a working Python environment. If installation fails on a lab mac
 
 ## Assessment evidence with alternative environments
 
-You may complete AT1, AT2 and AT4 in Python, R or QGIS. Your evidence must remain **re-runnable**:
+You may complete AT2, AT3 and AT4 in Python, R or QGIS. Your evidence must remain **re-runnable**:
 
 - **Python/R:** submit the notebook or script, with outputs, and its Git history or dated versions. Report the three **check values**. Markers re-run the code with their own Earth Engine credentials.
 - **QGIS:** submit the Earth Engine export script, the Processing History or graphical model, and the check values.
-- The **viva** (AT4) and **supervised AT3** are the same for everyone.
+- The **viva** (AT4) and **supervised AT1** are the same for everyone.

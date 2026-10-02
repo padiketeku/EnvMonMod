@@ -2,8 +2,8 @@
  * ENV306/506 Environmental Monitoring and Modelling (2026)
  * Every student gets a personal 20 km tile in the Daly River catchment and personal years / sites for the
  * summative assessments. The values are reproducible from your student number, so markers can re-run this
- * script (and the staff check-value coordinates) and check that your figures and numbers came from YOUR tile (AT2, AT3, AT4).
- * Paste your outputs into your AT1 proposal. Do not swap tiles or years without written approval.
+ * script (and the staff check-value coordinates) and check that your figures and numbers came from YOUR tile (AT1, AT3, AT4).
+ * Paste your outputs into your AT2 proposal. Do not swap tiles or years without written approval.
  *
  * WHAT THIS SCRIPT DOES:
  *   Works out YOUR study area and YOUR years for the assessments. It splits the Daly River catchment (NT) into
@@ -15,12 +15,12 @@
  *   (2) Edit ONE line only: STUDENT_NUMBER in section 0 (look for the line marked "EDIT HERE").
  *       Type your digits only — for s123456 type 123456. Do not change COHORT_SALT.
  *   (3) Click Run.
- *   (4) Read the Console (right panel) and copy every printed value into your AT1 proposal.
+ *   (4) Read the Console (right panel) and copy every printed value into your AT2 proposal.
  *       Turn layers on/off in the Map's Layers list. Optionally start the "Prac00_my_tile" export in the Tasks tab.
  *
  * WHAT YOU WILL SEE:
  *   Map: the Daly catchment outline (blue), the 20 km tile grid (grey, off by default) and MY TILE (red).
- *   Console: number of tiles, your tile index and TILE_ID, your AT2/AT3/AT4 years, elective sites and species,
+ *   Console: number of tiles, your tile index and TILE_ID, your AT1/AT3/AT4 years, elective sites and species,
  *   an allocation code for the staff master sheet, and your tile's corner coordinates.
  *
  * DATA:
@@ -85,11 +85,11 @@ var tile = ee.Feature(grid.toList(n).get(tileIndex));   // take the tile at that
 var TILE = tile.geometry();   // your tile's square outline — later scripts call this TILE
 
 // Your assessment years and sites. Each line picks one item from a list using pick(list, multiplier).
-var at2Year = ee.Number(pick(ee.List.sequence(2005, 2024), 31));          // AT2 focus year
-var at3Gap = ee.Number(pick([5, 6, 7, 8], 17));   // number of years between your two AT3 dates
-var at3YearA = ee.Number(pick(ee.List.sequence(2014, ee.Number(2024).subtract(at3Gap)), 37));   // Landsat 8/9 era
+var at3Year = ee.Number(pick(ee.List.sequence(2005, 2024), 31));          // AT3 focus year
+var at1Gap = ee.Number(pick([5, 6, 7, 8], 17));   // number of years between your two AT1 dates
+var at1YearA = ee.Number(pick(ee.List.sequence(2014, ee.Number(2024).subtract(at1Gap)), 37));   // Landsat 8/9 era
 // YEAR_A is chosen from 2014 up to (2024 − gap), so that YEAR_B = YEAR_A + gap is never later than 2024.
-var at3YearB = at3YearA.add(at3Gap);                                                               // ≤ 2024
+var at1YearB = at1YearA.add(at1Gap);                                                               // ≤ 2024
 var clearingStart = ee.Number(pick([2016, 2017, 2018, 2019], 13));   // first year of your 5-year clearing period
 var fireStart = ee.Number(pick([2003, 2005, 2007, 2009, 2011, 2013], 11));   // first year of your 10-year fire window
 var crocRiver = pick(['Adelaide', 'Mary', 'Daly', 'Liverpool', 'Blyth', 'Glyde'], 19);   // elective (c) river system
@@ -103,14 +103,14 @@ var species = pick(['Gouldian finch (Erythrura gouldiae)', 'Partridge pigeon (Ge
                     'Brush-tailed rabbit-rat (Conilurus penicillatus)', 'Red goshawk (Erythrotriorchis radiatus)'], 43);
 var alphaPair = ee.List(pick([[2017, 2024], [2018, 2024], [2017, 2023], [2019, 2024]], 41));   // elective (b) year pair
 
-// ---------- 3 Print (copy these into your AT1 proposal) ----------
+// ---------- 3 Print (copy these into your AT2 proposal) ----------
 // print() sends each value to the Console. The values are worked out on Google's servers, so they may take
-// a few seconds to appear. Copy all of them into your AT1 proposal.
+// a few seconds to appear. Copy all of them into your AT2 proposal.
 print('Student number', STUDENT_NUMBER, 'cohort', COHORT_SALT);   // check this is YOUR number before copying anything
 print('Tiles available in the Daly catchment', n);
 print('Your tile index', tileIndex, 'tile centroid (lon, lat)', TILE.centroid(1).coordinates());   // centre point, degrees
-print('AT2 focus year (Pracs 02–03)', at2Year);
-print('AT3 transition years (Prac 05): YEAR_A, YEAR_B', at3YearA, at3YearB);
+print('AT1 transition years (Prac 05): YEAR_A, YEAR_B', at1YearA, at1YearB);
+print('AT3 focus year (Pracs 02–03)', at3Year);
 print('AT4 Part 2 clearing period (Prac 06)', clearingStart, '→', clearingStart.add(4));   // 5 years, inclusive
 print('AT4 Part 3 fire window (Prac 07)', fireStart, '→', fireStart.add(9));   // 10 years, inclusive
 print('AT4 elective (a) species (Prac 12)', species);
@@ -118,10 +118,12 @@ print('AT4 elective (b) AlphaEarth years (Prac 13)', alphaPair);
 print('AT4 elective (c) focal river system (Prac 09)', crocRiver);
 print('AT4 elective (d) urban site and years (Prac 10)', urbanSite, urbanPair);
 // TILE_ID is your tile index written with 3 digits, e.g. tile 7 → "DALY-007".
+// AT4 check-in group (A or B) is allocated by staff from the class list and posted in Learnline by Fri 6 Nov.
+print('AT4 morning check-in group', 'see Learnline. Group A: Mon 9 and Thu 12 Nov; Group B: Tue 10 and Fri 13 Nov (9:00–10:00)');
 var TILE_ID = ee.String('DALY-').cat(tileIndex.int().format('%03d'));
 print('Your TILE_ID (label every figure with it and your student ID)', TILE_ID);
-// Allocation code = tile index × 1000 + (last two digits of AT2 year) × 10 + AT3 gap. Staff use it to check your allocation.
-print('Allocation code (staff master sheet)', tileIndex.multiply(1000).add(at2Year.mod(100).multiply(10)).add(at3Gap));
+// Allocation code = tile index × 1000 + (last two digits of AT3 year) × 10 + AT1 gap. Staff use it to check your allocation.
+print('Allocation code (staff master sheet)', tileIndex.multiply(1000).add(at3Year.mod(100).multiply(10)).add(at1Gap));
 
 // ---------- 4 Map ----------
 // Draw the catchment, the grid and your tile so you can see where you will be working.

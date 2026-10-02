@@ -2,14 +2,14 @@
 
 # ENV306/506 Summative assessment 2026
 
-The four tasks build one chain on each student's own 20 km tile in the Daly River Catchment: AT2 explains vegetation condition and its climate drivers, AT3 interprets land cover change, and AT4 integrates every topic into one landscape assessment. Personal tiles and years make every student's numbers unique, and check values, version history, a supervised AT3 and an AT4 viva verify the work. Every task maps to all four ULOs. Confirm the due dates in Learnline.
+All four tasks use each student's own 20 km tile in the Daly River Catchment. AT1 interprets land cover change, AT2 plans the AT4 analysis, and AT3 explains vegetation condition and its climate drivers; together they build the skills that AT4 applies to new questions in one integrated landscape assessment. AT4 does not reuse AT1 or AT3 work, so no analysis is marked twice. Personal tiles and years make every student's numbers unique, and check values, version history, a supervised AT1 and an ungraded AT4 verification check (viva) verify the work. Every task maps to all four ULOs. Confirm the due dates in Learnline.
 
 | Task | Weight | Linked pracs | ENV306 length | ENV506 length | Due |
 | --- | --- | --- | --- | --- | --- |
-| AT1 Project proposal: the plan for your AT4 | 10 % | 01, plus the AT4 design | 700 words ± 10 % (630–770) | 1000 words ± 10 % (900–1100) | Fri 6 Nov 2026, 11:59 pm |
-| AT2 Magazine article: vegetation condition and climate drivers | 30 % | 02, 03 | 700–1000 words | 1000–1500 words | Fri 20 Nov 2026, 11:59 pm |
-| AT3 Critical assessment: short answers on land cover change | 10 % | 04, 05 | 400–500 words | 500–700 words | In class, Thu 5 Nov 2026, 3:30–4:30 pm |
-| AT4 Integrated landscape assessment: scientific article + viva | 50 % | All (core 02–08 and 11; one elective from 09, 10, 12 or 13) | 2000 words ± 10 % (1800–2200) | 3000 words ± 10 % (2700–3300) | Fri 11 Dec 2026, 11:59 pm; vivas 14–16 Dec |
+| AT1 Critical assessment: short answers on land cover change | 10 % | 04, 05 | 400–500 words | 500–700 words | In class, Thu 5 Nov 2026, 3:30–4:30 pm |
+| AT2 Project proposal: the plan for your AT4 | 10 % | 01, plus the AT4 design | 700 words ± 10 % (630–770) | 1000 words ± 10 % (900–1100) | Fri 6 Nov 2026, 11:59 pm |
+| AT3 Magazine article: vegetation condition and climate drivers | 30 % | 02, 03 | 700–1000 words | 1000–1500 words | Fri 20 Nov 2026, 11:59 pm |
+| AT4 Integrated landscape assessment: scientific article + ungraded verification check (viva) | 50 % | All (core 02–08 and 11; one elective from 09, 10, 12 or 13) | 2000 words ± 10 % (1800–2200) | 3000 words ± 10 % (2700–3300) | Fri 11 Dec 2026, 11:59 pm; check-ins Mon 9, Tue 10, Thu 12 and Fri 13 Nov |
 
 Word limits exclude the title, references, figure and table captions, and the appendix.
 
@@ -19,10 +19,10 @@ The Daly River Catchment is under growing pressure from land clearing for agricu
 
 | Task | Your role | What you deliver | Audience |
 | --- | --- | --- | --- |
-| AT1 | Analyst | A project plan for monitoring your tile | The program manager |
-| AT2 | Analyst | A feature article on vegetation condition and climate drivers | Land managers and the interested public |
-| AT3 | Analyst | A briefing note answering the program manager's questions on your change matrix (in class) | The program manager |
-| AT4 | Analyst (ENV306) or senior analyst (ENV506) | A technical article with a recommendation, defended in a panel review (the viva) | The advisory group and its scientific reviewers |
+| AT1 | Analyst | A briefing note answering the program manager's questions on your change matrix (in class) | The program manager |
+| AT2 | Analyst | A project plan for monitoring your tile | The program manager |
+| AT3 | Analyst | A feature article on vegetation condition and climate drivers | Land managers and the interested public |
+| AT4 | Analyst (ENV306) or senior analyst (ENV506) | A technical article with a recommendation, explained at two morning check-ins (an ungraded viva) | The advisory group and its scientific reviewers |
 
 ENV506 students act as senior analysts: in AT4 they also advise on the design of the monitoring program and on how far its results can be relied on for decisions.
 
@@ -30,13 +30,13 @@ The advisory group, its program manager and the decisions they face are hypothet
 
 **Note for staff:** before release, check how Aboriginal knowledge and interests are represented in the scenario with CDU's Indigenous academic staff or the relevant land council contacts.
 
-## Personal parameters (Day 1, Assignment 1 briefing)
+## Personal parameters (Day 1, Assignment 2 briefing)
 
 Each student runs [`prac00_my_study_tile.js`](../scripts/prac00_my_study_tile.js) with their student number and records:
 
-- a 20 × 20 km **tile in the Daly River Catchment** (used in AT2, AT3 and AT4);
-- an **AT2 focus year** (2005–2024), whose rainfall and vegetation condition they characterise;
-- an **AT3 year pair** (2014–2024, 5–8 years apart);
+- a 20 × 20 km **tile in the Daly River Catchment** (used in AT1, AT3 and AT4);
+- an **AT1 year pair** (2014–2024, 5–8 years apart);
+- an **AT3 focus year** (2005–2024), whose rainfall and vegetation condition they characterise;
 - **AT4 parameters:** a clearing period (Part 2), a 10-year fire window (Part 3), and one setting for each elective (an assigned species, a pair of AlphaEarth years, a focal crocodile river system, and an urban site and year pair).
 
 Staff keep the master allocation sheet and check, before allocation, that each listed species has enough Atlas of Living Australia records.
@@ -48,27 +48,51 @@ No take-home task can be made completely "AI-proof". This design follows TEQSA's
 | Safeguard | How it works | Applies to |
 | --- | --- | --- |
 | 1. Personalised tile and years | Results are unique to each student. | AT1–AT4 |
-| 2. Re-runnable check values | A versioned Code Editor link (or a Python/R notebook, or a QGIS model plus its export script) and a results log with three check values at staff-specified coordinates. Markers re-run the work, and the values must match. | AT2, AT4 |
-| 3. Process evidence | Version history across at least 3 dates, Tasks screenshots, and figures labelled with the student ID and tile code. | AT2, AT4 |
-| 4. Supervised writing | AT3 is answered in class, with no generative AI, on unseen questions about the student's **own** transition matrix. | AT3 |
-| 5. Oral verification | AT4 viva (ENV306 10 min; ENV506 15 min) and the ENV506 AT1 pitch. | AT1 (506), AT4 |
-| 6. Internal consistency | AT4 parts reuse each other's numbers (e.g. woodland area in Part 1 and cleared area in Part 2), and AT4 Part 3 builds on the student's AT2. Markers cross-check them. | AT2, AT4 |
-| 7. Feedback loop | A response-to-feedback table shows how AT2 feedback was applied in AT4. | AT4 |
+| 2. Re-runnable check values | A versioned Code Editor link (or a Python/R notebook, or a QGIS model plus its export script) and a results log with three check values at staff-specified coordinates. Markers re-run the work, and the values must match. | AT3, AT4 |
+| 3. Process evidence | Version history across at least 3 dates, Tasks screenshots, and figures labelled with the student ID and tile code. | AT3, AT4 |
+| 4. Supervised writing | AT1 is answered in class, with no generative AI, on unseen questions about the student's **own** transition matrix. | AT1 |
+| 5. Oral verification | Two ungraded AT4 morning check-ins (ENV306 4 min; ENV506 5 min each), with a checkpoint record and the 50 % cap if the student cannot explain their work; and the ENV506 AT2 pitch. | AT2 (506), AT4 |
+| 6. Internal consistency | AT4 parts reuse each other's numbers (e.g. woodland area in Part 1 and cleared area in Part 2). Markers cross-check them. | AT4 |
+| 7. Feedback loop | A response-to-feedback table shows how AT2 feedback on the plan was applied in AT4. | AT4 |
 | 8. Situated content | NT data, in-class references, and the student's own error analysis. | All |
 | 9. Verifiable references | A DOI or stable URL for every reference. | All |
 | 10. GenAI declaration | Permitted: debugging, grammar, explaining errors. Not permitted: generating analysis, interpretation, figures or references. | All |
 
-**Viva gate (AT4):** if the student cannot reproduce or explain their workflow, the mark is capped at 50 % of the awarded mark, with a possible integrity referral.
+**Viva gate (AT4):** the check-ins are ungraded: they add no marks. If the student still cannot reproduce or explain their workflow after the second check-in, or the article does not match the checkpoint record, the AT4 mark is capped at 50 % of the awarded mark, with a possible integrity referral.
 
 **Restricted data:** the crocodile survey data and floodplain shapefiles come from Learnline only. Students must not post them publicly, and should share their assets only with markers.
 
 **Grade bands:** HD 85–100 %, D 75–84 %, C 65–74 %, P 50–64 %, F below 50 % (confirm against the CDU grading policy). Each criterion is marked against its descriptors and weighted as shown; for ENV506, the descriptors also cover the extra elements named in brackets.
 
-## AT1 — Project proposal (10 %)
+## AT1 — Critical assessment: short answers (10 %), from Pracs 04–05, supervised
+
+**Role and audience:** the program manager has your transition matrix and calls you in for a briefing. Your answers form a briefing note: short, specific and honest about uncertainty.
+
+**Before (Prac 05, Thu 5 Nov, Session 1):** run [`prac05a_transition_matrix.js`](../scripts/prac05a_transition_matrix.js) for your tile and AT1 year pair, using your Prac 04 training points, and export your transition matrix.
+
+**In class (Thu 5 Nov, 3:30–4:30 pm, no generative AI, lockdown Learnline or paper):** answer the program manager's unseen questions about **your own** matrix, such as:
+
+1. Report and explain the transition matrix.
+2. Explain the relationship between woodland and agriculture.
+3. Justify the uncertainty in the woodland–agriculture change, given that the data are remotely sensed.
+4. Explain the relationship between water, agriculture and bare soil.
+5. Discuss the sources of uncertainty in that change.
+
+- **ENV306:** 400–500 words.
+- **ENV506:** 500–700 words. Also quantify how a stated classification error rate (given in class) would change the woodland-loss estimate, and judge whether the matrix is fit for a named NT decision.
+
+| Criterion (ENV306 / ENV506 weight) | HD | D | C | P | F |
+| --- | --- | --- | --- | --- | --- |
+| Correct reading of own transition matrix (30 % / 20 %) | Persistence and the main transitions reported accurately with correct areas and units; dominant change and any implausible transitions identified | Accurate reading with minor omissions | Mostly correct; some values misread or key transitions missed | Partly correct, with several errors | Matrix misread or not your own |
+| Explanation of land cover relationships (30 % / 25 %) | Woodland–agriculture and water–agriculture–bare soil relationships explained with Daly-specific processes (clearing, irrigation, seasonality, fire) | Sound explanations with relevant processes | Plausible but general explanations | Limited or partly incorrect explanations | No explanation, or incorrect |
+| Uncertainty and error sources (40 % / 30 %) | Specific error sources (classification error and how it compounds between two maps, image dates and phenology, training data) justified, with their likely effect on your numbers | Several relevant sources, soundly reasoned | Some relevant sources; reasoning general | Few sources; weak reasoning | Uncertainty not addressed |
+| ENV506: quantified error impact and fitness for a decision (— / 25 %) | Correctly quantifies how the given error rate changes the woodland-loss estimate, and makes a well-argued judgement on fitness for the named decision | Correct quantification; judgement sound but brief | Quantification with minor errors; judgement general | Attempted, with major errors | Not attempted, or incorrect |
+
+## AT2 — Project proposal (10 %)
 
 **Role and audience:** as the analyst for your tile, you submit a project plan to the program manager.
 
-Students plan their **integrated AT4** for their own tile. The elective named in AT1 is provisional and is confirmed by Fri 13 Nov.
+Students plan their **integrated AT4** for their own tile. The elective named in AT2 is provisional and is confirmed by Fri 13 Nov.
 
 - **ENV306 (700 words ± 10 %):** the management question for your tile and its end user; landscape-ecology framing; a Code Editor map of your tile with your student ID; a planning table giving the data and method for each AT4 part; your choice of Part 4 or an elective; validation plan; timeline; at least five references with DOIs; a working script link.
 - **ENV506 (1000 words ± 10 %):** as for ENV306, plus:
@@ -88,7 +112,7 @@ Students plan their **integrated AT4** for their own tile. The elective named in
 | Working script (15 % / 15 %; ENV506: plus pitch) | Shared script runs without errors, is tidy and commented, and shows your tile; ENV506 pitch clear, on time, questions handled confidently | Script runs with minor issues; ENV506 pitch clear, answers mostly sound | Script runs in part or needs fixes; ENV506 pitch adequate | Script incomplete but starts the workflow; ENV506 pitch unclear or over time | No working script or link; ENV506 no pitch |
 | Communication and referencing (10 % / 10 %) | Concise, well organised, within the word limit; at least 5 (ENV506: 8) current references, all with DOIs or stable URLs, correctly cited | Clear and well organised; reference minimum met, minor citation errors | Generally clear; some structure or citation issues | Understandable but disorganised, or below the reference minimum | Hard to follow, outside the word limit, or references missing or unverifiable |
 
-## AT2 — Magazine article: vegetation condition and climate drivers (30 %), from Pracs 02–03
+## AT3 — Magazine article: vegetation condition and climate drivers (30 %), from Pracs 02–03
 
 **Role and audience:** the advisory group publishes a feature article from each analyst for land managers and the interested public. Write for readers who know the land but not remote sensing.
 
@@ -117,33 +141,9 @@ The appendix contains the script link, results log and check values, process evi
 | Writing for the magazine audience (10 % / 5 %) | Engaging, accurate and accessible to readers who know the land but not remote sensing; within the word limit; correctly referenced | Clear and accessible, with minor lapses into jargon | Generally readable; some unexplained jargon or structure issues | Hard for the audience to follow, or poorly structured | Unsuitable for the audience, outside the word limit, or references missing |
 | Verification and process evidence (15 % / 15 %) | Script, results log and check values all match on re-run; version history across at least 3 dates; complete GenAI declaration | Evidence complete; check values match, minor documentation gaps | Most evidence present; small discrepancies explained | Evidence incomplete, or check values partly unmatched | Evidence missing, or check values do not match (may lead to an integrity review) |
 
-## AT3 — Critical assessment: short answers (10 %), from Pracs 04–05, supervised
+## AT4 — Integrated landscape assessment (50 %) + ungraded check-ins
 
-**Role and audience:** the program manager has your transition matrix and calls you in for a briefing. Your answers form a briefing note: short, specific and honest about uncertainty.
-
-**Before (Prac 05, Thu 5 Nov, Session 1):** run [`prac05a_transition_matrix.js`](../scripts/prac05a_transition_matrix.js) for your tile and AT3 year pair, using your Prac 04 training points, and export your transition matrix.
-
-**In class (Thu 5 Nov, 3:30–4:30 pm, no generative AI, lockdown Learnline or paper):** answer the program manager's unseen questions about **your own** matrix, such as:
-
-1. Report and explain the transition matrix.
-2. Explain the relationship between woodland and agriculture.
-3. Justify the uncertainty in the woodland–agriculture change, given that the data are remotely sensed.
-4. Explain the relationship between water, agriculture and bare soil.
-5. Discuss the sources of uncertainty in that change.
-
-- **ENV306:** 400–500 words.
-- **ENV506:** 500–700 words. Also quantify how a stated classification error rate (given in class) would change the woodland-loss estimate, and judge whether the matrix is fit for a named NT decision.
-
-| Criterion (ENV306 / ENV506 weight) | HD | D | C | P | F |
-| --- | --- | --- | --- | --- | --- |
-| Correct reading of own transition matrix (30 % / 20 %) | Persistence and the main transitions reported accurately with correct areas and units; dominant change and any implausible transitions identified | Accurate reading with minor omissions | Mostly correct; some values misread or key transitions missed | Partly correct, with several errors | Matrix misread or not your own |
-| Explanation of land cover relationships (30 % / 25 %) | Woodland–agriculture and water–agriculture–bare soil relationships explained with Daly-specific processes (clearing, irrigation, seasonality, fire) | Sound explanations with relevant processes | Plausible but general explanations | Limited or partly incorrect explanations | No explanation, or incorrect |
-| Uncertainty and error sources (40 % / 30 %) | Specific error sources (classification error and how it compounds between two maps, image dates and phenology, training data) justified, with their likely effect on your numbers | Several relevant sources, soundly reasoned | Some relevant sources; reasoning general | Few sources; weak reasoning | Uncertainty not addressed |
-| ENV506: quantified error impact and fitness for a decision (— / 25 %) | Correctly quantifies how the given error rate changes the woodland-loss estimate, and makes a well-argued judgement on fitness for the named decision | Correct quantification; judgement sound but brief | Quantification with minor errors; judgement general | Attempted, with major errors | Not attempted, or incorrect |
-
-## AT4 — Integrated landscape assessment (50 %) + viva
-
-**Role and audience:** the advisory group must make a decision that affects your tile. Your article goes to the group and its scientific reviewers, and you defend it in a panel review (the viva). ENV506 senior analysts also advise on the design of the monitoring program.
+**Role and audience:** the advisory group must make a decision that affects your tile. Your article goes to the group and its scientific reviewers, and you explain your analysis at two morning check-ins (an ungraded viva). ENV506 senior analysts also advise on the design of the monitoring program.
 
 **Question:** *What is changing in your tile, why, and what should managers do?* Write a submission-ready article in the format of the MDPI *Remote Sensing* template: Abstract; Introduction (literature review, aims and objectives); Methods; Results; Discussion (with limitations); Conclusion; References. Figures and tables carry the results; method details go in the appendix.
 
@@ -151,7 +151,7 @@ The appendix contains the script link, results log and check values, process evi
 | --- | --- | --- | --- |
 | 1 Pattern | What is where, and how fragmented is it? | A Random Forest land cover map of your tile from your own training and validation points; error matrix, producer's and user's accuracy, area per class; at least two landscape metrics | 04 |
 | 2 Change | What changed, when, and how fast? | Clearing and regrowth over your clearing period (Hansen GFC and Sentinel-2), and the disturbance history from LandTrendr or CCDC | 05, 06 |
-| 3 Drivers | Is the change linked to climate or fire? | Your AT2 results, revised after feedback; fire frequency and seasonality over your 10-year window (MCD64A1 checked against ESA FireCCI51, `ESA/CCI/FireCCI/5_1`); burn severity for one fire year, with the NT season classes compared with Key & Benson | 02, 03, 07 |
+| 3 Drivers | Is the change linked to climate or fire? | Climate over your clearing period and fire window (CHIRPS rainfall anomalies, or SPI/SPEI), tested against the year-to-year clearing, regrowth and burned area from Parts 2–3; fire frequency and seasonality over your 10-year window (MCD64A1 checked against ESA FireCCI51, `ESA/CCI/FireCCI/5_1`); burn severity for one fire year, with the NT season classes compared with Key & Benson | 02, 03, 07 |
 | 4 Beyond optical | What do SAR and lidar add? | Sentinel-1 (linear units) for wet-season change, inundation or cloud-free clearing detection, and GEDI canopy height or biomass by land cover class | 08, 11 |
 | 5 Elective (choose one) | A linked case study | (a) habitat suitability for your assigned species, with spatial-block cross-validation and the effect of your Part 2 clearing; (b) AlphaEarth embeddings tested against your Part 1 map and Part 2 change for your AlphaEarth years; (c) crocodile biomass vs floodplain inundation for your focal river within the multi-river model; (d) urban expansion at your assigned site and years with Sentinel-1 | 12, 13, 09, 10 |
 | 6 Synthesis | What should a named NT decision-maker do, and how certain is that advice? | An integration of the parts, their uncertainties, and a recommendation for a named decision (e.g. a clearing permit, a fire management plan, water allocation) | All |
@@ -167,12 +167,23 @@ The appendix contains the script link, results log and check values, process evi
 
 Numbers reused across parts must agree; explain any difference.
 
-**Viva (panel review):**
+**Viva: two morning check-ins (ungraded verification)**
 
-- **ENV306 (10 min):** re-run one step live from a part the examiner chooses, explain one decision, interpret one figure.
-- **ENV506 (15 min):** as for ENV306, plus defending a method choice against an alternative the examiner proposes.
+The viva carries no marks. It confirms, while the work is fresh, that your AT4 analysis is your own. Instead of one long viva after the course, you have **two short check-ins in the first hour of the morning, after the AT4 work has been taught**. Each check-in covers the AT4 parts taught so far.
 
-The viva gate applies.
+Staff place you in Group A or Group B from the class list, balancing group size and the number of ENV306 and ENV506 students. Your group is posted in Learnline by Fri 6 Nov, and your poster group comes from the same check-in group.
+
+| Check-in | Group A | Group B | What is covered |
+| --- | --- | --- | --- |
+| First | Mon 9 Nov, 9:00–10:00 | Tue 10 Nov, 9:00–10:00 | Part 1 (land cover and accuracy), Part 2 (clearing, and LandTrendr or CCDC) and the fire analysis in Part 3, as far as you have gone |
+| Second | Thu 12 Nov, 9:00–10:00 | Fri 13 Nov, 9:00–10:00 | Part 3 (fire and climate), Part 4 (SAR and lidar), your elective so far, and your synthesis plan |
+
+- **ENV306 (4 min per check-in):** open your saved script and its version history, explain one step and one decision, and interpret one figure.
+- **ENV506 (5 min per check-in):** as for ENV306; at the second check-in, also defend a method choice against an alternative the examiner proposes.
+- **Checkpoint record:** the examiner notes your key values (for example, woodland area, cleared hectares, burned area) on a checkpoint record. The numbers in your submitted article must match it, or you must explain any change.
+- **Missed check-in:** if you miss a check-in for an approved reason (for example, illness), you do it in the make-up slot (Fri 13 Nov, 3:30–4:30 pm) or online within one week of the end of the course.
+
+The outcome is recorded as *satisfactory* or *not satisfactory*. If you cannot explain a part at your first check-in, you get help and try again at your second. If the outcome is still *not satisfactory* after the second check-in, or your article's numbers do not match your checkpoint record and a short online follow-up does not resolve it, your AT4 mark is capped at 50 % of the mark awarded for the article, with a possible integrity referral.
 
 | Criterion (ENV306 / ENV506 weight) | HD | D | C | P | F |
 | --- | --- | --- | --- | --- | --- |
@@ -182,5 +193,5 @@ The viva gate applies.
 | Integration: consistency across parts and synthesis (15 % / 15 %) | The parts form one argument; shared numbers agree or differences are explained; the synthesis answers the management question | Parts well linked; minor inconsistencies explained | Parts linked but largely separate; some inconsistencies unexplained | Little integration; inconsistencies not addressed | Disconnected parts or contradictory numbers |
 | ENV506: attribution and scale analysis (— / 15 %) | Attribution quantifies climate, fire and clearing with effect sizes and caveats; scale analysis interpreted through landscape-ecology theory | Both analyses sound; interpretation partial | Both attempted; one weak | One attempted, or both with major errors | Missing |
 | Discussion and recommendation for a named decision (10 % / 10 %; ENV506: plus monitoring-program advice) | Specific, defensible recommendation for a named decision, with limitations and uncertainty weighed; ENV506 monitoring advice practical and justified | Clear recommendation with limitations stated | Recommendation general; limitations listed but not weighed | Weak recommendation; limitations minimal | No recommendation, or unsupported |
-| Verification, process evidence and viva (15 % / 10 %) | Check values match; full version history; in the viva re-runs the chosen step, explains decisions and interprets figures fluently (ENV506: defends a method against an alternative) | Evidence complete; viva confident with minor hesitation | Evidence mostly complete; viva adequate | Gaps in evidence; viva shows partial understanding | Evidence missing, check values do not match, or work cannot be reproduced or explained (viva gate applies) |
+| Verification and process evidence (15 % / 10 %) | Script, results log and check values all match on re-run; version history across at least 3 dates; complete GenAI declaration | Evidence complete; check values match, minor documentation gaps | Most evidence present; small discrepancies explained | Evidence incomplete, or check values partly unmatched | Evidence missing, or check values do not match (may lead to an integrity review) |
 | Communication and referencing (10 % / 10 %) | Follows the MDPI template; concise and within the word limit; figures and tables carry the results; all references current and verifiable | Well structured, with minor issues | Generally clear; some structure or citation issues | Disorganised, or several citation problems | Unstructured, outside the word limit, or references missing or unverifiable |

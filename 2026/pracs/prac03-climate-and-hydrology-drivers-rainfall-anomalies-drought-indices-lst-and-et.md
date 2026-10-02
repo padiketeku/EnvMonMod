@@ -6,7 +6,7 @@
 
 **Also available in:** Python [`prac03_climate_hydrology_drought.py`](../alternatives/python/prac03_climate_hydrology_drought.py) · R [`prac03_climate_hydrology_drought.R`](../alternatives/r/prac03_climate_hydrology_drought.R) · QGIS [recipe](../alternatives/qgis/README.md). The Code Editor remains the main environment.
 
-**Purpose.** Explain the climate drivers behind the vegetation trends of Prac 02, and supply rainfall for RESTREND. With Prac 02, this prac is the basis of AT2.
+**Purpose.** Explain the climate drivers behind the vegetation trends of Prac 02, and supply rainfall for RESTREND. With Prac 02, this prac is the basis of AT3.
 
 ## 1. Concept notes
 
@@ -52,13 +52,13 @@ VCI and TCI are computed per calendar month, so the normal dry season is not mis
 
 1. Compute VCI (MOD13A3), TCI (MOD11A2) and VHI for Oct 2019, plus 3- and 12-month SPI-type indices and PDSI.
 2. Chart VCI, TCI and VHI for 2017–2021 around Alice Springs, and calculate the NT area with VHI below 40.
-3. Change `TARGET` to a month in your AT2 focus year (AT2), and repeat for **your tile**.
+3. Change `TARGET` to a month in your AT3 focus year (AT3), and repeat for **your tile**.
 
 **Activity 3.3 – LST and ET (`prac03c`).**
 
 1. Part A: map Darwin build-up season LST (Landsat `ST_B10`), and plot LST against NDVI.
 2. Part B: chart monthly rainfall, ET and PET for the Daly basin, then map the late-dry-season ESI and annual ET.
-3. **AT2 (ENV506):** map LST and ESI for your tile in your focus year.
+3. **AT3 (ENV506):** map LST and ESI for your tile in your focus year.
 
 **Key code** (an excerpt from [`prac03a_rainfall_anomaly.js`](../scripts/prac03a_rainfall_anomaly.js); run the full script for the complete workflow):
 
@@ -93,8 +93,8 @@ Map.addLayer(z, {min: -2, max: 2, palette: ['#8c510a', '#f5f5f5', '#01665e']}, '
 
 ## 4. Link to summative assessment
 
-- **AT2:** rainfall anomalies and drought indices for your focus year explain your vegetation trends (ENV506: gamma SPI, lags, RESTREND, LST and ET).
-- **AT4 Part 3:** the same driver analysis supports your attribution of change.
+- **AT3:** rainfall anomalies and drought indices for your focus year explain your vegetation trends (ENV506: gamma SPI, lags, RESTREND, LST and ET).
+- **AT4 Part 3:** rainfall anomalies and drought indices over your clearing period and fire window test whether climate explains the change and fire in your tile.
 
 ## 5. Reading
 
@@ -141,7 +141,7 @@ Each script is copied here from [`scripts/`](../scripts) so this page has everyt
  *
  * LINKS:
  *   Prac page: pracs/prac03-climate-and-hydrology-drivers-rainfall-anomalies-drought-indices-lst-and-et.md
- *   Assessment: Prac 03; AT2 (climate drivers); AT4 Part 3.
+ *   Assessment: Prac 03; AT3 (climate drivers); AT4 Part 3.
  *
  * KEY GEE IDEAS:
  *   - Building a new ImageCollection by mapping a function over a list of years (ee.List.sequence(...).map()).
@@ -298,7 +298,7 @@ Export.image.toDrive({image: anomMm.addBands(pctNormal).addBands(zScore).addBand
  *
  * LINKS:
  *   Prac page: pracs/prac03-climate-and-hydrology-drivers-rainfall-anomalies-drought-indices-lst-and-et.md
- *   Assessment: Prac 03; AT2 (climate drivers); AT4 Part 3.
+ *   Assessment: Prac 03; AT3 (climate drivers); AT4 Part 3.
  *
  * KEY GEE IDEAS:
  *   - Scale factors: MODIS bands are stored as integers and must be multiplied (and offset) to get real units.
@@ -461,7 +461,7 @@ Export.image.toDrive({image: vci.addBands(tci).addBands(vhi).addBands(spa3).addB
  *
  * LINKS:
  *   Prac page: pracs/prac03-climate-and-hydrology-drivers-rainfall-anomalies-drought-indices-lst-and-et.md
- *   Assessment: Prac 03; AT2 (climate drivers); AT4 Part 3.
+ *   Assessment: Prac 03; AT3 (climate drivers); AT4 Part 3.
  *
  * KEY GEE IDEAS:
  *   - Cloud masking with bitwiseAnd on a QA band, and scale factors/offsets to convert stored integers to real units.

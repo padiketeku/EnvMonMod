@@ -45,14 +45,14 @@ S counts increases minus decreases across all pairs of years, Z tests whether th
 2. Compute Sen's slope, the Mann–Kendall S statistic, Z, p-value and Kendall's tau.
 3. Map significant slopes (p < 0.05), and calculate the area that is greening and browning.
 4. Chart a probe pixel in the Douglas–Daly, then move the probe into **your Daly tile**.
-5. **AT2:** clip the trend and significance maps to your tile, and calculate the area greening and browning.
+5. **AT3:** clip the trend and significance maps to your tile, and calculate the area greening and browning.
 
 **Activity 2.2 – Seasonality (`prac02b`, Session 3).**
 
 1. Fit a first-order harmonic model to Landsat 8/9 NDVI (2014–2024) around the Darwin hinterland.
 2. Map amplitude, phase (day of peak greenness) and the HSV seasonality composite.
 3. Plot observed vs fitted values at savanna, floodplain and rural probes, then refit with `HARMONICS = 2` and compare RMSE.
-4. **AT2:** fit the model in your tile, and compare amplitude and peak timing for at least two land covers.
+4. **AT3:** fit the model in your tile, and compare amplitude and peak timing for at least two land covers.
 
 **Key code** (an excerpt from [`prac02a_trend_sens_mk.js`](../scripts/prac02a_trend_sens_mk.js); run the full script for the complete workflow):
 
@@ -85,8 +85,8 @@ Map.addLayer(sens.select('slope'), {min: -0.006, max: 0.006, palette: ['#8c510a'
 
 ## 4. Link to summative assessment
 
-- **AT2:** the trend and seasonality maps of your tile are the core of your magazine article (ENV506: false-discovery-rate correction).
-- **AT4 Part 3:** your AT2 results, revised after feedback, explain the drivers of change in your tile.
+- **AT3:** the trend and seasonality maps of your tile are the core of your magazine article (ENV506: false-discovery-rate correction).
+- **AT4 Part 3:** the same trend methods, applied to your clearing period and fire window, help separate climate-driven change from clearing and fire (AT4 does not reuse your AT3 results).
 
 ## 5. Reading
 
@@ -131,7 +131,7 @@ Each script is copied here from [`scripts/`](../scripts) so this page has everyt
  *
  * LINKS:
  *   Prac page: pracs/prac02-monitoring-vegetation-condition-trends-and-seasonality.md
- *   Assessment: Prac 02; AT2 (trend and seasonality); AT4 Part 3.
+ *   Assessment: Prac 02; AT3 (trend and seasonality); AT4 Part 3.
  *
  * KEY GEE IDEAS:
  *   - Building a new ImageCollection with ee.List.sequence(...).map() (one image per year).
@@ -285,7 +285,7 @@ Export.image.toDrive({image: sens.select('slope').addBands([tau, p, Z]).float(),
  *
  * LINKS:
  *   Prac page: pracs/prac02-monitoring-vegetation-condition-trends-and-seasonality.md
- *   Assessment: Prac 02; AT2 (trend and seasonality); AT4 Part 3.
+ *   Assessment: Prac 02; AT3 (trend and seasonality); AT4 Part 3.
  *
  * KEY GEE IDEAS:
  *   - map() to add predictor bands (constant, time, cos, sin) to every image.

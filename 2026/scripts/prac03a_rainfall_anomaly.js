@@ -26,7 +26,7 @@
  *
  * LINKS:
  *   Prac page: pracs/prac03-climate-and-hydrology-drivers-rainfall-anomalies-drought-indices-lst-and-et.md
- *   Assessment: Prac 03; AT2 (climate drivers); AT4 Part 3.
+ *   Assessment: Prac 03; AT3 (climate drivers); AT4 Part 3.
  *
  * KEY GEE IDEAS:
  *   - Building a new ImageCollection by mapping a function over a list of years (ee.List.sequence(...).map()).
