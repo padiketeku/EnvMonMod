@@ -160,7 +160,7 @@ Map.addLayer(ndvi, {min: 0, max: 0.8, palette: ['brown', 'white', 'green']}, 'ND
 Each script is copied here from [`scripts/`](../scripts) so this page has everything in one place. The `.js` file is the master copy: if the two ever differ, use the file. Click a heading to open the script, then use the copy button and paste it into a new script in the Code Editor.
 
 <details>
-<summary><strong>prac00_my_study_tile.js</strong> (140 lines)</summary>
+<summary><strong>prac00_my_study_tile.js</strong> (142 lines)</summary>
 
 ```javascript
 /**** Prac 00 — My study tile and years (run this first, in Prac 01, Session 4)
@@ -283,6 +283,8 @@ print('AT4 elective (b) AlphaEarth years (Prac 13)', alphaPair);
 print('AT4 elective (c) focal river system (Prac 09)', crocRiver);
 print('AT4 elective (d) urban site and years (Prac 10)', urbanSite, urbanPair);
 // TILE_ID is your tile index written with 3 digits, e.g. tile 7 → "DALY-007".
+// AT4 check-in group: odd student numbers = Group A (Fri 6 and Thu 12 Nov), even = Group B (Tue 10 and Fri 13 Nov).
+print('AT4 morning check-in group', STUDENT_NUMBER % 2 === 1 ? 'Group A: Fri 6 Nov and Thu 12 Nov, 9:00–10:00' : 'Group B: Tue 10 Nov and Fri 13 Nov, 9:00–10:00');
 var TILE_ID = ee.String('DALY-').cat(tileIndex.int().format('%03d'));
 print('Your TILE_ID (label every figure with it and your student ID)', TILE_ID);
 // Allocation code = tile index × 1000 + (last two digits of AT2 year) × 10 + AT3 gap. Staff use it to check your allocation.

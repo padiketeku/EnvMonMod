@@ -9,7 +9,7 @@ The four tasks build one chain on each student's own 20 km tile in the Daly Rive
 | AT1 Project proposal: the plan for your AT4 | 10 % | 01, plus the AT4 design | 700 words ± 10 % (630–770) | 1000 words ± 10 % (900–1100) | Fri 6 Nov 2026, 11:59 pm |
 | AT2 Magazine article: vegetation condition and climate drivers | 30 % | 02, 03 | 700–1000 words | 1000–1500 words | Fri 20 Nov 2026, 11:59 pm |
 | AT3 Critical assessment: short answers on land cover change | 10 % | 04, 05 | 400–500 words | 500–700 words | In class, Thu 5 Nov 2026, 3:30–4:30 pm |
-| AT4 Integrated landscape assessment: scientific article + ungraded verification check (viva) | 50 % | All (core 02–08 and 11; one elective from 09, 10, 12 or 13) | 2000 words ± 10 % (1800–2200) | 3000 words ± 10 % (2700–3300) | Fri 11 Dec 2026, 11:59 pm; vivas 14–16 Dec |
+| AT4 Integrated landscape assessment: scientific article + ungraded verification check (viva) | 50 % | All (core 02–08 and 11; one elective from 09, 10, 12 or 13) | 2000 words ± 10 % (1800–2200) | 3000 words ± 10 % (2700–3300) | Fri 11 Dec 2026, 11:59 pm; check-ins Fri 6, Tue 10, Thu 12 and Fri 13 Nov |
 
 Word limits exclude the title, references, figure and table captions, and the appendix.
 
@@ -22,7 +22,7 @@ The Daly River Catchment is under growing pressure from land clearing for agricu
 | AT1 | Analyst | A project plan for monitoring your tile | The program manager |
 | AT2 | Analyst | A feature article on vegetation condition and climate drivers | Land managers and the interested public |
 | AT3 | Analyst | A briefing note answering the program manager's questions on your change matrix (in class) | The program manager |
-| AT4 | Analyst (ENV306) or senior analyst (ENV506) | A technical article with a recommendation, defended in a panel review (an ungraded viva) | The advisory group and its scientific reviewers |
+| AT4 | Analyst (ENV306) or senior analyst (ENV506) | A technical article with a recommendation, explained at two morning check-ins (an ungraded viva) | The advisory group and its scientific reviewers |
 
 ENV506 students act as senior analysts: in AT4 they also advise on the design of the monitoring program and on how far its results can be relied on for decisions.
 
@@ -51,14 +51,14 @@ No take-home task can be made completely "AI-proof". This design follows TEQSA's
 | 2. Re-runnable check values | A versioned Code Editor link (or a Python/R notebook, or a QGIS model plus its export script) and a results log with three check values at staff-specified coordinates. Markers re-run the work, and the values must match. | AT2, AT4 |
 | 3. Process evidence | Version history across at least 3 dates, Tasks screenshots, and figures labelled with the student ID and tile code. | AT2, AT4 |
 | 4. Supervised writing | AT3 is answered in class, with no generative AI, on unseen questions about the student's **own** transition matrix. | AT3 |
-| 5. Oral verification | Ungraded AT4 viva (ENV306 10 min; ENV506 15 min), with the 50 % cap if the student cannot explain their work; and the ENV506 AT1 pitch. | AT1 (506), AT4 |
+| 5. Oral verification | Two ungraded AT4 morning check-ins (ENV306 4 min; ENV506 5 min each), with a checkpoint record and the 50 % cap if the student cannot explain their work; and the ENV506 AT1 pitch. | AT1 (506), AT4 |
 | 6. Internal consistency | AT4 parts reuse each other's numbers (e.g. woodland area in Part 1 and cleared area in Part 2), and AT4 Part 3 builds on the student's AT2. Markers cross-check them. | AT2, AT4 |
 | 7. Feedback loop | A response-to-feedback table shows how AT2 feedback was applied in AT4. | AT4 |
 | 8. Situated content | NT data, in-class references, and the student's own error analysis. | All |
 | 9. Verifiable references | A DOI or stable URL for every reference. | All |
 | 10. GenAI declaration | Permitted: debugging, grammar, explaining errors. Not permitted: generating analysis, interpretation, figures or references. | All |
 
-**Viva gate (AT4):** the viva is ungraded: it adds no marks. If the student cannot reproduce or explain their workflow, the AT4 mark is capped at 50 % of the awarded mark, with a possible integrity referral.
+**Viva gate (AT4):** the check-ins are ungraded: they add no marks. If the student still cannot reproduce or explain their workflow after the second check-in, or the article does not match the checkpoint record, the AT4 mark is capped at 50 % of the awarded mark, with a possible integrity referral.
 
 **Restricted data:** the crocodile survey data and floodplain shapefiles come from Learnline only. Students must not post them publicly, and should share their assets only with markers.
 
@@ -141,9 +141,9 @@ The appendix contains the script link, results log and check values, process evi
 | Uncertainty and error sources (40 % / 30 %) | Specific error sources (classification error and how it compounds between two maps, image dates and phenology, training data) justified, with their likely effect on your numbers | Several relevant sources, soundly reasoned | Some relevant sources; reasoning general | Few sources; weak reasoning | Uncertainty not addressed |
 | ENV506: quantified error impact and fitness for a decision (— / 25 %) | Correctly quantifies how the given error rate changes the woodland-loss estimate, and makes a well-argued judgement on fitness for the named decision | Correct quantification; judgement sound but brief | Quantification with minor errors; judgement general | Attempted, with major errors | Not attempted, or incorrect |
 
-## AT4 — Integrated landscape assessment (50 %) + ungraded viva
+## AT4 — Integrated landscape assessment (50 %) + ungraded check-ins
 
-**Role and audience:** the advisory group must make a decision that affects your tile. Your article goes to the group and its scientific reviewers, and you defend it in a panel review (an ungraded viva). ENV506 senior analysts also advise on the design of the monitoring program.
+**Role and audience:** the advisory group must make a decision that affects your tile. Your article goes to the group and its scientific reviewers, and you explain your analysis at two morning check-ins (an ungraded viva). ENV506 senior analysts also advise on the design of the monitoring program.
 
 **Question:** *What is changing in your tile, why, and what should managers do?* Write a submission-ready article in the format of the MDPI *Remote Sensing* template: Abstract; Introduction (literature review, aims and objectives); Methods; Results; Discussion (with limitations); Conclusion; References. Figures and tables carry the results; method details go in the appendix.
 
@@ -167,14 +167,20 @@ The appendix contains the script link, results log and check values, process evi
 
 Numbers reused across parts must agree; explain any difference.
 
-**Viva (panel review): an ungraded verification check**
+**Viva: two morning check-ins (ungraded verification)**
 
-The viva carries no marks. It confirms that the work is your own. The outcome is recorded as *satisfactory* or *not satisfactory*.
+The viva carries no marks. It confirms, while the work is fresh, that your AT4 analysis is your own. Instead of one long viva after the course, you have **two short check-ins in the first hour of the morning, the day after you have done the AT4 work**. Each check-in covers every AT4 part you have finished so far.
 
-- **ENV306 (10 min):** re-run one step live from a part the examiner chooses, explain one decision, interpret one figure.
-- **ENV506 (15 min):** as for ENV306, plus defending a method choice against an alternative the examiner proposes.
+| Group | First check-in | Second check-in |
+| --- | --- | --- |
+| A (odd student numbers) | Fri 6 Nov, 9:00–10:00: Part 1 (land cover), early Part 2 (LandTrendr) and Part 3 drivers (AT2 analysis) | Thu 12 Nov, 9:00–10:00: Parts 2–4 (clearing, fire, SAR and lidar) and your elective so far |
+| B (even student numbers) | Tue 10 Nov, 9:00–10:00: Parts 1–3 (land cover, clearing, drivers and fire) and Part 4 SAR so far | Fri 13 Nov, 9:00–10:00: Part 4 (SAR and lidar), your elective and your synthesis plan |
 
-If the outcome is *not satisfactory* (you cannot reproduce or explain your workflow), your AT4 mark is capped at 50 % of the mark awarded for the article, with a possible integrity referral.
+- **ENV306 (4 min per check-in):** re-run one step live, explain one decision, interpret one figure.
+- **ENV506 (5 min per check-in):** as for ENV306; at the second check-in, also defend a method choice against an alternative the examiner proposes.
+- **Checkpoint record:** the examiner notes your key values (for example, woodland area, cleared hectares, burned area) on a checkpoint record. The numbers in your submitted article must match it, or you must explain any change.
+
+The outcome is recorded as *satisfactory* or *not satisfactory*. If you cannot explain a part at your first check-in, you get help and try again at your second. If the outcome is still *not satisfactory* after the second check-in, or your article's numbers do not match your checkpoint record and a short online follow-up does not resolve it, your AT4 mark is capped at 50 % of the mark awarded for the article, with a possible integrity referral.
 
 | Criterion (ENV306 / ENV506 weight) | HD | D | C | P | F |
 | --- | --- | --- | --- | --- | --- |
