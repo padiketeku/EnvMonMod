@@ -2,6 +2,8 @@
 
 Intensive mode: **Monday 2 November – Friday 13 November 2026**, on campus.
 
+For what to do each day, start with the [Daily guide](days/README.md) (Day 1 to Day 10).
+
 | Session | Time |
 | --- | --- |
 | Session 1 | 9:00 – 10:30 |

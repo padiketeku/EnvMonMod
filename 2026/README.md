@@ -2,6 +2,8 @@
 
 **Charles Darwin University · Intensive mode · Monday 2 November – Friday 13 November 2026 · 9:00 am – 4:30 pm daily**
 
+> **Start here each day: the [Daily guide](days/README.md).** Ten day pages (Day 1 to Day 10) tell you what to read before class, what to do in each session, what is due, and what to finish before you go home.
+
 ENV306 (AQF 7, undergraduate) and ENV506 (AQF 9, postgraduate) are taught together as one intensive from **Mon 2 Nov to Fri 13 Nov 2026, 9:00 am – 4:30 pm**. The unit teaches landscape ecology, digital image processing and spatial modelling through Northern Territory (NT) case studies. **The Google Earth Engine (GEE) Code Editor is the main environment, so there is nothing to install. Optional Python (earthengine-api + geemap), R (rgee) and QGIS (Earth Engine plugin + GRASS/SAGA/dzetsaka) versions of every prac are in [`alternatives/`](alternatives).**
 
 | Data family | Sensors | Pracs |
