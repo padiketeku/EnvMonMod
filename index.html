@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ENV306/506 Environmental Monitoring and Modelling · ENV306/506</title><style>
+:root{--ink:#1d2733;--muted:#5b6672;--accent:#1f4e79;--line:#d5dde6;--soft:#f3f6f9;--code:#f6f8fa}
+*{box-sizing:border-box}body{margin:0;background:#fff;color:var(--ink);font:16px/1.6 -apple-system,"Segoe UI",Calibri,Arial,sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:16px 20px 60px}
+nav.top{background:var(--accent);color:#fff;padding:10px 20px;font-size:14px}nav.top a{color:#fff;margin-right:14px;text-decoration:none;white-space:nowrap}
+nav.top a:hover{text-decoration:underline}nav.sub{background:#e8eef5;padding:6px 20px;font-size:13px}nav.sub a{color:#1f4e79}nav.sub span{color:#5b6672;margin-right:10px}
+h1{color:var(--accent);font-size:1.9em;line-height:1.25;margin:.6em 0 .4em}h2{color:var(--accent);border-bottom:2px solid var(--line);padding-bottom:4px;margin-top:1.8em}
+h3{color:var(--accent);margin-top:1.4em}h4{margin-top:1.2em}a{color:#0b5cad;text-underline-offset:3px}a code{text-decoration:none;border-bottom:1px solid #9bb8d6}
+table{border-collapse:collapse;width:100%;margin:12px 0 18px;font-size:14px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:6px 8px;vertical-align:top;text-align:left}th{background:#dce6f1}tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:Consolas,"Courier New",monospace;font-size:.9em;background:var(--code);padding:1px 4px;border-radius:3px}
+pre{background:var(--code);border:1px solid var(--line);border-radius:6px;padding:12px;overflow-x:auto;font-size:13px;line-height:1.45}pre code{background:none;padding:0}
+pre code span a{display:none}
+details{border:1px solid var(--line);border-radius:6px;margin:10px 0;padding:6px 12px;background:#fafbfc}summary{cursor:pointer;font-weight:600;color:var(--accent)}
+.copy{float:right;font-size:12px;margin:0 0 6px 8px;padding:3px 10px;border:1px solid var(--line);background:#fff;border-radius:4px;cursor:pointer}
+math[display=block]{display:block;overflow-x:auto;margin:10px 0}
+.kw{color:#a626a4}.dv,.fl,.bn{color:#986801}.st,.ss,.ch{color:#50a14f}.co{color:#7a828a;font-style:italic}.fu{color:#4078f2}.op{color:#0184bc}.cf{color:#a626a4}.at{color:#c18401}.va{color:#e45649}.ot{color:#383a42}
+li:has(>input[type=checkbox]){list-style:none;margin-left:-1.3em}/*task-list*/
+footer{color:var(--muted);font-size:13px;margin-top:40px;border-top:1px solid var(--line);padding-top:10px}
+@media print{nav.top,.copy{display:none}details{border:none}details>*{display:block}}
+</style></head><body><nav class="top"><a href="index.html">Home</a><a href="daily-guide.html">Daily guide</a><a href="day01.html">Day 1</a><a href="day02.html">Day 2</a><a href="day03.html">Day 3</a><a href="day04.html">Day 4</a><a href="day05.html">Day 5</a><a href="day06.html">Day 6</a><a href="day07.html">Day 7</a><a href="day08.html">Day 8</a><a href="day09.html">Day 9</a><a href="day10.html">Day 10</a><a href="assessments.html">Assessments</a><a href="schedule-2026.html">Schedule</a></nav><nav class="top sub"><span>Reference:</span><a href="prac01-earth-engine-image-processing-fundamentals-and-vegetation-dynamics.html">Prac 01</a><a href="prac02-monitoring-vegetation-condition-trends-and-seasonality.html">Prac 02</a><a href="prac03-climate-and-hydrology-drivers-rainfall-anomalies-drought-indices-lst-and-et.html">Prac 03</a><a href="prac04-land-cover-mapping-and-landscape-metrics.html">Prac 04</a><a href="prac05-change-detection-bi-temporal-transitions-landtrendr-and-ccdc.html">Prac 05</a><a href="prac06-monitoring-land-clearing.html">Prac 06</a><a href="prac07-fire-regime-burn-severity-frequency-and-seasonality.html">Prac 07</a><a href="prac08-sar-and-water-surface-water-sentinel-1-flood-mapping-wetlands-and-mangroves.html">Prac 08</a><a href="prac09-crocodile-biomass-modelling-with-sar-floodplain-inundation.html">Prac 09</a><a href="prac10-urban-sprawl-detection-with-sentinel-1.html">Prac 10</a><a href="prac11-lidar-gedi-canopy-structure-and-optical-sar-lidar-fusion.html">Prac 11</a><a href="prac12-species-distribution-modelling-gouldian-finch.html">Prac 12</a><a href="prac13-geospatial-foundation-models-validating-alphaearth.html">Prac 13</a><a href="article-review-notes.html">Article review notes</a><a href="reading-list.html">Reading</a><a href="datasets-and-troubleshooting.html">Datasets</a></nav><div class="wrap"><h1 id="env306506-environmental-monitoring-and-modelling">ENV306/506 Environmental Monitoring and Modelling</h1>
+<p><strong>Charles Darwin University · Intensive mode · Monday 2 November – Friday 13 November 2026 · 9:00 am – 4:30 pm daily</strong></p>
+<blockquote>
+<p><strong>Start here each day: the <a href="daily-guide.html">Daily guide</a>.</strong> Ten day pages (Day 1 to Day 10) tell you what to read before class, what to do in each session, what is due, and what to finish before you go home.</p>
+</blockquote>
+<p>ENV306 (AQF 7, undergraduate) and ENV506 (AQF 9, postgraduate) are taught together as one intensive from <strong>Mon 2 Nov to Fri 13 Nov 2026, 9:00 am – 4:30 pm</strong>. The unit teaches landscape ecology, digital image processing and spatial modelling through Northern Territory (NT) case studies. <strong>The Google Earth Engine (GEE) Code Editor is the main environment, so there is nothing to install. Optional Python (earthengine-api + geemap), R (rgee) and QGIS (Earth Engine plugin + GRASS/SAGA/dzetsaka) versions of every prac are in <a href="https://github.com/padiketeku/EnvMonMod/tree/main/2026/alternatives"><code>alternatives/</code></a>.</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Data family</th>
+<th>Sensors</th>
+<th>Pracs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Optical</strong> (passive, reflected sunlight)</td>
+<td>Landsat 5/7/8/9, Sentinel-2, MODIS</td>
+<td>01–08, 13 (and as predictors in 09–12)</td>
+</tr>
+<tr class="even">
+<td><strong>SAR</strong> (active microwave, all-weather)</td>
+<td>Sentinel-1 C-band, ALOS PALSAR-2 L-band</td>
+<td>08, 09, 10, 11</td>
+</tr>
+<tr class="odd">
+<td><strong>Lidar</strong> (active laser, 3-D structure)</td>
+<td>GEDI spaceborne waveform lidar</td>
+<td>11 (and in the AlphaEarth inputs, Prac 13)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="unit-learning-outcomes">Unit learning outcomes</h2>
+<table>
+<thead>
+<tr class="header">
+<th>ULO</th>
+<th>Statement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Understand the basic concepts of landscape ecology and its relevance to environmental management.</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Understand the principles of image enhancement, image management, image rectification and registration, image transformation, image analysis and image classification techniques.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Apply these techniques to a variety of natural and environmental resource management issues, enabling students to evaluate spatial technologies and their role in assisting policy and decision making.</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Acquire technical competency in the use of digital image processing, GIS and spatial pattern analysis techniques.</td>
+</tr>
+</tbody>
+</table>
+<p>ENV306 students complete the <strong>Core</strong> activities and questions. ENV506 students also complete the <strong>Extension (ENV506)</strong> items, which require critique, independent design, uncertainty quantification and synthesis with the literature. ENV506 students also sit their own, more demanding version of each of the four assessments.</p>
+<h2 id="how-each-prac-is-organised">How each prac is organised</h2>
+<ol type="1">
+<li><strong>Concept notes:</strong> the theory, key formulas and NT context.</li>
+<li><strong>Practical activities:</strong> step-by-step, hands-on work in the Code Editor with a ready-to-run script.</li>
+<li><strong>Challenge questions (knowledge check):</strong> Core questions for everyone, plus Extension (ENV506) questions.</li>
+<li><strong>Link to summative assessment:</strong> how the prac feeds AT1–AT4.</li>
+<li><strong>Reading:</strong> recent, findable references with DOIs or stable links.</li>
+</ol>
+<p>Scripts follow the layout <strong>1 Study area → 2 Data → 3 Processing → 4 Analysis → 5 Visualise → 6 Export</strong>. Core questions appear as <code>// Q:</code> comments and ENV506 extensions as <code>// EXT:</code>. Students save their own copy in their Code Editor <strong>Owner</strong> repository, because the version history is assessment evidence.</p>
+<h2 id="the-learning-sequence">The learning sequence</h2>
+<p>The course moves from tools to drivers, then to change, sensors and finally models. Each prac uses skills from the one before. The full timetable is in <a href="schedule-2026.html">schedule-2026.md</a>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Stage</th>
+<th>Pracs</th>
+<th>Question it answers</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1 Foundations</td>
+<td>01</td>
+<td>How do I get, process and read satellite images in Earth Engine?</td>
+</tr>
+<tr class="even">
+<td>2 Vegetation condition and its drivers</td>
+<td>02, 03</td>
+<td>Is the vegetation changing (trends, seasonality), and how do rainfall, drought, heat and water use explain it?</td>
+</tr>
+<tr class="odd">
+<td>3 Pattern and change</td>
+<td>04, 05</td>
+<td>What is where (land cover, landscape pattern), and what changed between dates and over decades?</td>
+</tr>
+<tr class="even">
+<td>4 Disturbance applications</td>
+<td>06, 07</td>
+<td>How much clearing and fire, and where and when?</td>
+</tr>
+<tr class="odd">
+<td>5 Beyond optical: SAR and lidar</td>
+<td>08, 09, 10, 11</td>
+<td>How do radar and lidar see water, floodplains, cities and canopy structure?</td>
+</tr>
+<tr class="even">
+<td>6 Modelling and AI</td>
+<td>12, 13</td>
+<td>Where is suitable habitat, and can foundation models do this better or faster?</td>
+</tr>
+</tbody>
+</table>
+<h2 id="practicals-in-teaching-order">Practicals in teaching order</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Prac</th>
+<th>Topic</th>
+<th>Scripts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="prac01-earth-engine-image-processing-fundamentals-and-vegetation-dynamics.html">01</a></td>
+<td>Earth Engine, image processing fundamentals, vegetation dynamics</td>
+<td><code>prac00</code>, <code>prac01a</code>–<code>c</code></td>
+</tr>
+<tr class="even">
+<td><a href="prac02-monitoring-vegetation-condition-trends-and-seasonality.html">02</a></td>
+<td>Vegetation condition: trends (Sen's slope, Mann–Kendall) and seasonality (harmonic regression) (AT3)</td>
+<td><code>prac02a</code>, <code>prac02b</code></td>
+</tr>
+<tr class="odd">
+<td><a href="prac03-climate-and-hydrology-drivers-rainfall-anomalies-drought-indices-lst-and-et.html">03</a></td>
+<td>Climate and hydrology drivers: rainfall anomalies, drought indices, LST, ET (AT3)</td>
+<td><code>prac03a</code>–<code>c</code></td>
+</tr>
+<tr class="even">
+<td><a href="prac04-land-cover-mapping-and-landscape-metrics.html">04</a></td>
+<td>Land cover mapping (RF, CART, SVM) and landscape metrics (AT1 input; AT4 Part 1)</td>
+<td><code>prac04a</code>, <code>prac04b</code></td>
+</tr>
+<tr class="odd">
+<td><a href="prac05-change-detection-bi-temporal-transitions-landtrendr-and-ccdc.html">05</a></td>
+<td>Change detection: transition matrix (AT1), LandTrendr, CCDC (AT4 Part 2)</td>
+<td><code>prac05a</code>, <code>prac05b</code></td>
+</tr>
+<tr class="even">
+<td><a href="prac06-monitoring-land-clearing.html">06</a></td>
+<td>Monitoring land clearing (AT4 Part 2)</td>
+<td><code>prac06</code></td>
+</tr>
+<tr class="odd">
+<td><a href="prac07-fire-regime-burn-severity-frequency-and-seasonality.html">07</a></td>
+<td>Fire regime: severity, frequency, seasonality (AT4 Part 3)</td>
+<td><code>prac07a</code>, <code>prac07b</code></td>
+</tr>
+<tr class="even">
+<td><a href="prac08-sar-and-water-surface-water-sentinel-1-flood-mapping-wetlands-and-mangroves.html">08</a></td>
+<td>SAR and water: surface water, Sentinel-1 floods, wetlands, mangroves (AT4 Part 4)</td>
+<td><code>prac08a</code>–<code>c</code></td>
+</tr>
+<tr class="odd">
+<td><a href="prac09-crocodile-biomass-modelling-with-sar-floodplain-inundation.html">09</a></td>
+<td>Crocodile biomass modelling (AT4 elective)</td>
+<td><code>prac09</code></td>
+</tr>
+<tr class="even">
+<td><a href="prac10-urban-sprawl-detection-with-sentinel-1.html">10</a></td>
+<td>Urban sprawl with Sentinel-1 (AT4 elective)</td>
+<td><code>prac10</code></td>
+</tr>
+<tr class="odd">
+<td><a href="prac11-lidar-gedi-canopy-structure-and-optical-sar-lidar-fusion.html">11</a></td>
+<td>Lidar: GEDI canopy structure and sensor fusion (AT4 Part 4)</td>
+<td><code>prac11</code></td>
+</tr>
+<tr class="even">
+<td><a href="prac12-species-distribution-modelling-gouldian-finch.html">12</a></td>
+<td>Species distribution modelling (AT4 elective)</td>
+<td><code>prac12</code></td>
+</tr>
+<tr class="odd">
+<td><a href="prac13-geospatial-foundation-models-validating-alphaearth.html">13</a></td>
+<td>Geospatial foundation models: validating AlphaEarth (AT4 elective)</td>
+<td><code>prac13</code></td>
+</tr>
+</tbody>
+</table>
+<p>Code Editor scripts are in <a href="https://github.com/padiketeku/EnvMonMod/tree/main/2026/scripts"><code>scripts/</code></a>. Run <a href="https://github.com/padiketeku/EnvMonMod/blob/main/2026/scripts/prac00_my_study_tile.js"><code>prac00_my_study_tile.js</code></a> first (Prac 01, Session 4) to get your personal Daly tile, years and AT4 parameters.</p>
+<ul>
+<li><strong>Summative assessments</strong> (AT1–AT4, ENV306 and ENV506 versions, AI-resilient design): <a href="assessments.html">assessments/README.md</a></li>
+<li><strong>Reading list:</strong> <a href="reading-list.html">reference/reading-list.md</a></li>
+<li><strong>Article review reading list and summary notes:</strong> <a href="article-review-notes.html">reference/article-review-notes.md</a></li>
+<li><strong>Datasets and troubleshooting:</strong> <a href="datasets-and-troubleshooting.html">reference/datasets-and-troubleshooting.md</a></li>
+<li><strong>Python, R and QGIS options:</strong> <a href="alternatives.html">alternatives/README.md</a></li>
+</ul>
+<h2 id="how-the-unit-is-designed">How the unit is designed</h2>
+<ul>
+<li><strong>A logical sequence:</strong> foundations, then vegetation condition and its climate drivers, then pattern and change, disturbance, SAR and lidar, and finally modelling and AI. SAR flood mapping (Prac 08) is taught before it is applied to crocodiles (Prac 09) and cities (Prac 10). AlphaEarth comes last, so it is judged against methods students already know.</li>
+<li><strong>NT throughout:</strong> every prac uses Northern Territory case studies.</li>
+<li><strong>Three data families:</strong> optical, SAR and lidar, combined in Prac 11 and in AT4.</li>
+<li><strong>Rigorous science:</strong> significance testing, accuracy assessment, spatial cross-validation and uncertainty run through every prac.</li>
+<li><strong>Assessments that build skills:</strong> AT1 (change), AT3 (vegetation condition and climate) and AT4 (integration) all use the student's own tile. AT1 and AT3 build the skills that AT4 applies to new questions, without reusing their work. All tasks are verified by check values, version history, a supervised AT1 and an ungraded verification check (viva). ENV506 versions are more demanding.</li>
+<li><strong>Choice of environment:</strong> optional Python, R and QGIS versions; the Code Editor remains the main environment.</li>
+<li><strong>Consistent structure:</strong> every prac has concept notes, activities, challenge questions, an assessment link and recent readings.</li>
+</ul>
+<h2 id="getting-the-scripts-into-the-code-editor">Getting the scripts into the Code Editor</h2>
+<ol type="1">
+<li>Sign up for Earth Engine with a Google account and select or create a Cloud project (noncommercial and academic use is free).</li>
+<li>Open the shared course repository in the Code Editor (<strong>Scripts → Reader</strong>), or create a new script and paste in any file from <a href="https://github.com/padiketeku/EnvMonMod/tree/main/2026/scripts"><code>scripts/</code></a>. Each prac page also ends with a <strong>Full scripts</strong> section holding a copy of every script for that prac.</li>
+<li><strong>Save as</strong> your own copy in your <strong>Owner</strong> repository before editing. The Code Editor version history is assessment evidence.</li>
+<li>Create a Google Drive folder called <code>GEE_NT</code>. All exports go there.</li>
+</ol>
+<h2 id="licence-and-data">Licence and data</h2>
+<p>The course materials are for teaching use at CDU. Datasets belong to their providers (see the Earth Engine catalogue pages). <strong>Restricted data:</strong> the crocodile survey data (<code>croc-biomass-data.csv</code>) and the river floodplain shapefiles (<code>flooded_areas_shapefiles.zip</code>) for Prac 09 are distributed through <strong>Learnline only</strong>. They are not in this repository; do not commit or share them publicly. Students upload them to their own Earth Engine assets (Activity 9.0).</p>
+<footer>ENV306/506 Environmental Monitoring and Modelling · Charles Darwin University · 2026. Scripts are also in the course GitHub repository: <a href="https://github.com/padiketeku/EnvMonMod/tree/main/2026">padiketeku/EnvMonMod</a>.</footer></div><script>
+document.querySelectorAll('pre').forEach(function(p){var b=document.createElement('button');b.className='copy';b.textContent='Copy';
+b.onclick=function(){var t=p.innerText;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1500)},function(){var r=document.createRange();r.selectNodeContents(p);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected: press Ctrl+C'});};p.parentNode.insertBefore(b,p);});
+</script></body></html>

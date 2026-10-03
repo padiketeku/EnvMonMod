@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Datasets, troubleshooting and repository layout · ENV306/506</title><style>
+:root{--ink:#1d2733;--muted:#5b6672;--accent:#1f4e79;--line:#d5dde6;--soft:#f3f6f9;--code:#f6f8fa}
+*{box-sizing:border-box}body{margin:0;background:#fff;color:var(--ink);font:16px/1.6 -apple-system,"Segoe UI",Calibri,Arial,sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:16px 20px 60px}
+nav.top{background:var(--accent);color:#fff;padding:10px 20px;font-size:14px}nav.top a{color:#fff;margin-right:14px;text-decoration:none;white-space:nowrap}
+nav.top a:hover{text-decoration:underline}nav.sub{background:#e8eef5;padding:6px 20px;font-size:13px}nav.sub a{color:#1f4e79}nav.sub span{color:#5b6672;margin-right:10px}
+h1{color:var(--accent);font-size:1.9em;line-height:1.25;margin:.6em 0 .4em}h2{color:var(--accent);border-bottom:2px solid var(--line);padding-bottom:4px;margin-top:1.8em}
+h3{color:var(--accent);margin-top:1.4em}h4{margin-top:1.2em}a{color:#0b5cad;text-underline-offset:3px}a code{text-decoration:none;border-bottom:1px solid #9bb8d6}
+table{border-collapse:collapse;width:100%;margin:12px 0 18px;font-size:14px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:6px 8px;vertical-align:top;text-align:left}th{background:#dce6f1}tbody tr:nth-child(even){background:var(--soft)}
+code{font-family:Consolas,"Courier New",monospace;font-size:.9em;background:var(--code);padding:1px 4px;border-radius:3px}
+pre{background:var(--code);border:1px solid var(--line);border-radius:6px;padding:12px;overflow-x:auto;font-size:13px;line-height:1.45}pre code{background:none;padding:0}
+pre code span a{display:none}
+details{border:1px solid var(--line);border-radius:6px;margin:10px 0;padding:6px 12px;background:#fafbfc}summary{cursor:pointer;font-weight:600;color:var(--accent)}
+.copy{float:right;font-size:12px;margin:0 0 6px 8px;padding:3px 10px;border:1px solid var(--line);background:#fff;border-radius:4px;cursor:pointer}
+math[display=block]{display:block;overflow-x:auto;margin:10px 0}
+.kw{color:#a626a4}.dv,.fl,.bn{color:#986801}.st,.ss,.ch{color:#50a14f}.co{color:#7a828a;font-style:italic}.fu{color:#4078f2}.op{color:#0184bc}.cf{color:#a626a4}.at{color:#c18401}.va{color:#e45649}.ot{color:#383a42}
+li:has(>input[type=checkbox]){list-style:none;margin-left:-1.3em}/*task-list*/
+footer{color:var(--muted);font-size:13px;margin-top:40px;border-top:1px solid var(--line);padding-top:10px}
+@media print{nav.top,.copy{display:none}details{border:none}details>*{display:block}}
+</style></head><body><nav class="top"><a href="index.html">Home</a><a href="daily-guide.html">Daily guide</a><a href="day01.html">Day 1</a><a href="day02.html">Day 2</a><a href="day03.html">Day 3</a><a href="day04.html">Day 4</a><a href="day05.html">Day 5</a><a href="day06.html">Day 6</a><a href="day07.html">Day 7</a><a href="day08.html">Day 8</a><a href="day09.html">Day 9</a><a href="day10.html">Day 10</a><a href="assessments.html">Assessments</a><a href="schedule-2026.html">Schedule</a></nav><nav class="top sub"><span>Reference:</span><a href="prac01-earth-engine-image-processing-fundamentals-and-vegetation-dynamics.html">Prac 01</a><a href="prac02-monitoring-vegetation-condition-trends-and-seasonality.html">Prac 02</a><a href="prac03-climate-and-hydrology-drivers-rainfall-anomalies-drought-indices-lst-and-et.html">Prac 03</a><a href="prac04-land-cover-mapping-and-landscape-metrics.html">Prac 04</a><a href="prac05-change-detection-bi-temporal-transitions-landtrendr-and-ccdc.html">Prac 05</a><a href="prac06-monitoring-land-clearing.html">Prac 06</a><a href="prac07-fire-regime-burn-severity-frequency-and-seasonality.html">Prac 07</a><a href="prac08-sar-and-water-surface-water-sentinel-1-flood-mapping-wetlands-and-mangroves.html">Prac 08</a><a href="prac09-crocodile-biomass-modelling-with-sar-floodplain-inundation.html">Prac 09</a><a href="prac10-urban-sprawl-detection-with-sentinel-1.html">Prac 10</a><a href="prac11-lidar-gedi-canopy-structure-and-optical-sar-lidar-fusion.html">Prac 11</a><a href="prac12-species-distribution-modelling-gouldian-finch.html">Prac 12</a><a href="prac13-geospatial-foundation-models-validating-alphaearth.html">Prac 13</a><a href="article-review-notes.html">Article review notes</a><a href="reading-list.html">Reading</a><a href="datasets-and-troubleshooting.html">Datasets</a></nav><div class="wrap"><h1 id="datasets-troubleshooting-and-repository-layout">Datasets, troubleshooting and repository layout</h1>
+<h2 id="datasets-used">Datasets used</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Family</th>
+<th>Theme</th>
+<th>GEE ID</th>
+<th>Resolution / period</th>
+<th>Pracs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Optical</td>
+<td>Landsat 5/7/8/9 SR and ST</td>
+<td><code>LANDSAT/LT05</code>, <code>LE07</code>, <code>LC08</code>, <code>LC09/C02/T1_L2</code></td>
+<td>30 m; 1984–present</td>
+<td>01–06, 08</td>
+</tr>
+<tr class="even">
+<td>Optical</td>
+<td>Sentinel-2 SR + Cloud Score+</td>
+<td><code>COPERNICUS/S2_SR_HARMONIZED</code>, <code>GOOGLE/CLOUD_SCORE_PLUS/V1/S2_HARMONIZED</code></td>
+<td>10–20 m; 2017–present</td>
+<td>01, 04, 06–08, 10, 11, 13</td>
+</tr>
+<tr class="odd">
+<td>Optical</td>
+<td>MODIS VI, LST, ET, tree cover, burned area</td>
+<td><code>MODIS/061/MOD13Q1</code>, <code>MOD13A3</code>, <code>MOD11A2</code>, <code>MOD16A2</code>, <code>MOD44B</code>, <code>MCD64A1</code></td>
+<td>250 m – 1 km</td>
+<td>01–03, 07, 12</td>
+</tr>
+<tr class="even">
+<td>Optical</td>
+<td>ESA FireCCI51 burned area</td>
+<td><code>ESA/CCI/FireCCI/5_1</code></td>
+<td>250 m; 2001–2020</td>
+<td>07 (AT4 Part 3)</td>
+</tr>
+<tr class="odd">
+<td>SAR</td>
+<td>Sentinel-1 GRD (C-band), linear σ⁰</td>
+<td><code>COPERNICUS/S1_GRD_FLOAT</code></td>
+<td>10 m; 2014–present</td>
+<td>08–11</td>
+</tr>
+<tr class="even">
+<td>SAR</td>
+<td>ALOS PALSAR-2 yearly mosaic (L-band)</td>
+<td><code>JAXA/ALOS/PALSAR/YEARLY/SAR_EPOCH</code></td>
+<td>25 m; 2015–present</td>
+<td>11</td>
+</tr>
+<tr class="odd">
+<td>Lidar</td>
+<td>GEDI L2A, L4A (monthly), L4B (gridded)</td>
+<td><code>LARSE/GEDI/GEDI02_A_002_MONTHLY</code>, <code>LARSE/GEDI/GEDI04_A_002_MONTHLY</code>, <code>LARSE/GEDI/GEDI04_B_002</code></td>
+<td>25 m footprints; 1 km; 2019–</td>
+<td>11</td>
+</tr>
+<tr class="even">
+<td>Foundation model</td>
+<td>AlphaEarth satellite embeddings</td>
+<td><code>GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL</code></td>
+<td>10 m; 2017–2024</td>
+<td>13</td>
+</tr>
+<tr class="odd">
+<td>Land cover</td>
+<td>ESA WorldCover; Dynamic World</td>
+<td><code>ESA/WorldCover/v200</code>; <code>GOOGLE/DYNAMICWORLD/V1</code></td>
+<td>10 m</td>
+<td>04, 06, 10, 13</td>
+</tr>
+<tr class="even">
+<td>Forest change</td>
+<td>Hansen GFC</td>
+<td><code>UMD/hansen/global_forest_change_2023_v1_11</code> (check for newer)</td>
+<td>30 m; 2000–2023</td>
+<td>06</td>
+</tr>
+<tr class="odd">
+<td>Built-up</td>
+<td>GHSL built surface</td>
+<td><code>JRC/GHSL/P2023A/GHS_BUILT_S</code></td>
+<td>100 m</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>Water and mangroves</td>
+<td>JRC Global Surface Water; Giri 2000 mangroves</td>
+<td><code>JRC/GSW1_4/GlobalSurfaceWater</code>, <code>YearlyHistory</code>; <code>LANDSAT/MANGROVE_FORESTS</code></td>
+<td>30 m</td>
+<td>08–10, 12</td>
+</tr>
+<tr class="odd">
+<td>Climate</td>
+<td>CHIRPS; TerraClimate; WorldClim</td>
+<td><code>UCSB-CHG/CHIRPS/PENTAD</code>; <code>IDAHO_EPSCOR/TERRACLIMATE</code>; <code>WORLDCLIM/V1/BIO</code></td>
+<td>0.05°; ~4 km; 1 km</td>
+<td>03, 12</td>
+</tr>
+<tr class="even">
+<td>Terrain and hydrology</td>
+<td>NASADEM; DEM-H; HydroSHEDS; MERIT Hydro</td>
+<td><code>NASA/NASADEM_HGT/001</code>; <code>AU/GA/DEM_1SEC/v10/DEM-H</code>; <code>WWF/HydroSHEDS/v1/Basins/hybas_4</code>, <code>hybas_5</code>; <code>MERIT/Hydro/v1_0_1</code></td>
+<td>30–90 m</td>
+<td>Many</td>
+</tr>
+<tr class="odd">
+<td>Learnline (restricted)</td>
+<td>Crocodile survey data; river floodplain shapefiles</td>
+<td><code>croc-biomass-data.csv</code>; <code>flooded_areas_shapefiles.zip</code></td>
+<td>Table; vector</td>
+<td>09</td>
+</tr>
+<tr class="even">
+<td>Uploaded by students</td>
+<td>Gouldian finch occurrences</td>
+<td><a href="https://www.ala.org.au">Atlas of Living Australia</a></td>
+<td>Points</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<h2 id="troubleshooting-in-the-code-editor">Troubleshooting in the Code Editor</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Likely cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Computation timed out</code> / <code>User memory limit exceeded</code></td>
+<td>Too many pixels in <code>reduceRegion</code> or a chart</td>
+<td>Coarser <code>scale</code>, <code>tileScale: 4</code>, smaller area, or <code>Export</code></td>
+</tr>
+<tr class="even">
+<td>Blank or black layer</td>
+<td>Data not scaled or wrong visualisation range</td>
+<td>Apply scale factors; check with the Inspector; set <code>min</code> / <code>max</code></td>
+</tr>
+<tr class="odd">
+<td>Collection <code>size</code> is 0</td>
+<td>Wrong dates, bounds or property</td>
+<td><code>print(collection.size())</code> after each filter</td>
+</tr>
+<tr class="even">
+<td>Chart has no time axis</td>
+<td><code>system:time_start</code> lost in <code>map()</code></td>
+<td><code>.copyProperties(img, ['system:time_start'])</code></td>
+</tr>
+<tr class="odd">
+<td>Cloud and smoke in Top End imagery</td>
+<td>Wet-season or burning-season dates</td>
+<td>Dry-season windows, Cloud Score+ ≥ 0.6, or SAR</td>
+</tr>
+<tr class="even">
+<td>SAR noisy or inconsistent</td>
+<td>Speckle; mixed orbits</td>
+<td>Boxcar or focal median; filter to one pass or relative orbit</td>
+</tr>
+<tr class="odd">
+<td>GEDI layer mostly empty</td>
+<td>Sparse footprints; strict filter</td>
+<td>Zoom in; widen dates; check <code>sensitivity</code></td>
+</tr>
+<tr class="even">
+<td><code>Asset not found</code></td>
+<td>Wrong path or not shared</td>
+<td>Copy the path from the Assets tab; share with markers only</td>
+</tr>
+</tbody>
+</table>
+<h2 id="core-texts">Core texts</h2>
+<ul>
+<li>Turner, M. G., &amp; Gardner, R. H. (2015). <em>Landscape ecology in theory and practice</em> (2nd ed.). Springer. <a href="https://doi.org/10.1007/978-1-4939-2794-4">https://doi.org/10.1007/978-1-4939-2794-4</a></li>
+<li>Cardille, J. A., et al. (Eds.). (2024). <em>Cloud-based remote sensing with Google Earth Engine</em>. Springer (open access). <a href="https://doi.org/10.1007/978-3-031-26588-4">https://doi.org/10.1007/978-3-031-26588-4</a></li>
+<li>Richards, J. A. (2022). <em>Remote sensing digital image analysis</em> (6th ed.). Springer. <a href="https://doi.org/10.1007/978-3-030-82327-6">https://doi.org/10.1007/978-3-030-82327-6</a></li>
+<li>Flores-Anderson, A. I., et al. (Eds.). (2019). <em>The SAR handbook</em>. NASA SERVIR. <a href="https://doi.org/10.25966/nr2c-s697">https://doi.org/10.25966/nr2c-s697</a></li>
+<li>Lodge, J. M., Howard, S., Bearman, M., Dawson, P., &amp; Associates. (2023). <em>Assessment reform for the age of artificial intelligence</em>. TEQSA. <a href="https://www.teqsa.gov.au/sites/default/files/2023-09/assessment-reform-age-artificial-intelligence-discussion-paper.pdf">https://www.teqsa.gov.au/sites/default/files/2023-09/assessment-reform-age-artificial-intelligence-discussion-paper.pdf</a></li>
+</ul>
+<p>Prac-specific readings appear in section 5 of each prac, and together in <a href="reading-list.html">reference/reading-list.md</a>.</p>
+<h2 id="github-repository-layout-envmonmod2026">GitHub repository layout (<code>EnvMonMod/2026/</code>)</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Path</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>README.md</code></td>
+<td>Unit overview, ULOs, the learning sequence, prac index, Code Editor setup</td>
+</tr>
+<tr class="even">
+<td><code>schedule-2026.md</code></td>
+<td>The 2026 timetable (2–13 Nov) and assessment dates</td>
+</tr>
+<tr class="odd">
+<td><code>pracs/prac01-…md</code> – <code>prac13-…md</code></td>
+<td>One page per prac: concept notes, activities, challenge questions, assessment link, reading</td>
+</tr>
+<tr class="even">
+<td><code>scripts/prac00_…js</code> – <code>prac13_…js</code></td>
+<td>Code Editor scripts (the main environment), including the personal tile allocator (<code>prac00</code>)</td>
+</tr>
+<tr class="odd">
+<td><code>alternatives/python/</code>, <code>alternatives/r/</code>, <code>alternatives/qgis/</code></td>
+<td>Optional Python (earthengine-api + geemap), R (rgee) and QGIS versions</td>
+</tr>
+<tr class="even">
+<td><code>assessments/README.md</code></td>
+<td>AT1–AT4: separate ENV306 and ENV506 briefs and rubrics; AI-resilient design</td>
+</tr>
+<tr class="odd">
+<td><code>reference/</code></td>
+<td>Reading list; datasets and troubleshooting</td>
+</tr>
+</tbody>
+</table>
+<p>Restricted data (crocodile survey CSV, floodplain shapefiles) are distributed via Learnline only and are never committed to the repository.</p>
+<footer>ENV306/506 Environmental Monitoring and Modelling · Charles Darwin University · 2026. Scripts are also in the course GitHub repository: <a href="https://github.com/padiketeku/EnvMonMod/tree/main/2026">padiketeku/EnvMonMod</a>.</footer></div><script>
+document.querySelectorAll('pre').forEach(function(p){var b=document.createElement('button');b.className='copy';b.textContent='Copy';
+b.onclick=function(){var t=p.innerText;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1500)},function(){var r=document.createRange();r.selectNodeContents(p);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected: press Ctrl+C'});};p.parentNode.insertBefore(b,p);});
+</script></body></html>
