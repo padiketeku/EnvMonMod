@@ -8,6 +8,18 @@
 
 **Purpose.** Model habitat suitability with predictors from earlier pracs (climate from Prac 03, tree cover and canopy height from Pracs 04 and 11, fire from Prac 07, water from Prac 08), then test it with spatial cross-validation and model comparison.
 
+> **Read first (about 30 min).** Before you start, read these summary notes in the *Article review reading list and summary notes* (Learnline, and [reference/article-review-notes.md](../reference/article-review-notes.md)):
+>
+> - **3.1 Stobo-Wilson et al. (2020)**, drivers of mammal richness in the Top End
+> - **3.2 Randin et al. (2020)**, remote sensing in species distribution models
+> - **3.3 Einoder et al. (2023)**, long-unburnt areas, fire size and mammal declines
+>
+> **Carry these ideas into the prac:**
+>
+> - Species respond to habitat condition, fire pattern, grazing and predators, not only to climate (Stobo-Wilson et al.; Einoder et al.).
+> - Remote sensing predictors add land cover, habitat structure and disturbance to climate-only models, but each predictor should represent an ecological **process** (Randin et al.).
+> - Predictors are often correlated (fire and grazing both reduce ground cover), and record dates should match predictor dates.
+
 ## 1. Concept notes
 
 **Species distribution models (SDMs)** relate where a species occurs to environmental predictors, then predict **relative habitat suitability** across a landscape. They link landscape pattern to species and are used in threatened-species planning, reserve design and impact assessment.
@@ -38,6 +50,8 @@
 3. Thin presences to one per cell, draw 5,000 background points, and split 70/30.
 4. Fit RF and Maxent, then compare ROC curves, AUC, variable importance and the maps.
 
+> **Reading link (notes 3.1, 3.2 and 3.3, Stobo-Wilson et al. 2020, Randin et al. 2020 and Einoder et al. 2023).** In step 2 of Activity 12.1 you justify each predictor ecologically. Use Randin et al. to link each remotely sensed predictor to a process, and Stobo-Wilson et al. and Einoder et al. for the savanna processes that matter (fire frequency and size, time since fire, habitat structure, grazing). Records go back to 2000 (step 1), so think about Randin et al.'s point on matching record dates to predictor dates.
+
 **Activity 12.2 – Validation and model comparison (Session 3).**
 
 1. Replace the random split with 50 km spatial blocks, and record how much AUC drops.
@@ -47,6 +61,8 @@
    - **B:** target-group background.
    - **C:** predictor set without fire.
    - **D:** Maxent feature types.
+
+> **Reading link (notes 3.1 and 3.3, Stobo-Wilson et al. 2020 and Einoder et al. 2023).** Group C removes the fire predictors. Both papers suggest that fire pattern matters to savanna fauna, so predict the effect before you run it, then explain the result. If removing fire changes little, check whether another predictor (for example tree cover or NDVI) is carrying the same information, the correlated-predictor problem raised in the notes.
 
 **Key code** (an excerpt from [`prac12_species_distribution_model.js`](../scripts/prac12_species_distribution_model.js); run the full script for the complete workflow):
 
@@ -89,6 +105,9 @@ Map.addLayer(suitRF, {min: 0, max: 1, palette: ['#f7fcf5', '#74c476', '#00441b']
 - Elith, J., et al. (2011). A statistical explanation of MaxEnt for ecologists. *Diversity and Distributions, 17*, 43–57. https://doi.org/10.1111/j.1472-4642.2010.00725.x
 - Roberts, D. R., et al. (2017). Cross-validation strategies for data with temporal, spatial, hierarchical, or phylogenetic structure. *Ecography, 40*, 913–929. https://doi.org/10.1111/ecog.02881
 - Phillips, S. J., Anderson, R. P., & Schapire, R. E. (2006). Maximum entropy modeling of species geographic distributions. *Ecological Modelling, 190*, 231–259. https://doi.org/10.1016/j.ecolmodel.2005.03.026
+- Stobo-Wilson, A. M., et al. (2020). Bottom-up and top-down processes influence contemporary patterns of mammal species richness in Australia's monsoonal tropics. *Biological Conservation, 247*, 108638. https://doi.org/10.1016/j.biocon.2020.108638 (article review notes)
+- Randin, C. F., et al. (2020). Monitoring biodiversity in the Anthropocene using remote sensing in species distribution models. *Remote Sensing of Environment, 239*, 111626. https://doi.org/10.1016/j.rse.2019.111626 (article review notes)
+- Einoder, L. D., et al. (2023). Long term monitoring reveals the importance of large, long unburnt areas and smaller fires in moderating mammal declines in fire-prone savanna of northern Australia. *Journal of Applied Ecology*. https://doi.org/10.1111/1365-2664.14482 (article review notes)
 
 ## Full scripts
 

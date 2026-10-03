@@ -8,6 +8,15 @@
 
 **Purpose.** Find where NT vegetation is greening or browning, test whether the trends are significant, and describe seasonality. Adapted from the Earth Engine community tutorial *Monitoring forest vegetation condition* (pskoulgi).
 
+> **Read first (about 10 min).** Before you start, read these summary notes in the *Article review reading list and summary notes* (Learnline, and [reference/article-review-notes.md](../reference/article-review-notes.md)):
+>
+> - **1.3 Skidmore et al. (2021)**, *Priority list of biodiversity metrics to observe from space* (revisit from Prac 01)
+>
+> **Carry these ideas into the prac:**
+>
+> - Vegetation trends and seasonality are measures of **ecosystem function** (productivity and phenology), one of the classes Skidmore ranks as most feasible from space.
+> - A greening trend is a change in function, not proof of better biodiversity condition: in Top End savanna it can also mean woody thickening or invasive grasses.
+
 ## 1. Concept notes
 
 **Vegetation condition** is the state of vegetation relative to what is expected for a place and season. Long time series of a vegetation index (NDVI, EVI) reveal two things:
@@ -47,12 +56,16 @@ S counts increases minus decreases across all pairs of years, Z tests whether th
 4. Chart a probe pixel in the Douglas–Daly, then move the probe into **your Daly tile**.
 5. **AT3:** clip the trend and significance maps to your tile, and calculate the area greening and browning.
 
+> **Reading link (notes 1.3, Skidmore et al. 2021).** In steps 3–5 of Activity 2.1 you map where NDVI is greening or browning. Use discussion question 3 in the notes: is greening in your tile evidence of better biodiversity condition, or could it be woody thickening, invasive grasses or a run of wet years (Prac 03)?
+
 **Activity 2.2 – Seasonality (`prac02b`, Session 3).**
 
 1. Fit a first-order harmonic model to Landsat 8/9 NDVI (2014–2024) around the Darwin hinterland.
 2. Map amplitude, phase (day of peak greenness) and the HSV seasonality composite.
 3. Plot observed vs fitted values at savanna, floodplain and rural probes, then refit with `HARMONICS = 2` and compare RMSE.
 4. **AT3:** fit the model in your tile, and compare amplitude and peak timing for at least two land covers.
+
+> **Reading link (notes 1.3, Skidmore et al. 2021).** Amplitude and day of peak greenness (Activity 2.2) are phenology metrics, part of the ecosystem function class. Differences between land covers in step 4 are the kind of functional signal satellites capture well.
 
 **Key code** (an excerpt from [`prac02a_trend_sens_mk.js`](../scripts/prac02a_trend_sens_mk.js); run the full script for the complete workflow):
 
@@ -95,6 +108,7 @@ Map.addLayer(sens.select('slope'), {min: -0.006, max: 0.006, palette: ['#8c510a'
 - Donohue, R. J., Roderick, M. L., McVicar, T. R., & Farquhar, G. D. (2013). Impact of CO₂ fertilization on maximum foliage cover across the globe's warm, arid environments. *Geophysical Research Letters, 40*, 3031–3035. https://doi.org/10.1002/grl.50563
 - Ma, X., et al. (2013). Spatial patterns and temporal dynamics in savanna vegetation phenology across the North Australian Tropical Transect. *Remote Sensing of Environment, 139*, 97–115. https://doi.org/10.1016/j.rse.2013.07.030
 - Earth Engine community tutorial: *Monitoring forest vegetation condition* (pskoulgi). https://developers.google.com/earth-engine/tutorials/community/forest-vegetation-condition
+- Skidmore, A. K., et al. (2021). Priority list of biodiversity metrics to observe from space. *Nature Ecology & Evolution, 5*, 896–906. https://doi.org/10.1038/s41559-021-01451-x (article review notes)
 
 ## Full scripts
 

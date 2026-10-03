@@ -45,6 +45,8 @@ Landscapes change abruptly (clearing, fire, flood) and gradually (woody thickeni
 3. Run CCDC for 2000–2024, and map the most recent break and the number of breaks.
 4. Map where the two algorithms agree, and compare them with your transition matrix.
 
+> **Reading link (notes 2.3 and 2.4, Edwards et al. 2018 and Thomas et al. 2024).** dNBR (step 1 of Activity 5.2) and LandTrendr respond to any disturbance, fire as well as clearing. Thomas et al. needed clearing only, so permanent clearing must be separated from fire scars that recover within a year or two. Use the recovery after each break in LandTrendr and CCDC (steps 2–3) to make that distinction in your tile.
+
 **Key code** (an excerpt from [`prac05a_transition_matrix.js`](../scripts/prac05a_transition_matrix.js); run the full script for the complete workflow):
 
 ```javascript

@@ -8,6 +8,16 @@
 
 **Purpose.** Map historic and recent land clearing in the Daly River Catchment with Hansen GFC and annual Sentinel-2 detection with persistence rules, and produce clearing patches for compliance checks.
 
+> **Read first (about 15 min).** Before you start, read these summary notes in the *Article review reading list and summary notes* (Learnline, and [reference/article-review-notes.md](../reference/article-review-notes.md)):
+>
+> - **2.4 Thomas et al. (2024)**, *Poor compliance and exemptions facilitate ongoing deforestation*
+>
+> **Carry these ideas into the prac:**
+>
+> - Satellite clearing maps become policy evidence when they are compared with permits, exemptions and EPBC Act referrals (Thomas et al.).
+> - Choices such as the canopy threshold, the minimum patch size (Thomas et al. used clearing larger than 20 ha) and how you separate clearing from fire or regrowth change the totals you report.
+> - "Potentially non-compliant" is not a legal finding: be clear about what a map can and cannot show.
+
 ## 1. Concept notes
 
 **Why it matters.** Clearing of native vegetation is the main driver of habitat loss and fragmentation in Australia (Evans, 2016). Much of the habitat lost for threatened species has had little regulatory scrutiny (Ward et al., 2019). In the NT, clearing generally requires approval: under the *Planning Act 1999* on freehold land, and under the *Pastoral Land Act 1992* on pastoral leases. Agricultural development in the Douglas–Daly, Katherine and Ord regions has made clearing a live policy issue. Satellite monitoring supports approvals, compliance checks and national greenhouse accounting.
@@ -36,6 +46,8 @@ The usual tools to separate them are *persistence rules* (the low NDVI must pers
 2. Cross-check with Landsat dry-season dNDVI (2005 → 2023).
 3. Re-run at 10, 30 and 50 % canopy thresholds.
 
+> **Reading link (notes 2.4, Thomas et al. 2024).** Clearing totals depend on the loss map. In step 3 of Part A, see how the area changes between the 10, 30 and 50 % canopy thresholds: many Daly savanna woodlands sit close to 20 % cover, so the threshold alone can move your estimate a long way.
+
 **Part B – Annual clearing detection with Sentinel-2 (2018–2025).**
 
 1. Build dry-season (Jun–Sep) composites of NDVI and BSI for each year, and a woody baseline (Dynamic World trees, 2018).
@@ -43,6 +55,8 @@ The usual tools to separate them are *persistence rules* (the low NDVI must pers
 3. Chart clearing per year, vectorise the patches, and inspect the ten largest with the satellite basemap.
 4. Export the patches as a shapefile and as an Earth Engine asset.
 5. Run Part B for **your tile**.
+
+> **Reading link (notes 2.4, Thomas et al. 2024).** The persistence rule in step 2 of Part B (NDVI still below 0.35 the next year) is how you separate permanent clearing from fire scars, the limitation flagged in the notes. Thomas et al. assessed only clearing larger than 20 ha: calculate how much of your tile's clearing is in patches of 1–20 ha that such a study would miss. Your exported patches (step 4) are the kind of evidence that can be compared with permits and threatened species habitat.
 
 **Key code** (an excerpt from [`prac06_land_clearing.js`](../scripts/prac06_land_clearing.js); run the full script for the complete workflow):
 
@@ -83,6 +97,7 @@ print('Loss (ha) by year (1 = 2001)', lossByYear.get('groups'));
 - Ward, M. S., et al. (2019). Lots of loss with little scrutiny: The attrition of habitat critical for threatened species in Australia. *Conservation Science and Practice, 1*, e117. https://doi.org/10.1111/csp2.117
 - Olofsson, P., et al. (2014). Good practices for estimating area and assessing accuracy of land change. *Remote Sensing of Environment, 148*, 42–57. https://doi.org/10.1016/j.rse.2014.02.015
 - Brown, C. F., et al. (2022). Dynamic World, near real-time global 10 m land use land cover mapping. *Scientific Data, 9*, 251. https://doi.org/10.1038/s41597-022-01307-4
+- Thomas, H., Ward, M., Simmonds, J., Taylor, M., & Maron, M. (2024). Poor compliance and exemptions facilitate ongoing deforestation. *Conservation Biology*, e14354. https://doi.org/10.1111/cobi.14354 (article review notes)
 
 ## Full scripts
 
