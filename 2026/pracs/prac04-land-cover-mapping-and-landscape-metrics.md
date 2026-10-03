@@ -8,6 +8,17 @@
 
 **Purpose.** Classify land cover with RF, CART and SVM, assess accuracy, and quantify landscape pattern with metrics, first for a teaching area and then for your own Daly tile.
 
+> **Read first (about 20 min).** Before you start, read these summary notes in the *Article review reading list and summary notes* (Learnline, and [reference/article-review-notes.md](../reference/article-review-notes.md)):
+>
+> - **1.1 Foody (2023)**, *Remote sensing in landscape ecology* (grain, extent and scale)
+> - **1.2 Ma et al. (2023)**, *Global forest fragmentation change from 2000 to 2020*
+>
+> **Carry these ideas into the prac:**
+>
+> - Landscape metrics such as edge density, patch density and mean patch area turn a land cover map into evidence about **pattern** (Ma et al.).
+> - Every metric inherits the errors of the map it comes from, so classification accuracy (Activity 4.1) limits what the metrics (Activity 4.2) can say.
+> - Results depend on grain, extent, how a class is defined and which metric is chosen: Ma et al. (2023) and Zou et al. (2025) reached opposite headlines for the same period because they used different metrics.
+
 ## 1. Concept notes
 
 ### 1.1 Image classification
@@ -54,12 +65,16 @@ Supervised classification assigns every pixel to a class, using training samples
 3. Train RF, CART and SVM; for SVM, standardise the inputs first. Compare confusion matrices, F1 and RF importance.
 4. **Required:** digitise at least 30 polygons of your own with the geometry tools (section 2b), retrain RF and compare.
 
+> **Reading link (notes 1.2, Ma et al. 2023).** Ma et al. calculated their metrics from a global forest map. Your metrics in Activity 4.2 will inherit every error in your map, so the accuracy from step 3 (and the effect of your own polygons in step 4) sets how far you can trust them.
+
 **Activity 4.2 – Landscape metrics (`prac04b`), Douglas–Daly.**
 
 1. Define woodland habitat (Dynamic World trees + shrub). Compute PLAND, NP, MPS, LPI, ED, core area, isolation and Shannon H for 2017 and 2024.
 2. Map habitat lost, edge, core and isolation, and chart the patch-size distribution.
 3. Re-run at 10, 30 and 90 m grain and tabulate how each metric responds.
 4. Repeat the 2017 vs 2024 comparison for **your tile**.
+
+> **Reading link (notes 1.1 and 1.2, Foody 2023 and Ma et al. 2023).** ED, NP and MPS in step 1 are the same three metrics (edge density, patch density, mean patch area) that Ma et al. combined into their Forest Fragmentation Index. Step 3 is Foody's point about grain: watch which metrics change most between 10, 30 and 90 m. Step 4 is Ma et al.'s two-date comparison at the scale of your tile; decide whether your woodland became more or less fragmented, and whether a different metric would give a different answer (see Zou et al., 2025, in Further reading).
 
 **Key code** (an excerpt from [`prac04a_landcover_classification.js`](../scripts/prac04a_landcover_classification.js); run the full script for the complete workflow):
 
@@ -108,6 +123,8 @@ Map.addLayer(predictors.classify(rf), {min: 0, max: 6, palette: palette}, 'Land 
 - Brown, C. F., et al. (2022). Dynamic World, near real-time global 10 m land use land cover mapping. *Scientific Data, 9*, 251. https://doi.org/10.1038/s41597-022-01307-4
 - Zanaga, D., et al. (2022). *ESA WorldCover 10 m 2021 v200*. Zenodo. https://doi.org/10.5281/zenodo.7254221
 - Hesselbarth, M. H. K., et al. (2019). landscapemetrics: An open-source R tool to calculate landscape metrics. *Ecography, 42*, 1648–1657. https://doi.org/10.1111/ecog.04617 (concepts and metric definitions)
+- Ma, J., Li, J., Wu, W., & Liu, J. (2023). Global forest fragmentation change from 2000 to 2020. *Nature Communications, 14*, 3752. https://doi.org/10.1038/s41467-023-39221-x (article review notes)
+- Foody, G. M. (2023). Remote sensing in landscape ecology. *Landscape Ecology, 38*(11), 2711–2716. https://doi.org/10.1007/s10980-023-01753-4 (article review notes)
 
 ## Full scripts
 

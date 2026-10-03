@@ -24,6 +24,8 @@ Page: [prac01-earth-engine-image-processing-fundamentals-and-vegetation-dynamics
 - Huete, A., et al. (2002). Overview of the radiometric and biophysical performance of the MODIS vegetation indices. *Remote Sensing of Environment, 83*, 195–213. https://doi.org/10.1016/S0034-4257(02)00096-2
 - Ma, X., et al. (2013). Spatial patterns and temporal dynamics in savanna vegetation phenology across the North Australian Tropical Transect. *Remote Sensing of Environment, 139*, 97–115. https://doi.org/10.1016/j.rse.2013.07.030
 - Hutley, L. B., et al. (2011). A sub-continental scale living laboratory: Spatial patterns of savanna vegetation over a rainfall gradient in northern Australia. *Agricultural and Forest Meteorology, 151*, 1417–1428. https://doi.org/10.1016/j.agrformet.2011.03.002
+- Foody, G. M. (2023). Remote sensing in landscape ecology. *Landscape Ecology, 38*(11), 2711–2716. https://doi.org/10.1007/s10980-023-01753-4 (article review notes)
+- Skidmore, A. K., et al. (2021). Priority list of biodiversity metrics to observe from space. *Nature Ecology & Evolution, 5*, 896–906. https://doi.org/10.1038/s41559-021-01451-x (article review notes)
 
 ## Prac 02: Monitoring vegetation condition: trends and seasonality
 
@@ -34,6 +36,7 @@ Page: [prac02-monitoring-vegetation-condition-trends-and-seasonality.md](../prac
 - Donohue, R. J., Roderick, M. L., McVicar, T. R., & Farquhar, G. D. (2013). Impact of CO₂ fertilization on maximum foliage cover across the globe's warm, arid environments. *Geophysical Research Letters, 40*, 3031–3035. https://doi.org/10.1002/grl.50563
 - Ma, X., et al. (2013). Spatial patterns and temporal dynamics in savanna vegetation phenology across the North Australian Tropical Transect. *Remote Sensing of Environment, 139*, 97–115. https://doi.org/10.1016/j.rse.2013.07.030
 - Earth Engine community tutorial: *Monitoring forest vegetation condition* (pskoulgi). https://developers.google.com/earth-engine/tutorials/community/forest-vegetation-condition
+- Skidmore, A. K., et al. (2021). Priority list of biodiversity metrics to observe from space. *Nature Ecology & Evolution, 5*, 896–906. https://doi.org/10.1038/s41559-021-01451-x (article review notes)
 
 ## Prac 03: Climate and hydrology drivers: rainfall anomalies, drought indices, LST and ET
 
@@ -57,6 +60,8 @@ Page: [prac04-land-cover-mapping-and-landscape-metrics.md](../pracs/prac04-land-
 - Brown, C. F., et al. (2022). Dynamic World, near real-time global 10 m land use land cover mapping. *Scientific Data, 9*, 251. https://doi.org/10.1038/s41597-022-01307-4
 - Zanaga, D., et al. (2022). *ESA WorldCover 10 m 2021 v200*. Zenodo. https://doi.org/10.5281/zenodo.7254221
 - Hesselbarth, M. H. K., et al. (2019). landscapemetrics: An open-source R tool to calculate landscape metrics. *Ecography, 42*, 1648–1657. https://doi.org/10.1111/ecog.04617 (concepts and metric definitions)
+- Ma, J., Li, J., Wu, W., & Liu, J. (2023). Global forest fragmentation change from 2000 to 2020. *Nature Communications, 14*, 3752. https://doi.org/10.1038/s41467-023-39221-x (article review notes)
+- Foody, G. M. (2023). Remote sensing in landscape ecology. *Landscape Ecology, 38*(11), 2711–2716. https://doi.org/10.1007/s10980-023-01753-4 (article review notes)
 
 ## Prac 05: Change detection: bi-temporal transitions, LandTrendr and CCDC
 
@@ -78,6 +83,7 @@ Page: [prac06-monitoring-land-clearing.md](../pracs/prac06-monitoring-land-clear
 - Ward, M. S., et al. (2019). Lots of loss with little scrutiny: The attrition of habitat critical for threatened species in Australia. *Conservation Science and Practice, 1*, e117. https://doi.org/10.1111/csp2.117
 - Olofsson, P., et al. (2014). Good practices for estimating area and assessing accuracy of land change. *Remote Sensing of Environment, 148*, 42–57. https://doi.org/10.1016/j.rse.2014.02.015
 - Brown, C. F., et al. (2022). Dynamic World, near real-time global 10 m land use land cover mapping. *Scientific Data, 9*, 251. https://doi.org/10.1038/s41597-022-01307-4
+- Thomas, H., Ward, M., Simmonds, J., Taylor, M., & Maron, M. (2024). Poor compliance and exemptions facilitate ongoing deforestation. *Conservation Biology*, e14354. https://doi.org/10.1111/cobi.14354 (article review notes)
 
 ## Prac 07: Fire regime: burn severity, frequency and seasonality
 
@@ -91,6 +97,8 @@ Page: [prac07-fire-regime-burn-severity-frequency-and-seasonality.md](../pracs/p
 - Russell-Smith, J., & Edwards, A. C. (2006). Seasonality and fire severity in savanna landscapes of monsoonal northern Australia. *International Journal of Wildland Fire, 15*(4), 541–550. https://doi.org/10.1071/WF05111
 - Edwards, A. C., Maier, S. W., Hutley, L. B., Williams, R. J., & Russell-Smith, J. (2013). Spectral analysis of fire severity in north Australian tropical savannas. *Remote Sensing of Environment, 136*, 56–65. https://doi.org/10.1016/j.rse.2013.04.013
 - Edwards, A. C., Russell-Smith, J., & Maier, S. W. (2018). A comparison and validation of satellite-derived fire severity mapping techniques in fire prone north Australian savannas: Extreme fires and tree stem mortality. *Remote Sensing of Environment, 206*, 287–299. https://doi.org/10.1016/j.rse.2017.12.038
+- Evans, J., & Russell-Smith, J. (2020). Delivering effective savanna fire management for defined biodiversity conservation outcomes: An Arnhem Land case study. *International Journal of Wildland Fire, 29*(5), 386–400. https://doi.org/10.1071/WF18126 (article review notes)
+- Einoder, L. D., et al. (2023). Long term monitoring reveals the importance of large, long unburnt areas and smaller fires in moderating mammal declines in fire-prone savanna of northern Australia. *Journal of Applied Ecology*. https://doi.org/10.1111/1365-2664.14482 (article review notes)
 
 ## Prac 08: SAR and water: surface water, Sentinel-1 flood mapping, wetlands and mangroves
 
@@ -133,6 +141,7 @@ Page: [prac11-lidar-gedi-canopy-structure-and-optical-sar-lidar-fusion.md](../pr
 - Lang, N., Jetz, W., Schindler, K., & Wegner, J. D. (2023). A high-resolution canopy height model of the Earth. *Nature Ecology & Evolution, 7*, 1778–1789. https://doi.org/10.1038/s41559-023-02206-6
 - Tolan, J., et al. (2024). Very high resolution canopy height maps from RGB imagery using self-supervised vision transformer and convolutional decoder trained on aerial lidar. *Remote Sensing of Environment, 300*, 113888. https://doi.org/10.1016/j.rse.2023.113888
 - Shimada, M., et al. (2014). New global forest/non-forest maps from ALOS PALSAR data (2007–2010). *Remote Sensing of Environment, 155*, 13–31. https://doi.org/10.1016/j.rse.2014.04.014
+- Stobo-Wilson, A. M., et al. (2020). Bottom-up and top-down processes influence contemporary patterns of mammal species richness in Australia's monsoonal tropics. *Biological Conservation, 247*, 108638. https://doi.org/10.1016/j.biocon.2020.108638 (article review notes)
 
 ## Prac 12: Species distribution modelling: Gouldian finch
 
@@ -143,6 +152,9 @@ Page: [prac12-species-distribution-modelling-gouldian-finch.md](../pracs/prac12-
 - Elith, J., et al. (2011). A statistical explanation of MaxEnt for ecologists. *Diversity and Distributions, 17*, 43–57. https://doi.org/10.1111/j.1472-4642.2010.00725.x
 - Roberts, D. R., et al. (2017). Cross-validation strategies for data with temporal, spatial, hierarchical, or phylogenetic structure. *Ecography, 40*, 913–929. https://doi.org/10.1111/ecog.02881
 - Phillips, S. J., Anderson, R. P., & Schapire, R. E. (2006). Maximum entropy modeling of species geographic distributions. *Ecological Modelling, 190*, 231–259. https://doi.org/10.1016/j.ecolmodel.2005.03.026
+- Stobo-Wilson, A. M., et al. (2020). Bottom-up and top-down processes influence contemporary patterns of mammal species richness in Australia's monsoonal tropics. *Biological Conservation, 247*, 108638. https://doi.org/10.1016/j.biocon.2020.108638 (article review notes)
+- Randin, C. F., et al. (2020). Monitoring biodiversity in the Anthropocene using remote sensing in species distribution models. *Remote Sensing of Environment, 239*, 111626. https://doi.org/10.1016/j.rse.2019.111626 (article review notes)
+- Einoder, L. D., et al. (2023). Long term monitoring reveals the importance of large, long unburnt areas and smaller fires in moderating mammal declines in fire-prone savanna of northern Australia. *Journal of Applied Ecology*. https://doi.org/10.1111/1365-2664.14482 (article review notes)
 
 ## Prac 13: Geospatial foundation models: validating AlphaEarth
 
@@ -153,3 +165,4 @@ Page: [prac13-geospatial-foundation-models-validating-alphaearth.md](../pracs/pr
 - Szwarcman, D., et al. (2024). Prithvi-EO-2.0: A versatile multi-temporal foundation model for Earth observation applications. *arXiv:2412.02732*. https://arxiv.org/abs/2412.02732
 - Jakubik, J., et al. (2023). Foundation models for generalist geospatial artificial intelligence. *arXiv:2310.18660*. https://arxiv.org/abs/2310.18660
 - Bommasani, R., et al. (2021). On the opportunities and risks of foundation models. *arXiv:2108.07258*. https://arxiv.org/abs/2108.07258
+- Randin, C. F., et al. (2020). Monitoring biodiversity in the Anthropocene using remote sensing in species distribution models. *Remote Sensing of Environment, 239*, 111626. https://doi.org/10.1016/j.rse.2019.111626 (article review notes)

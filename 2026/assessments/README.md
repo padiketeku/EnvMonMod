@@ -8,8 +8,8 @@ All four tasks use each student's own 20 km tile in the Daly River Catchment. AT
 | --- | --- | --- | --- | --- | --- |
 | AT1 Critical assessment: short answers on land cover change | 10 % | 04, 05 | 400–500 words | 500–700 words | In class, Thu 5 Nov 2026, 3:30–4:30 pm |
 | AT2 Project proposal: the plan for your AT4 | 10 % | 01, plus the AT4 design | 700 words ± 10 % (630–770) | 1000 words ± 10 % (900–1100) | Fri 6 Nov 2026, 11:59 pm |
-| AT3 Magazine article: vegetation condition and climate drivers | 30 % | 02, 03 | 700–1000 words | 1000–1500 words | Fri 20 Nov 2026, 11:59 pm |
-| AT4 Integrated landscape assessment: scientific article + ungraded verification check (viva) | 50 % | All (core 02–08 and 11; one elective from 09, 10, 12 or 13) | 2000 words ± 10 % (1800–2200) | 3000 words ± 10 % (2700–3300) | Fri 11 Dec 2026, 11:59 pm; check-ins Mon 9, Tue 10, Thu 12 and Fri 13 Nov |
+| AT3 Magazine article: vegetation condition and climate drivers | 30 % | 02, 03 | 700–1000 words | 1000–1500 words | Fri 13 Nov 2026, 11:59 pm |
+| AT4 Integrated landscape assessment: scientific article + ungraded verification check (viva) | 50 % | All (core 02–08 and 11; one elective from 09, 10, 12 or 13) | 2000 words ± 10 % (1800–2200) | 3000 words ± 10 % (2700–3300) | Fri 20 Nov 2026, 11:59 pm; check-ins Mon 9, Tue 10, Thu 12 and Fri 13 Nov |
 
 Word limits exclude the title, references, figure and table captions, and the appendix.
 

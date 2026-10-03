@@ -66,6 +66,7 @@ Code Editor scripts are in [`scripts/`](scripts). Run [`prac00_my_study_tile.js`
 
 - **Summative assessments** (AT1–AT4, ENV306 and ENV506 versions, AI-resilient design): [assessments/README.md](assessments/README.md)
 - **Reading list:** [reference/reading-list.md](reference/reading-list.md)
+- **Article review reading list and summary notes:** [reference/article-review-notes.md](reference/article-review-notes.md)
 - **Datasets and troubleshooting:** [reference/datasets-and-troubleshooting.md](reference/datasets-and-troubleshooting.md)
 - **Python, R and QGIS options:** [alternatives/README.md](alternatives/README.md)
 

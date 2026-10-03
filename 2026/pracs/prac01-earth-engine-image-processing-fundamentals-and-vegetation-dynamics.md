@@ -8,6 +8,17 @@
 
 **Purpose.** Get started in Earth Engine, learn the principles of image management, registration, enhancement and transformation, meet the three sensor families, and receive your personal study tile.
 
+> **Read first (about 20 min).** Before you start, read these summary notes in the *Article review reading list and summary notes* (Learnline, and [reference/article-review-notes.md](../reference/article-review-notes.md)):
+>
+> - **1.1 Foody (2023)**, *Remote sensing in landscape ecology*
+> - **1.3 Skidmore et al. (2021)**, *Priority list of biodiversity metrics to observe from space*
+>
+> **Carry these ideas into the prac:**
+>
+> - Remote sensing is the main source of data on landscape **pattern**; the grain (pixel size) and extent you choose should match the question (Foody).
+> - Analysis-ready data and Earth Engine make analysis easy, but specialist steps such as scaling, cloud masking and registration still decide whether the data are right (Foody).
+> - Satellites measure **ecosystem structure** and **ecosystem function** well; they do not measure species or genes directly (Skidmore). Keep asking what each image can and cannot tell an ecologist.
+
 ## 1. Concept notes
 
 ### 1.1 Landscape ecology in one page
@@ -88,6 +99,8 @@ NDVI saturates over dense canopy and is affected by the soil background. EVI red
 2. Build median composites, compute NDVI, and use the Inspector over mangroves, the CBD and savanna.
 3. Run `reduceRegion` and the histogram, then export a GeoTIFF to `GEE_NT`.
 
+> **Reading link (notes 1.1, Foody 2023).** Steps 1–2 of Activity 1.1 use the "analysis-ready" data Foody describes, yet scaling and cloud masking are exactly the specialist steps he says do not disappear: leave out the Collection 2 scale factor and every NDVI value is wrong.
+
 **Activity 1.2 – Image processing fundamentals (`prac01b`).**
 
 1. **Management:** query cloud cover, path/row, tier and `GEOMETRIC_RMSE_MODEL`, and compare Tier 1 and Tier 2 counts.
@@ -96,12 +109,16 @@ NDVI saturates over dense canopy and is affected by the soil background. EVI red
 4. **Filtering:** compare low-pass, median, Laplacian, Sobel and Canny outputs.
 5. **Transformation:** compute the tasseled cap and PCA, and read the eigenvalues and eigenvectors.
 
+> **Reading link (notes 1.1, Foody 2023).** Steps 2–3 of Activity 1.2 are more examples of specialist knowledge. A one-pixel offset between Landsat and Sentinel-2 would show up as false change along every edge, and a stretch changes only the display, never the data you analyse.
+
 **Activity 1.3 – Vegetation dynamics (`prac01c`).**
 
 1. Chart MODIS NDVI for 2001–2025 at Howard Springs, a Douglas–Daly paddock and Alice Springs.
 2. Build the monthly climatology, compare NDVI and EVI, and chart Sentinel-2 EVI at 10 m.
 3. Map wet- and dry-season NDVI across the NT.
 4. Repeat step 1 with a point inside **your tile**.
+
+> **Reading link (notes 1.3, Skidmore et al. 2021).** The NDVI and EVI curves in Activity 1.3 measure ecosystem function (productivity and phenology), one of the EBV classes Skidmore ranks as most feasible from space. For each curve, note what it tells you about the ecosystem and what it cannot tell you, such as which species are present.
 
 **Key code** (an excerpt from [`prac01a_gee_basics.js`](../scripts/prac01a_gee_basics.js); run the full script for the complete workflow):
 
@@ -154,6 +171,8 @@ Map.addLayer(ndvi, {min: 0, max: 0.8, palette: ['brown', 'white', 'green']}, 'ND
 - Huete, A., et al. (2002). Overview of the radiometric and biophysical performance of the MODIS vegetation indices. *Remote Sensing of Environment, 83*, 195–213. https://doi.org/10.1016/S0034-4257(02)00096-2
 - Ma, X., et al. (2013). Spatial patterns and temporal dynamics in savanna vegetation phenology across the North Australian Tropical Transect. *Remote Sensing of Environment, 139*, 97–115. https://doi.org/10.1016/j.rse.2013.07.030
 - Hutley, L. B., et al. (2011). A sub-continental scale living laboratory: Spatial patterns of savanna vegetation over a rainfall gradient in northern Australia. *Agricultural and Forest Meteorology, 151*, 1417–1428. https://doi.org/10.1016/j.agrformet.2011.03.002
+- Foody, G. M. (2023). Remote sensing in landscape ecology. *Landscape Ecology, 38*(11), 2711–2716. https://doi.org/10.1007/s10980-023-01753-4 (article review notes)
+- Skidmore, A. K., et al. (2021). Priority list of biodiversity metrics to observe from space. *Nature Ecology & Evolution, 5*, 896–906. https://doi.org/10.1038/s41559-021-01451-x (article review notes)
 
 ## Full scripts
 

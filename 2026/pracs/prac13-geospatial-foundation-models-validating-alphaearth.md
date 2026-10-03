@@ -8,6 +8,16 @@
 
 **Purpose.** Judge a geospatial foundation model against the methods you now know: spectral classification (Prac 04), change detection (Pracs 05–06), urban SAR mapping (Prac 10) and habitat modelling (Prac 12).
 
+> **Read first (about 15 min).** Before you start, read these summary notes in the *Article review reading list and summary notes* (Learnline, and [reference/article-review-notes.md](../reference/article-review-notes.md)):
+>
+> - **3.2 Randin et al. (2020)**, remote sensing in species distribution models (process-based predictors)
+> - **1.1 Foody (2023)**, *Remote sensing in landscape ecology* (artificial intelligence and specialist knowledge)
+>
+> **Carry these ideas into the prac:**
+>
+> - Foody lists artificial intelligence as a future direction, but warns that specialist knowledge does not disappear: someone still has to validate the output.
+> - Hand-picked predictors have a clear ecological meaning (Randin et al.); embeddings are efficient but hard to interpret. Judge AlphaEarth on both accuracy and meaning.
+
 ## 1. Concept notes
 
 **What is a geospatial foundation model (GeoFM)?** A foundation model is a large model pre-trained on broad data with self-supervision, and adaptable to many downstream tasks (Bommasani et al., 2021). GeoFMs are pre-trained on large volumes of satellite data and learn general-purpose representations of the land surface.
@@ -36,6 +46,8 @@ Typical uses are clustering, few-shot classification, similarity search, change 
 5. **Change detection:** compute the dot product of the 2018 and 2024 embeddings, and validate it against new built-up land (Dynamic World) and your Prac 10 urban map.
 6. **Your tile:** run steps 2 and 5 for your Daly tile, and compare the result with your Prac 05 transition matrix or Prac 06 clearing patches.
 7. **Group poster:** validate one use-case against 20 points per class that your group digitises itself.
+
+> **Reading link (notes 3.2 and 1.1, Randin et al. 2020 and Foody 2023).** The few-shot and similarity steps (3–4) test what Foody calls the promise of artificial intelligence. The learning curves show how accurate the embeddings are; Randin et al.'s emphasis on process-based predictors reminds you to ask what an embedding axis means. In your group poster (step 7), report both accuracy and interpretability.
 
 **Key code** (an excerpt from [`prac13_alphaearth_foundation_model.js`](../scripts/prac13_alphaearth_foundation_model.js); run the full script for the complete workflow):
 
@@ -79,6 +91,7 @@ Map.addLayer(similarity, {min: 0.3, max: 1, palette: ['red', 'orange', 'white']}
 - Szwarcman, D., et al. (2024). Prithvi-EO-2.0: A versatile multi-temporal foundation model for Earth observation applications. *arXiv:2412.02732*. https://arxiv.org/abs/2412.02732
 - Jakubik, J., et al. (2023). Foundation models for generalist geospatial artificial intelligence. *arXiv:2310.18660*. https://arxiv.org/abs/2310.18660
 - Bommasani, R., et al. (2021). On the opportunities and risks of foundation models. *arXiv:2108.07258*. https://arxiv.org/abs/2108.07258
+- Randin, C. F., et al. (2020). Monitoring biodiversity in the Anthropocene using remote sensing in species distribution models. *Remote Sensing of Environment, 239*, 111626. https://doi.org/10.1016/j.rse.2019.111626 (article review notes)
 
 ## Full scripts
 

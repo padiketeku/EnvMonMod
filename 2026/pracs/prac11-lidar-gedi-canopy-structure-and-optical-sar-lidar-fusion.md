@@ -8,6 +8,16 @@
 
 **Purpose.** Complete the three data families: after optical (Pracs 01–07) and SAR (Pracs 08–10), measure vegetation height directly, then combine all three sensors.
 
+> **Read first (about 15 min).** Before you start, read these summary notes in the *Article review reading list and summary notes* (Learnline, and [reference/article-review-notes.md](../reference/article-review-notes.md)):
+>
+> - **1.3 Skidmore et al. (2021)**, *Priority list of biodiversity metrics to observe from space* (ecosystem structure)
+> - **3.1 Stobo-Wilson et al. (2020)**, drivers of mammal richness in the Top End (habitat complexity)
+>
+> **Carry these ideas into the prac:**
+>
+> - Canopy height and biomass are measures of **ecosystem structure**, the EBV class Skidmore ranks as most mature for monitoring from space.
+> - Habitat structure matters for fauna: complex vegetation reduced feral cat occurrence and supported native mammals (Stobo-Wilson et al.). Ask which parts of that structure GEDI can and cannot see.
+
 ## 1. Concept notes
 
 **Lidar** times laser pulses to reconstruct **3-D vegetation structure**: canopy height, vertical layering, cover and, through allometry, biomass.
@@ -51,6 +61,8 @@ This is the logic behind global canopy height products (Potapov et al., 2021; La
 2. Train RF regression on GEDI footprints with optical-only, SAR-only, and optical + SAR + terrain predictors. Compare RMSE and R².
 3. Predict canopy height at 10 m, and plot observed vs predicted values.
 4. **Your tile:** summarise GEDI footprints in your Daly tile, and judge what canopy height adds to your AT4 assessment (Part 4).
+
+> **Reading link (notes 1.3 and 3.1, Skidmore et al. 2021 and Stobo-Wilson et al. 2020).** Canopy height (rh98) and biomass in Activities 11.1 and 11.2 are ecosystem structure variables. Stobo-Wilson et al. found that habitat complexity, much of it in the ground and shrub layers, shaped feral cat occurrence and native mammal richness. GEDI rh98 describes the top of the canopy; GEDI L2B products (canopy cover, plant area index and foliage height diversity) describe the vertical profile. Think about which of these would best describe habitat complexity in your tile (step 4).
 
 **Key code** (an excerpt from [`prac11_lidar_gedi_canopy.js`](../scripts/prac11_lidar_gedi_canopy.js); run the full script for the complete workflow):
 
@@ -97,6 +109,7 @@ Map.addLayer(predictors.classify(rf), {min: 0, max: 30, palette: ['#ffffcc', '#7
 - Lang, N., Jetz, W., Schindler, K., & Wegner, J. D. (2023). A high-resolution canopy height model of the Earth. *Nature Ecology & Evolution, 7*, 1778–1789. https://doi.org/10.1038/s41559-023-02206-6
 - Tolan, J., et al. (2024). Very high resolution canopy height maps from RGB imagery using self-supervised vision transformer and convolutional decoder trained on aerial lidar. *Remote Sensing of Environment, 300*, 113888. https://doi.org/10.1016/j.rse.2023.113888
 - Shimada, M., et al. (2014). New global forest/non-forest maps from ALOS PALSAR data (2007–2010). *Remote Sensing of Environment, 155*, 13–31. https://doi.org/10.1016/j.rse.2014.04.014
+- Stobo-Wilson, A. M., et al. (2020). Bottom-up and top-down processes influence contemporary patterns of mammal species richness in Australia's monsoonal tropics. *Biological Conservation, 247*, 108638. https://doi.org/10.1016/j.biocon.2020.108638 (article review notes)
 
 ## Full scripts
 

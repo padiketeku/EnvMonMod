@@ -8,6 +8,19 @@
 
 **Purpose.** Map burn severity with dNBR and compare it with the NT season classes, then describe fire frequency and seasonality from MCD64A1, checked against ESA FireCCI51.
 
+> **Read first (about 30 min).** Before you start, read these summary notes in the *Article review reading list and summary notes* (Learnline, and [reference/article-review-notes.md](../reference/article-review-notes.md)):
+>
+> - **2.1 Evans & Russell-Smith (2020)**, savanna fire management in western Arnhem Land
+> - **2.2 Edwards et al. (2021)**, savanna burning emissions reduction projects
+> - **2.3 Edwards, Russell-Smith & Maier (2018)**, validating satellite fire severity mapping
+> - **3.3 Einoder et al. (2023)**, long-unburnt areas, fire size and mammal declines (a preview of Article review 3)
+>
+> **Carry these ideas into the prac:**
+>
+> - Fire management in the north aims to shift burning from the late dry season (LDS) to the early dry season (EDS); area burnt alone is a poor indicator of success (Evans & Russell-Smith; Edwards et al., 2021).
+> - Severity can be mapped directly with dNBR and checked against field data such as tree stem mortality; LDS wildfires can kill a quarter to a half of tree stems (Edwards et al., 2018).
+> - The spatial pattern of fire matters to wildlife: fire size, the amount of long-unburnt (at least 5 years) habitat and the distance to large long-unburnt patches (Einoder et al.).
+
 ## 1. Concept notes
 
 **Fire as a disturbance regime.** A fire regime is defined by frequency, season, intensity or severity, extent and patchiness. Northern Australian savannas are among the most fire-prone landscapes on Earth, with much of the Top End burning every one to three years.
@@ -66,12 +79,16 @@ Expect only partial agreement. Grass-layer surface fires give low dNBR in any se
 2. Compute NBR, dNBR and RdNBR, classify severity, and tabulate area per class.
 3. Overlay MODIS early and late burn dates, and compare mean dNBR for early vs late fires.
 
+> **Reading link (notes 2.3, Edwards et al. 2018).** Edwards et al. compared NBR, dNBR and RdNBR (step 2 of Activity 7.1) against tree stem mortality in the field, and found that Landsat and MODIS agreed on severe versus non-severe fire more than 80 % of the time. Your mean dNBR for early versus late fires (step 3) tests the same idea with Sentinel-2.
+
 **Activity 7.1b – NT season classes vs Key & Benson (`prac07a`, Section 4b).**
 
 1. Take each pixel's first burn date in the year from MCD64A1. Keep EDS fires that burned 11 May–14 July and LDS fires that burned 1 August–15 October.
 2. Compute dNBR with event-matched windows: EDS pre 1 April–10 May, post 15–31 July; LDS pre July, post 15 October–20 November.
 3. Classify with the Key & Benson thresholds, and cross-tabulate the area of each class within EDS and LDS fires.
 4. Reduce to severe (dNBR ≥ 0.44) vs not severe. Report the 2 × 2 table, agreement and kappa, then repeat with 0.27 and 0.66.
+
+> **Reading link (notes 2.3, Edwards et al. 2018).** Step 4 reduces severity to severe versus not severe, the same binary classification Edwards et al. validated. Late dry season wildfires in their study killed about 24–55 % of tree stems, which is the evidence behind the NT convention. Where your 2 × 2 table disagrees (for example, a severe EDS fire on a hot day, or a patchy LDS fire), explain why using the notes.
 
 **Activity 7.2 – Fire regime (`prac07b`).**
 
@@ -80,6 +97,8 @@ Expect only partial agreement. Grass-layer surface fires give low dNBR in any se
 3. Chart stacked EDS and LDS burned area per year for the NT and western Arnhem Land.
 4. Summarise the fire regime of **your tile** (frequency, LDS share, last fire).
 5. Compare burned area in **your tile** from MCD64A1 and ESA FireCCI51 (2001–2020), year by year, and explain where they disagree.
+
+> **Reading link (notes 2.1, 2.2 and 3.3, Evans & Russell-Smith 2020, Edwards et al. 2021 and Einoder et al. 2023).** The LDS share and the stacked EDS/LDS chart (steps 2–3 of Activity 7.2) show the regime shift Evans & Russell-Smith documented for western Arnhem Land and the post-2013 change at savanna burning project sites (Edwards et al., 2021). "Years since the last fire" is the basis of long-unburnt habitat (at least 5 years) in Einoder et al. In step 5, remember that coarse products such as MCD64A1 (500 m) can miss small, patchy EDS burns, which affects every patchiness and long-unburnt metric.
 
 **Key code** (an excerpt from [`prac07a_dnbr_burn_severity.js`](../scripts/prac07a_dnbr_burn_severity.js); run the full script for the complete workflow):
 
@@ -128,6 +147,8 @@ Map.addLayer(severity, {min: 4, max: 7, palette: ['#fff70b', '#ffaf38', '#ff641b
 - Russell-Smith, J., & Edwards, A. C. (2006). Seasonality and fire severity in savanna landscapes of monsoonal northern Australia. *International Journal of Wildland Fire, 15*(4), 541–550. https://doi.org/10.1071/WF05111
 - Edwards, A. C., Maier, S. W., Hutley, L. B., Williams, R. J., & Russell-Smith, J. (2013). Spectral analysis of fire severity in north Australian tropical savannas. *Remote Sensing of Environment, 136*, 56–65. https://doi.org/10.1016/j.rse.2013.04.013
 - Edwards, A. C., Russell-Smith, J., & Maier, S. W. (2018). A comparison and validation of satellite-derived fire severity mapping techniques in fire prone north Australian savannas: Extreme fires and tree stem mortality. *Remote Sensing of Environment, 206*, 287–299. https://doi.org/10.1016/j.rse.2017.12.038
+- Evans, J., & Russell-Smith, J. (2020). Delivering effective savanna fire management for defined biodiversity conservation outcomes: An Arnhem Land case study. *International Journal of Wildland Fire, 29*(5), 386–400. https://doi.org/10.1071/WF18126 (article review notes)
+- Einoder, L. D., et al. (2023). Long term monitoring reveals the importance of large, long unburnt areas and smaller fires in moderating mammal declines in fire-prone savanna of northern Australia. *Journal of Applied Ecology*. https://doi.org/10.1111/1365-2664.14482 (article review notes)
 
 ## Full scripts
 
