@@ -28,7 +28,6 @@ ENV506 students act as senior analysts: in AT4 they also advise on the design of
 
 The advisory group, its program manager and the decisions they face are hypothetical. Real policies, plans and legislation can be cited as background, but the scenario does not describe any real agency's decisions.
 
-**Note for staff:** before release, check how Aboriginal knowledge and interests are represented in the scenario with CDU's Indigenous academic staff or the relevant land council contacts.
 
 ## Personal parameters (Day 1, Assignment 2 briefing)
 

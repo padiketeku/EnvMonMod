@@ -45,7 +45,7 @@ The course moves from tools to drivers, then to change, sensors and finally mode
 | 1:30–3:00 | **Prac 09:** crocodile biomass modelling | **Prac 11:** lidar canopy structure (GEDI) and sensor fusion | **Prac 12:** spatial cross-validation and model comparison | **Prac 13:** validating the AlphaEarth foundation model | **Assignment 4** studio: methods and validation clinic |
 | 3:30–4:30 | Group poster making (Prac 09) | **Prac 08:** wetlands and mangroves | Group poster making (Prac 12) | Group poster making (Prac 13) | **Assignment 4** studio (AT4 make-up check-ins); course evaluation; **AT3 magazine article due 11:59 pm** |
 
-## Assessment dates (to confirm in Learnline)
+## Assessment dates
 
 | Task | Weight | Linked prac | Due |
 | --- | --- | --- | --- |
@@ -63,4 +63,4 @@ The course moves from tools to drivers, then to change, sensors and finally mode
 - Return AT2 proposal feedback by Wed 11 Nov so students can use it in AT4 (due Fri 20 Nov, one week after the course). Keep a checkpoint record of each student's key values for marking.
 - Article reviews (three) are guided discussions of the readings in each prac page.
 - Students confirm their AT4 elective (Prac 09, 10, 12 or 13) by Fri 13 Nov.
-- All four assessments share one scenario (a hypothetical Daly River Catchment monitoring program). Before release, check how Aboriginal knowledge and interests are represented with CDU's Indigenous academic staff or the relevant land council contacts.
+- All four assessments share one scenario (a hypothetical Daly River Catchment monitoring program).
