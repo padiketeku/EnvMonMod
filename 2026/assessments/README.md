@@ -61,7 +61,7 @@ No take-home task can be made completely "AI-proof". This design follows TEQSA's
 
 **Restricted data:** the crocodile survey data and floodplain shapefiles come from Learnline only. Students must not post them publicly, and should share their assets only with markers.
 
-**Grade bands:** HD 85–100 %, D 75–84 %, C 65–74 %, P 50–64 %, F below 50 % (confirm against the CDU grading policy). Each criterion is marked against its descriptors and weighted as shown; for ENV506, the descriptors also cover the extra elements named in brackets.
+**Grade bands:** HD 85–100 %, D 75–84 %, C 65–74 %, P 50–64 %, F below 50 %. Each criterion is marked against its descriptors and weighted as shown; for ENV506, the descriptors also cover the extra elements named in brackets.
 
 ## AT1 — Critical assessment: short answers (10 %), from Pracs 04–05, supervised
 
