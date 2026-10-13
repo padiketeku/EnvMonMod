@@ -24,7 +24,7 @@
  *   an allocation code for the staff master sheet, and your tile's corner coordinates.
  *
  * DATA:
- *   WWF/HydroSHEDS/v1/Basins/hybas_4 — HydroSHEDS level-4 river basins (vector polygons, derived from ~15 arc-second
+ *   'WWF/HydroATLAS/v1/Basins/level05 — HydroATLAS level-5 river basins (vector polygons, derived from ~15 arc-second
  *   (~500 m) elevation data; static, no time period). Only used to get the Daly catchment outline.
  *
  * LINKS:
@@ -51,13 +51,13 @@ var COHORT_SALT = 2026;   // staff: change each year so tiles and years rotate b
 // ---------- 1 Daly River catchment and the 20 km tile grid ----------
 // Find the Daly River catchment, then cover it with a grid of 20 km squares. Only squares lying almost
 // fully inside the catchment are kept, so every tile is a fair, complete study area.
-// HydroSHEDS level-4 basin containing the Daly River near Oolloo. Staff: check the outline each year.
-var daly = ee.FeatureCollection('WWF/HydroSHEDS/v1/Basins/hybas_4')
+// HydroATLAS level-5 basin containing the Daly River near Oolloo. Staff: check the outline each year.
+var daly = ee.FeatureCollection('WWF/HydroATLAS/v1/Basins/level05')
   .filterBounds(ee.Geometry.Point([131.25, -14.07]));   // keep only the basin that contains this point (near Oolloo)
 var dalyGeom = daly.geometry();   // turn the basin feature(s) into one geometry (an outline) we can measure against
 var proj = ee.Projection('EPSG:3577').atScale(20000);   // GDA94 / Australian Albers, 20 km cells
 // EPSG:3577 is an equal-area projection for Australia (units are metres), so every 20 km cell has the same area.
-var grid = dalyGeom.coveringGrid(proj)   // make a grid of 20 km squares that covers the whole catchment
+var gridAlbers = dalyGeom.coveringGrid(proj)   // make a grid of 20 km squares that covers the whole catchment
   .map(function(cell) {   // map() runs this function on every grid cell
     // inside = fraction of the cell's area that falls inside the catchment (0 = none, 1 = all).
     // The "100" values are the error margin (in metres) GEE may use when computing the shapes and areas.
@@ -66,6 +66,17 @@ var grid = dalyGeom.coveringGrid(proj)   // make a grid of 20 km squares that co
   })
   .filter(ee.Filter.gt('inside', 0.99))   // keep only cells more than 99% inside the catchment (drops edge cells)
   .sort('system:index');   // put the tiles in a fixed order, so "tile number 5" always means the same square
+
+// The Australian Albers projection lets us confidently establish equal 20 km cells.
+// However, our cells inheret the projected coordinate system describing a flattened surface covering Australia.
+// To ensure our cells can be accuratley positioned on the globe from corner coordinates we transform the grid to WGS84,
+// a geographic coordinate system common across sensors (e.g. Landsat, Sentinel) using lat lon to descibe the globe.
+var grid = gridAlbers.map(function(cell){    // .map() to again apply the function to all grid cells
+  // Each cell is returned with geometry set to the WGS 84 transform (i.e. 'EPSG:4326').
+  // A tolerance of 10 is set to keep corners without adding extra points where edges curve to fit the globe. 
+  return cell.setGeometry(cell.geometry().transform('EPSG:4326', 10));
+}).sort('system:index'); // retain the order we specified earlier
+
 var n = grid.size();   // how many tiles are available to choose from
 
 // ---------- 2 Deterministic picks ----------
@@ -129,7 +140,7 @@ print('Allocation code (staff master sheet)', tileIndex.multiply(1000).add(at3Ye
 // Draw the catchment, the grid and your tile so you can see where you will be working.
 Map.centerObject(TILE, 10);   // zoom to your tile (zoom level 10 ≈ the whole 20 km square on screen)
 // style() draws outlines; fillColor '00000000' is fully transparent (the last two hex digits are opacity).
-Map.addLayer(daly.style({color: '#08519c', fillColor: '00000000', width: 2}), {}, 'Daly catchment (HydroSHEDS level 4)');
+Map.addLayer(daly.style({color: '#08519c', fillColor: '00000000', width: 2}), {}, 'Daly catchment (HydroATLAS level 5)');
 // The grid layer starts switched off (false); MY TILE has a light red, mostly see-through fill ('ff000022').
 Map.addLayer(grid.style({color: '#999999', fillColor: '00000000', width: 1}), {}, '20 km tile grid', false);
 Map.addLayer(ee.FeatureCollection([tile]).style({color: 'red', fillColor: 'ff000022', width: 3}), {}, 'MY TILE');
@@ -137,6 +148,7 @@ Map.setOptions('HYBRID');   // satellite basemap with labels
 
 // Save TILE for other scripts: Export the tile as an asset (optional), or copy its corner coordinates.
 print('Your tile corners (paste into later scripts as ee.Geometry.Polygon)', TILE.coordinates());   // lon, lat pairs
+print('Note you have 5 coordinates for 4 corners. The first is the same as the last to close the the tile polygon');
 // This export does not run by itself: open the Tasks tab and click RUN next to "Prac00_my_tile".
 // It saves your tile as a table called "my_tile" in your Assets, which later scripts can load.
 Export.table.toAsset({collection: ee.FeatureCollection([tile]), description: 'Prac00_my_tile', assetId: 'my_tile'});
