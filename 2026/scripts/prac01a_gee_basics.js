@@ -81,7 +81,7 @@ var s2 = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
       .select(['B2', 'B3', 'B4', 'B8', 'B11', 'B12'],
               ['blue', 'green', 'red', 'nir', 'swir1', 'swir2'])
       .divide(10000)   // Sentinel-2 stores reflectance × 10 000
-      .copyProperties(img, ['system:time_start']));   // keep the image date (lost by the band maths above)
+      .copyProperties(img, ['system:time_start', 'MGRS_TILE']));   // keep the image date and tile ID (lost by the band maths above)
   });
 print('Number of Sentinel-2 scenes', s2.size());
 
