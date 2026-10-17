@@ -139,8 +139,23 @@ var sarC = s1.addBands(s1.select('VH').divide(s1.select('VV')).rename('VH_VV'));
 var palsar = ee.ImageCollection('JAXA/ALOS/PALSAR/YEARLY/SAR_EPOCH').filterDate('2021-01-01', '2022-01-01').first();
 var sarL = palsar.select(['HH', 'HV']).pow(2).multiply(Math.pow(10, -8.3)).rename(['L_HH', 'L_HV']);   // linear γ⁰
 // False-colour SAR displays: converted to dB for display only; per-band min/max in dB.
-Map.addLayer(toDb(sarL.select(['L_HV', 'L_HH', 'L_HV'])), {min: [-25, -15, -25], max: [-10, 0, -10]}, 'PALSAR-2 L-band (HV-HH-HV, dB)', false);
-Map.addLayer(toDb(s1.select(['VH', 'VV', 'VH'])), {min: [-25, -15, -25], max: [-10, 0, -10]}, 'Sentinel-1 C-band (VH-VV-VH, dB)', false);
+// NOTE: SAR false-colour images often use the same band for two colours.
+//       GEE gets grumpy when you try to map the same band to two different colours for an RGB display
+//       To get around this, duplicate the relevant polarisation channel and add it back to the image with a suffix. Same data, distinct band name.
+// select the specific band and rename with a '2' suffix
+var sarL_HV = sarL.select('L_HV').rename('L_HV2');
+// create a seperate display image with the duplicate band
+var sarL2 = sarL.addBands(sarL_HV);
+// you can check bands have populated as expected by printing both to console and comparing
+print('Palsar img', sarL);
+print('Palsar img + HV duplicate', sarL2);
+// same for VH polarisation on S1
+var s1_VH = s1.select('VH').rename('VH2');
+var s12 = s1.addBands(s1_VH);
+// converted to dB for display only; per-band min/max in dB.
+// applied to band duplicate images
+Map.addLayer(toDb(sarL2.select(['L_HV', 'L_HH', 'L_HV2'])), {min: [-25, -15, -25], max: [-10, 0, -10]}, 'PALSAR-2 L-band (HV-HH-HV, dB)', false);
+Map.addLayer(toDb(s12.select(['VH', 'VV', 'VH2'])), {min: [-25, -15, -25], max: [-10, 0, -10]}, 'Sentinel-1 C-band (VH-VV-VH, dB)', false);
 var dem = ee.Image('NASA/NASADEM_HGT/001').select('elevation');   // metres
 // Stack everything into one image: optical + C-band + L-band + elevation + slope (degrees).
 // float() gives all bands the same data type, which sample() and export need.
