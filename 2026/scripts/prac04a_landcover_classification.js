@@ -112,6 +112,9 @@ var train = samples.filter(ee.Filter.lt('rand', 0.7));
 var test = samples.filter(ee.Filter.gte('rand', 0.7));
 print('Training / testing points', train.size(), test.size());
 
+// Export the training data as an asset to use in later pracs. Trigger in tasks tab.
+Export.table.toAsset({collection: samples, description: 'prac04_training', assetId: 'prac04_training'});
+
 // ---------- 3 Classifiers ----------
 // Three classifiers learn the link between predictor values and class labels from the training points.
 // RF = many decision trees voting; CART = one decision tree; SVM = finds boundaries between classes in predictor space.
