@@ -52,10 +52,24 @@ var YEAR_A = 2018;   // Prac 00: AT1 YEAR_A   <- EDIT (the earlier year)
 var YEAR_B = 2024;   // Prac 00: AT1 YEAR_B   <- EDIT (the later year)
 // EDIT TRAINING: your Prac 04 training points asset. Each point needs an integer 'class' 0–4 in the order of NAMES below.
 var TRAINING = ee.FeatureCollection('projects/YOUR_PROJECT/assets/prac04_training');   // points with integer 'class'
+// Print the training collection to console for inspection
+print('Training data imported:', TRAINING);
+// The stratified sample we used to 300 point per class IF they were available. 
+// How many points per class were produced for your tile? Are any missing or under represented?
+print('Training points per class:', 
+      'Class 0:', TRAINING.filter(ee.Filter.eq('class', 0)).size(),
+      'Class 1:', TRAINING.filter(ee.Filter.eq('class', 1)).size(),
+      'Class 2:', TRAINING.filter(ee.Filter.eq('class', 2)).size(),
+      'Class 3:', TRAINING.filter(ee.Filter.eq('class', 3)).size(),
+      'Class 4:', TRAINING.filter(ee.Filter.eq('class', 4)).size(),
+      'Class 5:', TRAINING.filter(ee.Filter.eq('class', 5)).size(),
+      'Class 6:', TRAINING.filter(ee.Filter.eq('class', 6)).size()
+      );
+
 // Do not edit below this line unless your classes differ. NAMES[i], IDX[i] and PAL[i] all describe class i.
-var NAMES = ['Water', 'Woodland', 'Agriculture', 'Bare soil', 'Grassland/other'];
-var IDX = [0, 1, 2, 3, 4];   // class numbers
-var PAL = ['#2166ac', '#1b7837', '#fdae61', '#bf812d', '#d9f0a3'];   // map colours for classes 0–4
+var NAMES = ['Tree cover', 'Shrub/grass', 'Cropland', 'Built-up', 'Bare', 'Water', 'Mangrove'];
+var IDX = [0, 1, 2, 3, 4, 5, 6];   // class numbers
+var PAL = ['#006400', '#ffbb22', '#f096ff', '#fa0000', '#b4b4b4', '#0064c8', '#00cf75'];   // map colours for classes 0–6
 Map.centerObject(TILE, 11);
 
 // ---------- 1 Composites (Landsat 8/9, dry season May–Oct) ----------
