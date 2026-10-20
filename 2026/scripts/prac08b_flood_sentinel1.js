@@ -113,10 +113,15 @@ print('Flooded area (km²)', floodKm2);   // printed as {area: km²}
 // Time series of mean VV over a floodplain point — shows the flood pulse
 // A 1 km buffer around a floodplain point; each image's mean VV is computed in LINEAR units, then converted to dB.
 var probe = ee.Geometry.Point([130.83, -17.45]).buffer(1000);
-var pulse = s1.filterDate('2022-10-01', '2023-06-30').select('VV').map(function(img) {
+var pulse = s1.filterBounds(probe).filterDate('2022-10-01', '2023-06-30').select('VV').map(function(img) {
   var meanLin = ee.Number(img.reduceRegion(ee.Reducer.mean(), probe, 10).get('VV'));   // mean in linear units
   return ee.Feature(null, {date: img.date().millis(), VV_dB: meanLin.log10().multiply(10)}); // converted for display
 });
+// For pulse we further filter imagery to probe to avoid NoData edges of S1 tiles (i.e. pulse = s1.filterBounds(probe))
+// How does the sample size of observations differ between aoi and probe coverage? What might drive this?
+print('S1 Slices over AOI', s1.size());
+print('S1 Slices over probe', s1.filterBounds(probe).size());
+
 // Look for a sharp dip in VV (flooding) around late Feb–early Mar 2023. Note: all orbits are included here.
 print(ui.Chart.feature.byFeature(pulse, 'date', 'VV_dB')
   .setOptions({title: 'Mean VV near Kalkarindji (mean of linear σ⁰, shown in dB)', pointSize: 3, hAxis: {format: 'MMM yyyy'}}));
