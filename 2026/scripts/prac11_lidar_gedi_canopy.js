@@ -139,9 +139,8 @@ var sarC = s1.addBands(s1.select('VH').divide(s1.select('VV')).rename('VH_VV'));
 var palsar = ee.ImageCollection('JAXA/ALOS/PALSAR/YEARLY/SAR_EPOCH').filterDate('2021-01-01', '2022-01-01').first();
 var sarL = palsar.select(['HH', 'HV']).pow(2).multiply(Math.pow(10, -8.3)).rename(['L_HH', 'L_HV']);   // linear γ⁰
 // False-colour SAR displays: converted to dB for display only; per-band min/max in dB.
-// NOTE: SAR false-colour images often use the same band for two colours.
-//       GEE gets grumpy when you try to map the same band to two different colours for an RGB display
-//       To get around this, duplicate the relevant polarisation channel and add it back to the image with a suffix. Same data, distinct band name.
+// NOTE: Palsar display will use [HV, HH, HV] and S1 will use [VH, vv, VH]
+//       create duplicate bands for those used twice as done in Prac10
 // select the specific band and rename with a '2' suffix
 var sarL_HV = sarL.select('L_HV').rename('L_HV2');
 // create a seperate display image with the duplicate band
