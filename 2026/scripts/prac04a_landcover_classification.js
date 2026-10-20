@@ -112,8 +112,22 @@ var train = samples.filter(ee.Filter.lt('rand', 0.7));
 var test = samples.filter(ee.Filter.gte('rand', 0.7));
 print('Training / testing points', train.size(), test.size());
 
-// Export the training data as an asset to use in later pracs. Trigger in tasks tab.
-Export.table.toAsset({collection: samples, description: 'prac04_training', assetId: 'prac04_training'});
+// ---------- 2c Prepare training data for your tile ----------
+// Later pracs use WorldCover training data over your tile boundary from prac00.
+// Below prepares labeled landcover class points for your tile site as per steps above in 2a.
+
+// Filter WorldCover to your tile
+var tile_wc = ee.ImageCollection('ESA/WorldCover/v200').first().clip(TILE);
+// Remap class names
+var tile_labels = tile_wc.remap(fromCodes, toCodes).rename('class');
+// Get a stratified sample of each class. Note here we sample only class labels from WorldCover.
+// Relevant predictors will be added in future pracs. 
+var tile_samples = tile_labels.stratifiedSample({
+  numPoints: 300, classBand: 'class', region: TILE, scale: 10, seed: 42, geometries: true,
+  tileScale: 4
+});
+print(tile_samples, 'tile samples')
+Export.table.toAsset({collection: tile_samples, description: 'prac04_training', assetId: 'prac04_training'});
 
 // ---------- 3 Classifiers ----------
 // Three classifiers learn the link between predictor values and class labels from the training points.
