@@ -91,8 +91,8 @@ var annual = ee.ImageCollection.fromImages(years.map(function(y) {
 // ---------- 4 Analysis ----------
 // Chart the mangrove NDVI over time, then map dieback (2015→2017 drop) and recovery (green again by 2024),
 // and convert each mask to an area in hectares.
-// series(): for each image, average (mean reducer) NDVI over the aoi at 30 m (Landsat resolution).
-print(ui.Chart.image.series(annual, aoi, ee.Reducer.mean(), 30)
+// series(): for each image, average (mean reducer) NDVI over the aoi at 90 m (aggregated from 30 m Landsat resolution for speed).
+print(ui.Chart.image.series(annual, aoi, ee.Reducer.mean(), 90)
   .setOptions({title: 'Mean dry-season NDVI within 2000 mangrove extent', pointSize: 4}));
 
 // Pull single years out of the annual collection: 2015 (before), 2017 (after) and 2024 (latest).
