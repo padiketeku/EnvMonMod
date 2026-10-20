@@ -78,12 +78,17 @@ var START = 1988, END = 2024;   // EDIT: first and last year of the time series
 var annual = ee.ImageCollection.fromImages(ee.List.sequence(START, END).map(function(y) {
   // Images from year y AND months May–Sep (NT dry season: fewer clouds, more stable vegetation signal).
   var c = col.filter(ee.Filter.calendarRange(y, y, 'year')).filter(ee.Filter.calendarRange(5, 9, 'month'));
+  var n = c.size(); // number of images used (0 = no data that year)
   var med = c.median();   // median per pixel: robust to leftover cloud, haze and single burnt dates
   var nbr = med.normalizedDifference(['nir', 'swir2']);
   // LandTrendr expects disturbance to INCREASE the index → multiply NBR by −1
-  return nbr.multiply(-1).rename('NBR_inv').addBands(nbr.rename('NBR'))   // NBR kept as a second band to fit too
-    .set('system:time_start', ee.Date.fromYMD(y, 8, 1).millis())          // stamp each composite as 1 August of year y
-    .set('n', c.size());                                                   // number of images used (0 = no data that year)
+  var nbrINV = nbr.multiply(-1).rename('NBR_inv').addBands(nbr.rename('NBR')); // NBR kept as a second band to fit too
+  // Empty image to use as a place holder for empty years (the 2012 gap in Landsat)
+  var empty = ee.Image.constant(0);
+  return ee.Image(ee.Algorithms.If(n.gt(0), nbrINV, empty))
+    .set('system:time_start', ee.Date.fromYMD(y, 8, 1).millis())    // stamp each composite as 1 August of year y
+    .set('n', n)                                                    // attach number of images used to metadata
+    .set('year', y);                                                // attach a year ID to metadata
 })).filter(ee.Filter.gt('n', 0));   // drop empty years (e.g. 2012) so LandTrendr does not see blank images
 
 // ---------- Warm-up: bi-temporal change (two dates only) ----------
