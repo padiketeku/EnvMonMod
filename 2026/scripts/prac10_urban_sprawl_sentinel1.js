@@ -183,7 +183,12 @@ agreement(dwBuilt, 'Dynamic World 2020');
 // All radar layers are converted to dB for display only.
 var s1_2016 = annualS1(2016), s1_2024 = annualS1(2024);
 // False colour: R = VV, G = VH, B = VV. Each band has its own dB stretch (min/max lists).
-Map.addLayer(toDb(s1_2024.select(['VV', 'VH', 'VV'])), {min: [-20, -28, -20], max: [0, -8, 0]}, 'S1 2024 (VV-VH-VV, dB)', false);
+// NOTE: SAR false-colour images often use the same band for two colours.
+//       GEE gets grumpy when you try to map the same band to two different colours for an RGB display
+//       To get around this, we'll duplicate the relevant polarisation channel and add it back to the image with a suffix. Same data, distinct band name.
+var vv = s1_2024.select('VV').rename('VV2');
+var s1_2024rgb = s1_2024.addBands(vv);
+Map.addLayer(toDb(s1_2024rgb.select(['VV', 'VH', 'VV2'])), {min: [-20, -28, -20], max: [0, -8, 0]}, 'S1 2024 (VV-VH-VV, dB)', false);
 // Change composite: R = VV 2024, G and B = VV 2016. Red = brighter in 2024; grey = unchanged.
 Map.addLayer(toDb(ee.Image.cat(s1_2024.select('VV'), s1_2016.select('VV'), s1_2016.select('VV'))),
   {min: -20, max: 0}, 'Change composite: red = brighter in 2024', false);
