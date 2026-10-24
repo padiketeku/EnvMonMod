@@ -8,7 +8,7 @@ Recent, findable readings for each prac, with DOIs or stable links. The three ar
 
 - Turner, M. G., & Gardner, R. H. (2015). *Landscape ecology in theory and practice* (2nd ed.). Springer. https://doi.org/10.1007/978-1-4939-2794-4
 - Cardille, J. A., et al. (Eds.). (2024). *Cloud-based remote sensing with Google Earth Engine*. Springer (open access). https://doi.org/10.1007/978-3-031-26588-4
-- Richards, J. A. (2022). *Remote sensing digital image analysis* (6th ed.). Springer. https://doi.org/10.1007/978-3-030-82327-6
+- Richards, J. A. (1993). *Remote sensing digital image analysis* (2nd ed.). Springer. http://dx.doi.org/10.1007/978-3-642-88087-2
 - Flores-Anderson, A. I., et al. (Eds.). (2019). *The SAR handbook*. NASA SERVIR. https://doi.org/10.25966/nr2c-s697
 - Lodge, J. M., Howard, S., Bearman, M., Dawson, P., & Associates. (2023). *Assessment reform for the age of artificial intelligence*. TEQSA. https://www.teqsa.gov.au/sites/default/files/2023-09/assessment-reform-age-artificial-intelligence-discussion-paper.pdf
 
@@ -19,7 +19,7 @@ Page: [prac01-earth-engine-image-processing-fundamentals-and-vegetation-dynamics
 - Turner, M. G., & Gardner, R. H. (2015). *Landscape ecology in theory and practice* (2nd ed.). Springer. https://doi.org/10.1007/978-1-4939-2794-4
 - Cardille, J. A., Crowley, M. A., Saah, D., & Clinton, N. E. (Eds.). (2024). *Cloud-based remote sensing with Google Earth Engine*. Springer (open access). https://doi.org/10.1007/978-3-031-26588-4
 - Gorelick, N., et al. (2017). Google Earth Engine: Planetary-scale geospatial analysis for everyone. *Remote Sensing of Environment, 202*, 18–27. https://doi.org/10.1016/j.rse.2017.06.031
-- Richards, J. A. (2022). *Remote sensing digital image analysis* (6th ed.). Springer. https://doi.org/10.1007/978-3-030-82327-6
+- Richards, J. A. (1993). *Remote sensing digital image analysis* (2nd ed.). Springer. http://dx.doi.org/10.1007/978-3-642-88087-2
 - Pasquarella, V. J., Brown, C. F., Czerwinski, W., & Rucklidge, W. J. (2023). Comprehensive quality assessment of optical satellite imagery using weakly supervised video learning. *CVPR Workshops* (Cloud Score+).
 - Huete, A., et al. (2002). Overview of the radiometric and biophysical performance of the MODIS vegetation indices. *Remote Sensing of Environment, 83*, 195–213. https://doi.org/10.1016/S0034-4257(02)00096-2
 - Ma, X., et al. (2013). Spatial patterns and temporal dynamics in savanna vegetation phenology across the North Australian Tropical Transect. *Remote Sensing of Environment, 139*, 97–115. https://doi.org/10.1016/j.rse.2013.07.030
