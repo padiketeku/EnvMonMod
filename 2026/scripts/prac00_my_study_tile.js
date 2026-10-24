@@ -156,12 +156,12 @@ Export.table.toAsset({collection: ee.FeatureCollection([tile]), description: 'Pr
 
 // ---------- 5 Inspect Data Coverage ----------
 
-// Satellite imagery is aquired over multiple orbits and often delivered as individual tiles.
+// Satellite imagery is acquired over multiple orbits and often delivered as individual tiles.
 // To ensure full coverage, tiles often have areas of overlap which can hold exact duplicates of the neighbouring tile.
 // These areas of overlap can cause issues for landscape-scale anaylsis.
 // Knowing where they are and how they affect your site is the first step in solving these problems. 
 // The below code will highlight the geometric footprints of Landsat and Sentinel-2 imagery over the Daly.
-// In prep for your assignments, we'll help idientify any problem areas for your TILE and the steps needed to correct them. 
+// In prep for your assignments, we'll help identify any problem areas for your TILE and the steps needed to correct them. 
 
 // We'll start with Sentinel-2, which delivers imagery based on the Military Grid Reference System (MGRS).
 
@@ -171,13 +171,13 @@ var s2 = ee.ImageCollection("COPERNICUS/S2_SR_HARMONIZED").filterBounds(daly).fi
 // or we can use the search bar at the top of your screen, select the dataset, and select the properties tab
 // print the first image in the 2024 S2 dataset and inspect the metadata (click drop down arrow > properties)
 print('First S2 image to inspect metadata:', s2.first());
-// First we want to know how many different orbit paths occurr over the daly ('SENSING_ORBIT_NUMBER' value in metadata)
-// aggregate_array filters on a metadata proprty and distinct() lets us see all unique values for that proprty
+// First we want to know how many different orbit paths occur over the Daly ('SENSING_ORBIT_NUMBER' value in metadata)
+// aggregate_array filters on a metadata property and distinct() lets us see all unique values for that property
 print('S2 orbits', s2.aggregate_array('SENSING_ORBIT_NUMBER').distinct()); // for the Daly we have orbits 131 and 31
 // We can also check which specific tiles cover the site
 print('S2 tiles:', s2.aggregate_array('MGRS_TILE').distinct()); // 16 S2 tiles cover the Daly
 
-// MGRS is a global gridding system that doesn't reflect satellite aquisitions, we need to check them by specific orbit
+// MGRS is a global gridding system that doesn't reflect satellite acquisitions, we need to check them by specific orbit
 // We want to know the tiles that belong to orbit 131. We also want a list of them that we can use in later code
 // ee.List() gives us a list to use later. Filter.eq() returns only images where 'SENSING_ORBIT_NUMBER' = 131
 var tiles131 = ee.List(s2.filter(ee.Filter.eq('SENSING_ORBIT_NUMBER', 131))
@@ -261,7 +261,7 @@ Map.addLayer(l8fp.style({color: 'yellow', fillColor: '00000000', width: 2}), {},
 
 // ---------- 6 Inspect YOUR TILE Coverage ---------- 
 // How do potential tile overlaps affect YOUR TILE?
-// You can simply change .filterBounds() regions from 'Daly' to 'TILE' on lines 171 for s2 and 244 for L8.
+// You can simply change .filterBounds() regions from 'Daly' to 'TILE' on lines 169 for s2 and 242 for L8.
 // Hit 'Run' after these changes and see how your tile is affected by data overlaps. 
 // NOTE: you may get some errors or empty lists, specifically for Sentinel 2 orbits no longer relevant to your tile. 
 
