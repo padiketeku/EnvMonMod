@@ -136,15 +136,15 @@ var lowPass = nir.convolve(ee.Kernel.square({radius: 2, units: 'pixels', normali
 var highPass = nir.convolve(ee.Kernel.laplacian8({normalize: false}));   // Laplacian: near 0 in flat areas, large at edges
 var median = nir.focalMedian({radius: 2, units: 'pixels'});   // 5 × 5 median: smooths but keeps edges sharper than a mean
 // Sobel kernel = gradient in the x (east–west) direction only; abs() drops the sign so all edges are positive.
-var sobel = nir.convolve(ee.Kernel.sobel()).abs();
+//var sobel = nir.convolve(ee.Kernel.sobel()).abs();
 // Canny edge detector: threshold = minimum gradient to count as an edge (a starting value — test others);
 // sigma = amount of Gaussian smoothing first (in pixels).
-var canny = ee.Algorithms.CannyEdgeDetector({image: nir, threshold: 0.05, sigma: 1});
+//var canny = ee.Algorithms.CannyEdgeDetector({image: nir, threshold: 0.05, sigma: 1});
 Map.addLayer(lowPass, {min: 0, max: 0.4}, 'D: Low-pass 5×5 mean', false);
 Map.addLayer(highPass, {min: -0.05, max: 0.05}, 'D: High-pass Laplacian', false);
 Map.addLayer(median, {min: 0, max: 0.4}, 'D: Median 5×5', false);
-Map.addLayer(sobel, {min: 0, max: 0.3}, 'D: Sobel edges (x-gradient)', false);
-Map.addLayer(canny.selfMask(), {palette: 'red'}, 'D: Canny edges', false);   // selfMask hides non-edge (0) pixels
+//Map.addLayer(sobel, {min: 0, max: 0.3}, 'D: Sobel edges (x-gradient)', false);
+//Map.addLayer(canny.selfMask(), {palette: 'red'}, 'D: Canny edges', false);   // selfMask hides non-edge (0) pixels
 
 // ===================== E. IMAGE TRANSFORMATION =====================
 // Transformations combine bands into new ones that highlight one property (water, burn, greenness) or
