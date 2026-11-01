@@ -255,7 +255,7 @@ Export.table.toDrive({collection: waterSeries, description: 'Prac08a_JRC_water_a
 </details>
 
 <details>
-<summary><strong>prac08b_flood_sentinel1.js</strong> (150 lines)</summary>
+<summary><strong>prac08b_flood_sentinel1.js</strong> (155 lines)</summary>
 
 ```javascript
 /**** Prac 08b — Flood mapping with Sentinel-1 SAR: Victoria River, Kalkarindji (NT), Feb–Mar 2023
@@ -373,10 +373,15 @@ print('Flooded area (km²)', floodKm2);   // printed as {area: km²}
 // Time series of mean VV over a floodplain point — shows the flood pulse
 // A 1 km buffer around a floodplain point; each image's mean VV is computed in LINEAR units, then converted to dB.
 var probe = ee.Geometry.Point([130.83, -17.45]).buffer(1000);
-var pulse = s1.filterDate('2022-10-01', '2023-06-30').select('VV').map(function(img) {
+var pulse = s1.filterBounds(probe).filterDate('2022-10-01', '2023-06-30').select('VV').map(function(img) {
   var meanLin = ee.Number(img.reduceRegion(ee.Reducer.mean(), probe, 10).get('VV'));   // mean in linear units
   return ee.Feature(null, {date: img.date().millis(), VV_dB: meanLin.log10().multiply(10)}); // converted for display
 });
+// For pulse we further filter imagery to probe to avoid NoData edges of S1 tiles (i.e. pulse = s1.filterBounds(probe))
+// How does the sample size of observations differ between aoi and probe coverage? What might drive this?
+print('S1 Slices over AOI', s1.size());
+print('S1 Slices over probe', s1.filterBounds(probe).size());
+
 // Look for a sharp dip in VV (flooding) around late Feb–early Mar 2023. Note: all orbits are included here.
 print(ui.Chart.feature.byFeature(pulse, 'date', 'VV_dB')
   .setOptions({title: 'Mean VV near Kalkarindji (mean of linear σ⁰, shown in dB)', pointSize: 3, hAxis: {format: 'MMM yyyy'}}));
@@ -509,8 +514,8 @@ var annual = ee.ImageCollection.fromImages(years.map(function(y) {
 // ---------- 4 Analysis ----------
 // Chart the mangrove NDVI over time, then map dieback (2015→2017 drop) and recovery (green again by 2024),
 // and convert each mask to an area in hectares.
-// series(): for each image, average (mean reducer) NDVI over the aoi at 30 m (Landsat resolution).
-print(ui.Chart.image.series(annual, aoi, ee.Reducer.mean(), 30)
+// series(): for each image, average (mean reducer) NDVI over the aoi at 90 m (aggregated from 30 m Landsat resolution for speed).
+print(ui.Chart.image.series(annual, aoi, ee.Reducer.mean(), 90)
   .setOptions({title: 'Mean dry-season NDVI within 2000 mangrove extent', pointSize: 4}));
 
 // Pull single years out of the annual collection: 2015 (before), 2017 (after) and 2024 (latest).
