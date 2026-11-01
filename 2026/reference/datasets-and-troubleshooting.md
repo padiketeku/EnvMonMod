@@ -55,7 +55,7 @@ Prac-specific readings appear in section 5 of each prac, and together in [refere
 | `pracs/prac01-…md` – `prac13-…md` | One page per prac: concept notes, activities, challenge questions, assessment link, reading |
 | `scripts/prac00_…js` – `prac13_…js` | Code Editor scripts (the main environment), including the personal tile allocator (`prac00`) |
 | `alternatives/python/`, `alternatives/r/`, `alternatives/qgis/` | Optional Python (earthengine-api + geemap), R (rgee) and QGIS versions |
-| `assessments/README.md` | AT1–AT4: separate ENV306 and ENV506 briefs and rubrics; AI-resilient design |
+| `assessments/README.md` | AT1–AT4: separate ENV306 and ENV506 briefs; AI-resilient design |
 | `reference/` | Reading list; datasets and troubleshooting |
 
 Restricted data (crocodile survey CSV, floodplain shapefiles) are distributed via Learnline only and are never committed to the repository.
