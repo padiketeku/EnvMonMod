@@ -116,6 +116,10 @@ print('Training / testing points', train.size(), test.size());
 // Later pracs use WorldCover training data over your tile boundary from prac00.
 // Below prepares labeled landcover class points for your tile site as per steps above in 2a.
 
+// Import your tile boundary from prac 00 to prep data for future pracs.
+// you can call it in by the asset file path or import from assets tab on left of screen. 
+var TILE = ee.FeatureCollection('projects/YOUR_NAME/assets/my_tile').geometry();
+
 // Filter WorldCover to your tile
 var tile_wc = ee.ImageCollection('ESA/WorldCover/v200').first().clip(TILE);
 // Remap class names
