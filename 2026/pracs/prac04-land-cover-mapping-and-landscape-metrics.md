@@ -131,7 +131,7 @@ Map.addLayer(predictors.classify(rf), {min: 0, max: 6, palette: palette}, 'Land 
 Each script is copied here from [`scripts/`](../scripts) so this page has everything in one place. The `.js` file is the master copy: if the two ever differ, use the file. Click a heading to open the script, then use the copy button and paste it into a new script in the Code Editor.
 
 <details>
-<summary><strong>prac04a_landcover_classification.js</strong> (222 lines)</summary>
+<summary><strong>prac04a_landcover_classification.js</strong> (226 lines)</summary>
 
 ```javascript
 /**** Prac 04a — Land cover classification: Random Forest, CART and SVM (Darwin–Litchfield, NT)
@@ -251,6 +251,10 @@ print('Training / testing points', train.size(), test.size());
 // ---------- 2c Prepare training data for your tile ----------
 // Later pracs use WorldCover training data over your tile boundary from prac00.
 // Below prepares labeled landcover class points for your tile site as per steps above in 2a.
+
+// Import your tile boundary from prac 00 to prep data for future pracs.
+// you can call it in by the asset file path or import from assets tab on left of screen. 
+var TILE = ee.FeatureCollection('projects/YOUR_NAME/assets/my_tile').geometry();
 
 // Filter WorldCover to your tile
 var tile_wc = ee.ImageCollection('ESA/WorldCover/v200').first().clip(TILE);

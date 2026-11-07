@@ -6,7 +6,7 @@
 
 **Also available in:** Python [`prac09_crocodile_biomass.py`](../alternatives/python/prac09_crocodile_biomass.py) · R [`prac09_crocodile_biomass.R`](../alternatives/r/prac09_crocodile_biomass.R) · QGIS [recipe](../alternatives/qgis/README.md). The Code Editor remains the main environment.
 
-**Purpose.** Test whether wet-season floodplain inundation explains crocodile biomass, using 42 river-year survey records from eight NT tidal rivers.
+**Purpose.** Test whether wet-season floodplain inundation explains crocodile biomass, using 46 river-year survey records from eight NT tidal rivers.
 
 **Acknowledgements:** Google Earth Engine developers and team; UN-SPIDER ([Recommended Practice: flood mapping with Sentinel-1 in GEE](https://un-spider.org/advisory-support/recommended-practices/recommended-practice-google-earth-engine-flood-mapping/step-by-step)), whose scripts were adapted for this prac; Tim Palmer (methodology and original GEE code); Cameron Baker (crocodile data).
 
@@ -30,7 +30,7 @@ Here u\_r is a river-specific effect (ENV506), which captures each river's unmea
 
 ### 1.3 Data you will upload
 
-1. **`croc-biomass-data.csv`** (download from **Learnline**; restricted data, not to be shared or posted publicly, including in AT submissions' public repositories): 42 dry-season spotlight-survey records for eight NT tidal rivers, 2009–2022. Records per river: Adelaide 14, Mary 7, Daly 6, and 3–4 each for Liverpool, Tomkinson, Blyth, Cadell and Glyde.
+1. **`croc-biomass-data.csv`** (download from **Learnline**; restricted data, not to be shared or posted publicly, including in AT submissions' public repositories): 46 dry-season spotlight-survey records for eight NT tidal rivers, 2009–2022. Records per river: Adelaide 14, Mary 7, Daly 6, and 3–4 each for Liverpool, Tomkinson, Blyth, Cadell and Glyde.
 2. **`flooded_areas_shapefiles.zip`** (download from **Learnline**; restricted): flooded-area polygons for the six river systems, namely Adelaide, Mary, Daly, Glyde, Liverpool (also used for the Tomkinson) and Blyth (also used for the Cadell). Each river's **floodplain zone** is the convex hull of its polygons. Zone sizes are about 3,400 km² (Adelaide), 3,000 (Daly), 2,000 (Mary and Glyde), 1,300 (Blyth/Cadell) and 600 (Liverpool/Tomkinson).
 
 | CSV column | Meaning |
@@ -55,7 +55,7 @@ Two floodplain metrics are computed for each river-year:
 - **CSV file (.csv)** → `croc-biomass-data.csv`. It has no coordinates, so leave the geometry columns blank.
 - **Shape files** → each of the six rivers in turn (`flooded_Adelaide_river`, `flooded_Mary_river`, `flooded_Daly_river`, `flooded_Glyde_river`, `flooded_Liverpool_river`, `flooded_Blyth_river`). Select all parts of each one: `.shp`, `.shx`, `.dbf`, `.prj` and `.cpg`.
 
-Wait for the seven ingestion tasks in the **Tasks** tab, then edit `ROOT` (your asset folder). Print the table and check the 42 records and that `Year` is numeric. These are restricted data: keep your assets private, and share them only with markers.
+Wait for the seven ingestion tasks in the **Tasks** tab, then edit `ROOT` (your asset folder). Print the table and check the 46 records and that `Year` is numeric. These are restricted data: keep your assets private, and share them only with markers.
 
 **Part A – Sentinel-1 flood-mapping workflow (Adelaide River, August 2017).**
 
@@ -118,7 +118,7 @@ print('Peak inundation 2019 (ha)', ha);
 2. Test lags. Recruitment and growth to surveyable size take years, so which lag fits best, and is it ecologically plausible?
 3. Compare convex-hull zones with the flooded polygons themselves (or a buffer around them), and quantify the sensitivity of the coefficients.
 4. Add habitat composition (mangrove and paperbark-swamp extent from Prac 04 or Prac 08) as predictors, and discuss collinearity with floodplain area.
-5. With n = 42 records across 8 rivers, unbalanced years and autocorrelation, what can and cannot be concluded? Recommend a monitoring design for the NT Government.
+5. With n = 46 records across 8 rivers, unbalanced years and autocorrelation, what can and cannot be concluded? Recommend a monitoring design for the NT Government.
 
 ## 4. Link to summative assessment
 
@@ -142,7 +142,7 @@ print('Peak inundation 2019 (ha)', ha);
 Each script is copied here from [`scripts/`](../scripts) so this page has everything in one place. The `.js` file is the master copy: if the two ever differ, use the file. Click a heading to open the script, then use the copy button and paste it into a new script in the Code Editor.
 
 <details>
-<summary><strong>prac09_crocodile_biomass.js</strong> (286 lines)</summary>
+<summary><strong>prac09_crocodile_biomass.js</strong> (292 lines)</summary>
 
 ```javascript
 /**** Prac 09 — Crocodile biomass modelling with SAR floodplain inundation (eight NT tidal rivers, 2009–2022)
@@ -194,7 +194,7 @@ Each script is copied here from [`scripts/`](../scripts) so this page has everyt
  *   a JRC vs Sentinel-1 scatter chart.
  *
  * DATA (from the code):
- *   - Your uploaded assets: croc-biomass-data (table, 42 river × year records) and flooded_<River>_river polygons.
+ *   - Your uploaded assets: croc-biomass-data (table, 46 river × year records) and flooded_<River>_river polygons.
  *   - COPERNICUS/S1_GRD_FLOAT — linear σ⁰; Sentinel-1 C-band SAR, IW mode, 10 m, VH, descending pass (used 2016–2022; Part A 2017).
  *   - JRC/GSW1_4/GlobalSurfaceWater ('seasonality') and JRC/GSW1_4/YearlyHistory ('waterClass') — 30 m, 1984–2021.
  *   - AU/GA/DEM_1SEC/v10/DEM-H — Geoscience Australia hydrologically enforced DEM, 1 arc-second (~30 m).
@@ -346,9 +346,15 @@ Map.addLayer(zoneFc.style({color: 'black', fillColor: '00000000', width: 1}), {}
 // ---------- B2 Survey table + floodplain metrics ----------
 // Load your uploaded survey table and add two inundation metrics to every row:
 // JRC seasonal water (optical) and Sentinel-1 peak inundation (SAR, linear σ⁰).
-var croc = ee.FeatureCollection(CROC_ASSET);   // fails here if ROOT or the asset name is wrong
-// If ingestion kept a byte-order mark, the first column may be named '﻿River'. Check the printed property names.
-print('B2: Croc records (expect 42)', croc.size(), 'properties', croc.first().propertyNames());
+// Load your uploaded table (this line fails if ROOT or the asset name is wrong).
+// The CSV from Learnline starts with an invisible byte-order mark (BOM), so after upload its first column is often
+// named '\uFEFFRiver' rather than 'River'. This map() copies it into a clean 'River' property either way;
+// without it, f.get('River') is null and B2 fails with "String: Parameter 'input' is required and may not be null".
+var croc = ee.FeatureCollection(CROC_ASSET).map(function(f) {
+  var hasRiver = f.propertyNames().contains('River');
+  return f.set('River', ee.Algorithms.If(hasRiver, f.get('River'), f.get('\uFEFFRiver')));
+});
+print('B2: Croc records (expect 46)', croc.size(), 'properties', croc.first().propertyNames());
 
 // Copy the client-side ZONES object into a server-side ee.Dictionary so it can be looked up inside map() below.
 var zoneDict = ee.Dictionary(RIVERS.reduce(function(d, r) { d[r] = ZONES[r]; return d; }, {}));
@@ -378,7 +384,7 @@ function addMetrics(f) {
   // with the per-pixel minimum of the wet season (darkest = most flooded moment). Both are in linear σ⁰.
   var s1Ha = ee.Algorithms.If(year.lt(2016), null,
     ee.Algorithms.If(base.size().eq(0).or(wet.size().eq(0)), null,
-      areaHa(floodMap(base.median(), wet.min()), zone, 30)));   // 30 m keeps 42 records × large zones fast
+      areaHa(floodMap(base.median(), wet.min()), zone, 30)));   // 30 m keeps 46 records × large zones fast
 
   return f.set({Year: year, zone_km2: zone.area(100).divide(1e6),
                 jrc_seasonal_ha: jrcHa, s1_peak_ha: s1Ha});

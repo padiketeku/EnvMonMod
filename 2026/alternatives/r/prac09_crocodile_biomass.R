@@ -4,7 +4,7 @@
 # crocodile data supplied by Cameron Baker. R extras: river fixed effects and lme4 mixed models.
 source("nt_common.R"); nt_init("YOUR-CLOUD-PROJECT")
 
-croc <- read.csv("croc-biomass-data.csv")
+croc <- read.csv("croc-biomass-data.csv", fileEncoding = "UTF-8-BOM")  # strips the byte-order mark so the first column is "River"
 print(aggregate(Year ~ River, croc, function(y) c(n = length(y), from = min(y), to = max(y))))
 
 # Floodplain zones = convex hull of each river's flooded-area polygons (flooded_areas_shapefiles.zip from Learnline)

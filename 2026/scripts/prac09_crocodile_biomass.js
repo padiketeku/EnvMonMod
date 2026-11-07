@@ -47,7 +47,7 @@
  *   a JRC vs Sentinel-1 scatter chart.
  *
  * DATA (from the code):
- *   - Your uploaded assets: croc-biomass-data (table, 42 river × year records) and flooded_<River>_river polygons.
+ *   - Your uploaded assets: croc-biomass-data (table, 46 river × year records) and flooded_<River>_river polygons.
  *   - COPERNICUS/S1_GRD_FLOAT — linear σ⁰; Sentinel-1 C-band SAR, IW mode, 10 m, VH, descending pass (used 2016–2022; Part A 2017).
  *   - JRC/GSW1_4/GlobalSurfaceWater ('seasonality') and JRC/GSW1_4/YearlyHistory ('waterClass') — 30 m, 1984–2021.
  *   - AU/GA/DEM_1SEC/v10/DEM-H — Geoscience Australia hydrologically enforced DEM, 1 arc-second (~30 m).
@@ -199,9 +199,15 @@ Map.addLayer(zoneFc.style({color: 'black', fillColor: '00000000', width: 1}), {}
 // ---------- B2 Survey table + floodplain metrics ----------
 // Load your uploaded survey table and add two inundation metrics to every row:
 // JRC seasonal water (optical) and Sentinel-1 peak inundation (SAR, linear σ⁰).
-var croc = ee.FeatureCollection(CROC_ASSET);   // fails here if ROOT or the asset name is wrong
-// If ingestion kept a byte-order mark, the first column may be named '﻿River'. Check the printed property names.
-print('B2: Croc records (expect 42)', croc.size(), 'properties', croc.first().propertyNames());
+// Load your uploaded table (this line fails if ROOT or the asset name is wrong).
+// The CSV from Learnline starts with an invisible byte-order mark (BOM), so after upload its first column is often
+// named '\uFEFFRiver' rather than 'River'. This map() copies it into a clean 'River' property either way;
+// without it, f.get('River') is null and B2 fails with "String: Parameter 'input' is required and may not be null".
+var croc = ee.FeatureCollection(CROC_ASSET).map(function(f) {
+  var hasRiver = f.propertyNames().contains('River');
+  return f.set('River', ee.Algorithms.If(hasRiver, f.get('River'), f.get('\uFEFFRiver')));
+});
+print('B2: Croc records (expect 46)', croc.size(), 'properties', croc.first().propertyNames());
 
 // Copy the client-side ZONES object into a server-side ee.Dictionary so it can be looked up inside map() below.
 var zoneDict = ee.Dictionary(RIVERS.reduce(function(d, r) { d[r] = ZONES[r]; return d; }, {}));
@@ -231,7 +237,7 @@ function addMetrics(f) {
   // with the per-pixel minimum of the wet season (darkest = most flooded moment). Both are in linear σ⁰.
   var s1Ha = ee.Algorithms.If(year.lt(2016), null,
     ee.Algorithms.If(base.size().eq(0).or(wet.size().eq(0)), null,
-      areaHa(floodMap(base.median(), wet.min()), zone, 30)));   // 30 m keeps 42 records × large zones fast
+      areaHa(floodMap(base.median(), wet.min()), zone, 30)));   // 30 m keeps 46 records × large zones fast
 
   return f.set({Year: year, zone_km2: zone.area(100).divide(1e6),
                 jrc_seasonal_ha: jrcHa, s1_peak_ha: s1Ha});
