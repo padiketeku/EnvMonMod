@@ -2360,9 +2360,12 @@ footer{color:var(--muted);font-size:13px;margin-top:40px;border-top:1px solid va
 <li>Why can a single dry-season composite not describe vegetation condition in the Top End?</li>
 </ol>
 <p><strong>Extension (ENV506)</strong></p>
+<blockquote>
+<p><strong>ENV506 cohort only: ready-made challenge scripts.</strong> The ENV506 challenges below come as complete code at the end of the script <code>prac02a</code>, inside blocks headed <code>ENV506 COHORT ONLY</code>. To run one, delete its <code>/* ENV506-… START</code> line and its <code>ENV506-… END */</code> line, then click Run. Change only the lines marked <code>EDIT</code> (your tile and focus year). ENV306 students: leave these blocks commented out; they do not affect the rest of the script. Your marks come from interpreting the charts, tables and maps, not from the code.</p>
+</blockquote>
 <ol type="1">
-<li>With about 1.4 million pixels, about 5 % will be "significant" by chance. Apply a Benjamini–Hochberg false-discovery-rate correction in the Code Editor (see the script <code>EXT</code>).</li>
-<li>Implement RESTREND, using NDVI residuals after regressing on rainfall from Prac 03, and compare the trend maps.</li>
+<li>With about 1.4 million pixels, about 5 % will be "significant" by chance. Run <strong>ENV506 challenge A</strong> in <code>prac02a</code> (Benjamini–Hochberg false-discovery-rate correction) and compare the maps and areas before and after the correction.</li>
+<li>Run <strong>ENV506 challenge B</strong> in <code>prac02a</code> (RESTREND: the trend in NDVI residuals after removing rainfall) and compare it with the NDVI trend map. Where does a trend disappear, and where does it remain?</li>
 <li>Fit harmonics for 2014–2018 and for 2020–2024, then map the shifts in phenology.</li>
 <li>Test for serial autocorrelation, apply pre-whitening, and discuss its effect on significance.</li>
 </ol>
@@ -2379,11 +2382,14 @@ footer{color:var(--muted);font-size:13px;margin-top:40px;border-top:1px solid va
 <li>Ma, X., et al. (2013). Spatial patterns and temporal dynamics in savanna vegetation phenology across the North Australian Tropical Transect. <em>Remote Sensing of Environment, 139</em>, 97–115. <a href="https://doi.org/10.1016/j.rse.2013.07.030">https://doi.org/10.1016/j.rse.2013.07.030</a></li>
 <li>Earth Engine community tutorial: <em>Monitoring forest vegetation condition</em> (pskoulgi). <a href="https://developers.google.com/earth-engine/tutorials/community/forest-vegetation-condition">https://developers.google.com/earth-engine/tutorials/community/forest-vegetation-condition</a></li>
 <li>Skidmore, A. K., et al. (2021). Priority list of biodiversity metrics to observe from space. <em>Nature Ecology &amp; Evolution, 5</em>, 896–906. <a href="https://doi.org/10.1038/s41559-021-01451-x">https://doi.org/10.1038/s41559-021-01451-x</a> (article review notes)</li>
+<li>Benjamini, Y., &amp; Hochberg, Y. (1995). Controlling the false discovery rate: A practical and powerful approach to multiple testing. <em>Journal of the Royal Statistical Society: Series B, 57</em>(1), 289–300. <a href="https://doi.org/10.1111/j.2517-6161.1995.tb02031.x">https://doi.org/10.1111/j.2517-6161.1995.tb02031.x</a> (ENV506 challenge A)</li>
+<li>Evans, J., &amp; Geerken, R. (2004). Discrimination between climate and human-induced dryland degradation. <em>Journal of Arid Environments, 57</em>(4), 535–554. <a href="https://doi.org/10.1016/S0140-1963(03)00121-6">https://doi.org/10.1016/S0140-1963(03)00121-6</a> (ENV506 challenge B, RESTREND)</li>
+<li>Wessels, K. J., Prince, S. D., Malherbe, J., Small, J., Frost, P. E., &amp; VanZyl, D. (2007). Can human-induced land degradation be distinguished from the effects of rainfall variability? A case study in South Africa. <em>Journal of Arid Environments, 68</em>(2), 271–297. <a href="https://doi.org/10.1016/j.jaridenv.2006.05.015">https://doi.org/10.1016/j.jaridenv.2006.05.015</a> (ENV506 challenge B, RESTREND)</li>
 </ul>
 <h2 id="full-scripts">Full scripts</h2>
 <p>Each script is copied here from <a href="https://github.com/padiketeku/EnvMonMod/tree/main/2026/scripts"><code>scripts/</code></a> so this page has everything in one place. The <code>.js</code> file is the master copy: if the two ever differ, use the file. Click a heading to open the script, then use the copy button and paste it into a new script in the Code Editor.</p>
 <details>
-<summary><strong>prac02a_trend_sens_mk.js</strong> (145 lines)</summary>
+<summary><strong>prac02a_trend_sens_mk.js</strong> (257 lines)</summary>
 
 <div class="sourceCode" id="cb2"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**** Prac 02a — Non-parametric trend analysis: Sen&#39;s slope and Mann–Kendall (Northern Territory)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"> * Variable: annual mean NDVI (MODIS MOD13A3, 1 km), 2001–2024. Swap in rainfall, LST or fire frequency.</span></span>
@@ -2526,10 +2532,122 @@ footer{color:var(--muted);font-size:13px;margin-top:40px;border-top:1px solid va
 <span id="cb2-139"><a href="#cb2-139" aria-hidden="true" tabindex="-1"></a><span class="co">// Q: Where is the NT greening or browning? Propose landscape processes (rainfall trend, woody thickening, clearing, fire).</span></span>
 <span id="cb2-140"><a href="#cb2-140" aria-hidden="true" tabindex="-1"></a><span class="co">// Q: Why use Sen&#39;s slope and Mann–Kendall rather than OLS regression for NDVI?</span></span>
 <span id="cb2-141"><a href="#cb2-141" aria-hidden="true" tabindex="-1"></a><span class="co">// Q: About 5% of pixels will be &quot;significant&quot; by chance at α = 0.05. Why is this a problem for a map with ~1.4 million pixels?</span></span>
-<span id="cb2-142"><a href="#cb2-142" aria-hidden="true" tabindex="-1"></a><span class="co">// EXT: Apply a Benjamini–Hochberg false-discovery-rate correction in the Code Editor: use ee.Reducer.fixedHistogram on the</span></span>
-<span id="cb2-143"><a href="#cb2-143" aria-hidden="true" tabindex="-1"></a><span class="co">//      p-value image to get k(t) = number of pixels with p ≤ t, then find the largest t with t ≤ (k(t)/m)·α and re-map.</span></span>
-<span id="cb2-144"><a href="#cb2-144" aria-hidden="true" tabindex="-1"></a><span class="co">// EXT: Autocorrelated series inflate significance. Implement pre-whitening (Yue–Pilon) or the modified MK test for one region.</span></span>
-<span id="cb2-145"><a href="#cb2-145" aria-hidden="true" tabindex="-1"></a><span class="co">// EXT: Remove rainfall-driven variation first (RESTREND: residuals of NDVI ~ rainfall) and compare trend maps.</span></span></code></pre></div>
+<span id="cb2-142"><a href="#cb2-142" aria-hidden="true" tabindex="-1"></a><span class="co">// EXT: Benjamini–Hochberg false-discovery-rate correction: ready to run in ENV506 challenge A at the end of this script.</span></span>
+<span id="cb2-143"><a href="#cb2-143" aria-hidden="true" tabindex="-1"></a><span class="co">// EXT: Autocorrelated series inflate significance. Implement pre-whitening (Yue–Pilon) or the modified MK test for one region.</span></span>
+<span id="cb2-144"><a href="#cb2-144" aria-hidden="true" tabindex="-1"></a><span class="co">// EXT: RESTREND (trend in NDVI residuals after removing rainfall): ready to run in ENV506 challenge B at the end of this script.</span></span>
+<span id="cb2-145"><a href="#cb2-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-146"><a href="#cb2-146" aria-hidden="true" tabindex="-1"></a><span class="co">// #####################################################################################################################</span></span>
+<span id="cb2-147"><a href="#cb2-147" aria-hidden="true" tabindex="-1"></a><span class="co">// ##  ENV506 COHORT ONLY — CHALLENGE A: Benjamini–Hochberg false-discovery-rate (FDR) correction</span></span>
+<span id="cb2-148"><a href="#cb2-148" aria-hidden="true" tabindex="-1"></a><span class="co">// ##  ENV306 students: you do not need this block. Leave it commented out; it does not affect the rest of the script.</span></span>
+<span id="cb2-149"><a href="#cb2-149" aria-hidden="true" tabindex="-1"></a><span class="co">// #####################################################################################################################</span></span>
+<span id="cb2-150"><a href="#cb2-150" aria-hidden="true" tabindex="-1"></a><span class="co">// HOW TO RUN (ENV506): delete the line  /* ENV506-A START  and the line  ENV506-A </span><span class="re">END</span><span class="co"> */  below, then click Run.</span></span>
+<span id="cb2-151"><a href="#cb2-151" aria-hidden="true" tabindex="-1"></a><span class="co">//   Nothing else needs editing to run it. Lines marked EDIT are the settings to change for YOUR tile and focus year.</span></span>
+<span id="cb2-152"><a href="#cb2-152" aria-hidden="true" tabindex="-1"></a><span class="co">// USES: p (Mann–Kendall p-values), sens, ALPHA, area, slopeVis and nt from the main script above.</span></span>
+<span id="cb2-153"><a href="#cb2-153" aria-hidden="true" tabindex="-1"></a><span class="co">// FOR AT3 (ENV506): map greening and browning that stays significant after the FDR correction, and report both areas (raw p &lt; 0.05 and FDR).</span></span>
+<span id="cb2-154"><a href="#cb2-154" aria-hidden="true" tabindex="-1"></a><span class="co">// READING THE OUTPUT:</span></span>
+<span id="cb2-155"><a href="#cb2-155" aria-hidden="true" tabindex="-1"></a><span class="co">//   - &quot;BH cut-off p-value&quot; is the new significance threshold. It is always ≤ ALPHA; the more pixels tested, the</span></span>
+<span id="cb2-156"><a href="#cb2-156" aria-hidden="true" tabindex="-1"></a><span class="co">//     smaller it usually gets. A cut-off of 0 means no pixel survives the correction.</span></span>
+<span id="cb2-157"><a href="#cb2-157" aria-hidden="true" tabindex="-1"></a><span class="co">//   - Compare &quot;pixels significant at raw p &lt; ALPHA&quot; with &quot;after BH&quot;: the difference is roughly the number of</span></span>
+<span id="cb2-158"><a href="#cb2-158" aria-hidden="true" tabindex="-1"></a><span class="co">//     trends you would otherwise report that could be chance.</span></span>
+<span id="cb2-159"><a href="#cb2-159" aria-hidden="true" tabindex="-1"></a><span class="co">//   - Map layer &quot;ENV506-A: Sen&#39;s slope, significant after BH&quot; — compare it with &quot;Sen&#39;s slope where p &lt; 0.05&quot;.</span></span>
+<span id="cb2-160"><a href="#cb2-160" aria-hidden="true" tabindex="-1"></a><span class="co">/* ENV506-A START</span></span>
+<span id="cb2-161"><a href="#cb2-161" aria-hidden="true" tabindex="-1"></a><span class="co">// Benjamini–Hochberg (1995): rank the m p-values; the cut-off is the largest p(i) with p(i) ≤ (i / m) × ALPHA.</span></span>
+<span id="cb2-162"><a href="#cb2-162" aria-hidden="true" tabindex="-1"></a><span class="co">// Sorting a million pixels is slow, so we use a fine histogram of p between 0 and ALPHA instead:</span></span>
+<span id="cb2-163"><a href="#cb2-163" aria-hidden="true" tabindex="-1"></a><span class="co">// for each bin end t, k(t) = number of pixels with p &lt; t, and t passes if t ≤ (k(t) / m) × ALPHA.</span></span>
+<span id="cb2-164"><a href="#cb2-164" aria-hidden="true" tabindex="-1"></a><span class="co">var BH_REGION = nt.geometry();   // EDIT (AT3): your tile polygon from prac00, to apply the correction within your tile</span></span>
+<span id="cb2-165"><a href="#cb2-165" aria-hidden="true" tabindex="-1"></a><span class="co">var BH_STEPS = 2000;             // histogram bins between 0 and ALPHA (finer = more exact cut-off)</span></span>
+<span id="cb2-166"><a href="#cb2-166" aria-hidden="true" tabindex="-1"></a><span class="co">var bhM = ee.Number(p.reduceRegion({reducer: ee.Reducer.count(), geometry: BH_REGION, scale: 1000,</span></span>
+<span id="cb2-167"><a href="#cb2-167" aria-hidden="true" tabindex="-1"></a><span class="co">  maxPixels: 1e11}).get(&#39;p&#39;));   // m = number of pixels tested</span></span>
+<span id="cb2-168"><a href="#cb2-168" aria-hidden="true" tabindex="-1"></a><span class="co">var bhHist = ee.Array(p.reduceRegion({reducer: ee.Reducer.fixedHistogram(0, ALPHA, BH_STEPS),</span></span>
+<span id="cb2-169"><a href="#cb2-169" aria-hidden="true" tabindex="-1"></a><span class="co">  geometry: BH_REGION, scale: 1000, maxPixels: 1e11}).get(&#39;p&#39;));   // rows: [bin start, count]</span></span>
+<span id="cb2-170"><a href="#cb2-170" aria-hidden="true" tabindex="-1"></a><span class="co">var bhEnds = bhHist.slice(1, 0, 1).project([0]).add(ALPHA / BH_STEPS);   // upper edge t of each bin</span></span>
+<span id="cb2-171"><a href="#cb2-171" aria-hidden="true" tabindex="-1"></a><span class="co">var bhK = bhHist.slice(1, 1, 2).project([0]).accum(0);                    // k(t): cumulative count of p &lt; t</span></span>
+<span id="cb2-172"><a href="#cb2-172" aria-hidden="true" tabindex="-1"></a><span class="co">var bhPass = bhEnds.lte(bhK.divide(bhM).multiply(ALPHA));                // 1 where t ≤ (k(t) / m) × ALPHA</span></span>
+<span id="cb2-173"><a href="#cb2-173" aria-hidden="true" tabindex="-1"></a><span class="co">var bhCut = ee.Number(bhEnds.multiply(bhPass).reduce(ee.Reducer.max(), [0]).get([0]));   // largest passing t (0 if none)</span></span>
+<span id="cb2-174"><a href="#cb2-174" aria-hidden="true" tabindex="-1"></a><span class="co">var bhSig = p.lte(bhCut).and(p.lt(ALPHA));   // significant after FDR correction</span></span>
+<span id="cb2-175"><a href="#cb2-175" aria-hidden="true" tabindex="-1"></a><span class="co">print(&#39;ENV506-A: pixels tested (m)&#39;, bhM);</span></span>
+<span id="cb2-176"><a href="#cb2-176" aria-hidden="true" tabindex="-1"></a><span class="co">print(&#39;ENV506-A: BH cut-off p-value (compare with ALPHA = &#39; + ALPHA + &#39;)&#39;, bhCut);</span></span>
+<span id="cb2-177"><a href="#cb2-177" aria-hidden="true" tabindex="-1"></a><span class="co">print(&#39;ENV506-A: pixels significant at raw p &lt; ALPHA&#39;, p.lt(ALPHA).reduceRegion({reducer: ee.Reducer.sum(), geometry: BH_REGION, scale: 1000, maxPixels: 1e11}).get(&#39;p&#39;));</span></span>
+<span id="cb2-178"><a href="#cb2-178" aria-hidden="true" tabindex="-1"></a><span class="co">print(&#39;ENV506-A: pixels significant after BH&#39;, bhSig.reduceRegion({reducer: ee.Reducer.sum(), geometry: BH_REGION, scale: 1000, maxPixels: 1e11}).get(&#39;p&#39;));</span></span>
+<span id="cb2-179"><a href="#cb2-179" aria-hidden="true" tabindex="-1"></a><span class="co">var bhGreen = area.updateMask(bhSig.and(sens.select(&#39;slope&#39;).gt(0)));</span></span>
+<span id="cb2-180"><a href="#cb2-180" aria-hidden="true" tabindex="-1"></a><span class="co">var bhBrown = area.updateMask(bhSig.and(sens.select(&#39;slope&#39;).lt(0)));</span></span>
+<span id="cb2-181"><a href="#cb2-181" aria-hidden="true" tabindex="-1"></a><span class="co">print(&#39;ENV506-A: significant greening after BH (km²)&#39;, bhGreen.reduceRegion({reducer: ee.Reducer.sum(), geometry: BH_REGION, scale: 1000, maxPixels: 1e11}).get(&#39;area&#39;));</span></span>
+<span id="cb2-182"><a href="#cb2-182" aria-hidden="true" tabindex="-1"></a><span class="co">print(&#39;ENV506-A: significant browning after BH (km²)&#39;, bhBrown.reduceRegion({reducer: ee.Reducer.sum(), geometry: BH_REGION, scale: 1000, maxPixels: 1e11}).get(&#39;area&#39;));</span></span>
+<span id="cb2-183"><a href="#cb2-183" aria-hidden="true" tabindex="-1"></a><span class="co">Map.addLayer(sens.select(&#39;slope&#39;).updateMask(bhSig).clip(BH_REGION), slopeVis, &quot;ENV506-A: Sen&#39;s slope, significant after BH&quot;);</span></span>
+<span id="cb2-184"><a href="#cb2-184" aria-hidden="true" tabindex="-1"></a><span class="co">ENV506-A </span><span class="re">END</span><span class="co"> */</span></span>
+<span id="cb2-185"><a href="#cb2-185" aria-hidden="true" tabindex="-1"></a><span class="co">// ##################################### end of ENV506 challenge A #################################################</span></span>
+<span id="cb2-186"><a href="#cb2-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-187"><a href="#cb2-187" aria-hidden="true" tabindex="-1"></a><span class="co">// #####################################################################################################################</span></span>
+<span id="cb2-188"><a href="#cb2-188" aria-hidden="true" tabindex="-1"></a><span class="co">// ##  ENV506 COHORT ONLY — CHALLENGE B: RESTREND — trend in NDVI residuals after removing rainfall</span></span>
+<span id="cb2-189"><a href="#cb2-189" aria-hidden="true" tabindex="-1"></a><span class="co">// ##  ENV306 students: you do not need this block. Leave it commented out; it does not affect the rest of the script.</span></span>
+<span id="cb2-190"><a href="#cb2-190" aria-hidden="true" tabindex="-1"></a><span class="co">// #####################################################################################################################</span></span>
+<span id="cb2-191"><a href="#cb2-191" aria-hidden="true" tabindex="-1"></a><span class="co">// HOW TO RUN (ENV506): delete the line  /* ENV506-B START  and the line  ENV506-B </span><span class="re">END</span><span class="co"> */  below, then click Run.</span></span>
+<span id="cb2-192"><a href="#cb2-192" aria-hidden="true" tabindex="-1"></a><span class="co">//   Nothing else needs editing to run it. Lines marked EDIT are the settings to change for YOUR tile and focus year.</span></span>
+<span id="cb2-193"><a href="#cb2-193" aria-hidden="true" tabindex="-1"></a><span class="co">// USES: annual (annual NDVI), START, </span><span class="re">END</span><span class="co">, n, ALPHA, area, slopeVis, sens, probe and nt from the main script; CHIRPS rainfall.</span></span>
+<span id="cb2-194"><a href="#cb2-194" aria-hidden="true" tabindex="-1"></a><span class="co">// FOR AT3 (ENV506): compare the NDVI trend map with the RESTREND map for your tile: where NDVI trends disappear, rainfall explains them;</span></span>
+<span id="cb2-195"><a href="#cb2-195" aria-hidden="true" tabindex="-1"></a><span class="co">//   where RESTREND stays negative, something other than rainfall (clearing, fire, grazing) is reducing vegetation.</span></span>
+<span id="cb2-196"><a href="#cb2-196" aria-hidden="true" tabindex="-1"></a><span class="co">// READING THE OUTPUT:</span></span>
+<span id="cb2-197"><a href="#cb2-197" aria-hidden="true" tabindex="-1"></a><span class="co">//   - Layer &quot;ENV506-B: NDVI–rainfall correlation (r)&quot;: high r = vegetation tracks rainfall closely. RESTREND is only</span></span>
+<span id="cb2-198"><a href="#cb2-198" aria-hidden="true" tabindex="-1"></a><span class="co">//     meaningful where this relationship is positive and significant (Wessels et al., 2007), so the trend layer is masked to those pixels.</span></span>
+<span id="cb2-199"><a href="#cb2-199" aria-hidden="true" tabindex="-1"></a><span class="co">//   - Layer &quot;ENV506-B: RESTREND slope (p &lt; ALPHA)&quot;: brown = vegetation declining more than rainfall predicts.</span></span>
+<span id="cb2-200"><a href="#cb2-200" aria-hidden="true" tabindex="-1"></a><span class="co">//   - Console: areas of significant positive/negative residual trend, to set beside the NDVI greening/browning areas.</span></span>
+<span id="cb2-201"><a href="#cb2-201" aria-hidden="true" tabindex="-1"></a><span class="co">//   - Chart: actual NDVI, NDVI predicted from rainfall, and the residuals at the probe point.</span></span>
+<span id="cb2-202"><a href="#cb2-202" aria-hidden="true" tabindex="-1"></a><span class="co">/* ENV506-B START</span></span>
+<span id="cb2-203"><a href="#cb2-203" aria-hidden="true" tabindex="-1"></a><span class="co">// RESTREND (Evans &amp; Geerken, 2004; Wessels et al., 2007): fit NDVI = offset + scale × rainfall in every pixel over all</span></span>
+<span id="cb2-204"><a href="#cb2-204" aria-hidden="true" tabindex="-1"></a><span class="co">// years, take the residuals (NDVI − predicted), and test the residuals for a trend with Sen&#39;s slope and Mann–Kendall.</span></span>
+<span id="cb2-205"><a href="#cb2-205" aria-hidden="true" tabindex="-1"></a><span class="co">var RAIN_START_MONTH = 10;   // EDIT: rainfall window = 12 months starting 1 Oct of the previous year (the wet season</span></span>
+<span id="cb2-206"><a href="#cb2-206" aria-hidden="true" tabindex="-1"></a><span class="co">                             //       that feeds this year&#39;s growth). Justify your window in AT3.</span></span>
+<span id="cb2-207"><a href="#cb2-207" aria-hidden="true" tabindex="-1"></a><span class="co">var chirpsR = ee.ImageCollection(&#39;UCSB-CHG/CHIRPS/PENTAD&#39;).select(&#39;precipitation&#39;);</span></span>
+<span id="cb2-208"><a href="#cb2-208" aria-hidden="true" tabindex="-1"></a><span class="co">var rsPairs = annual.map(function(img) {</span></span>
+<span id="cb2-209"><a href="#cb2-209" aria-hidden="true" tabindex="-1"></a><span class="co">  var y = ee.Number(img.get(&#39;year&#39;));</span></span>
+<span id="cb2-210"><a href="#cb2-210" aria-hidden="true" tabindex="-1"></a><span class="co">  var s = ee.Date.fromYMD(y.subtract(1), RAIN_START_MONTH, 1);</span></span>
+<span id="cb2-211"><a href="#cb2-211" aria-hidden="true" tabindex="-1"></a><span class="co">  var rain = chirpsR.filterDate(s, s.advance(12, &#39;month&#39;)).sum().rename(&#39;rain&#39;);   // 12-month rainfall (mm)</span></span>
+<span id="cb2-212"><a href="#cb2-212" aria-hidden="true" tabindex="-1"></a><span class="co">  return rain.addBands(img.select(&#39;NDVI&#39;)).copyProperties(img, [&#39;year&#39;, &#39;system:time_start&#39;]);</span></span>
+<span id="cb2-213"><a href="#cb2-213" aria-hidden="true" tabindex="-1"></a><span class="co">});</span></span>
+<span id="cb2-214"><a href="#cb2-214" aria-hidden="true" tabindex="-1"></a><span class="co">// linearFit expects two bands, x then y: it returns &#39;scale&#39; (NDVI per mm) and &#39;offset&#39;.</span></span>
+<span id="cb2-215"><a href="#cb2-215" aria-hidden="true" tabindex="-1"></a><span class="co">var rsFit = rsPairs.select([&#39;rain&#39;, &#39;NDVI&#39;]).reduce(ee.Reducer.linearFit());</span></span>
+<span id="cb2-216"><a href="#cb2-216" aria-hidden="true" tabindex="-1"></a><span class="co">var rsCor = rsPairs.select([&#39;rain&#39;, &#39;NDVI&#39;]).reduce(ee.Reducer.pearsonsCorrelation());   // bands: correlation, p-value</span></span>
+<span id="cb2-217"><a href="#cb2-217" aria-hidden="true" tabindex="-1"></a><span class="co">var rsResid = rsPairs.map(function(img) {</span></span>
+<span id="cb2-218"><a href="#cb2-218" aria-hidden="true" tabindex="-1"></a><span class="co">  var pred = rsFit.select(&#39;offset&#39;).add(rsFit.select(&#39;scale&#39;).multiply(img.select(&#39;rain&#39;)));</span></span>
+<span id="cb2-219"><a href="#cb2-219" aria-hidden="true" tabindex="-1"></a><span class="co">  return img.select(&#39;NDVI&#39;).subtract(pred).rename(&#39;resid&#39;).copyProperties(img, [&#39;year&#39;, &#39;system:time_start&#39;]);</span></span>
+<span id="cb2-220"><a href="#cb2-220" aria-hidden="true" tabindex="-1"></a><span class="co">});</span></span>
+<span id="cb2-221"><a href="#cb2-221" aria-hidden="true" tabindex="-1"></a><span class="co">// Sen&#39;s slope of the residuals (NDVI per year)</span></span>
+<span id="cb2-222"><a href="#cb2-222" aria-hidden="true" tabindex="-1"></a><span class="co">var rsSens = rsResid.map(function(img) {</span></span>
+<span id="cb2-223"><a href="#cb2-223" aria-hidden="true" tabindex="-1"></a><span class="co">  return ee.Image.constant(img.get(&#39;year&#39;)).float().rename(&#39;year&#39;).addBands(img);</span></span>
+<span id="cb2-224"><a href="#cb2-224" aria-hidden="true" tabindex="-1"></a><span class="co">}).reduce(ee.Reducer.sensSlope()).select(&#39;slope&#39;).clip(nt);</span></span>
+<span id="cb2-225"><a href="#cb2-225" aria-hidden="true" tabindex="-1"></a><span class="co">// Mann–Kendall p-value of the residuals (same method as section 3b)</span></span>
+<span id="cb2-226"><a href="#cb2-226" aria-hidden="true" tabindex="-1"></a><span class="co">function mkP(col) {</span></span>
+<span id="cb2-227"><a href="#cb2-227" aria-hidden="true" tabindex="-1"></a><span class="co">  var later = ee.Filter.lessThan({leftField: &#39;system:time_start&#39;, rightField: &#39;system:time_start&#39;});</span></span>
+<span id="cb2-228"><a href="#cb2-228" aria-hidden="true" tabindex="-1"></a><span class="co">  var j = ee.ImageCollection(ee.Join.saveAll(&#39;after&#39;).apply({primary: col, secondary: col, condition: later}));</span></span>
+<span id="cb2-229"><a href="#cb2-229" aria-hidden="true" tabindex="-1"></a><span class="co">  var s = ee.ImageCollection(j.map(function(cur) {</span></span>
+<span id="cb2-230"><a href="#cb2-230" aria-hidden="true" tabindex="-1"></a><span class="co">    return ee.ImageCollection.fromImages(cur.get(&#39;after&#39;)).map(function(img) {</span></span>
+<span id="cb2-231"><a href="#cb2-231" aria-hidden="true" tabindex="-1"></a><span class="co">      return ee.Image(img).subtract(cur).signum().int().unmask(0);</span></span>
+<span id="cb2-232"><a href="#cb2-232" aria-hidden="true" tabindex="-1"></a><span class="co">    });</span></span>
+<span id="cb2-233"><a href="#cb2-233" aria-hidden="true" tabindex="-1"></a><span class="co">  }).flatten()).reduce(&#39;sum&#39;, 2).rename(&#39;S&#39;);</span></span>
+<span id="cb2-234"><a href="#cb2-234" aria-hidden="true" tabindex="-1"></a><span class="co">  var v = ee.Image.constant(n * (n - 1) * (2 * n + 5) / 18);</span></span>
+<span id="cb2-235"><a href="#cb2-235" aria-hidden="true" tabindex="-1"></a><span class="co">  var z = ee.Image(0).where(s.gt(0), s.subtract(1).divide(v.sqrt())).where(s.lt(0), s.add(1).divide(v.sqrt()));</span></span>
+<span id="cb2-236"><a href="#cb2-236" aria-hidden="true" tabindex="-1"></a><span class="co">  return ee.Image(1).subtract(z.abs().divide(Math.SQRT2).erf()).rename(&#39;p&#39;);</span></span>
+<span id="cb2-237"><a href="#cb2-237" aria-hidden="true" tabindex="-1"></a><span class="co">}</span></span>
+<span id="cb2-238"><a href="#cb2-238" aria-hidden="true" tabindex="-1"></a><span class="co">var rsP = mkP(rsResid).clip(nt);</span></span>
+<span id="cb2-239"><a href="#cb2-239" aria-hidden="true" tabindex="-1"></a><span class="co">// Use RESTREND only where NDVI responds positively and significantly to rainfall</span></span>
+<span id="cb2-240"><a href="#cb2-240" aria-hidden="true" tabindex="-1"></a><span class="co">var rsValid = rsCor.select(&#39;correlation&#39;).gt(0).and(rsCor.select(&#39;p-value&#39;).lt(ALPHA));</span></span>
+<span id="cb2-241"><a href="#cb2-241" aria-hidden="true" tabindex="-1"></a><span class="co">var rsSig = rsP.lt(ALPHA).and(rsValid);</span></span>
+<span id="cb2-242"><a href="#cb2-242" aria-hidden="true" tabindex="-1"></a><span class="co">Map.addLayer(rsCor.select(&#39;correlation&#39;).clip(nt), {min: -0.2, max: 0.9, palette: [&#39;#f7f7f7&#39;, &#39;#9ecae1&#39;, &#39;#08519c&#39;]}, &#39;ENV506-B: NDVI–rainfall correlation (r)&#39;, false);</span></span>
+<span id="cb2-243"><a href="#cb2-243" aria-hidden="true" tabindex="-1"></a><span class="co">Map.addLayer(rsSens.updateMask(rsSig), slopeVis, &#39;ENV506-B: RESTREND slope (p &lt; ALPHA)&#39;);</span></span>
+<span id="cb2-244"><a href="#cb2-244" aria-hidden="true" tabindex="-1"></a><span class="co">var rsRegion = nt.geometry();   // EDIT (AT3): your tile polygon from prac00</span></span>
+<span id="cb2-245"><a href="#cb2-245" aria-hidden="true" tabindex="-1"></a><span class="co">print(&#39;ENV506-B: area where RESTREND is valid (km²)&#39;, area.updateMask(rsValid).reduceRegion({reducer: ee.Reducer.sum(), geometry: rsRegion, scale: 1000, maxPixels: 1e11}).get(&#39;area&#39;));</span></span>
+<span id="cb2-246"><a href="#cb2-246" aria-hidden="true" tabindex="-1"></a><span class="co">print(&#39;ENV506-B: significant positive residual trend (km²)&#39;, area.updateMask(rsSig.and(rsSens.gt(0))).reduceRegion({reducer: ee.Reducer.sum(), geometry: rsRegion, scale: 1000, maxPixels: 1e11}).get(&#39;area&#39;));</span></span>
+<span id="cb2-247"><a href="#cb2-247" aria-hidden="true" tabindex="-1"></a><span class="co">print(&#39;ENV506-B: significant negative residual trend (km²)&#39;, area.updateMask(rsSig.and(rsSens.lt(0))).reduceRegion({reducer: ee.Reducer.sum(), geometry: rsRegion, scale: 1000, maxPixels: 1e11}).get(&#39;area&#39;));</span></span>
+<span id="cb2-248"><a href="#cb2-248" aria-hidden="true" tabindex="-1"></a><span class="co">// Chart at the probe point: actual NDVI, NDVI predicted from rainfall, and residuals</span></span>
+<span id="cb2-249"><a href="#cb2-249" aria-hidden="true" tabindex="-1"></a><span class="co">var rsChartCol = rsPairs.map(function(img) {</span></span>
+<span id="cb2-250"><a href="#cb2-250" aria-hidden="true" tabindex="-1"></a><span class="co">  var pred = rsFit.select(&#39;offset&#39;).add(rsFit.select(&#39;scale&#39;).multiply(img.select(&#39;rain&#39;))).rename(&#39;NDVI_predicted&#39;);</span></span>
+<span id="cb2-251"><a href="#cb2-251" aria-hidden="true" tabindex="-1"></a><span class="co">  return img.select(&#39;NDVI&#39;).addBands(pred).addBands(img.select(&#39;NDVI&#39;).subtract(pred).rename(&#39;residual&#39;))</span></span>
+<span id="cb2-252"><a href="#cb2-252" aria-hidden="true" tabindex="-1"></a><span class="co">    .copyProperties(img, [&#39;year&#39;, &#39;system:time_start&#39;]);</span></span>
+<span id="cb2-253"><a href="#cb2-253" aria-hidden="true" tabindex="-1"></a><span class="co">});</span></span>
+<span id="cb2-254"><a href="#cb2-254" aria-hidden="true" tabindex="-1"></a><span class="co">print(ui.Chart.image.series(rsChartCol, probe, ee.Reducer.mean(), 1000, &#39;year&#39;)</span></span>
+<span id="cb2-255"><a href="#cb2-255" aria-hidden="true" tabindex="-1"></a><span class="co">  .setOptions({title: &#39;ENV506-B: NDVI, NDVI predicted from rainfall, and residual at the probe&#39;, pointSize: 4}));</span></span>
+<span id="cb2-256"><a href="#cb2-256" aria-hidden="true" tabindex="-1"></a><span class="co">ENV506-B </span><span class="re">END</span><span class="co"> */</span></span>
+<span id="cb2-257"><a href="#cb2-257" aria-hidden="true" tabindex="-1"></a><span class="co">// ##################################### end of ENV506 challenge B #################################################</span></span></code></pre></div>
 </details>
 
 <details>
@@ -2741,7 +2859,7 @@ footer{color:var(--muted);font-size:13px;margin-top:40px;border-top:1px solid va
 <ol type="1">
 <li>Part A: map Darwin build-up season LST (Landsat <code>ST_B10</code>), and plot LST against NDVI.</li>
 <li>Part B: chart monthly rainfall, ET and PET for the Daly basin, then map the late-dry-season ESI and annual ET.</li>
-<li><strong>AT3 (ENV506):</strong> map LST and ESI for your tile in your focus year.</li>
+<li><strong>AT3 (ENV506):</strong> map LST and ESI for your tile in your focus year (ENV506 challenge A at the end of <code>prac03c</code>).</li>
 </ol>
 <p><strong>Key code</strong> (an excerpt from <a href="https://github.com/padiketeku/EnvMonMod/blob/main/2026/scripts/prac03a_rainfall_anomaly.js"><code>prac03a_rainfall_anomaly.js</code></a>; run the full script for the complete workflow):</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Wet-season (Oct–Apr) rainfall anomaly as a z-score against 1991–2020 (CHIRPS)</span></span>
@@ -2763,8 +2881,13 @@ footer{color:var(--muted);font-size:13px;margin-top:40px;border-top:1px solid va
 <li>In which months does PET exceed rainfall in the Daly basin, and what sustains dry-season flow?</li>
 </ol>
 <p><strong>Extension (ENV506)</strong></p>
+<blockquote>
+<p><strong>ENV506 cohort only: ready-made challenge scripts.</strong> The ENV506 challenges below come as complete code at the end of the scripts <code>prac03a</code>, <code>prac03b</code> and <code>prac03c</code>, inside blocks headed <code>ENV506 COHORT ONLY</code>. To run one, delete its <code>/* ENV506-… START</code> line and its <code>ENV506-… END */</code> line, then click Run. Change only the lines marked <code>EDIT</code> (your tile and focus year). ENV306 students: leave these blocks commented out; they do not affect the rest of the script. Your marks come from interpreting the charts, tables and maps, not from the code.</p>
+</blockquote>
 <ol type="1">
-<li>Implement a gamma-fitted SPI in the Code Editor (method-of-moments gamma, <code>gammainc</code>, <code>erfInv</code>; see the script <code>EXT</code>) and compare it with the z-score version.</li>
+<li>Run <strong>ENV506 challenge A</strong> in <code>prac03b</code> (gamma-fitted SPI, 3- and 12-month) with <code>TARGET</code> in your focus year, and compare it with the z-score version.</li>
+<li>Run <strong>ENV506 challenge A</strong> in <code>prac03a</code> (lagged correlation between monthly rainfall and NDVI anomalies) for your tile. How many months does vegetation take to respond, and where is the response weak?</li>
+<li>Run <strong>ENV506 challenge A</strong> in <code>prac03c</code> (LST and evaporative stress in your focus year) to find when and where your tile was water-stressed.</li>
 <li>CHIRPS uses sparse gauges in central Australia. Discuss the bias this introduces and how you would detect it.</li>
 <li>Evaluate VHI and the SPI-type index as triggers for pastoral drought assistance, considering lag, false alarms and resolution.</li>
 <li>Discuss what MOD16 ET uncertainty means for Daly River water allocation decisions.</li>
@@ -2782,11 +2905,12 @@ footer{color:var(--muted);font-size:13px;margin-top:40px;border-top:1px solid va
 <li>Abatzoglou, J. T., et al. (2018). TerraClimate, a high-resolution global dataset of monthly climate and climatic water balance from 1958–2015. <em>Scientific Data, 5</em>, 170191. <a href="https://doi.org/10.1038/sdata.2017.191">https://doi.org/10.1038/sdata.2017.191</a></li>
 <li>Ermida, S. L., et al. (2020). Google Earth Engine open-source code for land surface temperature estimation from the Landsat series. <em>Remote Sensing, 12</em>(9), 1471. <a href="https://doi.org/10.3390/rs12091471">https://doi.org/10.3390/rs12091471</a></li>
 <li>Mu, Q., Zhao, M., &amp; Running, S. W. (2011). Improvements to a MODIS global terrestrial evapotranspiration algorithm. <em>Remote Sensing of Environment, 115</em>, 1781–1800. <a href="https://doi.org/10.1016/j.rse.2011.02.019">https://doi.org/10.1016/j.rse.2011.02.019</a></li>
+<li>McKee, T. B., Doesken, N. J., &amp; Kleist, J. (1993). The relationship of drought frequency and duration to time scales. <em>Proceedings of the 8th Conference on Applied Climatology</em>, 179–184. American Meteorological Society. (ENV506 gamma SPI)</li>
 </ul>
 <h2 id="full-scripts">Full scripts</h2>
 <p>Each script is copied here from <a href="https://github.com/padiketeku/EnvMonMod/tree/main/2026/scripts"><code>scripts/</code></a> so this page has everything in one place. The <code>.js</code> file is the master copy: if the two ever differ, use the file. Click a heading to open the script, then use the copy button and paste it into a new script in the Code Editor.</p>
 <details>
-<summary><strong>prac03a_rainfall_anomaly.js</strong> (147 lines)</summary>
+<summary><strong>prac03a_rainfall_anomaly.js</strong> (218 lines)</summary>
 
 <div class="sourceCode" id="cb2"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**** Prac 03a — Rainfall variability and anomalies (Northern Territory)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"> * Data: CHIRPS v2.0 pentad (0.05°, 1981–present). Baseline 1991–2020 (WMO standard normal).</span></span>
@@ -2934,11 +3058,82 @@ footer{color:var(--muted);font-size:13px;margin-top:40px;border-top:1px solid va
 <span id="cb2-144"><a href="#cb2-144" aria-hidden="true" tabindex="-1"></a><span class="co">// Q: Was the target wet season wetter or drier than normal at each site? Which decile?</span></span>
 <span id="cb2-145"><a href="#cb2-145" aria-hidden="true" tabindex="-1"></a><span class="co">// Q: Why is a z-score better than mm for comparing Darwin and Alice Springs?</span></span>
 <span id="cb2-146"><a href="#cb2-146" aria-hidden="true" tabindex="-1"></a><span class="co">// EXT: CHIRPS blends satellite and gauge data; gauges are sparse in central Australia. Compare CHIRPS with BoM station data (Climate Data Online) for one site and quantify bias.</span></span>
-<span id="cb2-147"><a href="#cb2-147" aria-hidden="true" tabindex="-1"></a><span class="co">// EXT: Relate wet-season rainfall anomalies to ENSO (Niño 3.4) and the Indian Ocean Dipole over 1981–2024.</span></span></code></pre></div>
+<span id="cb2-147"><a href="#cb2-147" aria-hidden="true" tabindex="-1"></a><span class="co">// EXT: Relate wet-season rainfall anomalies to ENSO (Niño 3.4) and the Indian Ocean Dipole over 1981–2024.</span></span>
+<span id="cb2-148"><a href="#cb2-148" aria-hidden="true" tabindex="-1"></a><span class="co">// EXT: Lagged correlation between rainfall and NDVI: ready to run in ENV506 challenge A at the end of this script.</span></span>
+<span id="cb2-149"><a href="#cb2-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-150"><a href="#cb2-150" aria-hidden="true" tabindex="-1"></a><span class="co">// #####################################################################################################################</span></span>
+<span id="cb2-151"><a href="#cb2-151" aria-hidden="true" tabindex="-1"></a><span class="co">// ##  ENV506 COHORT ONLY — CHALLENGE A: Lagged correlation between rainfall and NDVI</span></span>
+<span id="cb2-152"><a href="#cb2-152" aria-hidden="true" tabindex="-1"></a><span class="co">// ##  ENV306 students: you do not need this block. Leave it commented out; it does not affect the rest of the script.</span></span>
+<span id="cb2-153"><a href="#cb2-153" aria-hidden="true" tabindex="-1"></a><span class="co">// #####################################################################################################################</span></span>
+<span id="cb2-154"><a href="#cb2-154" aria-hidden="true" tabindex="-1"></a><span class="co">// HOW TO RUN (ENV506): delete the line  /* ENV506-A START  and the line  ENV506-A </span><span class="re">END</span><span class="co"> */  below, then click Run.</span></span>
+<span id="cb2-155"><a href="#cb2-155" aria-hidden="true" tabindex="-1"></a><span class="co">//   Nothing else needs editing to run it. Lines marked EDIT are the settings to change for YOUR tile and focus year.</span></span>
+<span id="cb2-156"><a href="#cb2-156" aria-hidden="true" tabindex="-1"></a><span class="co">// USES: chirps, sites and nt from the main script; MODIS monthly NDVI (MOD13A3), 2001–2024.</span></span>
+<span id="cb2-157"><a href="#cb2-157" aria-hidden="true" tabindex="-1"></a><span class="co">// FOR AT3 (ENV506): show how quickly vegetation in your tile responds to rain, and which land covers respond fastest; use the lag to</span></span>
+<span id="cb2-158"><a href="#cb2-158" aria-hidden="true" tabindex="-1"></a><span class="co">//   explain why your focus year&#39;s NDVI anomaly may follow the rainfall anomaly by one or more months.</span></span>
+<span id="cb2-159"><a href="#cb2-159" aria-hidden="true" tabindex="-1"></a><span class="co">// READING THE OUTPUT:</span></span>
+<span id="cb2-160"><a href="#cb2-160" aria-hidden="true" tabindex="-1"></a><span class="co">//   - Column chart: mean correlation (r) between monthly rainfall and NDVI anomalies at lags 0–6 months.</span></span>
+<span id="cb2-161"><a href="#cb2-161" aria-hidden="true" tabindex="-1"></a><span class="co">//     The tallest bar is the typical response time; r near 0 at every lag = vegetation not limited by rainfall.</span></span>
+<span id="cb2-162"><a href="#cb2-162" aria-hidden="true" tabindex="-1"></a><span class="co">//   - Layer &quot;ENV506-A: best lag (months)&quot; and &quot;ENV506-A: correlation at best lag&quot;: map where response is fast</span></span>
+<span id="cb2-163"><a href="#cb2-163" aria-hidden="true" tabindex="-1"></a><span class="co">//     (often grasslands) or slow/weak (evergreen forest, riparian vegetation fed by groundwater).</span></span>
+<span id="cb2-164"><a href="#cb2-164" aria-hidden="true" tabindex="-1"></a><span class="co">//   - Anomalies are used (each month minus its 2001–2024 mean) so the shared wet–dry cycle does not inflate r.</span></span>
+<span id="cb2-165"><a href="#cb2-165" aria-hidden="true" tabindex="-1"></a><span class="co">/* ENV506-A START</span></span>
+<span id="cb2-166"><a href="#cb2-166" aria-hidden="true" tabindex="-1"></a><span class="co">// EDIT: replace the EXAMPLE rectangle with your own tile. prac00 prints &quot;Your tile corners&quot;; paste them as</span></span>
+<span id="cb2-167"><a href="#cb2-167" aria-hidden="true" tabindex="-1"></a><span class="co">//       ee.Geometry.Polygon([[[lon, lat], [lon, lat], [lon, lat], [lon, lat], [lon, lat]]]).</span></span>
+<span id="cb2-168"><a href="#cb2-168" aria-hidden="true" tabindex="-1"></a><span class="co">var LAG_REGION = ee.Geometry.Rectangle([131.10, -14.00, 131.28, -13.82]);   // EXAMPLE tile — EDIT</span></span>
+<span id="cb2-169"><a href="#cb2-169" aria-hidden="true" tabindex="-1"></a><span class="co">var MAX_LAG = 6;   // EDIT: longest lag tested (months)</span></span>
+<span id="cb2-170"><a href="#cb2-170" aria-hidden="true" tabindex="-1"></a><span class="co">Map.addLayer(ee.Image().paint(LAG_REGION, 0, 2), {palette: &#39;red&#39;}, &#39;ENV506-A: lag-correlation region (your tile)&#39;);</span></span>
+<span id="cb2-171"><a href="#cb2-171" aria-hidden="true" tabindex="-1"></a><span class="co">var T0 = ee.Date(&#39;2001-01-01&#39;), NM = 24 * 12;   // 288 months, Jan 2001 – Dec 2024</span></span>
+<span id="cb2-172"><a href="#cb2-172" aria-hidden="true" tabindex="-1"></a><span class="co">var ndviMon = ee.ImageCollection(&#39;MODIS/061/MOD13A3&#39;).filterDate(&#39;2001-01-01&#39;, &#39;2025-01-01&#39;).map(function(img) {</span></span>
+<span id="cb2-173"><a href="#cb2-173" aria-hidden="true" tabindex="-1"></a><span class="co">  var d = ee.Date(img.get(&#39;system:time_start&#39;));</span></span>
+<span id="cb2-174"><a href="#cb2-174" aria-hidden="true" tabindex="-1"></a><span class="co">  return img.select(&#39;NDVI&#39;).multiply(0.0001).rename(&#39;NDVI&#39;)</span></span>
+<span id="cb2-175"><a href="#cb2-175" aria-hidden="true" tabindex="-1"></a><span class="co">    .set({idx: d.difference(T0, &#39;month&#39;).round().int(), month: d.get(&#39;month&#39;), &#39;system:time_start&#39;: d.millis()});</span></span>
+<span id="cb2-176"><a href="#cb2-176" aria-hidden="true" tabindex="-1"></a><span class="co">});</span></span>
+<span id="cb2-177"><a href="#cb2-177" aria-hidden="true" tabindex="-1"></a><span class="co">// Monthly rainfall totals, starting MAX_LAG months earlier so every lag has a partner</span></span>
+<span id="cb2-178"><a href="#cb2-178" aria-hidden="true" tabindex="-1"></a><span class="co">var rainMon = ee.ImageCollection.fromImages(ee.List.sequence(-MAX_LAG, NM - 1).map(function(i) {</span></span>
+<span id="cb2-179"><a href="#cb2-179" aria-hidden="true" tabindex="-1"></a><span class="co">  var s = T0.advance(ee.Number(i), &#39;month&#39;);</span></span>
+<span id="cb2-180"><a href="#cb2-180" aria-hidden="true" tabindex="-1"></a><span class="co">  return chirps.filterDate(s, s.advance(1, &#39;month&#39;)).sum().rename(&#39;rain&#39;)</span></span>
+<span id="cb2-181"><a href="#cb2-181" aria-hidden="true" tabindex="-1"></a><span class="co">    .set({idx: ee.Number(i).int(), month: s.get(&#39;month&#39;), &#39;system:time_start&#39;: s.millis()});</span></span>
+<span id="cb2-182"><a href="#cb2-182" aria-hidden="true" tabindex="-1"></a><span class="co">}));</span></span>
+<span id="cb2-183"><a href="#cb2-183" aria-hidden="true" tabindex="-1"></a><span class="co">// Anomaly = value − mean of the same calendar month (removes the seasonal cycle)</span></span>
+<span id="cb2-184"><a href="#cb2-184" aria-hidden="true" tabindex="-1"></a><span class="co">function monthlyAnom(col, band) {</span></span>
+<span id="cb2-185"><a href="#cb2-185" aria-hidden="true" tabindex="-1"></a><span class="co">  var clim = ee.ImageCollection.fromImages(ee.List.sequence(1, 12).map(function(m) {</span></span>
+<span id="cb2-186"><a href="#cb2-186" aria-hidden="true" tabindex="-1"></a><span class="co">    return col.filter(ee.Filter.eq(&#39;month&#39;, m)).mean().set(&#39;month&#39;, m);</span></span>
+<span id="cb2-187"><a href="#cb2-187" aria-hidden="true" tabindex="-1"></a><span class="co">  }));</span></span>
+<span id="cb2-188"><a href="#cb2-188" aria-hidden="true" tabindex="-1"></a><span class="co">  return col.map(function(img) {</span></span>
+<span id="cb2-189"><a href="#cb2-189" aria-hidden="true" tabindex="-1"></a><span class="co">    var c = ee.Image(clim.filter(ee.Filter.eq(&#39;month&#39;, img.get(&#39;month&#39;))).first());</span></span>
+<span id="cb2-190"><a href="#cb2-190" aria-hidden="true" tabindex="-1"></a><span class="co">    return img.subtract(c).rename(band).copyProperties(img, [&#39;idx&#39;, &#39;month&#39;, &#39;system:time_start&#39;]);</span></span>
+<span id="cb2-191"><a href="#cb2-191" aria-hidden="true" tabindex="-1"></a><span class="co">  });</span></span>
+<span id="cb2-192"><a href="#cb2-192" aria-hidden="true" tabindex="-1"></a><span class="co">}</span></span>
+<span id="cb2-193"><a href="#cb2-193" aria-hidden="true" tabindex="-1"></a><span class="co">var ndviAn = monthlyAnom(ndviMon, &#39;NDVI&#39;), rainAn = monthlyAnom(rainMon, &#39;rain&#39;);</span></span>
+<span id="cb2-194"><a href="#cb2-194" aria-hidden="true" tabindex="-1"></a><span class="co">// Correlation of NDVI in month t with rainfall in month t − lag, per pixel</span></span>
+<span id="cb2-195"><a href="#cb2-195" aria-hidden="true" tabindex="-1"></a><span class="co">function lagCorr(lag) {</span></span>
+<span id="cb2-196"><a href="#cb2-196" aria-hidden="true" tabindex="-1"></a><span class="co">  var pairs = ndviAn.map(function(img) {</span></span>
+<span id="cb2-197"><a href="#cb2-197" aria-hidden="true" tabindex="-1"></a><span class="co">    var r = ee.Image(rainAn.filter(ee.Filter.eq(&#39;idx&#39;, ee.Number(img.get(&#39;idx&#39;)).subtract(lag).int())).first());</span></span>
+<span id="cb2-198"><a href="#cb2-198" aria-hidden="true" tabindex="-1"></a><span class="co">    return r.select(&#39;rain&#39;).addBands(img.select(&#39;NDVI&#39;));</span></span>
+<span id="cb2-199"><a href="#cb2-199" aria-hidden="true" tabindex="-1"></a><span class="co">  });</span></span>
+<span id="cb2-200"><a href="#cb2-200" aria-hidden="true" tabindex="-1"></a><span class="co">  return pairs.reduce(ee.Reducer.pearsonsCorrelation()).select(&#39;correlation&#39;).rename(&#39;r_lag&#39; + lag);</span></span>
+<span id="cb2-201"><a href="#cb2-201" aria-hidden="true" tabindex="-1"></a><span class="co">}</span></span>
+<span id="cb2-202"><a href="#cb2-202" aria-hidden="true" tabindex="-1"></a><span class="co">var lagImgs = [];</span></span>
+<span id="cb2-203"><a href="#cb2-203" aria-hidden="true" tabindex="-1"></a><span class="co">for (var lag = 0; lag &lt;= MAX_LAG; lag++) lagImgs.push(lagCorr(lag));</span></span>
+<span id="cb2-204"><a href="#cb2-204" aria-hidden="true" tabindex="-1"></a><span class="co">var rStack = ee.Image.cat(lagImgs).clip(LAG_REGION);</span></span>
+<span id="cb2-205"><a href="#cb2-205" aria-hidden="true" tabindex="-1"></a><span class="co">var rMean = rStack.reduceRegion({reducer: ee.Reducer.mean(), geometry: LAG_REGION, scale: 1000, maxPixels: 1e10});</span></span>
+<span id="cb2-206"><a href="#cb2-206" aria-hidden="true" tabindex="-1"></a><span class="co">var lagRows = ee.FeatureCollection(lagImgs.map(function(img, L) {</span></span>
+<span id="cb2-207"><a href="#cb2-207" aria-hidden="true" tabindex="-1"></a><span class="co">  return ee.Feature(null, {lag_months: L, r: rMean.get(&#39;r_lag&#39; + L)});</span></span>
+<span id="cb2-208"><a href="#cb2-208" aria-hidden="true" tabindex="-1"></a><span class="co">}));</span></span>
+<span id="cb2-209"><a href="#cb2-209" aria-hidden="true" tabindex="-1"></a><span class="co">print(&#39;ENV506-A: mean r by lag (table)&#39;, lagRows);</span></span>
+<span id="cb2-210"><a href="#cb2-210" aria-hidden="true" tabindex="-1"></a><span class="co">print(ui.Chart.feature.byFeature(lagRows, &#39;lag_months&#39;, &#39;r&#39;).setChartType(&#39;ColumnChart&#39;)</span></span>
+<span id="cb2-211"><a href="#cb2-211" aria-hidden="true" tabindex="-1"></a><span class="co">  .setOptions({title: &#39;ENV506-A: rainfall → NDVI correlation by lag (anomalies, 2001–2024)&#39;,</span></span>
+<span id="cb2-212"><a href="#cb2-212" aria-hidden="true" tabindex="-1"></a><span class="co">               hAxis: {title: &#39;Lag (months)&#39;}, vAxis: {title: &#39;Pearson r&#39;}, legend: {position: &#39;none&#39;}}));</span></span>
+<span id="cb2-213"><a href="#cb2-213" aria-hidden="true" tabindex="-1"></a><span class="co">var bestLag = rStack.toArray().arrayArgmax().arrayGet([0]).rename(&#39;best_lag&#39;);</span></span>
+<span id="cb2-214"><a href="#cb2-214" aria-hidden="true" tabindex="-1"></a><span class="co">var bestR = rStack.reduce(ee.Reducer.max()).rename(&#39;best_r&#39;);</span></span>
+<span id="cb2-215"><a href="#cb2-215" aria-hidden="true" tabindex="-1"></a><span class="co">Map.addLayer(bestLag, {min: 0, max: MAX_LAG, palette: [&#39;#1a9850&#39;, &#39;#ffffbf&#39;, &#39;#d73027&#39;]}, &#39;ENV506-A: best lag (months)&#39;);</span></span>
+<span id="cb2-216"><a href="#cb2-216" aria-hidden="true" tabindex="-1"></a><span class="co">Map.addLayer(bestR, {min: 0, max: 0.7, palette: [&#39;#f7f7f7&#39;, &#39;#6baed6&#39;, &#39;#08306b&#39;]}, &#39;ENV506-A: correlation at best lag&#39;, false);</span></span>
+<span id="cb2-217"><a href="#cb2-217" aria-hidden="true" tabindex="-1"></a><span class="co">ENV506-A </span><span class="re">END</span><span class="co"> */</span></span>
+<span id="cb2-218"><a href="#cb2-218" aria-hidden="true" tabindex="-1"></a><span class="co">// ##################################### end of ENV506 challenge A #################################################</span></span></code></pre></div>
 </details>
 
 <details>
-<summary><strong>prac03b_drought_indices.js</strong> (153 lines)</summary>
+<summary><strong>prac03b_drought_indices.js</strong> (208 lines)</summary>
 
 <div class="sourceCode" id="cb3"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**** Prac 03b — Drought indices: VCI, TCI, VHI, SPI-type index and PDSI (Northern Territory)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"> * Focus: 2019 — Australia&#39;s driest year on record — in central Australia (Alice Springs region).</span></span>
@@ -3089,14 +3284,69 @@ footer{color:var(--muted);font-size:13px;margin-top:40px;border-top:1px solid va
 <span id="cb3-147"><a href="#cb3-147" aria-hidden="true" tabindex="-1"></a><span class="co">// Q: Compare the 3- and 12-month SPI-type maps. Which reflects meteorological and which hydrological/agricultural drought?</span></span>
 <span id="cb3-148"><a href="#cb3-148" aria-hidden="true" tabindex="-1"></a><span class="co">// Q: Why are VCI/TCI computed per calendar month rather than across all months?</span></span>
 <span id="cb3-149"><a href="#cb3-149" aria-hidden="true" tabindex="-1"></a><span class="co">// EXT: Our SPI-type index is a z-score of totals. True SPI fits a gamma distribution, then transforms to a standard normal.</span></span>
-<span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a><span class="co">//      Implement it in the Code Editor: method-of-moments shape k = mean²/var and scale θ = var/mean from the 1991–2020 totals;</span></span>
-<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a><span class="co">//      G = current.divide(θ).gammainc(k)  (regularised lower incomplete gamma);  SPI = √2 · erfInv(2G − 1)  (ee.Image.erfInv).</span></span>
-<span id="cb3-152"><a href="#cb3-152" aria-hidden="true" tabindex="-1"></a><span class="co">//      Compare the gamma SPI map with the z-score map and explain the differences in arid central Australia.</span></span>
-<span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a><span class="co">// EXT: Evaluate each index as a trigger for drought assistance to pastoralists: lag, false alarms and spatial resolution.</span></span></code></pre></div>
+<span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a><span class="co">//      Ready to run in ENV506 challenge A at the end of this script. Compare the gamma SPI map with the z-score map and</span></span>
+<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a><span class="co">//      explain the differences in arid central Australia.</span></span>
+<span id="cb3-152"><a href="#cb3-152" aria-hidden="true" tabindex="-1"></a><span class="co">// EXT: Evaluate each index as a trigger for drought assistance to pastoralists: lag, false alarms and spatial resolution.</span></span>
+<span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-154"><a href="#cb3-154" aria-hidden="true" tabindex="-1"></a><span class="co">// #####################################################################################################################</span></span>
+<span id="cb3-155"><a href="#cb3-155" aria-hidden="true" tabindex="-1"></a><span class="co">// ##  ENV506 COHORT ONLY — CHALLENGE A: Gamma-fitted SPI (3- and 12-month)</span></span>
+<span id="cb3-156"><a href="#cb3-156" aria-hidden="true" tabindex="-1"></a><span class="co">// ##  ENV306 students: you do not need this block. Leave it commented out; it does not affect the rest of the script.</span></span>
+<span id="cb3-157"><a href="#cb3-157" aria-hidden="true" tabindex="-1"></a><span class="co">// #####################################################################################################################</span></span>
+<span id="cb3-158"><a href="#cb3-158" aria-hidden="true" tabindex="-1"></a><span class="co">// HOW TO RUN (ENV506): delete the line  /* ENV506-A START  and the line  ENV506-A </span><span class="re">END</span><span class="co"> */  below, then click Run.</span></span>
+<span id="cb3-159"><a href="#cb3-159" aria-hidden="true" tabindex="-1"></a><span class="co">//   Nothing else needs editing to run it. Lines marked EDIT are the settings to change for YOUR tile and focus year.</span></span>
+<span id="cb3-160"><a href="#cb3-160" aria-hidden="true" tabindex="-1"></a><span class="co">// USES: chirps, TARGET, nt, alice, spa3 and spa12 (the z-score SPI-type maps) from the main script.</span></span>
+<span id="cb3-161"><a href="#cb3-161" aria-hidden="true" tabindex="-1"></a><span class="co">// FOR AT3 (ENV506): set TARGET to a month in your focus year and report the gamma SPI for your tile, with its drought category;</span></span>
+<span id="cb3-162"><a href="#cb3-162" aria-hidden="true" tabindex="-1"></a><span class="co">//   explain why it differs from the z-score version.</span></span>
+<span id="cb3-163"><a href="#cb3-163" aria-hidden="true" tabindex="-1"></a><span class="co">// READING THE OUTPUT:</span></span>
+<span id="cb3-164"><a href="#cb3-164" aria-hidden="true" tabindex="-1"></a><span class="co">//   - Layers &quot;ENV506-A: SPI-3 (gamma)&quot; and &quot;SPI-12 (gamma)&quot;: the standard SPI (McKee et al., 1993).</span></span>
+<span id="cb3-165"><a href="#cb3-165" aria-hidden="true" tabindex="-1"></a><span class="co">//     Categories: ≤ −2 extremely dry, −2 to −1.5 severely dry, −1.5 to −1 moderately dry, −1 to 1 near normal,</span></span>
+<span id="cb3-166"><a href="#cb3-166" aria-hidden="true" tabindex="-1"></a><span class="co">//     ≥ 1 moderately wet or wetter.</span></span>
+<span id="cb3-167"><a href="#cb3-167" aria-hidden="true" tabindex="-1"></a><span class="co">//   - Layer &quot;SPI-3: gamma minus z-score&quot;: where rainfall totals are skewed (arid areas, dry-season windows with many</span></span>
+<span id="cb3-168"><a href="#cb3-168" aria-hidden="true" tabindex="-1"></a><span class="co">//     zero totals) the z-score version can be misleading; this shows where and by how much.</span></span>
+<span id="cb3-169"><a href="#cb3-169" aria-hidden="true" tabindex="-1"></a><span class="co">//   - Console: a check of the gammainc argument order, and mean SPI (gamma and z-score) over your region.</span></span>
+<span id="cb3-170"><a href="#cb3-170" aria-hidden="true" tabindex="-1"></a><span class="co">/* ENV506-A START</span></span>
+<span id="cb3-171"><a href="#cb3-171" aria-hidden="true" tabindex="-1"></a><span class="co">// Method: for each pixel, fit a gamma distribution to the 30 baseline totals (1991–2020) of the same n-month window</span></span>
+<span id="cb3-172"><a href="#cb3-172" aria-hidden="true" tabindex="-1"></a><span class="co">// by the method of moments (shape k = mean² / variance, scale θ = variance / mean, using non-zero totals),</span></span>
+<span id="cb3-173"><a href="#cb3-173" aria-hidden="true" tabindex="-1"></a><span class="co">// allow for zero-rain totals (share q), turn the current total into a cumulative probability H, then convert H to a</span></span>
+<span id="cb3-174"><a href="#cb3-174" aria-hidden="true" tabindex="-1"></a><span class="co">// standard normal value: SPI = √2 × erfInv(2H − 1), written here as √2 × erfcInv(2 − 2H) (the same thing).</span></span>
+<span id="cb3-175"><a href="#cb3-175" aria-hidden="true" tabindex="-1"></a><span class="co">// Check which argument gammainc treats as x: P(a = 1, x = 2) = 1 − e^−2 ≈ 0.865, P(a = 2, x = 1) ≈ 0.264.</span></span>
+<span id="cb3-176"><a href="#cb3-176" aria-hidden="true" tabindex="-1"></a><span class="co">var gTest = ee.Number(2).gammainc(1);</span></span>
+<span id="cb3-177"><a href="#cb3-177" aria-hidden="true" tabindex="-1"></a><span class="co">var X_FIRST = gTest.gt(0.5);   // true if a.gammainc(b) computes P(shape b, value a)</span></span>
+<span id="cb3-178"><a href="#cb3-178" aria-hidden="true" tabindex="-1"></a><span class="co">print(&#39;ENV506-A: gammainc check (≈0.865 means value first, ≈0.264 means shape first)&#39;, gTest);</span></span>
+<span id="cb3-179"><a href="#cb3-179" aria-hidden="true" tabindex="-1"></a><span class="co">function spiGamma(date, nMonths) {</span></span>
+<span id="cb3-180"><a href="#cb3-180" aria-hidden="true" tabindex="-1"></a><span class="co">  var endD = date.advance(1, &#39;month&#39;);   // window ends at the end of the target month</span></span>
+<span id="cb3-181"><a href="#cb3-181" aria-hidden="true" tabindex="-1"></a><span class="co">  var current = chirps.filterDate(endD.advance(-nMonths, &#39;month&#39;), endD).sum();</span></span>
+<span id="cb3-182"><a href="#cb3-182" aria-hidden="true" tabindex="-1"></a><span class="co">  var hist = ee.ImageCollection.fromImages(ee.List.sequence(1991, 2020).map(function(y) {</span></span>
+<span id="cb3-183"><a href="#cb3-183" aria-hidden="true" tabindex="-1"></a><span class="co">    var e = ee.Date.fromYMD(y, endD.get(&#39;month&#39;), 1);</span></span>
+<span id="cb3-184"><a href="#cb3-184" aria-hidden="true" tabindex="-1"></a><span class="co">    return chirps.filterDate(e.advance(-nMonths, &#39;month&#39;), e).sum().rename(&#39;precipitation&#39;);</span></span>
+<span id="cb3-185"><a href="#cb3-185" aria-hidden="true" tabindex="-1"></a><span class="co">  }));</span></span>
+<span id="cb3-186"><a href="#cb3-186" aria-hidden="true" tabindex="-1"></a><span class="co">  var q = hist.map(function(img) { return img.eq(0); }).mean();               // share of zero totals</span></span>
+<span id="cb3-187"><a href="#cb3-187" aria-hidden="true" tabindex="-1"></a><span class="co">  var nz = hist.map(function(img) { return img.updateMask(img.gt(0)); });     // non-zero totals only</span></span>
+<span id="cb3-188"><a href="#cb3-188" aria-hidden="true" tabindex="-1"></a><span class="co">  var mu = nz.mean(), vr = nz.reduce(ee.Reducer.variance());</span></span>
+<span id="cb3-189"><a href="#cb3-189" aria-hidden="true" tabindex="-1"></a><span class="co">  var k = mu.pow(2).divide(vr);    // gamma shape</span></span>
+<span id="cb3-190"><a href="#cb3-190" aria-hidden="true" tabindex="-1"></a><span class="co">  var theta = vr.divide(mu);       // gamma scale (mm)</span></span>
+<span id="cb3-191"><a href="#cb3-191" aria-hidden="true" tabindex="-1"></a><span class="co">  var x = current.divide(theta);</span></span>
+<span id="cb3-192"><a href="#cb3-192" aria-hidden="true" tabindex="-1"></a><span class="co">  var G = ee.Image(ee.Algorithms.If(X_FIRST, x.gammainc(k), k.gammainc(x)));   // regularised lower incomplete gamma</span></span>
+<span id="cb3-193"><a href="#cb3-193" aria-hidden="true" tabindex="-1"></a><span class="co">  var H = q.add(ee.Image(1).subtract(q).multiply(G)).where(current.eq(0), q);   // probability of a total ≤ current</span></span>
+<span id="cb3-194"><a href="#cb3-194" aria-hidden="true" tabindex="-1"></a><span class="co">  H = H.clamp(0.0014, 0.9986);   // keeps SPI within about ±3</span></span>
+<span id="cb3-195"><a href="#cb3-195" aria-hidden="true" tabindex="-1"></a><span class="co">  return ee.Image(2).subtract(H.multiply(2)).erfcInv().multiply(Math.SQRT2).rename(&#39;SPI&#39; + nMonths);</span></span>
+<span id="cb3-196"><a href="#cb3-196" aria-hidden="true" tabindex="-1"></a><span class="co">}</span></span>
+<span id="cb3-197"><a href="#cb3-197" aria-hidden="true" tabindex="-1"></a><span class="co">var spiG3 = spiGamma(TARGET, 3).clip(nt);</span></span>
+<span id="cb3-198"><a href="#cb3-198" aria-hidden="true" tabindex="-1"></a><span class="co">var spiG12 = spiGamma(TARGET, 12).clip(nt);</span></span>
+<span id="cb3-199"><a href="#cb3-199" aria-hidden="true" tabindex="-1"></a><span class="co">var spiVis = {min: -2.5, max: 2.5, palette: [&#39;#8c510a&#39;, &#39;#d8b365&#39;, &#39;#f6e8c3&#39;, &#39;#f5f5f5&#39;, &#39;#c7eae5&#39;, &#39;#5ab4ac&#39;, &#39;#01665e&#39;]};</span></span>
+<span id="cb3-200"><a href="#cb3-200" aria-hidden="true" tabindex="-1"></a><span class="co">Map.addLayer(spiG3, spiVis, &#39;ENV506-A: SPI-3 (gamma)&#39;);</span></span>
+<span id="cb3-201"><a href="#cb3-201" aria-hidden="true" tabindex="-1"></a><span class="co">Map.addLayer(spiG12, spiVis, &#39;ENV506-A: SPI-12 (gamma)&#39;, false);</span></span>
+<span id="cb3-202"><a href="#cb3-202" aria-hidden="true" tabindex="-1"></a><span class="co">Map.addLayer(spiG3.subtract(spa3), {min: -1, max: 1, palette: [&#39;#b2182b&#39;, &#39;#f7f7f7&#39;, &#39;#2166ac&#39;]}, &#39;ENV506-A: SPI-3 gamma minus z-score&#39;, false);</span></span>
+<span id="cb3-203"><a href="#cb3-203" aria-hidden="true" tabindex="-1"></a><span class="co">var SPI_REGION = alice;   // EDIT (AT3): your tile polygon from prac00</span></span>
+<span id="cb3-204"><a href="#cb3-204" aria-hidden="true" tabindex="-1"></a><span class="co">var spiStats = spiG3.addBands(spa3).addBands(spiG12).addBands(spa12)</span></span>
+<span id="cb3-205"><a href="#cb3-205" aria-hidden="true" tabindex="-1"></a><span class="co">  .reduceRegion({reducer: ee.Reducer.mean(), geometry: SPI_REGION, scale: 5566, maxPixels: 1e10});</span></span>
+<span id="cb3-206"><a href="#cb3-206" aria-hidden="true" tabindex="-1"></a><span class="co">print(&#39;ENV506-A: mean SPI over region — gamma (SPI3, SPI12) vs z-score (SPA3, SPA12)&#39;, spiStats);</span></span>
+<span id="cb3-207"><a href="#cb3-207" aria-hidden="true" tabindex="-1"></a><span class="co">ENV506-A </span><span class="re">END</span><span class="co"> */</span></span>
+<span id="cb3-208"><a href="#cb3-208" aria-hidden="true" tabindex="-1"></a><span class="co">// ##################################### end of ENV506 challenge A #################################################</span></span></code></pre></div>
 </details>
 
 <details>
-<summary><strong>prac03c_lst_et.js</strong> (134 lines)</summary>
+<summary><strong>prac03c_lst_et.js</strong> (225 lines)</summary>
 
 <div class="sourceCode" id="cb4"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**** Prac 03c — Land surface temperature and evapotranspiration (Northern Territory)</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"> * Part A: Darwin urban heat (Landsat 8/9 surface temperature, 30 m resampled from 100 m TIRS)</span></span>
@@ -3231,7 +3481,98 @@ footer{color:var(--muted);font-size:13px;margin-top:40px;border-top:1px solid va
 <span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a><span class="co">// Q: In which months does PET exceed rainfall in the Daly basin? What sustains dry-season river flow (hint: groundwater from limestone aquifers)?</span></span>
 <span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a><span class="co">// Q: Where is evaporative stress highest late in the dry season? Relate this to riparian vegetation and irrigation.</span></span>
 <span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a><span class="co">// EXT: Compare MOD16 ET with ET from a second product (e.g. PML_V2 &#39;CAS/IGSNRR/PML/V2_v018&#39; if available) and discuss uncertainty for water allocation planning.</span></span>
-<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a><span class="co">// EXT: Compute a simple basin water balance P − ET over 2003–2024 and compare with gauged discharge (NT Water Data portal).</span></span></code></pre></div>
+<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a><span class="co">// EXT: Compute a simple basin water balance P − ET over 2003–2024 and compare with gauged discharge (NT Water Data portal).</span></span>
+<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a><span class="co">// EXT: LST and evaporative stress for your tile in your focus year: ready to run in ENV506 challenge A at the end of this script.</span></span>
+<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a><span class="co">// #####################################################################################################################</span></span>
+<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a><span class="co">// ##  ENV506 COHORT ONLY — CHALLENGE A: LST and ET (evaporative stress) to locate water stress in your focus year</span></span>
+<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a><span class="co">// ##  ENV306 students: you do not need this block. Leave it commented out; it does not affect the rest of the script.</span></span>
+<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a><span class="co">// #####################################################################################################################</span></span>
+<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a><span class="co">// HOW TO RUN (ENV506): delete the line  /* ENV506-A START  and the line  ENV506-A </span><span class="re">END</span><span class="co"> */  below, then click Run.</span></span>
+<span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a><span class="co">//   Nothing else needs editing to run it. Lines marked EDIT are the settings to change for YOUR tile and focus year.</span></span>
+<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a><span class="co">// USES: MODIS ET/PET (MOD16A2) and day LST (MOD11A2) 2003–2024 at 1 km; Landsat 5/7/8/9 surface temperature at 30 m.</span></span>
+<span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a><span class="co">// FOR AT3 (ENV506): show when (months) and where (pixels) your tile was water-stressed in your focus year compared with 2003–2024,</span></span>
+<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a><span class="co">//   and link the hotspots to land cover (Prac 04) and to the rainfall and drought indices (Pracs 03a–b).</span></span>
+<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a><span class="co">// READING THE OUTPUT:</span></span>
+<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a><span class="co">//   - Chart 1: monthly ESI (1 − ET/PET) in the focus year vs the 2003–2024 mean. Above the mean = more stressed.</span></span>
+<span id="cb4-148"><a href="#cb4-148" aria-hidden="true" tabindex="-1"></a><span class="co">//   - Chart 2: monthly day LST in the focus year vs the mean. Hotter than normal usually accompanies stress.</span></span>
+<span id="cb4-149"><a href="#cb4-149" aria-hidden="true" tabindex="-1"></a><span class="co">//   - Layers: ESI anomaly and LST anomaly for the stress months; &quot;water-stress hotspots&quot; = pixels both more stressed</span></span>
+<span id="cb4-150"><a href="#cb4-150" aria-hidden="true" tabindex="-1"></a><span class="co">//     and hotter than normal (thresholds below); Landsat 30 m LST shows the detail within your tile.</span></span>
+<span id="cb4-151"><a href="#cb4-151" aria-hidden="true" tabindex="-1"></a><span class="co">//   - Console: hotspot area (ha) and share of the tile.</span></span>
+<span id="cb4-152"><a href="#cb4-152" aria-hidden="true" tabindex="-1"></a><span class="co">//   Note: ESI here is the simple index used in this prac (1 − ET/PET), not the ALEXI-based ESI used in the USA.</span></span>
+<span id="cb4-153"><a href="#cb4-153" aria-hidden="true" tabindex="-1"></a><span class="co">/* ENV506-A START</span></span>
+<span id="cb4-154"><a href="#cb4-154" aria-hidden="true" tabindex="-1"></a><span class="co">// EDIT: replace the EXAMPLE rectangle with your own tile. prac00 prints &quot;Your tile corners&quot;; paste them as</span></span>
+<span id="cb4-155"><a href="#cb4-155" aria-hidden="true" tabindex="-1"></a><span class="co">//       ee.Geometry.Polygon([[[lon, lat], [lon, lat], [lon, lat], [lon, lat], [lon, lat]]]).</span></span>
+<span id="cb4-156"><a href="#cb4-156" aria-hidden="true" tabindex="-1"></a><span class="co">var ST_TILE = ee.Geometry.Rectangle([131.10, -14.00, 131.28, -13.82]);   // EXAMPLE tile — EDIT</span></span>
+<span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a><span class="co">var FOCUS_YEAR = 2019;            // EDIT: your AT3 focus year (printed by prac00)</span></span>
+<span id="cb4-158"><a href="#cb4-158" aria-hidden="true" tabindex="-1"></a><span class="co">var STRESS_START = 8, STRESS_END = 10;   // EDIT: stress months (Aug–Oct = late dry season); justify your choice</span></span>
+<span id="cb4-159"><a href="#cb4-159" aria-hidden="true" tabindex="-1"></a><span class="co">var ESI_ANOM_T = 0.05, LST_ANOM_T = 1.0; // EDIT: hotspot thresholds (ESI above normal by &gt; 0.05 and LST &gt; 1 °C hotter)</span></span>
+<span id="cb4-160"><a href="#cb4-160" aria-hidden="true" tabindex="-1"></a><span class="co">Map.centerObject(ST_TILE, 11);</span></span>
+<span id="cb4-161"><a href="#cb4-161" aria-hidden="true" tabindex="-1"></a><span class="co">Map.addLayer(ee.Image().paint(ST_TILE, 0, 2), {palette: &#39;red&#39;}, &#39;ENV506-A: your tile&#39;);</span></span>
+<span id="cb4-162"><a href="#cb4-162" aria-hidden="true" tabindex="-1"></a><span class="co">// MOD16A2 fill values (water, urban, no data) are ≥ 32700; mask them before taking ratios.</span></span>
+<span id="cb4-163"><a href="#cb4-163" aria-hidden="true" tabindex="-1"></a><span class="co">var mod16 = ee.ImageCollection(&#39;MODIS/061/MOD16A2&#39;).filterDate(&#39;2003-01-01&#39;, &#39;2025-01-01&#39;).select([&#39;ET&#39;, &#39;PET&#39;])</span></span>
+<span id="cb4-164"><a href="#cb4-164" aria-hidden="true" tabindex="-1"></a><span class="co">  .map(function(img) {</span></span>
+<span id="cb4-165"><a href="#cb4-165" aria-hidden="true" tabindex="-1"></a><span class="co">    return img.updateMask(img.select(&#39;ET&#39;).lt(32700).and(img.select(&#39;PET&#39;).lt(32700))).copyProperties(img, [&#39;system:time_start&#39;]);</span></span>
+<span id="cb4-166"><a href="#cb4-166" aria-hidden="true" tabindex="-1"></a><span class="co">  });</span></span>
+<span id="cb4-167"><a href="#cb4-167" aria-hidden="true" tabindex="-1"></a><span class="co">var lstDay = ee.ImageCollection(&#39;MODIS/061/MOD11A2&#39;).filterDate(&#39;2003-01-01&#39;, &#39;2025-01-01&#39;).select(&#39;LST_Day_1km&#39;);</span></span>
+<span id="cb4-168"><a href="#cb4-168" aria-hidden="true" tabindex="-1"></a><span class="co">function monthStats(y, m) {</span></span>
+<span id="cb4-169"><a href="#cb4-169" aria-hidden="true" tabindex="-1"></a><span class="co">  var s = ee.Date.fromYMD(y, m, 1), e = s.advance(1, &#39;month&#39;);</span></span>
+<span id="cb4-170"><a href="#cb4-170" aria-hidden="true" tabindex="-1"></a><span class="co">  var ep = mod16.filterDate(s, e).sum();</span></span>
+<span id="cb4-171"><a href="#cb4-171" aria-hidden="true" tabindex="-1"></a><span class="co">  var esiM = ee.Image(1).subtract(ep.select(&#39;ET&#39;).divide(ep.select(&#39;PET&#39;))).rename(&#39;ESI&#39;);</span></span>
+<span id="cb4-172"><a href="#cb4-172" aria-hidden="true" tabindex="-1"></a><span class="co">  var l = lstDay.filterDate(s, e).mean().multiply(0.02).subtract(273.15).rename(&#39;LST&#39;);   // °C</span></span>
+<span id="cb4-173"><a href="#cb4-173" aria-hidden="true" tabindex="-1"></a><span class="co">  return esiM.addBands(l).set({year: y, month: m, &#39;system:time_start&#39;: s.millis()});</span></span>
+<span id="cb4-174"><a href="#cb4-174" aria-hidden="true" tabindex="-1"></a><span class="co">}</span></span>
+<span id="cb4-175"><a href="#cb4-175" aria-hidden="true" tabindex="-1"></a><span class="co">var allMonths = ee.ImageCollection.fromImages(ee.List.sequence(2003, 2024).map(function(y) {</span></span>
+<span id="cb4-176"><a href="#cb4-176" aria-hidden="true" tabindex="-1"></a><span class="co">  return ee.List.sequence(1, 12).map(function(m) { return monthStats(y, m); });</span></span>
+<span id="cb4-177"><a href="#cb4-177" aria-hidden="true" tabindex="-1"></a><span class="co">}).flatten());</span></span>
+<span id="cb4-178"><a href="#cb4-178" aria-hidden="true" tabindex="-1"></a><span class="co">var focusMonths = allMonths.filter(ee.Filter.eq(&#39;year&#39;, FOCUS_YEAR));</span></span>
+<span id="cb4-179"><a href="#cb4-179" aria-hidden="true" tabindex="-1"></a><span class="co">var stRows = ee.FeatureCollection(ee.List.sequence(1, 12).map(function(m) {</span></span>
+<span id="cb4-180"><a href="#cb4-180" aria-hidden="true" tabindex="-1"></a><span class="co">  var f = ee.Image(focusMonths.filter(ee.Filter.eq(&#39;month&#39;, m)).first())</span></span>
+<span id="cb4-181"><a href="#cb4-181" aria-hidden="true" tabindex="-1"></a><span class="co">    .reduceRegion({reducer: ee.Reducer.mean(), geometry: ST_TILE, scale: 1000});</span></span>
+<span id="cb4-182"><a href="#cb4-182" aria-hidden="true" tabindex="-1"></a><span class="co">  var c = allMonths.filter(ee.Filter.eq(&#39;month&#39;, m)).mean()</span></span>
+<span id="cb4-183"><a href="#cb4-183" aria-hidden="true" tabindex="-1"></a><span class="co">    .reduceRegion({reducer: ee.Reducer.mean(), geometry: ST_TILE, scale: 1000});</span></span>
+<span id="cb4-184"><a href="#cb4-184" aria-hidden="true" tabindex="-1"></a><span class="co">  return ee.Feature(null, {month: m, ESI_focus_year: f.get(&#39;ESI&#39;), ESI_2003_2024_mean: c.get(&#39;ESI&#39;),</span></span>
+<span id="cb4-185"><a href="#cb4-185" aria-hidden="true" tabindex="-1"></a><span class="co">                           LST_focus_year: f.get(&#39;LST&#39;), LST_2003_2024_mean: c.get(&#39;LST&#39;)});</span></span>
+<span id="cb4-186"><a href="#cb4-186" aria-hidden="true" tabindex="-1"></a><span class="co">}));</span></span>
+<span id="cb4-187"><a href="#cb4-187" aria-hidden="true" tabindex="-1"></a><span class="co">print(ui.Chart.feature.byFeature(stRows, &#39;month&#39;, [&#39;ESI_focus_year&#39;, &#39;ESI_2003_2024_mean&#39;])</span></span>
+<span id="cb4-188"><a href="#cb4-188" aria-hidden="true" tabindex="-1"></a><span class="co">  .setOptions({title: &#39;ENV506-A: evaporative stress (1 − ET/PET) in &#39; + FOCUS_YEAR + &#39; vs 2003–2024&#39;, hAxis: {title: &#39;Month&#39;}}));</span></span>
+<span id="cb4-189"><a href="#cb4-189" aria-hidden="true" tabindex="-1"></a><span class="co">print(ui.Chart.feature.byFeature(stRows, &#39;month&#39;, [&#39;LST_focus_year&#39;, &#39;LST_2003_2024_mean&#39;])</span></span>
+<span id="cb4-190"><a href="#cb4-190" aria-hidden="true" tabindex="-1"></a><span class="co">  .setOptions({title: &#39;ENV506-A: day LST (°C) in &#39; + FOCUS_YEAR + &#39; vs 2003–2024&#39;, hAxis: {title: &#39;Month&#39;}}));</span></span>
+<span id="cb4-191"><a href="#cb4-191" aria-hidden="true" tabindex="-1"></a><span class="co">// Stress-month anomalies (focus year minus the 2003–2024 mean of the same months)</span></span>
+<span id="cb4-192"><a href="#cb4-192" aria-hidden="true" tabindex="-1"></a><span class="co">var inWin = ee.Filter.calendarRange(STRESS_START, STRESS_END, &#39;month&#39;);</span></span>
+<span id="cb4-193"><a href="#cb4-193" aria-hidden="true" tabindex="-1"></a><span class="co">var focusWin = focusMonths.filter(inWin).mean(), climWin = allMonths.filter(inWin).mean();</span></span>
+<span id="cb4-194"><a href="#cb4-194" aria-hidden="true" tabindex="-1"></a><span class="co">var esiAnom = focusWin.select(&#39;ESI&#39;).subtract(climWin.select(&#39;ESI&#39;)).rename(&#39;ESI_anom&#39;).clip(ST_TILE);</span></span>
+<span id="cb4-195"><a href="#cb4-195" aria-hidden="true" tabindex="-1"></a><span class="co">var lstAnom = focusWin.select(&#39;LST&#39;).subtract(climWin.select(&#39;LST&#39;)).rename(&#39;LST_anom&#39;).clip(ST_TILE);</span></span>
+<span id="cb4-196"><a href="#cb4-196" aria-hidden="true" tabindex="-1"></a><span class="co">var hotspot = esiAnom.gt(ESI_ANOM_T).and(lstAnom.gt(LST_ANOM_T)).selfMask();</span></span>
+<span id="cb4-197"><a href="#cb4-197" aria-hidden="true" tabindex="-1"></a><span class="co">Map.addLayer(esiAnom, {min: -0.2, max: 0.2, palette: [&#39;#1a9850&#39;, &#39;#f7f7f7&#39;, &#39;#d73027&#39;]}, &#39;ENV506-A: ESI anomaly, stress months&#39;, false);</span></span>
+<span id="cb4-198"><a href="#cb4-198" aria-hidden="true" tabindex="-1"></a><span class="co">Map.addLayer(lstAnom, {min: -3, max: 3, palette: [&#39;#2166ac&#39;, &#39;#f7f7f7&#39;, &#39;#b2182b&#39;]}, &#39;ENV506-A: LST anomaly (°C), stress months&#39;, false);</span></span>
+<span id="cb4-199"><a href="#cb4-199" aria-hidden="true" tabindex="-1"></a><span class="co">Map.addLayer(hotspot, {palette: &#39;#7f0000&#39;}, &#39;ENV506-A: water-stress hotspots&#39;);</span></span>
+<span id="cb4-200"><a href="#cb4-200" aria-hidden="true" tabindex="-1"></a><span class="co">var hsHa = ee.Image.pixelArea().divide(1e4).updateMask(hotspot)</span></span>
+<span id="cb4-201"><a href="#cb4-201" aria-hidden="true" tabindex="-1"></a><span class="co">  .reduceRegion({reducer: ee.Reducer.sum(), geometry: ST_TILE, scale: 1000}).get(&#39;area&#39;);</span></span>
+<span id="cb4-202"><a href="#cb4-202" aria-hidden="true" tabindex="-1"></a><span class="co">var tileHa = ee.Number(ST_TILE.area(10)).divide(1e4);</span></span>
+<span id="cb4-203"><a href="#cb4-203" aria-hidden="true" tabindex="-1"></a><span class="co">print(&#39;ENV506-A: water-stress hotspot area (ha), stress months &#39; + FOCUS_YEAR, hsHa);</span></span>
+<span id="cb4-204"><a href="#cb4-204" aria-hidden="true" tabindex="-1"></a><span class="co">print(&#39;ENV506-A: hotspot share of tile (%)&#39;, ee.Number(hsHa).divide(tileHa).multiply(100));</span></span>
+<span id="cb4-205"><a href="#cb4-205" aria-hidden="true" tabindex="-1"></a><span class="co">// Landsat surface temperature at 30 m for the same months (Landsat 5/7 band ST_B6; Landsat 8/9 band ST_B10)</span></span>
+<span id="cb4-206"><a href="#cb4-206" aria-hidden="true" tabindex="-1"></a><span class="co">function lsPrep(band) {</span></span>
+<span id="cb4-207"><a href="#cb4-207" aria-hidden="true" tabindex="-1"></a><span class="co">  return function(img) {</span></span>
+<span id="cb4-208"><a href="#cb4-208" aria-hidden="true" tabindex="-1"></a><span class="co">    var qa = img.select(&#39;QA_PIXEL&#39;);</span></span>
+<span id="cb4-209"><a href="#cb4-209" aria-hidden="true" tabindex="-1"></a><span class="co">    var ok = qa.bitwiseAnd(1 &lt;&lt; 3).eq(0).and(qa.bitwiseAnd(1 &lt;&lt; 4).eq(0));   // no cloud, no shadow</span></span>
+<span id="cb4-210"><a href="#cb4-210" aria-hidden="true" tabindex="-1"></a><span class="co">    return img.select(band).multiply(0.00341802).add(149.0).subtract(273.15).rename(&#39;LST_C&#39;).updateMask(ok)</span></span>
+<span id="cb4-211"><a href="#cb4-211" aria-hidden="true" tabindex="-1"></a><span class="co">      .copyProperties(img, [&#39;system:time_start&#39;]);</span></span>
+<span id="cb4-212"><a href="#cb4-212" aria-hidden="true" tabindex="-1"></a><span class="co">  };</span></span>
+<span id="cb4-213"><a href="#cb4-213" aria-hidden="true" tabindex="-1"></a><span class="co">}</span></span>
+<span id="cb4-214"><a href="#cb4-214" aria-hidden="true" tabindex="-1"></a><span class="co">var lsFilter = function(col) {</span></span>
+<span id="cb4-215"><a href="#cb4-215" aria-hidden="true" tabindex="-1"></a><span class="co">  return col.filterBounds(ST_TILE).filter(ee.Filter.calendarRange(FOCUS_YEAR, FOCUS_YEAR, &#39;year&#39;)).filter(inWin);</span></span>
+<span id="cb4-216"><a href="#cb4-216" aria-hidden="true" tabindex="-1"></a><span class="co">};</span></span>
+<span id="cb4-217"><a href="#cb4-217" aria-hidden="true" tabindex="-1"></a><span class="co">var lsAll = lsFilter(ee.ImageCollection(&#39;LANDSAT/LT05/C02/T1_L2&#39;)).map(lsPrep(&#39;ST_B6&#39;))</span></span>
+<span id="cb4-218"><a href="#cb4-218" aria-hidden="true" tabindex="-1"></a><span class="co">  .merge(lsFilter(ee.ImageCollection(&#39;LANDSAT/LE07/C02/T1_L2&#39;)).map(lsPrep(&#39;ST_B6&#39;)))</span></span>
+<span id="cb4-219"><a href="#cb4-219" aria-hidden="true" tabindex="-1"></a><span class="co">  .merge(lsFilter(ee.ImageCollection(&#39;LANDSAT/LC08/C02/T1_L2&#39;)).map(lsPrep(&#39;ST_B10&#39;)))</span></span>
+<span id="cb4-220"><a href="#cb4-220" aria-hidden="true" tabindex="-1"></a><span class="co">  .merge(lsFilter(ee.ImageCollection(&#39;LANDSAT/LC09/C02/T1_L2&#39;)).map(lsPrep(&#39;ST_B10&#39;)));</span></span>
+<span id="cb4-221"><a href="#cb4-221" aria-hidden="true" tabindex="-1"></a><span class="co">print(&#39;ENV506-A: Landsat scenes in the stress months of &#39; + FOCUS_YEAR, lsAll.size());</span></span>
+<span id="cb4-222"><a href="#cb4-222" aria-hidden="true" tabindex="-1"></a><span class="co">var lsMed = ee.Image(ee.Algorithms.If(lsAll.size().gt(0), lsAll.median(), ee.Image.constant(0).rename(&#39;LST_C&#39;).selfMask()));</span></span>
+<span id="cb4-223"><a href="#cb4-223" aria-hidden="true" tabindex="-1"></a><span class="co">Map.addLayer(lsMed.clip(ST_TILE), {min: 30, max: 55, palette: [&#39;#313695&#39;, &#39;#74add1&#39;, &#39;#ffffbf&#39;, &#39;#f46d43&#39;, &#39;#a50026&#39;]}, &#39;ENV506-A: Landsat LST (°C, 30 m), stress months&#39;, false);</span></span>
+<span id="cb4-224"><a href="#cb4-224" aria-hidden="true" tabindex="-1"></a><span class="co">ENV506-A </span><span class="re">END</span><span class="co"> */</span></span>
+<span id="cb4-225"><a href="#cb4-225" aria-hidden="true" tabindex="-1"></a><span class="co">// ##################################### end of ENV506 challenge A #################################################</span></span></code></pre></div>
 </details>
 
 <hr />
@@ -7912,6 +8253,9 @@ footer{color:var(--muted);font-size:13px;margin-top:40px;border-top:1px solid va
 <li>Ma, X., et al. (2013). Spatial patterns and temporal dynamics in savanna vegetation phenology across the North Australian Tropical Transect. <em>Remote Sensing of Environment, 139</em>, 97–115. <a href="https://doi.org/10.1016/j.rse.2013.07.030">https://doi.org/10.1016/j.rse.2013.07.030</a></li>
 <li>Earth Engine community tutorial: <em>Monitoring forest vegetation condition</em> (pskoulgi). <a href="https://developers.google.com/earth-engine/tutorials/community/forest-vegetation-condition">https://developers.google.com/earth-engine/tutorials/community/forest-vegetation-condition</a></li>
 <li>Skidmore, A. K., et al. (2021). Priority list of biodiversity metrics to observe from space. <em>Nature Ecology &amp; Evolution, 5</em>, 896–906. <a href="https://doi.org/10.1038/s41559-021-01451-x">https://doi.org/10.1038/s41559-021-01451-x</a> (article review notes)</li>
+<li>Benjamini, Y., &amp; Hochberg, Y. (1995). Controlling the false discovery rate: A practical and powerful approach to multiple testing. <em>Journal of the Royal Statistical Society: Series B, 57</em>(1), 289–300. <a href="https://doi.org/10.1111/j.2517-6161.1995.tb02031.x">https://doi.org/10.1111/j.2517-6161.1995.tb02031.x</a> (ENV506 challenge A)</li>
+<li>Evans, J., &amp; Geerken, R. (2004). Discrimination between climate and human-induced dryland degradation. <em>Journal of Arid Environments, 57</em>(4), 535–554. <a href="https://doi.org/10.1016/S0140-1963(03)00121-6">https://doi.org/10.1016/S0140-1963(03)00121-6</a> (ENV506 challenge B, RESTREND)</li>
+<li>Wessels, K. J., Prince, S. D., Malherbe, J., Small, J., Frost, P. E., &amp; VanZyl, D. (2007). Can human-induced land degradation be distinguished from the effects of rainfall variability? A case study in South Africa. <em>Journal of Arid Environments, 68</em>(2), 271–297. <a href="https://doi.org/10.1016/j.jaridenv.2006.05.015">https://doi.org/10.1016/j.jaridenv.2006.05.015</a> (ENV506 challenge B, RESTREND)</li>
 </ul>
 <h2 id="prac-03-climate-and-hydrology-drivers-rainfall-anomalies-drought-indices-lst-and-et">Prac 03: Climate and hydrology drivers: rainfall anomalies, drought indices, LST and ET</h2>
 <p>Page: <a href="#page-prac03-climate-and-hydrology-drivers-rainfall-anomalies-drought-indices-lst-and-et">prac03-climate-and-hydrology-drivers-rainfall-anomalies-drought-indices-lst-and-et.md</a></p>
@@ -7922,6 +8266,7 @@ footer{color:var(--muted);font-size:13px;margin-top:40px;border-top:1px solid va
 <li>Abatzoglou, J. T., et al. (2018). TerraClimate, a high-resolution global dataset of monthly climate and climatic water balance from 1958–2015. <em>Scientific Data, 5</em>, 170191. <a href="https://doi.org/10.1038/sdata.2017.191">https://doi.org/10.1038/sdata.2017.191</a></li>
 <li>Ermida, S. L., et al. (2020). Google Earth Engine open-source code for land surface temperature estimation from the Landsat series. <em>Remote Sensing, 12</em>(9), 1471. <a href="https://doi.org/10.3390/rs12091471">https://doi.org/10.3390/rs12091471</a></li>
 <li>Mu, Q., Zhao, M., &amp; Running, S. W. (2011). Improvements to a MODIS global terrestrial evapotranspiration algorithm. <em>Remote Sensing of Environment, 115</em>, 1781–1800. <a href="https://doi.org/10.1016/j.rse.2011.02.019">https://doi.org/10.1016/j.rse.2011.02.019</a></li>
+<li>McKee, T. B., Doesken, N. J., &amp; Kleist, J. (1993). The relationship of drought frequency and duration to time scales. <em>Proceedings of the 8th Conference on Applied Climatology</em>, 179–184. American Meteorological Society. (ENV506 gamma SPI)</li>
 </ul>
 <h2 id="prac-04-land-cover-mapping-and-landscape-metrics">Prac 04: Land cover mapping and landscape metrics</h2>
 <p>Page: <a href="#page-prac04-land-cover-mapping-and-landscape-metrics">prac04-land-cover-mapping-and-landscape-metrics.md</a></p>
