@@ -95,7 +95,7 @@ Map.addLayer(lcA.eq(1).and(lcB.eq(2)).selfMask(), {palette: 'red'}, 'Woodland �
 Each script is copied here from [`scripts/`](../scripts) so this page has everything in one place. The `.js` file is the master copy: if the two ever differ, use the file. Click a heading to open the script, then use the copy button and paste it into a new script in the Code Editor.
 
 <details>
-<summary><strong>prac05a_transition_matrix.js</strong> (162 lines)</summary>
+<summary><strong>prac05a_transition_matrix.js</strong> (176 lines)</summary>
 
 ```javascript
 /**** Prac 05a — Bi-temporal change: post-classification comparison and YOUR transition matrix (for AT1)
@@ -152,10 +152,24 @@ var YEAR_A = 2018;   // Prac 00: AT1 YEAR_A   <- EDIT (the earlier year)
 var YEAR_B = 2024;   // Prac 00: AT1 YEAR_B   <- EDIT (the later year)
 // EDIT TRAINING: your Prac 04 training points asset. Each point needs an integer 'class' 0–4 in the order of NAMES below.
 var TRAINING = ee.FeatureCollection('projects/YOUR_PROJECT/assets/prac04_training');   // points with integer 'class'
+// Print the training collection to console for inspection
+print('Training data imported:', TRAINING);
+// The stratified sample we used to 300 point per class IF they were available. 
+// How many points per class were produced for your tile? Are any missing or under represented?
+print('Training points per class:', 
+      'Class 0:', TRAINING.filter(ee.Filter.eq('class', 0)).size(),
+      'Class 1:', TRAINING.filter(ee.Filter.eq('class', 1)).size(),
+      'Class 2:', TRAINING.filter(ee.Filter.eq('class', 2)).size(),
+      'Class 3:', TRAINING.filter(ee.Filter.eq('class', 3)).size(),
+      'Class 4:', TRAINING.filter(ee.Filter.eq('class', 4)).size(),
+      'Class 5:', TRAINING.filter(ee.Filter.eq('class', 5)).size(),
+      'Class 6:', TRAINING.filter(ee.Filter.eq('class', 6)).size()
+      );
+
 // Do not edit below this line unless your classes differ. NAMES[i], IDX[i] and PAL[i] all describe class i.
-var NAMES = ['Water', 'Woodland', 'Agriculture', 'Bare soil', 'Grassland/other'];
-var IDX = [0, 1, 2, 3, 4];   // class numbers
-var PAL = ['#2166ac', '#1b7837', '#fdae61', '#bf812d', '#d9f0a3'];   // map colours for classes 0–4
+var NAMES = ['Tree cover', 'Shrub/grass', 'Cropland', 'Built-up', 'Bare', 'Water', 'Mangrove'];
+var IDX = [0, 1, 2, 3, 4, 5, 6];   // class numbers
+var PAL = ['#006400', '#ffbb22', '#f096ff', '#fa0000', '#b4b4b4', '#0064c8', '#00cf75'];   // map colours for classes 0–6
 Map.centerObject(TILE, 11);
 
 // ---------- 1 Composites (Landsat 8/9, dry season May–Oct) ----------
@@ -265,7 +279,7 @@ Export.table.toDrive({collection: matrix, description: 'AT3_transition_matrix_' 
 </details>
 
 <details>
-<summary><strong>prac05b_landtrendr_ccdc.js</strong> (190 lines)</summary>
+<summary><strong>prac05b_landtrendr_ccdc.js</strong> (195 lines)</summary>
 
 ```javascript
 /**** Prac 05b — Change detection: LandTrendr and CCDC (Douglas–Daly, NT)
@@ -348,12 +362,17 @@ var START = 1988, END = 2024;   // EDIT: first and last year of the time series
 var annual = ee.ImageCollection.fromImages(ee.List.sequence(START, END).map(function(y) {
   // Images from year y AND months May–Sep (NT dry season: fewer clouds, more stable vegetation signal).
   var c = col.filter(ee.Filter.calendarRange(y, y, 'year')).filter(ee.Filter.calendarRange(5, 9, 'month'));
+  var n = c.size(); // number of images used (0 = no data that year)
   var med = c.median();   // median per pixel: robust to leftover cloud, haze and single burnt dates
   var nbr = med.normalizedDifference(['nir', 'swir2']);
   // LandTrendr expects disturbance to INCREASE the index → multiply NBR by −1
-  return nbr.multiply(-1).rename('NBR_inv').addBands(nbr.rename('NBR'))   // NBR kept as a second band to fit too
-    .set('system:time_start', ee.Date.fromYMD(y, 8, 1).millis())          // stamp each composite as 1 August of year y
-    .set('n', c.size());                                                   // number of images used (0 = no data that year)
+  var nbrINV = nbr.multiply(-1).rename('NBR_inv').addBands(nbr.rename('NBR')); // NBR kept as a second band to fit too
+  // Empty image to use as a place holder for empty years (the 2012 gap in Landsat)
+  var empty = ee.Image.constant(0);
+  return ee.Image(ee.Algorithms.If(n.gt(0), nbrINV, empty))
+    .set('system:time_start', ee.Date.fromYMD(y, 8, 1).millis())    // stamp each composite as 1 August of year y
+    .set('n', n)                                                    // attach number of images used to metadata
+    .set('year', y);                                                // attach a year ID to metadata
 })).filter(ee.Filter.gt('n', 0));   // drop empty years (e.g. 2012) so LandTrendr does not see blank images
 
 // ---------- Warm-up: bi-temporal change (two dates only) ----------

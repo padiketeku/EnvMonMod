@@ -12,7 +12,7 @@ import statsmodels.formula.api as smf
 import nt_common as nt
 nt.init("YOUR-CLOUD-PROJECT")
 
-croc = pd.read_csv("croc-biomass-data.csv")
+croc = pd.read_csv("croc-biomass-data.csv", encoding="utf-8-sig")  # utf-8-sig strips the byte-order mark so the first column is "River"
 print(croc.groupby("River").Year.agg(["count", "min", "max"]))
 
 # Floodplain zones = convex hull of each river's flooded-area polygons (flooded_areas_shapefiles.zip from Learnline)

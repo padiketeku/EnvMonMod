@@ -131,7 +131,7 @@ Map.addLayer(predictors.classify(rf), {min: 0, max: 6, palette: palette}, 'Land 
 Each script is copied here from [`scripts/`](../scripts) so this page has everything in one place. The `.js` file is the master copy: if the two ever differ, use the file. Click a heading to open the script, then use the copy button and paste it into a new script in the Code Editor.
 
 <details>
-<summary><strong>prac04a_landcover_classification.js</strong> (205 lines)</summary>
+<summary><strong>prac04a_landcover_classification.js</strong> (226 lines)</summary>
 
 ```javascript
 /**** Prac 04a — Land cover classification: Random Forest, CART and SVM (Darwin–Litchfield, NT)
@@ -247,6 +247,27 @@ samples = samples.randomColumn('rand', 7);   // adds a uniform random number 0�
 var train = samples.filter(ee.Filter.lt('rand', 0.7));
 var test = samples.filter(ee.Filter.gte('rand', 0.7));
 print('Training / testing points', train.size(), test.size());
+
+// ---------- 2c Prepare training data for your tile ----------
+// Later pracs use WorldCover training data over your tile boundary from prac00.
+// Below prepares labeled landcover class points for your tile site as per steps above in 2a.
+
+// Import your tile boundary from prac 00 to prep data for future pracs.
+// you can call it in by the asset file path or import from assets tab on left of screen. 
+var TILE = ee.FeatureCollection('projects/YOUR_NAME/assets/my_tile').geometry();
+
+// Filter WorldCover to your tile
+var tile_wc = ee.ImageCollection('ESA/WorldCover/v200').first().clip(TILE);
+// Remap class names
+var tile_labels = tile_wc.remap(fromCodes, toCodes).rename('class');
+// Get a stratified sample of each class. Note here we sample only class labels from WorldCover.
+// Relevant predictors will be added in future pracs. 
+var tile_samples = tile_labels.stratifiedSample({
+  numPoints: 300, classBand: 'class', region: TILE, scale: 10, seed: 42, geometries: true,
+  tileScale: 4
+});
+print(tile_samples, 'tile samples')
+Export.table.toAsset({collection: tile_samples, description: 'prac04_training', assetId: 'prac04_training'});
 
 // ---------- 3 Classifiers ----------
 // Three classifiers learn the link between predictor values and class labels from the training points.
