@@ -58,7 +58,7 @@ VCI and TCI are computed per calendar month, so the normal dry season is not mis
 
 1. Part A: map Darwin build-up season LST (Landsat `ST_B10`), and plot LST against NDVI.
 2. Part B: chart monthly rainfall, ET and PET for the Daly basin, then map the late-dry-season ESI and annual ET.
-3. **AT3 (ENV506):** map LST and ESI for your tile in your focus year.
+3. **AT3 (ENV506):** map LST and ESI for your tile in your focus year (ENV506 challenge A at the end of `prac03c`).
 
 **Key code** (an excerpt from [`prac03a_rainfall_anomaly.js`](../scripts/prac03a_rainfall_anomaly.js); run the full script for the complete workflow):
 
@@ -86,10 +86,14 @@ Map.addLayer(z, {min: -2, max: 2, palette: ['#8c510a', '#f5f5f5', '#01665e']}, '
 
 **Extension (ENV506)**
 
-1. Implement a gamma-fitted SPI in the Code Editor (method-of-moments gamma, `gammainc`, `erfInv`; see the script `EXT`) and compare it with the z-score version.
-2. CHIRPS uses sparse gauges in central Australia. Discuss the bias this introduces and how you would detect it.
-3. Evaluate VHI and the SPI-type index as triggers for pastoral drought assistance, considering lag, false alarms and resolution.
-4. Discuss what MOD16 ET uncertainty means for Daly River water allocation decisions.
+> **ENV506 cohort only: ready-made challenge scripts.** The ENV506 challenges below come as complete code at the end of the scripts `prac03a`, `prac03b` and `prac03c`, inside blocks headed `ENV506 COHORT ONLY`. To run one, delete its `/* ENV506-… START` line and its `ENV506-… END */` line, then click Run. Change only the lines marked `EDIT` (your tile and focus year). ENV306 students: leave these blocks commented out; they do not affect the rest of the script. Your marks come from interpreting the charts, tables and maps, not from the code.
+
+1. Run **ENV506 challenge A** in `prac03b` (gamma-fitted SPI, 3- and 12-month) with `TARGET` in your focus year, and compare it with the z-score version.
+2. Run **ENV506 challenge A** in `prac03a` (lagged correlation between monthly rainfall and NDVI anomalies) for your tile. How many months does vegetation take to respond, and where is the response weak?
+3. Run **ENV506 challenge A** in `prac03c` (LST and evaporative stress in your focus year) to find when and where your tile was water-stressed.
+4. CHIRPS uses sparse gauges in central Australia. Discuss the bias this introduces and how you would detect it.
+5. Evaluate VHI and the SPI-type index as triggers for pastoral drought assistance, considering lag, false alarms and resolution.
+6. Discuss what MOD16 ET uncertainty means for Daly River water allocation decisions.
 
 ## 4. Link to summative assessment
 
@@ -104,13 +108,14 @@ Map.addLayer(z, {min: -2, max: 2, palette: ['#8c510a', '#f5f5f5', '#01665e']}, '
 - Abatzoglou, J. T., et al. (2018). TerraClimate, a high-resolution global dataset of monthly climate and climatic water balance from 1958–2015. *Scientific Data, 5*, 170191. https://doi.org/10.1038/sdata.2017.191
 - Ermida, S. L., et al. (2020). Google Earth Engine open-source code for land surface temperature estimation from the Landsat series. *Remote Sensing, 12*(9), 1471. https://doi.org/10.3390/rs12091471
 - Mu, Q., Zhao, M., & Running, S. W. (2011). Improvements to a MODIS global terrestrial evapotranspiration algorithm. *Remote Sensing of Environment, 115*, 1781–1800. https://doi.org/10.1016/j.rse.2011.02.019
+- McKee, T. B., Doesken, N. J., & Kleist, J. (1993). The relationship of drought frequency and duration to time scales. *Proceedings of the 8th Conference on Applied Climatology*, 179–184. American Meteorological Society. (ENV506 gamma SPI)
 
 ## Full scripts
 
 Each script is copied here from [`scripts/`](../scripts) so this page has everything in one place. The `.js` file is the master copy: if the two ever differ, use the file. Click a heading to open the script, then use the copy button and paste it into a new script in the Code Editor.
 
 <details>
-<summary><strong>prac03a_rainfall_anomaly.js</strong> (147 lines)</summary>
+<summary><strong>prac03a_rainfall_anomaly.js</strong> (218 lines)</summary>
 
 ```javascript
 /**** Prac 03a — Rainfall variability and anomalies (Northern Territory)
@@ -260,12 +265,83 @@ Export.image.toDrive({image: anomMm.addBands(pctNormal).addBands(zScore).addBand
 // Q: Why is a z-score better than mm for comparing Darwin and Alice Springs?
 // EXT: CHIRPS blends satellite and gauge data; gauges are sparse in central Australia. Compare CHIRPS with BoM station data (Climate Data Online) for one site and quantify bias.
 // EXT: Relate wet-season rainfall anomalies to ENSO (Niño 3.4) and the Indian Ocean Dipole over 1981–2024.
+// EXT: Lagged correlation between rainfall and NDVI: ready to run in ENV506 challenge A at the end of this script.
+
+// #####################################################################################################################
+// ##  ENV506 COHORT ONLY — CHALLENGE A: Lagged correlation between rainfall and NDVI
+// ##  ENV306 students: you do not need this block. Leave it commented out; it does not affect the rest of the script.
+// #####################################################################################################################
+// HOW TO RUN (ENV506): delete the line  /* ENV506-A START  and the line  ENV506-A END */  below, then click Run.
+//   Nothing else needs editing to run it. Lines marked EDIT are the settings to change for YOUR tile and focus year.
+// USES: chirps, sites and nt from the main script; MODIS monthly NDVI (MOD13A3), 2001–2024.
+// FOR AT3 (ENV506): show how quickly vegetation in your tile responds to rain, and which land covers respond fastest; use the lag to
+//   explain why your focus year's NDVI anomaly may follow the rainfall anomaly by one or more months.
+// READING THE OUTPUT:
+//   - Column chart: mean correlation (r) between monthly rainfall and NDVI anomalies at lags 0–6 months.
+//     The tallest bar is the typical response time; r near 0 at every lag = vegetation not limited by rainfall.
+//   - Layer "ENV506-A: best lag (months)" and "ENV506-A: correlation at best lag": map where response is fast
+//     (often grasslands) or slow/weak (evergreen forest, riparian vegetation fed by groundwater).
+//   - Anomalies are used (each month minus its 2001–2024 mean) so the shared wet–dry cycle does not inflate r.
+/* ENV506-A START
+// EDIT: replace the EXAMPLE rectangle with your own tile. prac00 prints "Your tile corners"; paste them as
+//       ee.Geometry.Polygon([[[lon, lat], [lon, lat], [lon, lat], [lon, lat], [lon, lat]]]).
+var LAG_REGION = ee.Geometry.Rectangle([131.10, -14.00, 131.28, -13.82]);   // EXAMPLE tile — EDIT
+var MAX_LAG = 6;   // EDIT: longest lag tested (months)
+Map.addLayer(ee.Image().paint(LAG_REGION, 0, 2), {palette: 'red'}, 'ENV506-A: lag-correlation region (your tile)');
+var T0 = ee.Date('2001-01-01'), NM = 24 * 12;   // 288 months, Jan 2001 – Dec 2024
+var ndviMon = ee.ImageCollection('MODIS/061/MOD13A3').filterDate('2001-01-01', '2025-01-01').map(function(img) {
+  var d = ee.Date(img.get('system:time_start'));
+  return img.select('NDVI').multiply(0.0001).rename('NDVI')
+    .set({idx: d.difference(T0, 'month').round().int(), month: d.get('month'), 'system:time_start': d.millis()});
+});
+// Monthly rainfall totals, starting MAX_LAG months earlier so every lag has a partner
+var rainMon = ee.ImageCollection.fromImages(ee.List.sequence(-MAX_LAG, NM - 1).map(function(i) {
+  var s = T0.advance(ee.Number(i), 'month');
+  return chirps.filterDate(s, s.advance(1, 'month')).sum().rename('rain')
+    .set({idx: ee.Number(i).int(), month: s.get('month'), 'system:time_start': s.millis()});
+}));
+// Anomaly = value − mean of the same calendar month (removes the seasonal cycle)
+function monthlyAnom(col, band) {
+  var clim = ee.ImageCollection.fromImages(ee.List.sequence(1, 12).map(function(m) {
+    return col.filter(ee.Filter.eq('month', m)).mean().set('month', m);
+  }));
+  return col.map(function(img) {
+    var c = ee.Image(clim.filter(ee.Filter.eq('month', img.get('month'))).first());
+    return img.subtract(c).rename(band).copyProperties(img, ['idx', 'month', 'system:time_start']);
+  });
+}
+var ndviAn = monthlyAnom(ndviMon, 'NDVI'), rainAn = monthlyAnom(rainMon, 'rain');
+// Correlation of NDVI in month t with rainfall in month t − lag, per pixel
+function lagCorr(lag) {
+  var pairs = ndviAn.map(function(img) {
+    var r = ee.Image(rainAn.filter(ee.Filter.eq('idx', ee.Number(img.get('idx')).subtract(lag).int())).first());
+    return r.select('rain').addBands(img.select('NDVI'));
+  });
+  return pairs.reduce(ee.Reducer.pearsonsCorrelation()).select('correlation').rename('r_lag' + lag);
+}
+var lagImgs = [];
+for (var lag = 0; lag <= MAX_LAG; lag++) lagImgs.push(lagCorr(lag));
+var rStack = ee.Image.cat(lagImgs).clip(LAG_REGION);
+var rMean = rStack.reduceRegion({reducer: ee.Reducer.mean(), geometry: LAG_REGION, scale: 1000, maxPixels: 1e10});
+var lagRows = ee.FeatureCollection(lagImgs.map(function(img, L) {
+  return ee.Feature(null, {lag_months: L, r: rMean.get('r_lag' + L)});
+}));
+print('ENV506-A: mean r by lag (table)', lagRows);
+print(ui.Chart.feature.byFeature(lagRows, 'lag_months', 'r').setChartType('ColumnChart')
+  .setOptions({title: 'ENV506-A: rainfall → NDVI correlation by lag (anomalies, 2001–2024)',
+               hAxis: {title: 'Lag (months)'}, vAxis: {title: 'Pearson r'}, legend: {position: 'none'}}));
+var bestLag = rStack.toArray().arrayArgmax().arrayGet([0]).rename('best_lag');
+var bestR = rStack.reduce(ee.Reducer.max()).rename('best_r');
+Map.addLayer(bestLag, {min: 0, max: MAX_LAG, palette: ['#1a9850', '#ffffbf', '#d73027']}, 'ENV506-A: best lag (months)');
+Map.addLayer(bestR, {min: 0, max: 0.7, palette: ['#f7f7f7', '#6baed6', '#08306b']}, 'ENV506-A: correlation at best lag', false);
+ENV506-A END */
+// ##################################### end of ENV506 challenge A #################################################
 ```
 
 </details>
 
 <details>
-<summary><strong>prac03b_drought_indices.js</strong> (153 lines)</summary>
+<summary><strong>prac03b_drought_indices.js</strong> (208 lines)</summary>
 
 ```javascript
 /**** Prac 03b — Drought indices: VCI, TCI, VHI, SPI-type index and PDSI (Northern Territory)
@@ -417,16 +493,71 @@ Export.image.toDrive({image: vci.addBands(tci).addBands(vhi).addBands(spa3).addB
 // Q: Compare the 3- and 12-month SPI-type maps. Which reflects meteorological and which hydrological/agricultural drought?
 // Q: Why are VCI/TCI computed per calendar month rather than across all months?
 // EXT: Our SPI-type index is a z-score of totals. True SPI fits a gamma distribution, then transforms to a standard normal.
-//      Implement it in the Code Editor: method-of-moments shape k = mean²/var and scale θ = var/mean from the 1991–2020 totals;
-//      G = current.divide(θ).gammainc(k)  (regularised lower incomplete gamma);  SPI = √2 · erfInv(2G − 1)  (ee.Image.erfInv).
-//      Compare the gamma SPI map with the z-score map and explain the differences in arid central Australia.
+//      Ready to run in ENV506 challenge A at the end of this script. Compare the gamma SPI map with the z-score map and
+//      explain the differences in arid central Australia.
 // EXT: Evaluate each index as a trigger for drought assistance to pastoralists: lag, false alarms and spatial resolution.
+
+// #####################################################################################################################
+// ##  ENV506 COHORT ONLY — CHALLENGE A: Gamma-fitted SPI (3- and 12-month)
+// ##  ENV306 students: you do not need this block. Leave it commented out; it does not affect the rest of the script.
+// #####################################################################################################################
+// HOW TO RUN (ENV506): delete the line  /* ENV506-A START  and the line  ENV506-A END */  below, then click Run.
+//   Nothing else needs editing to run it. Lines marked EDIT are the settings to change for YOUR tile and focus year.
+// USES: chirps, TARGET, nt, alice, spa3 and spa12 (the z-score SPI-type maps) from the main script.
+// FOR AT3 (ENV506): set TARGET to a month in your focus year and report the gamma SPI for your tile, with its drought category;
+//   explain why it differs from the z-score version.
+// READING THE OUTPUT:
+//   - Layers "ENV506-A: SPI-3 (gamma)" and "SPI-12 (gamma)": the standard SPI (McKee et al., 1993).
+//     Categories: ≤ −2 extremely dry, −2 to −1.5 severely dry, −1.5 to −1 moderately dry, −1 to 1 near normal,
+//     ≥ 1 moderately wet or wetter.
+//   - Layer "SPI-3: gamma minus z-score": where rainfall totals are skewed (arid areas, dry-season windows with many
+//     zero totals) the z-score version can be misleading; this shows where and by how much.
+//   - Console: a check of the gammainc argument order, and mean SPI (gamma and z-score) over your region.
+/* ENV506-A START
+// Method: for each pixel, fit a gamma distribution to the 30 baseline totals (1991–2020) of the same n-month window
+// by the method of moments (shape k = mean² / variance, scale θ = variance / mean, using non-zero totals),
+// allow for zero-rain totals (share q), turn the current total into a cumulative probability H, then convert H to a
+// standard normal value: SPI = √2 × erfInv(2H − 1), written here as √2 × erfcInv(2 − 2H) (the same thing).
+// Check which argument gammainc treats as x: P(a = 1, x = 2) = 1 − e^−2 ≈ 0.865, P(a = 2, x = 1) ≈ 0.264.
+var gTest = ee.Number(2).gammainc(1);
+var X_FIRST = gTest.gt(0.5);   // true if a.gammainc(b) computes P(shape b, value a)
+print('ENV506-A: gammainc check (≈0.865 means value first, ≈0.264 means shape first)', gTest);
+function spiGamma(date, nMonths) {
+  var endD = date.advance(1, 'month');   // window ends at the end of the target month
+  var current = chirps.filterDate(endD.advance(-nMonths, 'month'), endD).sum();
+  var hist = ee.ImageCollection.fromImages(ee.List.sequence(1991, 2020).map(function(y) {
+    var e = ee.Date.fromYMD(y, endD.get('month'), 1);
+    return chirps.filterDate(e.advance(-nMonths, 'month'), e).sum().rename('precipitation');
+  }));
+  var q = hist.map(function(img) { return img.eq(0); }).mean();               // share of zero totals
+  var nz = hist.map(function(img) { return img.updateMask(img.gt(0)); });     // non-zero totals only
+  var mu = nz.mean(), vr = nz.reduce(ee.Reducer.variance());
+  var k = mu.pow(2).divide(vr);    // gamma shape
+  var theta = vr.divide(mu);       // gamma scale (mm)
+  var x = current.divide(theta);
+  var G = ee.Image(ee.Algorithms.If(X_FIRST, x.gammainc(k), k.gammainc(x)));   // regularised lower incomplete gamma
+  var H = q.add(ee.Image(1).subtract(q).multiply(G)).where(current.eq(0), q);   // probability of a total ≤ current
+  H = H.clamp(0.0014, 0.9986);   // keeps SPI within about ±3
+  return ee.Image(2).subtract(H.multiply(2)).erfcInv().multiply(Math.SQRT2).rename('SPI' + nMonths);
+}
+var spiG3 = spiGamma(TARGET, 3).clip(nt);
+var spiG12 = spiGamma(TARGET, 12).clip(nt);
+var spiVis = {min: -2.5, max: 2.5, palette: ['#8c510a', '#d8b365', '#f6e8c3', '#f5f5f5', '#c7eae5', '#5ab4ac', '#01665e']};
+Map.addLayer(spiG3, spiVis, 'ENV506-A: SPI-3 (gamma)');
+Map.addLayer(spiG12, spiVis, 'ENV506-A: SPI-12 (gamma)', false);
+Map.addLayer(spiG3.subtract(spa3), {min: -1, max: 1, palette: ['#b2182b', '#f7f7f7', '#2166ac']}, 'ENV506-A: SPI-3 gamma minus z-score', false);
+var SPI_REGION = alice;   // EDIT (AT3): your tile polygon from prac00
+var spiStats = spiG3.addBands(spa3).addBands(spiG12).addBands(spa12)
+  .reduceRegion({reducer: ee.Reducer.mean(), geometry: SPI_REGION, scale: 5566, maxPixels: 1e10});
+print('ENV506-A: mean SPI over region — gamma (SPI3, SPI12) vs z-score (SPA3, SPA12)', spiStats);
+ENV506-A END */
+// ##################################### end of ENV506 challenge A #################################################
 ```
 
 </details>
 
 <details>
-<summary><strong>prac03c_lst_et.js</strong> (134 lines)</summary>
+<summary><strong>prac03c_lst_et.js</strong> (225 lines)</summary>
 
 ```javascript
 /**** Prac 03c — Land surface temperature and evapotranspiration (Northern Territory)
@@ -563,6 +694,97 @@ Export.table.toDrive({collection: clim.map(function(img) {
 // Q: Where is evaporative stress highest late in the dry season? Relate this to riparian vegetation and irrigation.
 // EXT: Compare MOD16 ET with ET from a second product (e.g. PML_V2 'CAS/IGSNRR/PML/V2_v018' if available) and discuss uncertainty for water allocation planning.
 // EXT: Compute a simple basin water balance P − ET over 2003–2024 and compare with gauged discharge (NT Water Data portal).
+// EXT: LST and evaporative stress for your tile in your focus year: ready to run in ENV506 challenge A at the end of this script.
+
+// #####################################################################################################################
+// ##  ENV506 COHORT ONLY — CHALLENGE A: LST and ET (evaporative stress) to locate water stress in your focus year
+// ##  ENV306 students: you do not need this block. Leave it commented out; it does not affect the rest of the script.
+// #####################################################################################################################
+// HOW TO RUN (ENV506): delete the line  /* ENV506-A START  and the line  ENV506-A END */  below, then click Run.
+//   Nothing else needs editing to run it. Lines marked EDIT are the settings to change for YOUR tile and focus year.
+// USES: MODIS ET/PET (MOD16A2) and day LST (MOD11A2) 2003–2024 at 1 km; Landsat 5/7/8/9 surface temperature at 30 m.
+// FOR AT3 (ENV506): show when (months) and where (pixels) your tile was water-stressed in your focus year compared with 2003–2024,
+//   and link the hotspots to land cover (Prac 04) and to the rainfall and drought indices (Pracs 03a–b).
+// READING THE OUTPUT:
+//   - Chart 1: monthly ESI (1 − ET/PET) in the focus year vs the 2003–2024 mean. Above the mean = more stressed.
+//   - Chart 2: monthly day LST in the focus year vs the mean. Hotter than normal usually accompanies stress.
+//   - Layers: ESI anomaly and LST anomaly for the stress months; "water-stress hotspots" = pixels both more stressed
+//     and hotter than normal (thresholds below); Landsat 30 m LST shows the detail within your tile.
+//   - Console: hotspot area (ha) and share of the tile.
+//   Note: ESI here is the simple index used in this prac (1 − ET/PET), not the ALEXI-based ESI used in the USA.
+/* ENV506-A START
+// EDIT: replace the EXAMPLE rectangle with your own tile. prac00 prints "Your tile corners"; paste them as
+//       ee.Geometry.Polygon([[[lon, lat], [lon, lat], [lon, lat], [lon, lat], [lon, lat]]]).
+var ST_TILE = ee.Geometry.Rectangle([131.10, -14.00, 131.28, -13.82]);   // EXAMPLE tile — EDIT
+var FOCUS_YEAR = 2019;            // EDIT: your AT3 focus year (printed by prac00)
+var STRESS_START = 8, STRESS_END = 10;   // EDIT: stress months (Aug–Oct = late dry season); justify your choice
+var ESI_ANOM_T = 0.05, LST_ANOM_T = 1.0; // EDIT: hotspot thresholds (ESI above normal by > 0.05 and LST > 1 °C hotter)
+Map.centerObject(ST_TILE, 11);
+Map.addLayer(ee.Image().paint(ST_TILE, 0, 2), {palette: 'red'}, 'ENV506-A: your tile');
+// MOD16A2 fill values (water, urban, no data) are ≥ 32700; mask them before taking ratios.
+var mod16 = ee.ImageCollection('MODIS/061/MOD16A2').filterDate('2003-01-01', '2025-01-01').select(['ET', 'PET'])
+  .map(function(img) {
+    return img.updateMask(img.select('ET').lt(32700).and(img.select('PET').lt(32700))).copyProperties(img, ['system:time_start']);
+  });
+var lstDay = ee.ImageCollection('MODIS/061/MOD11A2').filterDate('2003-01-01', '2025-01-01').select('LST_Day_1km');
+function monthStats(y, m) {
+  var s = ee.Date.fromYMD(y, m, 1), e = s.advance(1, 'month');
+  var ep = mod16.filterDate(s, e).sum();
+  var esiM = ee.Image(1).subtract(ep.select('ET').divide(ep.select('PET'))).rename('ESI');
+  var l = lstDay.filterDate(s, e).mean().multiply(0.02).subtract(273.15).rename('LST');   // °C
+  return esiM.addBands(l).set({year: y, month: m, 'system:time_start': s.millis()});
+}
+var allMonths = ee.ImageCollection.fromImages(ee.List.sequence(2003, 2024).map(function(y) {
+  return ee.List.sequence(1, 12).map(function(m) { return monthStats(y, m); });
+}).flatten());
+var focusMonths = allMonths.filter(ee.Filter.eq('year', FOCUS_YEAR));
+var stRows = ee.FeatureCollection(ee.List.sequence(1, 12).map(function(m) {
+  var f = ee.Image(focusMonths.filter(ee.Filter.eq('month', m)).first())
+    .reduceRegion({reducer: ee.Reducer.mean(), geometry: ST_TILE, scale: 1000});
+  var c = allMonths.filter(ee.Filter.eq('month', m)).mean()
+    .reduceRegion({reducer: ee.Reducer.mean(), geometry: ST_TILE, scale: 1000});
+  return ee.Feature(null, {month: m, ESI_focus_year: f.get('ESI'), ESI_2003_2024_mean: c.get('ESI'),
+                           LST_focus_year: f.get('LST'), LST_2003_2024_mean: c.get('LST')});
+}));
+print(ui.Chart.feature.byFeature(stRows, 'month', ['ESI_focus_year', 'ESI_2003_2024_mean'])
+  .setOptions({title: 'ENV506-A: evaporative stress (1 − ET/PET) in ' + FOCUS_YEAR + ' vs 2003–2024', hAxis: {title: 'Month'}}));
+print(ui.Chart.feature.byFeature(stRows, 'month', ['LST_focus_year', 'LST_2003_2024_mean'])
+  .setOptions({title: 'ENV506-A: day LST (°C) in ' + FOCUS_YEAR + ' vs 2003–2024', hAxis: {title: 'Month'}}));
+// Stress-month anomalies (focus year minus the 2003–2024 mean of the same months)
+var inWin = ee.Filter.calendarRange(STRESS_START, STRESS_END, 'month');
+var focusWin = focusMonths.filter(inWin).mean(), climWin = allMonths.filter(inWin).mean();
+var esiAnom = focusWin.select('ESI').subtract(climWin.select('ESI')).rename('ESI_anom').clip(ST_TILE);
+var lstAnom = focusWin.select('LST').subtract(climWin.select('LST')).rename('LST_anom').clip(ST_TILE);
+var hotspot = esiAnom.gt(ESI_ANOM_T).and(lstAnom.gt(LST_ANOM_T)).selfMask();
+Map.addLayer(esiAnom, {min: -0.2, max: 0.2, palette: ['#1a9850', '#f7f7f7', '#d73027']}, 'ENV506-A: ESI anomaly, stress months', false);
+Map.addLayer(lstAnom, {min: -3, max: 3, palette: ['#2166ac', '#f7f7f7', '#b2182b']}, 'ENV506-A: LST anomaly (°C), stress months', false);
+Map.addLayer(hotspot, {palette: '#7f0000'}, 'ENV506-A: water-stress hotspots');
+var hsHa = ee.Image.pixelArea().divide(1e4).updateMask(hotspot)
+  .reduceRegion({reducer: ee.Reducer.sum(), geometry: ST_TILE, scale: 1000}).get('area');
+var tileHa = ee.Number(ST_TILE.area(10)).divide(1e4);
+print('ENV506-A: water-stress hotspot area (ha), stress months ' + FOCUS_YEAR, hsHa);
+print('ENV506-A: hotspot share of tile (%)', ee.Number(hsHa).divide(tileHa).multiply(100));
+// Landsat surface temperature at 30 m for the same months (Landsat 5/7 band ST_B6; Landsat 8/9 band ST_B10)
+function lsPrep(band) {
+  return function(img) {
+    var qa = img.select('QA_PIXEL');
+    var ok = qa.bitwiseAnd(1 << 3).eq(0).and(qa.bitwiseAnd(1 << 4).eq(0));   // no cloud, no shadow
+    return img.select(band).multiply(0.00341802).add(149.0).subtract(273.15).rename('LST_C').updateMask(ok)
+      .copyProperties(img, ['system:time_start']);
+  };
+}
+var lsFilter = function(col) {
+  return col.filterBounds(ST_TILE).filter(ee.Filter.calendarRange(FOCUS_YEAR, FOCUS_YEAR, 'year')).filter(inWin);
+};
+var lsAll = lsFilter(ee.ImageCollection('LANDSAT/LT05/C02/T1_L2')).map(lsPrep('ST_B6'))
+  .merge(lsFilter(ee.ImageCollection('LANDSAT/LE07/C02/T1_L2')).map(lsPrep('ST_B6')))
+  .merge(lsFilter(ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')).map(lsPrep('ST_B10')))
+  .merge(lsFilter(ee.ImageCollection('LANDSAT/LC09/C02/T1_L2')).map(lsPrep('ST_B10')));
+print('ENV506-A: Landsat scenes in the stress months of ' + FOCUS_YEAR, lsAll.size());
+var lsMed = ee.Image(ee.Algorithms.If(lsAll.size().gt(0), lsAll.median(), ee.Image.constant(0).rename('LST_C').selfMask()));
+Map.addLayer(lsMed.clip(ST_TILE), {min: 30, max: 55, palette: ['#313695', '#74add1', '#ffffbf', '#f46d43', '#a50026']}, 'ENV506-A: Landsat LST (°C, 30 m), stress months', false);
+ENV506-A END */
+// ##################################### end of ENV506 challenge A #################################################
 ```
 
 </details>

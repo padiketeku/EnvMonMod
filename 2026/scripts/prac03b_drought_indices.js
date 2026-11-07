@@ -147,7 +147,62 @@ Export.image.toDrive({image: vci.addBands(tci).addBands(vhi).addBands(spa3).addB
 // Q: Compare the 3- and 12-month SPI-type maps. Which reflects meteorological and which hydrological/agricultural drought?
 // Q: Why are VCI/TCI computed per calendar month rather than across all months?
 // EXT: Our SPI-type index is a z-score of totals. True SPI fits a gamma distribution, then transforms to a standard normal.
-//      Implement it in the Code Editor: method-of-moments shape k = mean²/var and scale θ = var/mean from the 1991–2020 totals;
-//      G = current.divide(θ).gammainc(k)  (regularised lower incomplete gamma);  SPI = √2 · erfInv(2G − 1)  (ee.Image.erfInv).
-//      Compare the gamma SPI map with the z-score map and explain the differences in arid central Australia.
+//      Ready to run in ENV506 challenge A at the end of this script. Compare the gamma SPI map with the z-score map and
+//      explain the differences in arid central Australia.
 // EXT: Evaluate each index as a trigger for drought assistance to pastoralists: lag, false alarms and spatial resolution.
+
+// #####################################################################################################################
+// ##  ENV506 COHORT ONLY — CHALLENGE A: Gamma-fitted SPI (3- and 12-month)
+// ##  ENV306 students: you do not need this block. Leave it commented out; it does not affect the rest of the script.
+// #####################################################################################################################
+// HOW TO RUN (ENV506): delete the line  /* ENV506-A START  and the line  ENV506-A END */  below, then click Run.
+//   Nothing else needs editing to run it. Lines marked EDIT are the settings to change for YOUR tile and focus year.
+// USES: chirps, TARGET, nt, alice, spa3 and spa12 (the z-score SPI-type maps) from the main script.
+// FOR AT3 (ENV506): set TARGET to a month in your focus year and report the gamma SPI for your tile, with its drought category;
+//   explain why it differs from the z-score version.
+// READING THE OUTPUT:
+//   - Layers "ENV506-A: SPI-3 (gamma)" and "SPI-12 (gamma)": the standard SPI (McKee et al., 1993).
+//     Categories: ≤ −2 extremely dry, −2 to −1.5 severely dry, −1.5 to −1 moderately dry, −1 to 1 near normal,
+//     ≥ 1 moderately wet or wetter.
+//   - Layer "SPI-3: gamma minus z-score": where rainfall totals are skewed (arid areas, dry-season windows with many
+//     zero totals) the z-score version can be misleading; this shows where and by how much.
+//   - Console: a check of the gammainc argument order, and mean SPI (gamma and z-score) over your region.
+/* ENV506-A START
+// Method: for each pixel, fit a gamma distribution to the 30 baseline totals (1991–2020) of the same n-month window
+// by the method of moments (shape k = mean² / variance, scale θ = variance / mean, using non-zero totals),
+// allow for zero-rain totals (share q), turn the current total into a cumulative probability H, then convert H to a
+// standard normal value: SPI = √2 × erfInv(2H − 1), written here as √2 × erfcInv(2 − 2H) (the same thing).
+// Check which argument gammainc treats as x: P(a = 1, x = 2) = 1 − e^−2 ≈ 0.865, P(a = 2, x = 1) ≈ 0.264.
+var gTest = ee.Number(2).gammainc(1);
+var X_FIRST = gTest.gt(0.5);   // true if a.gammainc(b) computes P(shape b, value a)
+print('ENV506-A: gammainc check (≈0.865 means value first, ≈0.264 means shape first)', gTest);
+function spiGamma(date, nMonths) {
+  var endD = date.advance(1, 'month');   // window ends at the end of the target month
+  var current = chirps.filterDate(endD.advance(-nMonths, 'month'), endD).sum();
+  var hist = ee.ImageCollection.fromImages(ee.List.sequence(1991, 2020).map(function(y) {
+    var e = ee.Date.fromYMD(y, endD.get('month'), 1);
+    return chirps.filterDate(e.advance(-nMonths, 'month'), e).sum().rename('precipitation');
+  }));
+  var q = hist.map(function(img) { return img.eq(0); }).mean();               // share of zero totals
+  var nz = hist.map(function(img) { return img.updateMask(img.gt(0)); });     // non-zero totals only
+  var mu = nz.mean(), vr = nz.reduce(ee.Reducer.variance());
+  var k = mu.pow(2).divide(vr);    // gamma shape
+  var theta = vr.divide(mu);       // gamma scale (mm)
+  var x = current.divide(theta);
+  var G = ee.Image(ee.Algorithms.If(X_FIRST, x.gammainc(k), k.gammainc(x)));   // regularised lower incomplete gamma
+  var H = q.add(ee.Image(1).subtract(q).multiply(G)).where(current.eq(0), q);   // probability of a total ≤ current
+  H = H.clamp(0.0014, 0.9986);   // keeps SPI within about ±3
+  return ee.Image(2).subtract(H.multiply(2)).erfcInv().multiply(Math.SQRT2).rename('SPI' + nMonths);
+}
+var spiG3 = spiGamma(TARGET, 3).clip(nt);
+var spiG12 = spiGamma(TARGET, 12).clip(nt);
+var spiVis = {min: -2.5, max: 2.5, palette: ['#8c510a', '#d8b365', '#f6e8c3', '#f5f5f5', '#c7eae5', '#5ab4ac', '#01665e']};
+Map.addLayer(spiG3, spiVis, 'ENV506-A: SPI-3 (gamma)');
+Map.addLayer(spiG12, spiVis, 'ENV506-A: SPI-12 (gamma)', false);
+Map.addLayer(spiG3.subtract(spa3), {min: -1, max: 1, palette: ['#b2182b', '#f7f7f7', '#2166ac']}, 'ENV506-A: SPI-3 gamma minus z-score', false);
+var SPI_REGION = alice;   // EDIT (AT3): your tile polygon from prac00
+var spiStats = spiG3.addBands(spa3).addBands(spiG12).addBands(spa12)
+  .reduceRegion({reducer: ee.Reducer.mean(), geometry: SPI_REGION, scale: 5566, maxPixels: 1e10});
+print('ENV506-A: mean SPI over region — gamma (SPI3, SPI12) vs z-score (SPA3, SPA12)', spiStats);
+ENV506-A END */
+// ##################################### end of ENV506 challenge A #################################################
