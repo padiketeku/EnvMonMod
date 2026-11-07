@@ -37,6 +37,9 @@ Page: [prac02-monitoring-vegetation-condition-trends-and-seasonality.md](../prac
 - Ma, X., et al. (2013). Spatial patterns and temporal dynamics in savanna vegetation phenology across the North Australian Tropical Transect. *Remote Sensing of Environment, 139*, 97–115. https://doi.org/10.1016/j.rse.2013.07.030
 - Earth Engine community tutorial: *Monitoring forest vegetation condition* (pskoulgi). https://developers.google.com/earth-engine/tutorials/community/forest-vegetation-condition
 - Skidmore, A. K., et al. (2021). Priority list of biodiversity metrics to observe from space. *Nature Ecology & Evolution, 5*, 896–906. https://doi.org/10.1038/s41559-021-01451-x (article review notes)
+- Benjamini, Y., & Hochberg, Y. (1995). Controlling the false discovery rate: A practical and powerful approach to multiple testing. *Journal of the Royal Statistical Society: Series B, 57*(1), 289–300. https://doi.org/10.1111/j.2517-6161.1995.tb02031.x (ENV506 challenge A)
+- Evans, J., & Geerken, R. (2004). Discrimination between climate and human-induced dryland degradation. *Journal of Arid Environments, 57*(4), 535–554. https://doi.org/10.1016/S0140-1963(03)00121-6 (ENV506 challenge B, RESTREND)
+- Wessels, K. J., Prince, S. D., Malherbe, J., Small, J., Frost, P. E., & VanZyl, D. (2007). Can human-induced land degradation be distinguished from the effects of rainfall variability? A case study in South Africa. *Journal of Arid Environments, 68*(2), 271–297. https://doi.org/10.1016/j.jaridenv.2006.05.015 (ENV506 challenge B, RESTREND)
 
 ## Prac 03: Climate and hydrology drivers: rainfall anomalies, drought indices, LST and ET
 
@@ -48,6 +51,7 @@ Page: [prac03-climate-and-hydrology-drivers-rainfall-anomalies-drought-indices-l
 - Abatzoglou, J. T., et al. (2018). TerraClimate, a high-resolution global dataset of monthly climate and climatic water balance from 1958–2015. *Scientific Data, 5*, 170191. https://doi.org/10.1038/sdata.2017.191
 - Ermida, S. L., et al. (2020). Google Earth Engine open-source code for land surface temperature estimation from the Landsat series. *Remote Sensing, 12*(9), 1471. https://doi.org/10.3390/rs12091471
 - Mu, Q., Zhao, M., & Running, S. W. (2011). Improvements to a MODIS global terrestrial evapotranspiration algorithm. *Remote Sensing of Environment, 115*, 1781–1800. https://doi.org/10.1016/j.rse.2011.02.019
+- McKee, T. B., Doesken, N. J., & Kleist, J. (1993). The relationship of drought frequency and duration to time scales. *Proceedings of the 8th Conference on Applied Climatology*, 179–184. American Meteorological Society. (ENV506 gamma SPI)
 
 ## Prac 04: Land cover mapping and landscape metrics
 

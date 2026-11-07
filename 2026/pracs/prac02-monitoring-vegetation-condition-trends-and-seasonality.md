@@ -91,8 +91,10 @@ Map.addLayer(sens.select('slope'), {min: -0.006, max: 0.006, palette: ['#8c510a'
 
 **Extension (ENV506)**
 
-1. With about 1.4 million pixels, about 5 % will be "significant" by chance. Apply a Benjamini–Hochberg false-discovery-rate correction in the Code Editor (see the script `EXT`).
-2. Implement RESTREND, using NDVI residuals after regressing on rainfall from Prac 03, and compare the trend maps.
+> **ENV506 cohort only: ready-made challenge scripts.** The ENV506 challenges below come as complete code at the end of the script `prac02a`, inside blocks headed `ENV506 COHORT ONLY`. To run one, delete its `/* ENV506-… START` line and its `ENV506-… END */` line, then click Run. Change only the lines marked `EDIT` (your tile and focus year). ENV306 students: leave these blocks commented out; they do not affect the rest of the script. Your marks come from interpreting the charts, tables and maps, not from the code.
+
+1. With about 1.4 million pixels, about 5 % will be "significant" by chance. Run **ENV506 challenge A** in `prac02a` (Benjamini–Hochberg false-discovery-rate correction) and compare the maps and areas before and after the correction.
+2. Run **ENV506 challenge B** in `prac02a` (RESTREND: the trend in NDVI residuals after removing rainfall) and compare it with the NDVI trend map. Where does a trend disappear, and where does it remain?
 3. Fit harmonics for 2014–2018 and for 2020–2024, then map the shifts in phenology.
 4. Test for serial autocorrelation, apply pre-whitening, and discuss its effect on significance.
 
@@ -109,13 +111,16 @@ Map.addLayer(sens.select('slope'), {min: -0.006, max: 0.006, palette: ['#8c510a'
 - Ma, X., et al. (2013). Spatial patterns and temporal dynamics in savanna vegetation phenology across the North Australian Tropical Transect. *Remote Sensing of Environment, 139*, 97–115. https://doi.org/10.1016/j.rse.2013.07.030
 - Earth Engine community tutorial: *Monitoring forest vegetation condition* (pskoulgi). https://developers.google.com/earth-engine/tutorials/community/forest-vegetation-condition
 - Skidmore, A. K., et al. (2021). Priority list of biodiversity metrics to observe from space. *Nature Ecology & Evolution, 5*, 896–906. https://doi.org/10.1038/s41559-021-01451-x (article review notes)
+- Benjamini, Y., & Hochberg, Y. (1995). Controlling the false discovery rate: A practical and powerful approach to multiple testing. *Journal of the Royal Statistical Society: Series B, 57*(1), 289–300. https://doi.org/10.1111/j.2517-6161.1995.tb02031.x (ENV506 challenge A)
+- Evans, J., & Geerken, R. (2004). Discrimination between climate and human-induced dryland degradation. *Journal of Arid Environments, 57*(4), 535–554. https://doi.org/10.1016/S0140-1963(03)00121-6 (ENV506 challenge B, RESTREND)
+- Wessels, K. J., Prince, S. D., Malherbe, J., Small, J., Frost, P. E., & VanZyl, D. (2007). Can human-induced land degradation be distinguished from the effects of rainfall variability? A case study in South Africa. *Journal of Arid Environments, 68*(2), 271–297. https://doi.org/10.1016/j.jaridenv.2006.05.015 (ENV506 challenge B, RESTREND)
 
 ## Full scripts
 
 Each script is copied here from [`scripts/`](../scripts) so this page has everything in one place. The `.js` file is the master copy: if the two ever differ, use the file. Click a heading to open the script, then use the copy button and paste it into a new script in the Code Editor.
 
 <details>
-<summary><strong>prac02a_trend_sens_mk.js</strong> (145 lines)</summary>
+<summary><strong>prac02a_trend_sens_mk.js</strong> (257 lines)</summary>
 
 ```javascript
 /**** Prac 02a — Non-parametric trend analysis: Sen's slope and Mann–Kendall (Northern Territory)
@@ -259,10 +264,122 @@ Export.image.toDrive({image: sens.select('slope').addBands([tau, p, Z]).float(),
 // Q: Where is the NT greening or browning? Propose landscape processes (rainfall trend, woody thickening, clearing, fire).
 // Q: Why use Sen's slope and Mann–Kendall rather than OLS regression for NDVI?
 // Q: About 5% of pixels will be "significant" by chance at α = 0.05. Why is this a problem for a map with ~1.4 million pixels?
-// EXT: Apply a Benjamini–Hochberg false-discovery-rate correction in the Code Editor: use ee.Reducer.fixedHistogram on the
-//      p-value image to get k(t) = number of pixels with p ≤ t, then find the largest t with t ≤ (k(t)/m)·α and re-map.
+// EXT: Benjamini–Hochberg false-discovery-rate correction: ready to run in ENV506 challenge A at the end of this script.
 // EXT: Autocorrelated series inflate significance. Implement pre-whitening (Yue–Pilon) or the modified MK test for one region.
-// EXT: Remove rainfall-driven variation first (RESTREND: residuals of NDVI ~ rainfall) and compare trend maps.
+// EXT: RESTREND (trend in NDVI residuals after removing rainfall): ready to run in ENV506 challenge B at the end of this script.
+
+// #####################################################################################################################
+// ##  ENV506 COHORT ONLY — CHALLENGE A: Benjamini–Hochberg false-discovery-rate (FDR) correction
+// ##  ENV306 students: you do not need this block. Leave it commented out; it does not affect the rest of the script.
+// #####################################################################################################################
+// HOW TO RUN (ENV506): delete the line  /* ENV506-A START  and the line  ENV506-A END */  below, then click Run.
+//   Nothing else needs editing to run it. Lines marked EDIT are the settings to change for YOUR tile and focus year.
+// USES: p (Mann–Kendall p-values), sens, ALPHA, area, slopeVis and nt from the main script above.
+// FOR AT3 (ENV506): map greening and browning that stays significant after the FDR correction, and report both areas (raw p < 0.05 and FDR).
+// READING THE OUTPUT:
+//   - "BH cut-off p-value" is the new significance threshold. It is always ≤ ALPHA; the more pixels tested, the
+//     smaller it usually gets. A cut-off of 0 means no pixel survives the correction.
+//   - Compare "pixels significant at raw p < ALPHA" with "after BH": the difference is roughly the number of
+//     trends you would otherwise report that could be chance.
+//   - Map layer "ENV506-A: Sen's slope, significant after BH" — compare it with "Sen's slope where p < 0.05".
+/* ENV506-A START
+// Benjamini–Hochberg (1995): rank the m p-values; the cut-off is the largest p(i) with p(i) ≤ (i / m) × ALPHA.
+// Sorting a million pixels is slow, so we use a fine histogram of p between 0 and ALPHA instead:
+// for each bin end t, k(t) = number of pixels with p < t, and t passes if t ≤ (k(t) / m) × ALPHA.
+var BH_REGION = nt.geometry();   // EDIT (AT3): your tile polygon from prac00, to apply the correction within your tile
+var BH_STEPS = 2000;             // histogram bins between 0 and ALPHA (finer = more exact cut-off)
+var bhM = ee.Number(p.reduceRegion({reducer: ee.Reducer.count(), geometry: BH_REGION, scale: 1000,
+  maxPixels: 1e11}).get('p'));   // m = number of pixels tested
+var bhHist = ee.Array(p.reduceRegion({reducer: ee.Reducer.fixedHistogram(0, ALPHA, BH_STEPS),
+  geometry: BH_REGION, scale: 1000, maxPixels: 1e11}).get('p'));   // rows: [bin start, count]
+var bhEnds = bhHist.slice(1, 0, 1).project([0]).add(ALPHA / BH_STEPS);   // upper edge t of each bin
+var bhK = bhHist.slice(1, 1, 2).project([0]).accum(0);                    // k(t): cumulative count of p < t
+var bhPass = bhEnds.lte(bhK.divide(bhM).multiply(ALPHA));                // 1 where t ≤ (k(t) / m) × ALPHA
+var bhCut = ee.Number(bhEnds.multiply(bhPass).reduce(ee.Reducer.max(), [0]).get([0]));   // largest passing t (0 if none)
+var bhSig = p.lte(bhCut).and(p.lt(ALPHA));   // significant after FDR correction
+print('ENV506-A: pixels tested (m)', bhM);
+print('ENV506-A: BH cut-off p-value (compare with ALPHA = ' + ALPHA + ')', bhCut);
+print('ENV506-A: pixels significant at raw p < ALPHA', p.lt(ALPHA).reduceRegion({reducer: ee.Reducer.sum(), geometry: BH_REGION, scale: 1000, maxPixels: 1e11}).get('p'));
+print('ENV506-A: pixels significant after BH', bhSig.reduceRegion({reducer: ee.Reducer.sum(), geometry: BH_REGION, scale: 1000, maxPixels: 1e11}).get('p'));
+var bhGreen = area.updateMask(bhSig.and(sens.select('slope').gt(0)));
+var bhBrown = area.updateMask(bhSig.and(sens.select('slope').lt(0)));
+print('ENV506-A: significant greening after BH (km²)', bhGreen.reduceRegion({reducer: ee.Reducer.sum(), geometry: BH_REGION, scale: 1000, maxPixels: 1e11}).get('area'));
+print('ENV506-A: significant browning after BH (km²)', bhBrown.reduceRegion({reducer: ee.Reducer.sum(), geometry: BH_REGION, scale: 1000, maxPixels: 1e11}).get('area'));
+Map.addLayer(sens.select('slope').updateMask(bhSig).clip(BH_REGION), slopeVis, "ENV506-A: Sen's slope, significant after BH");
+ENV506-A END */
+// ##################################### end of ENV506 challenge A #################################################
+
+// #####################################################################################################################
+// ##  ENV506 COHORT ONLY — CHALLENGE B: RESTREND — trend in NDVI residuals after removing rainfall
+// ##  ENV306 students: you do not need this block. Leave it commented out; it does not affect the rest of the script.
+// #####################################################################################################################
+// HOW TO RUN (ENV506): delete the line  /* ENV506-B START  and the line  ENV506-B END */  below, then click Run.
+//   Nothing else needs editing to run it. Lines marked EDIT are the settings to change for YOUR tile and focus year.
+// USES: annual (annual NDVI), START, END, n, ALPHA, area, slopeVis, sens, probe and nt from the main script; CHIRPS rainfall.
+// FOR AT3 (ENV506): compare the NDVI trend map with the RESTREND map for your tile: where NDVI trends disappear, rainfall explains them;
+//   where RESTREND stays negative, something other than rainfall (clearing, fire, grazing) is reducing vegetation.
+// READING THE OUTPUT:
+//   - Layer "ENV506-B: NDVI–rainfall correlation (r)": high r = vegetation tracks rainfall closely. RESTREND is only
+//     meaningful where this relationship is positive and significant (Wessels et al., 2007), so the trend layer is masked to those pixels.
+//   - Layer "ENV506-B: RESTREND slope (p < ALPHA)": brown = vegetation declining more than rainfall predicts.
+//   - Console: areas of significant positive/negative residual trend, to set beside the NDVI greening/browning areas.
+//   - Chart: actual NDVI, NDVI predicted from rainfall, and the residuals at the probe point.
+/* ENV506-B START
+// RESTREND (Evans & Geerken, 2004; Wessels et al., 2007): fit NDVI = offset + scale × rainfall in every pixel over all
+// years, take the residuals (NDVI − predicted), and test the residuals for a trend with Sen's slope and Mann–Kendall.
+var RAIN_START_MONTH = 10;   // EDIT: rainfall window = 12 months starting 1 Oct of the previous year (the wet season
+                             //       that feeds this year's growth). Justify your window in AT3.
+var chirpsR = ee.ImageCollection('UCSB-CHG/CHIRPS/PENTAD').select('precipitation');
+var rsPairs = annual.map(function(img) {
+  var y = ee.Number(img.get('year'));
+  var s = ee.Date.fromYMD(y.subtract(1), RAIN_START_MONTH, 1);
+  var rain = chirpsR.filterDate(s, s.advance(12, 'month')).sum().rename('rain');   // 12-month rainfall (mm)
+  return rain.addBands(img.select('NDVI')).copyProperties(img, ['year', 'system:time_start']);
+});
+// linearFit expects two bands, x then y: it returns 'scale' (NDVI per mm) and 'offset'.
+var rsFit = rsPairs.select(['rain', 'NDVI']).reduce(ee.Reducer.linearFit());
+var rsCor = rsPairs.select(['rain', 'NDVI']).reduce(ee.Reducer.pearsonsCorrelation());   // bands: correlation, p-value
+var rsResid = rsPairs.map(function(img) {
+  var pred = rsFit.select('offset').add(rsFit.select('scale').multiply(img.select('rain')));
+  return img.select('NDVI').subtract(pred).rename('resid').copyProperties(img, ['year', 'system:time_start']);
+});
+// Sen's slope of the residuals (NDVI per year)
+var rsSens = rsResid.map(function(img) {
+  return ee.Image.constant(img.get('year')).float().rename('year').addBands(img);
+}).reduce(ee.Reducer.sensSlope()).select('slope').clip(nt);
+// Mann–Kendall p-value of the residuals (same method as section 3b)
+function mkP(col) {
+  var later = ee.Filter.lessThan({leftField: 'system:time_start', rightField: 'system:time_start'});
+  var j = ee.ImageCollection(ee.Join.saveAll('after').apply({primary: col, secondary: col, condition: later}));
+  var s = ee.ImageCollection(j.map(function(cur) {
+    return ee.ImageCollection.fromImages(cur.get('after')).map(function(img) {
+      return ee.Image(img).subtract(cur).signum().int().unmask(0);
+    });
+  }).flatten()).reduce('sum', 2).rename('S');
+  var v = ee.Image.constant(n * (n - 1) * (2 * n + 5) / 18);
+  var z = ee.Image(0).where(s.gt(0), s.subtract(1).divide(v.sqrt())).where(s.lt(0), s.add(1).divide(v.sqrt()));
+  return ee.Image(1).subtract(z.abs().divide(Math.SQRT2).erf()).rename('p');
+}
+var rsP = mkP(rsResid).clip(nt);
+// Use RESTREND only where NDVI responds positively and significantly to rainfall
+var rsValid = rsCor.select('correlation').gt(0).and(rsCor.select('p-value').lt(ALPHA));
+var rsSig = rsP.lt(ALPHA).and(rsValid);
+Map.addLayer(rsCor.select('correlation').clip(nt), {min: -0.2, max: 0.9, palette: ['#f7f7f7', '#9ecae1', '#08519c']}, 'ENV506-B: NDVI–rainfall correlation (r)', false);
+Map.addLayer(rsSens.updateMask(rsSig), slopeVis, 'ENV506-B: RESTREND slope (p < ALPHA)');
+var rsRegion = nt.geometry();   // EDIT (AT3): your tile polygon from prac00
+print('ENV506-B: area where RESTREND is valid (km²)', area.updateMask(rsValid).reduceRegion({reducer: ee.Reducer.sum(), geometry: rsRegion, scale: 1000, maxPixels: 1e11}).get('area'));
+print('ENV506-B: significant positive residual trend (km²)', area.updateMask(rsSig.and(rsSens.gt(0))).reduceRegion({reducer: ee.Reducer.sum(), geometry: rsRegion, scale: 1000, maxPixels: 1e11}).get('area'));
+print('ENV506-B: significant negative residual trend (km²)', area.updateMask(rsSig.and(rsSens.lt(0))).reduceRegion({reducer: ee.Reducer.sum(), geometry: rsRegion, scale: 1000, maxPixels: 1e11}).get('area'));
+// Chart at the probe point: actual NDVI, NDVI predicted from rainfall, and residuals
+var rsChartCol = rsPairs.map(function(img) {
+  var pred = rsFit.select('offset').add(rsFit.select('scale').multiply(img.select('rain'))).rename('NDVI_predicted');
+  return img.select('NDVI').addBands(pred).addBands(img.select('NDVI').subtract(pred).rename('residual'))
+    .copyProperties(img, ['year', 'system:time_start']);
+});
+print(ui.Chart.image.series(rsChartCol, probe, ee.Reducer.mean(), 1000, 'year')
+  .setOptions({title: 'ENV506-B: NDVI, NDVI predicted from rainfall, and residual at the probe', pointSize: 4}));
+ENV506-B END */
+// ##################################### end of ENV506 challenge B #################################################
 ```
 
 </details>

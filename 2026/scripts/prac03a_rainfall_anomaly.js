@@ -145,3 +145,74 @@ Export.image.toDrive({image: anomMm.addBands(pctNormal).addBands(zScore).addBand
 // Q: Why is a z-score better than mm for comparing Darwin and Alice Springs?
 // EXT: CHIRPS blends satellite and gauge data; gauges are sparse in central Australia. Compare CHIRPS with BoM station data (Climate Data Online) for one site and quantify bias.
 // EXT: Relate wet-season rainfall anomalies to ENSO (Niño 3.4) and the Indian Ocean Dipole over 1981–2024.
+// EXT: Lagged correlation between rainfall and NDVI: ready to run in ENV506 challenge A at the end of this script.
+
+// #####################################################################################################################
+// ##  ENV506 COHORT ONLY — CHALLENGE A: Lagged correlation between rainfall and NDVI
+// ##  ENV306 students: you do not need this block. Leave it commented out; it does not affect the rest of the script.
+// #####################################################################################################################
+// HOW TO RUN (ENV506): delete the line  /* ENV506-A START  and the line  ENV506-A END */  below, then click Run.
+//   Nothing else needs editing to run it. Lines marked EDIT are the settings to change for YOUR tile and focus year.
+// USES: chirps, sites and nt from the main script; MODIS monthly NDVI (MOD13A3), 2001–2024.
+// FOR AT3 (ENV506): show how quickly vegetation in your tile responds to rain, and which land covers respond fastest; use the lag to
+//   explain why your focus year's NDVI anomaly may follow the rainfall anomaly by one or more months.
+// READING THE OUTPUT:
+//   - Column chart: mean correlation (r) between monthly rainfall and NDVI anomalies at lags 0–6 months.
+//     The tallest bar is the typical response time; r near 0 at every lag = vegetation not limited by rainfall.
+//   - Layer "ENV506-A: best lag (months)" and "ENV506-A: correlation at best lag": map where response is fast
+//     (often grasslands) or slow/weak (evergreen forest, riparian vegetation fed by groundwater).
+//   - Anomalies are used (each month minus its 2001–2024 mean) so the shared wet–dry cycle does not inflate r.
+/* ENV506-A START
+// EDIT: replace the EXAMPLE rectangle with your own tile. prac00 prints "Your tile corners"; paste them as
+//       ee.Geometry.Polygon([[[lon, lat], [lon, lat], [lon, lat], [lon, lat], [lon, lat]]]).
+var LAG_REGION = ee.Geometry.Rectangle([131.10, -14.00, 131.28, -13.82]);   // EXAMPLE tile — EDIT
+var MAX_LAG = 6;   // EDIT: longest lag tested (months)
+Map.addLayer(ee.Image().paint(LAG_REGION, 0, 2), {palette: 'red'}, 'ENV506-A: lag-correlation region (your tile)');
+var T0 = ee.Date('2001-01-01'), NM = 24 * 12;   // 288 months, Jan 2001 – Dec 2024
+var ndviMon = ee.ImageCollection('MODIS/061/MOD13A3').filterDate('2001-01-01', '2025-01-01').map(function(img) {
+  var d = ee.Date(img.get('system:time_start'));
+  return img.select('NDVI').multiply(0.0001).rename('NDVI')
+    .set({idx: d.difference(T0, 'month').round().int(), month: d.get('month'), 'system:time_start': d.millis()});
+});
+// Monthly rainfall totals, starting MAX_LAG months earlier so every lag has a partner
+var rainMon = ee.ImageCollection.fromImages(ee.List.sequence(-MAX_LAG, NM - 1).map(function(i) {
+  var s = T0.advance(ee.Number(i), 'month');
+  return chirps.filterDate(s, s.advance(1, 'month')).sum().rename('rain')
+    .set({idx: ee.Number(i).int(), month: s.get('month'), 'system:time_start': s.millis()});
+}));
+// Anomaly = value − mean of the same calendar month (removes the seasonal cycle)
+function monthlyAnom(col, band) {
+  var clim = ee.ImageCollection.fromImages(ee.List.sequence(1, 12).map(function(m) {
+    return col.filter(ee.Filter.eq('month', m)).mean().set('month', m);
+  }));
+  return col.map(function(img) {
+    var c = ee.Image(clim.filter(ee.Filter.eq('month', img.get('month'))).first());
+    return img.subtract(c).rename(band).copyProperties(img, ['idx', 'month', 'system:time_start']);
+  });
+}
+var ndviAn = monthlyAnom(ndviMon, 'NDVI'), rainAn = monthlyAnom(rainMon, 'rain');
+// Correlation of NDVI in month t with rainfall in month t − lag, per pixel
+function lagCorr(lag) {
+  var pairs = ndviAn.map(function(img) {
+    var r = ee.Image(rainAn.filter(ee.Filter.eq('idx', ee.Number(img.get('idx')).subtract(lag).int())).first());
+    return r.select('rain').addBands(img.select('NDVI'));
+  });
+  return pairs.reduce(ee.Reducer.pearsonsCorrelation()).select('correlation').rename('r_lag' + lag);
+}
+var lagImgs = [];
+for (var lag = 0; lag <= MAX_LAG; lag++) lagImgs.push(lagCorr(lag));
+var rStack = ee.Image.cat(lagImgs).clip(LAG_REGION);
+var rMean = rStack.reduceRegion({reducer: ee.Reducer.mean(), geometry: LAG_REGION, scale: 1000, maxPixels: 1e10});
+var lagRows = ee.FeatureCollection(lagImgs.map(function(img, L) {
+  return ee.Feature(null, {lag_months: L, r: rMean.get('r_lag' + L)});
+}));
+print('ENV506-A: mean r by lag (table)', lagRows);
+print(ui.Chart.feature.byFeature(lagRows, 'lag_months', 'r').setChartType('ColumnChart')
+  .setOptions({title: 'ENV506-A: rainfall → NDVI correlation by lag (anomalies, 2001–2024)',
+               hAxis: {title: 'Lag (months)'}, vAxis: {title: 'Pearson r'}, legend: {position: 'none'}}));
+var bestLag = rStack.toArray().arrayArgmax().arrayGet([0]).rename('best_lag');
+var bestR = rStack.reduce(ee.Reducer.max()).rename('best_r');
+Map.addLayer(bestLag, {min: 0, max: MAX_LAG, palette: ['#1a9850', '#ffffbf', '#d73027']}, 'ENV506-A: best lag (months)');
+Map.addLayer(bestR, {min: 0, max: 0.7, palette: ['#f7f7f7', '#6baed6', '#08306b']}, 'ENV506-A: correlation at best lag', false);
+ENV506-A END */
+// ##################################### end of ENV506 challenge A #################################################
