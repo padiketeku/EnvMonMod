@@ -155,12 +155,15 @@ Export.table.toDrive({collection: clim.map(function(img) {
 //       ee.Geometry.Polygon([[[lon, lat], [lon, lat], [lon, lat], [lon, lat], [lon, lat]]]).
 var ST_TILE = ee.Geometry.Rectangle([131.10, -14.00, 131.28, -13.82]);   // EXAMPLE tile — EDIT
 var FOCUS_YEAR = 2019;            // EDIT: your AT3 focus year (printed by prac00)
+// We set our stress period to Aug-Oct but what does this show in stress anomaly?
+// Should we try and look at some different periods?
 var STRESS_START = 8, STRESS_END = 10;   // EDIT: stress months (Aug–Oct = late dry season); justify your choice
 var ESI_ANOM_T = 0.05, LST_ANOM_T = 1.0; // EDIT: hotspot thresholds (ESI above normal by > 0.05 and LST > 1 °C hotter)
 Map.centerObject(ST_TILE, 11);
 Map.addLayer(ee.Image().paint(ST_TILE, 0, 2), {palette: 'red'}, 'ENV506-A: your tile');
 // MOD16A2 fill values (water, urban, no data) are ≥ 32700; mask them before taking ratios.
-var mod16 = ee.ImageCollection('MODIS/061/MOD16A2').filterDate('2003-01-01', '2025-01-01').select(['ET', 'PET'])
+// NOTE: We use a gap-fileld MODIS dataset to make sure we have measures for all months.
+var mod16 = ee.ImageCollection('MODIS/061/MOD16A2GF').filterDate('2003-01-01', '2025-01-01').select(['ET', 'PET'])
   .map(function(img) {
     return img.updateMask(img.select('ET').lt(32700).and(img.select('PET').lt(32700))).copyProperties(img, ['system:time_start']);
   });
@@ -200,7 +203,7 @@ Map.addLayer(hotspot, {palette: '#7f0000'}, 'ENV506-A: water-stress hotspots');
 var hsHa = ee.Image.pixelArea().divide(1e4).updateMask(hotspot)
   .reduceRegion({reducer: ee.Reducer.sum(), geometry: ST_TILE, scale: 1000}).get('area');
 var tileHa = ee.Number(ST_TILE.area(10)).divide(1e4);
-print('ENV506-A: water-stress hotspot area (ha), stress months ' + FOCUS_YEAR, hsHa);
+print('ENV506-A: water-stress hotspot area (ha), stress months [NOTE: what stress months did we use on line 161?]' + FOCUS_YEAR, hsHa);
 print('ENV506-A: hotspot share of tile (%)', ee.Number(hsHa).divide(tileHa).multiply(100));
 // Landsat surface temperature at 30 m for the same months (Landsat 5/7 band ST_B6; Landsat 8/9 band ST_B10)
 function lsPrep(band) {
