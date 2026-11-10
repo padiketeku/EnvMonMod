@@ -65,6 +65,11 @@ var OCC_ASSET = 'projects/YOUR_PROJECT/assets/gouldian_finch_ALA';   // <-- chan
 var occ = ee.FeatureCollection(OCC_ASSET).filterBounds(region);
 print('Raw presence records', occ.size());
 
+
+//--------------------------------------------------
+/* Replace file path for OCC_ASSET (line 64) with your asset file path then delete this line to continue.
+//--------------------------------------------------
+
 // ---------- 2b Predictors ----------
 // Environmental layers that may limit where the finch can live: climate, terrain, greenness, tree cover, fire and water.
 // Each becomes one band of the predictor stack below.
