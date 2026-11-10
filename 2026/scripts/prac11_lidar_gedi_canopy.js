@@ -14,7 +14,7 @@
  *
  * HOW TO USE IT:
  *   (1) Save a copy in your Owner repository.
- *   (2) No EDIT lines are required. You may move the aoi rectangle (section 1) or the transect sites (Part A).
+ *   (2) No EDIT lines are required for the core script. You may move the aoi rectangle (section 1) or the transect sites (Part A).
  *   (3) Click Run. The model comparison can take a minute or two.
  *   (4) Read the Console (site statistics, chart, RMSE and R² for each sensor combination, scatter plot),
  *       turn layers on/off in the Map's Layers list, and start the export in the Tasks tab.
@@ -45,6 +45,14 @@
  *   - sample() to build a training table, randomColumn for a train/test split.
  *   - ee.Classifier.smileRandomForest in REGRESSION mode, and classify() to make a map.
  *
+ * BLOCK MUTES FOR DISCUSSION OF CODE SECTIONS
+ *   - You will see the following line throughout the script:
+ * //--------------------------------------------------
+ * /*
+ * //--------------------------------------------------
+ *   - These stop the script progressing for us to discuss steps and sections in class.
+ *   - Delete the "/*" character between the two horizontal lines to unmute the following section.
+ *
  * Q = core (ENV306 and ENV506). EXT = ENV506 extension.
  ****/
 
@@ -52,8 +60,10 @@
 // The NT boundary (for the 1 km biomass layer) and a smaller study rectangle for the modelling.
 // The rectangle spans open woodland to taller forest, so height varies enough to train a model.
 var nt = ee.FeatureCollection('FAO/GAUL/2015/level1').filter(ee.Filter.eq('ADM1_NAME', 'Northern Territory'));
-var aoi = ee.Geometry.Rectangle([130.90, -13.10, 131.50, -12.50]);   // Darwin–Litchfield–Adelaide River: woodland to forest
+//var aoi = ee.Geometry.Rectangle([130.90, -13.10, 131.50, -12.50]);   // Darwin–Litchfield–Adelaide River: woodland to forest
+var aoi = ee.Geometry.Rectangle([131.15, -13.00, 131.90, -12.30]);   // Adelaide River (West) and Mary River (East) Floodplains
 Map.centerObject(aoi, 10);
+Map.addLayer(ee.FeatureCollection(aoi).style({color: 'red', fillColor: '00000000', width: 2}), {}, 'AOI');
 
 // ---------- 2 Data: GEDI ----------
 // Load GEDI height (L2A) and biomass (L4A, L4B). Footprints are stored as monthly rasters: only footprint
@@ -86,6 +96,10 @@ var hVis = {min: 0, max: 30, palette: ['#ffffcc', '#c2e699', '#78c679', '#31a354
 Map.addLayer(gediH, hVis, 'A: GEDI rh98 canopy height footprints (m)');
 Map.addLayer(gediB, {min: 0, max: 120, palette: ['#fff7bc', '#fe9929', '#993404']}, 'A: GEDI L4A biomass footprints (Mg/ha)', false);
 
+//--------------------------------------------------
+/*
+//--------------------------------------------------
+
 // Part A analysis: canopy height along the rainfall gradient (Darwin → Katherine → Tennant Creek)
 // Four 20 km-radius circles (buffer(20000) is in metres) from the wet north to the dry south. Rainfall is mean annual.
 var transect = ee.FeatureCollection([
@@ -105,6 +119,10 @@ print('A: GEDI rh98 by site (median, p90, n footprints)', transectStats);
 print(ui.Chart.feature.byFeature(transectStats, 'site', ['median', 'p90']).setChartType('ColumnChart')
   .setOptions({title: 'A: Canopy height (m) along the NT rainfall gradient', vAxis: {title: 'rh98 (m)'}}));
 
+//--------------------------------------------------
+/*
+//--------------------------------------------------
+
 // ---------- 2b Predictors: optical + C-band SAR + L-band SAR + terrain ----------
 // Build one multi-band image of predictors (the X variables). All are from the 2021 dry season (or year),
 // within the GEDI period, so vegetation is in a similar state to when it was measured.
@@ -119,6 +137,11 @@ var s2 = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED').filterBounds(aoi).fil
 var optical = s2.select(['B2', 'B3', 'B4', 'B5', 'B8', 'B11', 'B12'])
   .addBands(s2.normalizedDifference(['B8', 'B4']).rename('NDVI'))
   .addBands(s2.normalizedDifference(['B8', 'B11']).rename('NDMI'));
+
+//--------------------------------------------------
+/*
+//--------------------------------------------------
+
 // ---------- SAR units convention (ENV306/506) ----------
 // COPERNICUS/S1_GRD_FLOAT stores backscatter (σ⁰) as LINEAR power (its twin, COPERNICUS/S1_GRD, stores the same
 // values in dB). So the data arrive in linear units: averages, medians of composites, ratios, filters, thresholds and
@@ -133,6 +156,11 @@ var s1 = ee.ImageCollection('COPERNICUS/S1_GRD_FLOAT').filterBounds(aoi).filterD
   .select(['VV', 'VH']).median();   // median of linear σ⁰
 // VH/VV: cross-pol (volume scattering from branches and leaves) relative to co-pol. A ratio must use linear values.
 var sarC = s1.addBands(s1.select('VH').divide(s1.select('VV')).rename('VH_VV'));   // cross-pol ratio, linear
+
+//--------------------------------------------------
+/*
+//--------------------------------------------------
+
 // ALOS PALSAR-2 yearly mosaic (L-band, 25 m): γ⁰ (dB) = 10·log10(DN²) − 83  →  linear γ⁰ = DN² · 10^(−8.3)
 // PALSAR is stored as digital numbers (DN), not dB, so it is converted straight to linear γ⁰ with JAXA's calibration.
 // L-band (~24 cm wavelength) penetrates leaves and responds to trunks and branches — useful for woody structure.
@@ -155,11 +183,23 @@ var s12 = s1.addBands(s1_VH);
 // applied to band duplicate images
 Map.addLayer(toDb(sarL2.select(['L_HV', 'L_HH', 'L_HV2'])), {min: [-25, -15, -25], max: [-10, 0, -10]}, 'PALSAR-2 L-band (HV-HH-HV, dB)', false);
 Map.addLayer(toDb(s12.select(['VH', 'VV', 'VH2'])), {min: [-25, -15, -25], max: [-10, 0, -10]}, 'Sentinel-1 C-band (VH-VV-VH, dB)', false);
+
+//--------------------------------------------------
+/*
+//--------------------------------------------------
+
 var dem = ee.Image('NASA/NASADEM_HGT/001').select('elevation');   // metres
+// Use the GEE Terrain tools to calculate slope from the DEM
+var slope = ee.Terrain.slope(dem);
 // Stack everything into one image: optical + C-band + L-band + elevation + slope (degrees).
 // float() gives all bands the same data type, which sample() and export need.
-var predictors = optical.addBands(sarC).addBands(sarL).addBands(dem).addBands(ee.Terrain.slope(dem)).clip(aoi).float();
+var predictors = optical.addBands(sarC).addBands(sarL).addBands(dem).clip(aoi).float();
 var bands = predictors.bandNames();   // server-side list of all predictor band names
+print('Predictor Variables:', predictors);
+
+//--------------------------------------------------
+/*
+//--------------------------------------------------
 
 // ---------- 3 Training data: sample predictors at GEDI footprints ----------
 // Add the GEDI height band (the Y variable) to the predictors and sample random pixels. Pixels without a GEDI
@@ -172,6 +212,10 @@ var samples = predictors.addBands(gediH).sample({region: aoi, scale: 25, numPixe
 samples = samples.randomColumn('r', 2);   // adds a random number 0–1 in column 'r' (seed 2, repeatable)
 var train = samples.filter(ee.Filter.lt('r', 0.7)), test = samples.filter(ee.Filter.gte('r', 0.7));
 print('GEDI footprints with predictors: train / test', train.size(), test.size());
+
+//--------------------------------------------------
+/*
+//--------------------------------------------------
 
 // fitAndTest(): train a Random Forest regression on the training rows using the listed bands,
 // predict the test rows, and print RMSE (typical error, m) and R² (share of height variance explained).
@@ -202,6 +246,10 @@ var best = fitAndTest(bands, 'Optical + SAR + terrain');   // all predictors; th
 print(ui.Chart.feature.byFeature(best.pred.limit(2000), 'height', 'pred').setChartType('ScatterChart')
   .setOptions({title: 'Observed GEDI rh98 vs predicted (m)', hAxis: {title: 'GEDI rh98'}, vAxis: {title: 'Predicted'}, pointSize: 1}));
 
+//--------------------------------------------------
+/*
+//--------------------------------------------------
+
 // ---------- 4 Wall-to-wall canopy height map ----------
 // Apply the best model to every pixel of the predictor stack to get a continuous canopy height map (m).
 var heightMap = predictors.classify(best.rf).rename('canopy_height');
@@ -216,6 +264,10 @@ Map.addLayer(heightMap, hVis, 'B: Predicted canopy height 10 m (m)');
 // scale: 10 m (Sentinel-2 resolution); crs 'EPSG:32752' = WGS 84 / UTM zone 52S (metres), which covers this area.
 Export.image.toDrive({image: heightMap.float(), description: 'Prac11_canopy_height', folder: 'GEE_NT', region: aoi,
   scale: 10, crs: 'EPSG:32752', maxPixels: 1e11});
+
+//--------------------------------------------------
+/* */
+//--------------------------------------------------
 
 // Q: How do lidar, SAR and optical sensors "see" vegetation differently (height vs structure/moisture vs greenness)?
 // Q: How does canopy height change along the rainfall gradient? Link to savanna structure and fire.
