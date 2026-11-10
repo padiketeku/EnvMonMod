@@ -52,18 +52,25 @@
  ****/
 
 // ---------- 1 Study area ----------
-// The NT boundary is the modelling region. SCALE (metres) is the pixel size for every predictor and sample.
-var nt = ee.FeatureCollection('FAO/GAUL/2015/level1').filter(ee.Filter.eq('ADM1_NAME', 'Northern Territory'));
-var region = nt.geometry();
+// The NT boundary imported. SCALE (metres) is the pixel size for every predictor and sample.
+var nt = ee.FeatureCollection('FAO/GAUL/2015/level1').filter(ee.Filter.eq('ADM1_NAME', 'Northern Territory')).geometry();
 Map.centerObject(nt, 5);
 var SCALE = 1000;   // 1 km: matches the coarsest predictors (WorldClim, MODIS NDVI) and the ALA location accuracy (< 1 km)
 
 // ---------- 2 Data: occurrences ----------
 // PRESENCE points = places where the finch was recorded. Only records inside the NT are kept.
 // EDIT OCC_ASSET: paste your own asset ID (see HOW TO USE IT step 2).
-var OCC_ASSET = 'projects/YOUR_PROJECT/assets/gouldian_finch_ALA';   // <-- change
-var occ = ee.FeatureCollection(OCC_ASSET).filterBounds(region);
+var OCC_ASSET = 'projects/jamespike/assets/gouldian_finch_ALA';   // <-- change
+// Filter species observations to only those in the NT
+var occ = ee.FeatureCollection(OCC_ASSET).filterBounds(nt);
 print('Raw presence records', occ.size());
+
+// We want to focus on a buffered region of where the species has been observed.
+// Make a boundinng box (bbox) polygon around all species obervation points and buffer by 150 km
+var bbox = occ.geometry().bounds(100).buffer(150000);
+// Take the intersect of the NT and bbox (i.e. overlap areas)
+var region = bbox.intersection(nt, ee.ErrorMargin(1));
+Map.addLayer(region, {}, 'roi');
 
 
 //--------------------------------------------------
