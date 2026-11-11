@@ -62,7 +62,14 @@ var SCALE = 1000;   // 1 km: matches the coarsest predictors (WorldClim, MODIS N
 // EDIT OCC_ASSET: paste your own asset ID (see HOW TO USE IT step 2).
 var OCC_ASSET = 'projects/jamespike/assets/gouldian_finch_ALA';   // <-- change
 // Filter species observations to only those in the NT
-var occ = ee.FeatureCollection(OCC_ASSET).filterBounds(nt);
+var OCC_ASSET = 'projects/jamespike/assets/gouldian_finch_ALA';   // <-- change
+// Filter species observations to only those in the NT
+var occ = ee.FeatureCollection(OCC_ASSET)
+  .filter(ee.Filter.notNull(['lon', 'lat']))
+  .map(function(f) {
+    return ee.Feature(ee.Geometry.Point([f.getNumber('lon'), f.getNumber('lat')]),
+                      f.toDictionary());
+  });
 print('Raw presence records', occ.size());
 
 // We want to focus on a buffered region of where the species has been observed.
@@ -74,7 +81,8 @@ Map.addLayer(region, {}, 'roi');
 
 
 //--------------------------------------------------
-/* Replace file path for OCC_ASSET (line 64) with your asset file path then delete this line to continue.
+// Replace file path for OCC_ASSET (line 64) with your asset file path then delete this line to continue.
+/*
 //--------------------------------------------------
 
 // ---------- 2b Predictors ----------
@@ -267,3 +275,4 @@ Export.image.toDrive({image: suitRF.addBands(suitMX).float(), description: 'Prac
 // EXT: Vary BLOCK (25, 50, 100 km), relate it to the range of a variogram of the residuals, and add Maxent to the block CV.
 // EXT: Correct sampling bias with a target-group background (other ALA bird records) and compare maps.
 // EXT: Project the model under a +1.5 °C temperature shift (edit temp layers) and discuss assumptions of SDM transferability.
+/* */
