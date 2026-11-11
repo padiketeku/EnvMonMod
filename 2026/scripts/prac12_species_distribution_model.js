@@ -60,9 +60,7 @@ var SCALE = 1000;   // 1 km: matches the coarsest predictors (WorldClim, MODIS N
 // ---------- 2 Data: occurrences ----------
 // PRESENCE points = places where the finch was recorded. Only records inside the NT are kept.
 // EDIT OCC_ASSET: paste your own asset ID (see HOW TO USE IT step 2).
-var OCC_ASSET = 'projects/jamespike/assets/gouldian_finch_ALA';   // <-- change
-// Filter species observations to only those in the NT
-var OCC_ASSET = 'projects/jamespike/assets/gouldian_finch_ALA';   // <-- change
+var OCC_ASSET = 'projects/YOUR_NAME/assets/gouldian_finch_ALA';   // <-- change
 // Filter species observations to only those in the NT
 var occ = ee.FeatureCollection(OCC_ASSET)
   .filter(ee.Filter.notNull(['lon', 'lat']))
